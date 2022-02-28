@@ -1,0 +1,48 @@
+//
+// AlarmsApiTest.swift
+// CumulocityCoreLibrary
+//
+// Copyright (c) 2014-2021 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+// Use, reproduction, transfer, publication or disclosure is prohibited except as specifically provided for in your License Agreement with Software AG.
+//
+
+import Combine
+import XCTest
+
+@testable import CumulocityCoreLibrary
+
+public class AlarmsApiTest: XCTestCase {
+	
+	class TestableAlarmsApi: AlarmsApi {
+
+		override func adapt(builder: URLRequestBuilder) -> URLRequestBuilder {
+			return builder.set(scheme: "https")
+				.set(host: "iotaccstage2.eu-latest.cumulocity.com")
+				.add(header: "Authorization", value: "Basic bW9iaWxlOm1vYmlsZTAxJA==")
+		}
+	}
+
+	public func testGetAlarmCollectionResource() {
+		let expectation = XCTestExpectation(description: "ok")
+		var cancellables = Set<AnyCancellable>()
+		try? TestableAlarmsApi().getAlarmCollectionResource().sink(receiveCompletion: { completion in
+			print(completion)
+		}, receiveValue: { data in
+			expectation.fulfill()
+			print(data)
+		}).store(in: &cancellables)
+		wait(for: [expectation], timeout: 10)
+	}
+	
+	public func testGetAlarmCollectionCountResource() {
+		let expectation = XCTestExpectation(description: "ok")
+		var cancellables = Set<AnyCancellable>()
+		try? TestableAlarmsApi().getAlarmCollectionCountResource().sink(receiveCompletion: { completion in
+			print(completion)
+		}, receiveValue: { data in
+			expectation.fulfill()
+			print(data)
+		}).store(in: &cancellables)
+		wait(for: [expectation], timeout: 10)
+	}
+}

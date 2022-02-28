@@ -1,0 +1,27 @@
+//
+// C8yDeviceStatistics.swift
+// CumulocityCoreLibrary
+//
+// Copyright (c) 2014-2021 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+// Use, reproduction, transfer, publication or disclosure is prohibited except as specifically provided for in your License Agreement with Software AG.
+//
+
+import Foundation
+
+/// Statistics of a specific device (identified by an ID).
+public struct C8yDeviceStatistics: Codable {
+
+	/// Unique identifier of the device.
+	public var deviceId: String?
+
+	/// Sum of measurements, events and alarms created and updated for the specified device.
+	public var count: Int?
+
+	enum CodingKeys: String, CodingKey {
+		case deviceId
+		case count
+	}
+
+	public init() {
+	}
+}
