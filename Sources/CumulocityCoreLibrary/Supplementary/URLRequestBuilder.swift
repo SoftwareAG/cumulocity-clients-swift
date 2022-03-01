@@ -99,10 +99,14 @@ extension URLRequestBuilder {
 			_ = self.add(header: k, value: v)
 		}
         if let queryItems = builder.components.queryItems {
-            for q in queryItems {
-                self.components.queryItems?.append(q)
-            }
-        }
+			if (self.components.queryItems == nil) {
+				self.components.queryItems = queryItems
+			} else {
+				for q in queryItems {
+					self.components.queryItems?.append(q)
+				}
+			}
+		}
 		return self
 	}
 }
