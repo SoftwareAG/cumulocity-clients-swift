@@ -14,8 +14,9 @@ public struct C8yAlarm: Codable {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		self.count = try container.decodeIfPresent(Int.self, forKey: .count)
 		self.creationTime = try container.decodeIfPresent(String.self, forKey: .creationTime)
-		self.lastUpdated = try container.decodeIfPresent(String.self, forKey: .lastUpdated)
+		self.firstOccurrenceTime = try container.decodeIfPresent(String.self, forKey: .firstOccurrenceTime)
 		self.id = try container.decodeIfPresent(String.self, forKey: .id)
+		self.lastUpdated = try container.decodeIfPresent(String.self, forKey: .lastUpdated)
 		self.`self` = try container.decodeIfPresent(String.self, forKey: .`self`)
 		self.severity = try container.decodeIfPresent(C8yAlarmSeverity.self, forKey: .severity)
 		self.source = try container.decodeIfPresent(C8yAlarmSource.self, forKey: .source)
@@ -34,8 +35,9 @@ public struct C8yAlarm: Codable {
 		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encodeIfPresent(self.count, forKey: .count)
 		try container.encodeIfPresent(self.creationTime, forKey: .creationTime)
-		try container.encodeIfPresent(self.lastUpdated, forKey: .lastUpdated)
+		try container.encodeIfPresent(self.firstOccurrenceTime, forKey: .firstOccurrenceTime)
 		try container.encodeIfPresent(self.id, forKey: .id)
+		try container.encodeIfPresent(self.lastUpdated, forKey: .lastUpdated)
 		try container.encodeIfPresent(self.`self`, forKey: .`self`)
 		try container.encodeIfPresent(self.severity, forKey: .severity)
 		try container.encodeIfPresent(self.source, forKey: .source)
@@ -57,11 +59,14 @@ public struct C8yAlarm: Codable {
 	/// The date and time when the alarm was created.
 	public var creationTime: String?
 
-	/// The date and time when the alarm was last updated.
-	public var lastUpdated: String?
+	/// The time at which the alarm occurred for the first time. Only present when `count` is greater than 1.
+	public var firstOccurrenceTime: String?
 
 	/// Unique identifier of the alarm.
 	public var id: String?
+
+	/// The date and time when the alarm was last updated.
+	public var lastUpdated: String?
 
 	/// A URL linking to this resource.
 	public var `self`: String?
@@ -93,8 +98,9 @@ public struct C8yAlarm: Codable {
 	enum CodingKeys: String, CodingKey {
 		case count
 		case creationTime
-		case lastUpdated
+		case firstOccurrenceTime
 		case id
+		case lastUpdated
 		case `self` = "self"
 		case severity
 		case source
@@ -106,6 +112,43 @@ public struct C8yAlarm: Codable {
 	}
 
 	public init() {
+	}
+
+	/// The severity of the alarm.
+	public enum C8yAlarmSeverity: String, Codable {
+		case critical = "CRITICAL"
+		case major = "MAJOR"
+		case minor = "MINOR"
+		case warning = "WARNING"
+	}
+
+	/// The status of the alarm. If not specified, a new alarm will be created as ACTIVE.
+	public enum C8yAlarmStatus: String, Codable {
+		case active = "ACTIVE"
+		case acknowledged = "ACKNOWLEDGED"
+		case cleared = "CLEARED"
+	}
+
+	/// The managed object to which the alarm is associated.
+	public struct C8yAlarmSource: Codable {
+	
+		/// Unique identifier of the object.
+		public var id: String?
+	
+		/// Human-readable name that is used for representing the object in user interfaces.
+		public var name: String?
+	
+		/// A URL linking to this resource.
+		public var `self`: String?
+	
+		enum CodingKeys: String, CodingKey {
+			case id
+			case name
+			case `self` = "self"
+		}
+	
+		public init() {
+		}
 	}
 }
 

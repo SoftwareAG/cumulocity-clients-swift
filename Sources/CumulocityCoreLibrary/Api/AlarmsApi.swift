@@ -164,6 +164,7 @@ public class AlarmsApi: AdaptableApi {
 		if let parameter = withSourceAssets { queryItems.append(URLQueryItem(name: "withSourceAssets", value: String(parameter)))}
 		if let parameter = withSourceDevices { queryItems.append(URLQueryItem(name: "withSourceDevices", value: String(parameter)))}
 		var requestBody = body
+		requestBody.firstOccurrenceTime = nil
 		requestBody.severity = nil
 		requestBody.lastUpdated = nil
 		requestBody.creationTime = nil
@@ -211,9 +212,9 @@ public class AlarmsApi: AdaptableApi {
 	/// 
 	/// ### Alarm de-duplication
 	/// 
-	/// If an ACTIVE or ACKNOWLEDGED alarm with the same source and type exists, no new alarm is created. 
-	/// Instead, the existing alarm is updated by incrementing the `count` property; the `time` property is also updated. 
-	/// Any other changes are ignored, and the alarm history is not updated. Alarms with status CLEARED are not de-duplicated. 
+	/// If an ACTIVE or ACKNOWLEDGED alarm with the same source and type exists, no new alarm is created.
+	/// Instead, the existing alarm is updated by incrementing the `count` property; the `time` property is also updated.
+	/// Any other changes are ignored, and the alarm history is not updated. Alarms with status CLEARED are not de-duplicated.
 	/// The first occurrence of the alarm is recorded in the `firstOccurrenceTime` property.
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
@@ -234,6 +235,7 @@ public class AlarmsApi: AdaptableApi {
 	/// 	- body 
 	public func postAlarmCollectionResource(body: C8yAlarm) throws -> AnyPublisher<C8yAlarm, Swift.Error> {
 		var requestBody = body
+		requestBody.firstOccurrenceTime = nil
 		requestBody.lastUpdated = nil
 		requestBody.creationTime = nil
 		requestBody.count = nil
@@ -391,6 +393,7 @@ public class AlarmsApi: AdaptableApi {
 	///		  Unique identifier of the alarm.
 	public func putAlarmResource(body: C8yAlarm, id: String) throws -> AnyPublisher<C8yAlarm, Swift.Error> {
 		var requestBody = body
+		requestBody.firstOccurrenceTime = nil
 		requestBody.lastUpdated = nil
 		requestBody.creationTime = nil
 		requestBody.count = nil

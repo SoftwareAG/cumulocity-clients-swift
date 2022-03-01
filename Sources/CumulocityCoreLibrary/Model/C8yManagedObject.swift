@@ -21,11 +21,12 @@ public struct C8yManagedObject: Codable {
 		self.c8yIsDevice = try container.decodeIfPresent(C8yIsDevice.self, forKey: .c8yIsDevice)
 		self.c8ySupportedOperations = try container.decodeIfPresent([String].self, forKey: .c8ySupportedOperations)
 		self.c8yDeviceTypes = try container.decodeIfPresent([String].self, forKey: .c8yDeviceTypes)
-		self.childDevices = try container.decodeIfPresent(C8yObjectChildDevices.self, forKey: .childDevices)
 		self.childAdditions = try container.decodeIfPresent(C8yObjectChildAdditions.self, forKey: .childAdditions)
 		self.childAssets = try container.decodeIfPresent(C8yObjectChildAssets.self, forKey: .childAssets)
-		self.deviceParents = try container.decodeIfPresent(C8yObjectDeviceParents.self, forKey: .deviceParents)
+		self.childDevices = try container.decodeIfPresent(C8yObjectChildDevices.self, forKey: .childDevices)
+		self.additionParents = try container.decodeIfPresent(C8yObjectAdditionParents.self, forKey: .additionParents)
 		self.assetParents = try container.decodeIfPresent(C8yObjectAssetParents.self, forKey: .assetParents)
+		self.deviceParents = try container.decodeIfPresent(C8yObjectDeviceParents.self, forKey: .deviceParents)
 		if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
 			for (typeName, decoder) in C8yManagedObject.decoders {
 				self.customFragments?[typeName] = try? decoder(additionalContainer)
@@ -44,11 +45,12 @@ public struct C8yManagedObject: Codable {
 		try container.encodeIfPresent(self.c8yIsDevice, forKey: .c8yIsDevice)
 		try container.encodeIfPresent(self.c8ySupportedOperations, forKey: .c8ySupportedOperations)
 		try container.encodeIfPresent(self.c8yDeviceTypes, forKey: .c8yDeviceTypes)
-		try container.encodeIfPresent(self.childDevices, forKey: .childDevices)
 		try container.encodeIfPresent(self.childAdditions, forKey: .childAdditions)
 		try container.encodeIfPresent(self.childAssets, forKey: .childAssets)
-		try container.encodeIfPresent(self.deviceParents, forKey: .deviceParents)
+		try container.encodeIfPresent(self.childDevices, forKey: .childDevices)
+		try container.encodeIfPresent(self.additionParents, forKey: .additionParents)
 		try container.encodeIfPresent(self.assetParents, forKey: .assetParents)
+		try container.encodeIfPresent(self.deviceParents, forKey: .deviceParents)
 		var additionalContainer = encoder.container(keyedBy: JSONCodingKeys.self)
 		for (typeName, encoder) in C8yManagedObject.encoders {
 			if let property = self.customFragments?[typeName] {
@@ -85,20 +87,23 @@ public struct C8yManagedObject: Codable {
 	/// 
 	public var c8yDeviceTypes: [String]?
 
-	/// A collection of references to child devices.
-	public var childDevices: C8yObjectChildDevices?
-
 	/// A collection of references to child additions.
 	public var childAdditions: C8yObjectChildAdditions?
 
 	/// A collection of references to child assets.
 	public var childAssets: C8yObjectChildAssets?
 
-	/// A collection of references to device parent objects.
-	public var deviceParents: C8yObjectDeviceParents?
+	/// A collection of references to child devices.
+	public var childDevices: C8yObjectChildDevices?
+
+	/// A collection of references to addition parent objects.
+	public var additionParents: C8yObjectAdditionParents?
 
 	/// A collection of references to asset parent objects.
 	public var assetParents: C8yObjectAssetParents?
+
+	/// A collection of references to device parent objects.
+	public var deviceParents: C8yObjectDeviceParents?
 
 	/// It is possible to add an arbitrary number of additional properties as a list of key-value pairs, e.g. `"property1": {}`, `"property2": "value"`. These properties are known as custom fragments and can be of any type, e.g. object, string. Each custom fragment is identified by a unique name.
 	/// 
@@ -116,11 +121,12 @@ public struct C8yManagedObject: Codable {
 		case c8yIsDevice = "c8y_IsDevice"
 		case c8ySupportedOperations = "c8y_SupportedOperations"
 		case c8yDeviceTypes = "c8y_DeviceTypes"
-		case childDevices
 		case childAdditions
 		case childAssets
-		case deviceParents
+		case childDevices
+		case additionParents
 		case assetParents
+		case deviceParents
 		case customFragments
 	}
 

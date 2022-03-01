@@ -139,19 +139,20 @@ public class ManagedObjectsApi: AdaptableApi {
 	public func postManagedObjectCollectionResource(body: C8yManagedObject) throws -> AnyPublisher<C8yManagedObject, Swift.Error> {
 		var requestBody = body
 		requestBody.owner = nil
+		requestBody.additionParents = nil
 		requestBody.lastUpdated = nil
 		requestBody.childDevices = nil
 		requestBody.childAssets = nil
 		requestBody.creationTime = nil
 		requestBody.childAdditions = nil
 		requestBody.`self` = nil
-		requestBody.deviceParents = nil
 		requestBody.assetParents = nil
+		requestBody.deviceParents = nil
 		requestBody.id = nil
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects")
 			.set(httpMethod: "post")
-			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedObject+json")
+			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobject+json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
 		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -290,6 +291,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	public func putManagedObjectResource(body: C8yManagedObject, id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		var requestBody = body
 		requestBody.owner = nil
+		requestBody.additionParents = nil
 		requestBody.lastUpdated = nil
 		requestBody.childDevices = nil
 		requestBody.childAssets = nil
@@ -297,13 +299,13 @@ public class ManagedObjectsApi: AdaptableApi {
 		requestBody.childAdditions = nil
 		requestBody.name = nil
 		requestBody.`self` = nil
-		requestBody.deviceParents = nil
 		requestBody.assetParents = nil
+		requestBody.deviceParents = nil
 		requestBody.id = nil
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)")
 			.set(httpMethod: "put")
-			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedObject+json")
+			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
 		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

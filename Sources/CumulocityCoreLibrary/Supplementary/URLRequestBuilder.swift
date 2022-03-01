@@ -10,10 +10,9 @@ import Foundation
 
 public class URLRequestBuilder {
 
-    private var components: URLComponents
+    var components: URLComponents
     private var httpMethod: String?
     private var requestHeaders: [String: String] = [:]
-    private var queryItems: [URLQueryItem] = []
     private var httpBody: Data?
 
     public init() {
@@ -21,11 +20,10 @@ public class URLRequestBuilder {
 	}
 
     public convenience init(with: URLRequestBuilder) {
-    	self.init()
+        self.init()
 		self.components = with.components
 		self.httpMethod = with.httpMethod
 		self.requestHeaders = with.requestHeaders
-		self.queryItems = with.queryItems
 		self.httpBody = with.httpBody
 	}
 
@@ -100,9 +98,11 @@ extension URLRequestBuilder {
 		for (k, v) in builder.requestHeaders {
 			_ = self.add(header: k, value: v)
 		}
-		for q in builder.queryItems {
-			self.queryItems.append(q)
-		}
+        if let queryItems = builder.components.queryItems {
+            for q in queryItems {
+                self.components.queryItems?.append(q)
+            }
+        }
 		return self
 	}
 }

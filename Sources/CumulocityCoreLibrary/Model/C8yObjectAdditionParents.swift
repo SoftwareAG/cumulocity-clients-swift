@@ -1,5 +1,5 @@
 //
-// C8yAlarmSource.swift
+// C8yObjectAdditionParents.swift
 // CumulocityCoreLibrary
 //
 // Copyright (c) 2014-2021 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
@@ -8,22 +8,18 @@
 
 import Foundation
 
-/// The managed object to which the alarm is associated.
-public struct C8yAlarmSource: Codable {
+/// A collection of references to addition parent objects.
+public struct C8yObjectAdditionParents: Codable {
 
-	/// Unique identifier of the object.
-	public var id: String?
-
-	/// Human-readable name that is used for representing the object in user interfaces.
-	public var name: String?
-
-	/// A URL linking to this resource.
+	/// Link to this resource's addition parent objects.
 	public var `self`: String?
 
+	/// An array with the references to addition parent objects.
+	public var references: [C8yManagedObjectReferenceTuple]?
+
 	enum CodingKeys: String, CodingKey {
-		case id
-		case name
 		case `self` = "self"
+		case references
 	}
 
 	public init() {

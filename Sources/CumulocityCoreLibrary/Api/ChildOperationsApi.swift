@@ -76,8 +76,12 @@ public class ChildOperationsApi: AdaptableApi {
 		}).decode(type: C8yManagedObjectReferenceCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
-	/// Assign a specific managed object as child addition
-	/// Assign a specific managed object (by a given child ID) as child addition of another managed object (by a given ID).
+	/// Assign a managed object as child addition
+	/// The possible ways to assign child objects are:
+	/// 
+	/// *  Assign an existing managed object (by a given child ID) as child addition of another managed object (by a given ID).
+	/// *  Assign multiple existing managed objects (by given child IDs) as child additions of another managed object (by a given ID).
+	/// *  Create a managed object in the inventory and assign it as a child addition to another managed object (by a given ID).
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child OR MANAGE_OBJECT_ADMIN permission on the child))
@@ -100,7 +104,7 @@ public class ChildOperationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
 			.set(httpMethod: "post")
-			.add(header: "Content-Type", value: "application/json")
+			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
 		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -114,8 +118,12 @@ public class ChildOperationsApi: AdaptableApi {
 		}).eraseToAnyPublisher()
 	}
 	
-	/// Assign a specific managed object as child addition
-	/// Assign a specific managed object (by a given child ID) as child addition of another managed object (by a given ID).
+	/// Assign a managed object as child addition
+	/// The possible ways to assign child objects are:
+	/// 
+	/// *  Assign an existing managed object (by a given child ID) as child addition of another managed object (by a given ID).
+	/// *  Assign multiple existing managed objects (by given child IDs) as child additions of another managed object (by a given ID).
+	/// *  Create a managed object in the inventory and assign it as a child addition to another managed object (by a given ID).
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child OR MANAGE_OBJECT_ADMIN permission on the child))
@@ -139,6 +147,59 @@ public class ChildOperationsApi: AdaptableApi {
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
+			.add(header: "Accept", value: "application/json")
+			.set(httpBody: try JSONEncoder().encode(requestBody))
+		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard (200...299).contains(httpResponse.statusCode) else {
+				throw URLError(.badServerResponse)
+			}
+			return element.data
+		}).eraseToAnyPublisher()
+	}
+	
+	/// Assign a managed object as child addition
+	/// The possible ways to assign child objects are:
+	/// 
+	/// *  Assign an existing managed object (by a given child ID) as child addition of another managed object (by a given ID).
+	/// *  Assign multiple existing managed objects (by given child IDs) as child additions of another managed object (by a given ID).
+	/// *  Create a managed object in the inventory and assign it as a child addition to another managed object (by a given ID).
+	/// 
+	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child OR MANAGE_OBJECT_ADMIN permission on the child))
+	/// </div></div>
+	/// 
+	/// The following table gives an overview of the possible response codes and their meanings.
+	/// - Returns:
+	/// 	- 201
+	///		  A managed object was assigned as child addition.
+	/// 	- 401
+	///		  Authentication information is missing or invalid.
+	/// 	- 404
+	///		  Managed object not found.
+	/// - Parameters:
+	/// 	- body 
+	/// 	- id 
+	///		  Unique identifier of the managed object.
+	public func postManagedObjectChildAdditionsResource(body: C8yManagedObject, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+		var requestBody = body
+		requestBody.owner = nil
+		requestBody.additionParents = nil
+		requestBody.lastUpdated = nil
+		requestBody.childDevices = nil
+		requestBody.childAssets = nil
+		requestBody.creationTime = nil
+		requestBody.childAdditions = nil
+		requestBody.`self` = nil
+		requestBody.assetParents = nil
+		requestBody.deviceParents = nil
+		requestBody.id = nil
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
+			.set(httpMethod: "post")
+			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
 		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -321,8 +382,12 @@ public class ChildOperationsApi: AdaptableApi {
 		}).decode(type: C8yManagedObjectReferenceCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
-	/// Assign a specific managed object as child asset
-	/// Assign a specific managed object (by a given child ID) as child asset of another managed object (by a given ID).
+	/// Assign a managed object as child asset
+	/// The possible ways to assign child objects are:
+	/// 
+	/// *  Assign an existing managed object (by a given child ID) as child asset of another managed object (by a given ID).
+	/// *  Assign multiple existing managed objects (by given child IDs) as child assets of another managed object (by a given ID).
+	/// *  Create a managed object in the inventory and assign it as a child asset to another managed object (by a given ID).
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child OR MANAGE_OBJECT_ADMIN permission on the child))
@@ -345,7 +410,7 @@ public class ChildOperationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
 			.set(httpMethod: "post")
-			.add(header: "Content-Type", value: "application/json")
+			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
 		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -359,8 +424,12 @@ public class ChildOperationsApi: AdaptableApi {
 		}).eraseToAnyPublisher()
 	}
 	
-	/// Assign a specific managed object as child asset
-	/// Assign a specific managed object (by a given child ID) as child asset of another managed object (by a given ID).
+	/// Assign a managed object as child asset
+	/// The possible ways to assign child objects are:
+	/// 
+	/// *  Assign an existing managed object (by a given child ID) as child asset of another managed object (by a given ID).
+	/// *  Assign multiple existing managed objects (by given child IDs) as child assets of another managed object (by a given ID).
+	/// *  Create a managed object in the inventory and assign it as a child asset to another managed object (by a given ID).
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child OR MANAGE_OBJECT_ADMIN permission on the child))
@@ -384,6 +453,59 @@ public class ChildOperationsApi: AdaptableApi {
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
+			.add(header: "Accept", value: "application/json")
+			.set(httpBody: try JSONEncoder().encode(requestBody))
+		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard (200...299).contains(httpResponse.statusCode) else {
+				throw URLError(.badServerResponse)
+			}
+			return element.data
+		}).eraseToAnyPublisher()
+	}
+	
+	/// Assign a managed object as child asset
+	/// The possible ways to assign child objects are:
+	/// 
+	/// *  Assign an existing managed object (by a given child ID) as child asset of another managed object (by a given ID).
+	/// *  Assign multiple existing managed objects (by given child IDs) as child assets of another managed object (by a given ID).
+	/// *  Create a managed object in the inventory and assign it as a child asset to another managed object (by a given ID).
+	/// 
+	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child OR MANAGE_OBJECT_ADMIN permission on the child))
+	/// </div></div>
+	/// 
+	/// The following table gives an overview of the possible response codes and their meanings.
+	/// - Returns:
+	/// 	- 201
+	///		  A managed object was assigned as child asset.
+	/// 	- 401
+	///		  Authentication information is missing or invalid.
+	/// 	- 404
+	///		  Managed object not found.
+	/// - Parameters:
+	/// 	- body 
+	/// 	- id 
+	///		  Unique identifier of the managed object.
+	public func postManagedObjectChildAssetsResource(body: C8yManagedObject, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+		var requestBody = body
+		requestBody.owner = nil
+		requestBody.additionParents = nil
+		requestBody.lastUpdated = nil
+		requestBody.childDevices = nil
+		requestBody.childAssets = nil
+		requestBody.creationTime = nil
+		requestBody.childAdditions = nil
+		requestBody.`self` = nil
+		requestBody.assetParents = nil
+		requestBody.deviceParents = nil
+		requestBody.id = nil
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
+			.set(httpMethod: "post")
+			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
 		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -566,8 +688,12 @@ public class ChildOperationsApi: AdaptableApi {
 		}).decode(type: C8yManagedObjectReferenceCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
-	/// Assign a specific managed object as child device
-	/// Assign a specific managed object (by a given child ID) as child device of another managed object (by a given ID).
+	/// Assign a managed object as child device
+	/// The possible ways to assign child objects are:
+	/// 
+	/// *  Assign an existing managed object (by a given child ID) as child device of another managed object (by a given ID).
+	/// *  Assign multiple existing managed objects (by given child IDs) as child devices of another managed object (by a given ID).
+	/// *  Create a managed object in the inventory and assign it as a child device to another managed object (by a given ID).
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child OR MANAGE_OBJECT_ADMIN permission on the child))
@@ -590,7 +716,7 @@ public class ChildOperationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
 			.set(httpMethod: "post")
-			.add(header: "Content-Type", value: "application/json")
+			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
 		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -604,8 +730,12 @@ public class ChildOperationsApi: AdaptableApi {
 		}).eraseToAnyPublisher()
 	}
 	
-	/// Assign a specific managed object as child device
-	/// Assign a specific managed object (by a given child ID) as child device of another managed object (by a given ID).
+	/// Assign a managed object as child device
+	/// The possible ways to assign child objects are:
+	/// 
+	/// *  Assign an existing managed object (by a given child ID) as child device of another managed object (by a given ID).
+	/// *  Assign multiple existing managed objects (by given child IDs) as child devices of another managed object (by a given ID).
+	/// *  Create a managed object in the inventory and assign it as a child device to another managed object (by a given ID).
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child OR MANAGE_OBJECT_ADMIN permission on the child))
@@ -629,6 +759,59 @@ public class ChildOperationsApi: AdaptableApi {
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
+			.add(header: "Accept", value: "application/json")
+			.set(httpBody: try JSONEncoder().encode(requestBody))
+		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard (200...299).contains(httpResponse.statusCode) else {
+				throw URLError(.badServerResponse)
+			}
+			return element.data
+		}).eraseToAnyPublisher()
+	}
+	
+	/// Assign a managed object as child device
+	/// The possible ways to assign child objects are:
+	/// 
+	/// *  Assign an existing managed object (by a given child ID) as child device of another managed object (by a given ID).
+	/// *  Assign multiple existing managed objects (by given child IDs) as child devices of another managed object (by a given ID).
+	/// *  Create a managed object in the inventory and assign it as a child device to another managed object (by a given ID).
+	/// 
+	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child OR MANAGE_OBJECT_ADMIN permission on the child))
+	/// </div></div>
+	/// 
+	/// The following table gives an overview of the possible response codes and their meanings.
+	/// - Returns:
+	/// 	- 201
+	///		  A managed object was assigned as child device.
+	/// 	- 401
+	///		  Authentication information is missing or invalid.
+	/// 	- 404
+	///		  Managed object not found.
+	/// - Parameters:
+	/// 	- body 
+	/// 	- id 
+	///		  Unique identifier of the managed object.
+	public func postManagedObjectChildDevicesResource(body: C8yManagedObject, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+		var requestBody = body
+		requestBody.owner = nil
+		requestBody.additionParents = nil
+		requestBody.lastUpdated = nil
+		requestBody.childDevices = nil
+		requestBody.childAssets = nil
+		requestBody.creationTime = nil
+		requestBody.childAdditions = nil
+		requestBody.`self` = nil
+		requestBody.assetParents = nil
+		requestBody.deviceParents = nil
+		requestBody.id = nil
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
+			.set(httpMethod: "post")
+			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
 		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

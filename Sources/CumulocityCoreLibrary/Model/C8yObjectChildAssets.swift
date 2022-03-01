@@ -15,7 +15,7 @@ public struct C8yObjectChildAssets: Codable {
 	public var `self`: String?
 
 	/// An array with the references to child assets.
-	public var references: [C8yManagedObjectReference]?
+	public var references: [C8yManagedObjectReferenceTuple]?
 
 	enum CodingKeys: String, CodingKey {
 		case `self` = "self"
