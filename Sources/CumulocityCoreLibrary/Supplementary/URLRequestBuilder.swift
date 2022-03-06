@@ -107,7 +107,7 @@ extension URLRequestBuilder {
 				}
 			}
 		}
-		if (self.httpBody != nil) {
+		if (self.httpBody == nil) {
 			self.httpBody = builder.httpBody
 		}
 		return self
