@@ -13,7 +13,7 @@ public struct C8yMotionMeasurement: Codable {
 	/// Boolean value indicating if motion has been detected (non-zero value) or not (zero value).
 	public var motionDetected: C8yMotionDetected?
 
-	public var speed: C8yDescC8yMeasurementValue?
+	public var speed: C8yMeasurementValue?
 
 	enum CodingKeys: String, CodingKey {
 		case motionDetected

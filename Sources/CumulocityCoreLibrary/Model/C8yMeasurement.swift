@@ -50,7 +50,7 @@ public struct C8yMeasurement: Codable {
 	/// The managed object to which the measurement is associated.
 	public var source: C8yMeasurementSource?
 
-	/// The date and time when the measurement is updated.
+	/// The date and time when the measurement is created.
 	public var time: String?
 
 	/// Identifies the type of this measurement.
@@ -75,7 +75,29 @@ public struct C8yMeasurement: Codable {
 		case customFragments
 	}
 
-	public init() {
+	public init(source: C8yMeasurementSource, time: String, type: String) {
+		self.source = source
+		self.time = time
+		self.type = type
+	}
+
+	/// The managed object to which the measurement is associated.
+	public struct C8yMeasurementSource: Codable {
+	
+		/// Unique identifier of the object.
+		public var id: String?
+	
+		/// A URL linking to this resource.
+		public var `self`: String?
+	
+		enum CodingKeys: String, CodingKey {
+			case id
+			case `self` = "self"
+		}
+	
+		public init(id: String) {
+			self.id = id
+		}
 	}
 }
 

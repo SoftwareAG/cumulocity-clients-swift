@@ -33,6 +33,7 @@ public struct C8yMeasurementCollection: Codable {
 		case measurements
 	}
 
-	public init() {
+	public init(measurements: [C8yMeasurement]) {
+		self.measurements = measurements
 	}
 }

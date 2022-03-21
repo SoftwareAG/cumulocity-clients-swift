@@ -18,7 +18,7 @@ import Combine
 /// * The actual activity.
 /// * A severity.
 /// 
-/// > **&#9432; Info:** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
+/// > **&#9432; Info:** The Accept header should be provided in all POST requests, otherwise an empty response body will be returned.
 /// 
 public class AuditsApi: AdaptableApi {
 
@@ -106,7 +106,10 @@ public class AuditsApi: AdaptableApi {
 	public func postAuditRecordCollectionResource(body: C8yAuditRecord) throws -> AnyPublisher<C8yAuditRecord, Swift.Error> {
 		var requestBody = body
 		requestBody.severity = nil
+		requestBody.application = nil
 		requestBody.creationTime = nil
+		requestBody.c8yMetadata = nil
+		requestBody.changes = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
 		requestBody.source?.`self` = nil

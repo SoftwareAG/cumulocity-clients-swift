@@ -121,6 +121,10 @@ public class MeasurementsApi: AdaptableApi {
 	///		  A measurement was created.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 403
+	///		  Not authorized to perform this operation.
+	/// 	- 422
+	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
 	public func postMeasurementCollectionResource(body: C8yMeasurement) throws -> AnyPublisher<C8yMeasurement, Swift.Error> {
@@ -132,7 +136,7 @@ public class MeasurementsApi: AdaptableApi {
 			.set(resourcePath: "/measurement/measurements")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.measurement+json")
-			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.measurement+json")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.measurement+json, application/vnd.com.nsn.cumulocity.measurementcollection+json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
 		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -175,9 +179,13 @@ public class MeasurementsApi: AdaptableApi {
 	///		  A measurement was created.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 403
+	///		  Not authorized to perform this operation.
+	/// 	- 422
+	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func postMeasurementCollectionResource(body: C8yMeasurementCollection) throws -> AnyPublisher<C8yMeasurement, Swift.Error> {
+	public func postMeasurementCollectionResource(body: C8yMeasurementCollection) throws -> AnyPublisher<C8yMeasurementCollection, Swift.Error> {
 		var requestBody = body
 		requestBody.next = nil
 		requestBody.prev = nil
@@ -187,7 +195,7 @@ public class MeasurementsApi: AdaptableApi {
 			.set(resourcePath: "/measurement/measurements")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.measurementcollection+json")
-			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.measurement+json")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.measurement+json, application/vnd.com.nsn.cumulocity.measurementcollection+json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
 		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -197,7 +205,7 @@ public class MeasurementsApi: AdaptableApi {
 				throw URLError(.badServerResponse)
 			}
 			return element.data
-		}).decode(type: C8yMeasurement.self, decoder: JSONDecoder()).eraseToAnyPublisher()
+		}).decode(type: C8yMeasurementCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
 	/// Remove measurement collections

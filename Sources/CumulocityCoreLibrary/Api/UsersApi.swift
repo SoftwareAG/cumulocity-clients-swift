@@ -11,7 +11,7 @@ import Combine
 
 /// API methods to create, retrieve, update and delete users in Cumulocity IoT.
 /// 
-/// > **&#9432; Info:** The Accept header should be provided in all PUT/POST requests, otherwise an empty response body will be returned.
+/// > **&#9432; Info:** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 /// 
 public class UsersApi: AdaptableApi {
 
@@ -328,8 +328,8 @@ public class UsersApi: AdaptableApi {
 		}).decode(type: C8yUserReferenceCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
-	/// Add a user for a specific user group of a specific tenant
-	/// Add a user for a specific user group (by a given user group ID) of a specific tenant (by a given tenant ID).
+	/// Add a user to a specific user group of a specific tenant
+	/// Add a user to a specific user group (by a given user group ID) of a specific tenant (by a given tenant ID).
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// ROLE_USER_MANAGEMENT_ADMIN <b>OR</b> ROLE_USER_MANAGEMENT_CREATE and is parent of the user

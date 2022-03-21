@@ -31,6 +31,7 @@ public struct C8yApplication: Codable {
 		self.owner = try container.decodeIfPresent(C8yApplicationOwner.self, forKey: .owner)
 		self.requiredRoles = try container.decodeIfPresent([String].self, forKey: .requiredRoles)
 		self.roles = try container.decodeIfPresent([String].self, forKey: .roles)
+		self.manifest = try container.decodeAnyIfPresent(forKey: .manifest)
 	}
 	
 	public func encode(to encoder: Encoder) throws {
@@ -54,6 +55,7 @@ public struct C8yApplication: Codable {
 		try container.encodeIfPresent(self.owner, forKey: .owner)
 		try container.encodeIfPresent(self.requiredRoles, forKey: .requiredRoles)
 		try container.encodeIfPresent(self.roles, forKey: .roles)
+		try container.encodeAnyIfPresent(self.manifest, forKey: .manifest)
 	}
 
 	/// A URL linking to this resource.

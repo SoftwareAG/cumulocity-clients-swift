@@ -11,7 +11,7 @@ import Combine
 
 /// API methods to create, retrieve, update and delete inventory roles.
 /// 
-/// > **&#9432; Info:** The Accept header should be provided in all PUT/POST requests, otherwise an empty response body will be returned.
+/// > **&#9432; Info:** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 /// 
 public class InventoryRolesApi: AdaptableApi {
 

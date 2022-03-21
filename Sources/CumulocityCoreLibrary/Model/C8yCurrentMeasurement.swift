@@ -10,7 +10,7 @@ import Foundation
 
 public struct C8yCurrentMeasurement: Codable {
 
-	public var current: C8yDescC8yMeasurementValue?
+	public var current: C8yMeasurementValue?
 
 	enum CodingKeys: String, CodingKey {
 		case current

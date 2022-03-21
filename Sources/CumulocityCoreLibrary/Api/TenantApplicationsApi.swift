@@ -10,6 +10,8 @@ import Foundation
 import Combine
 
 /// References to the tenant subscribed applications.
+/// > **&#9432; Info:** The Accept header should be provided in all POST requests, otherwise an empty response body will be returned.
+/// 
 public class TenantApplicationsApi: AdaptableApi {
 
 	public override init() {
@@ -86,13 +88,14 @@ public class TenantApplicationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func postTenantApplicationReferenceCollectionResource(body: C8ySubscribedApplication, tenantId: String) throws -> AnyPublisher<C8yApplication, Swift.Error> {
-		let requestBody = body
+	public func postTenantApplicationReferenceCollectionResource(body: C8ySubscribedApplicationReference, tenantId: String) throws -> AnyPublisher<C8ySubscribedApplicationReference, Swift.Error> {
+		var requestBody = body
+		requestBody.application?.id = nil
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)/applications")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.applicationreference+json")
-			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.application+json")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationreference+json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
 		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -102,7 +105,7 @@ public class TenantApplicationsApi: AdaptableApi {
 				throw URLError(.badServerResponse)
 			}
 			return element.data
-		}).decode(type: C8yApplication.self, decoder: JSONDecoder()).eraseToAnyPublisher()
+		}).decode(type: C8ySubscribedApplicationReference.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
 	/// Unsubscribe from an application

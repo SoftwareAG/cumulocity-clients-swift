@@ -14,7 +14,7 @@ import Foundation
 /// 
 public struct C8yLightMeasurement: Codable {
 
-	public var e: C8yDescC8yMeasurementValue?
+	public var e: C8yMeasurementValue?
 
 	enum CodingKeys: String, CodingKey {
 		case e

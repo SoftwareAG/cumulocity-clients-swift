@@ -10,7 +10,7 @@ import Foundation
 
 public struct C8ySinglePhaseEnergyMeasurement: Codable {
 
-	public var additionalProperties: [String: C8yDescC8yMeasurementValue]? = [:]
+	public var additionalProperties: [String: C8yMeasurementValue]? = [:]
 
 	enum CodingKeys: String, CodingKey {
 		case additionalProperties

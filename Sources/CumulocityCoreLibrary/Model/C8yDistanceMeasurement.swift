@@ -10,7 +10,7 @@ import Foundation
 
 public struct C8yDistanceMeasurement: Codable {
 
-	public var distance: C8yDescC8yMeasurementValue?
+	public var distance: C8yMeasurementValue?
 
 	enum CodingKeys: String, CodingKey {
 		case distance

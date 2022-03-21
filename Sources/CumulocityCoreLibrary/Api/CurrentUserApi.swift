@@ -11,7 +11,7 @@ import Combine
 
 /// The current user is the user that is currently authenticated with Cumulocity IoT for the API calls.
 /// 
-/// > **&#9432; Info:** The Accept header should be provided in all PUT/POST requests, otherwise an empty response body will be returned.
+/// > **&#9432; Info:** The Accept header should be provided in all PUT requests, otherwise an empty response body will be returned.
 /// 
 public class CurrentUserApi: AdaptableApi {
 

@@ -36,6 +36,8 @@ import Combine
 /// 
 /// For more details, see [RBAC versus multi-tenancy approach](https://cumulocity.com/guides/concepts/tenant-hierarchy/#comparison).
 /// 
+/// > **&#9432; Info:** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
+/// 
 public class TenantsApi: AdaptableApi {
 
 	public override init() {

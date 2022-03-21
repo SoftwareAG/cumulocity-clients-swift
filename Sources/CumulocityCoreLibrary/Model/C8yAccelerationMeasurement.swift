@@ -10,7 +10,7 @@ import Foundation
 
 public struct C8yAccelerationMeasurement: Codable {
 
-	public var acceleration: C8yDescC8yMeasurementValue?
+	public var acceleration: C8yMeasurementValue?
 
 	enum CodingKeys: String, CodingKey {
 		case acceleration

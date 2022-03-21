@@ -10,7 +10,7 @@ import Foundation
 
 public struct C8yTemperatureMeasurement: Codable {
 
-	public var t: C8yDescC8yMeasurementValue?
+	public var t: C8yMeasurementValue?
 
 	enum CodingKeys: String, CodingKey {
 		case t = "T"
