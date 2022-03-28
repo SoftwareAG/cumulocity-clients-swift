@@ -1,5 +1,5 @@
 //
-// C8yInventoryBinaryInfo.swift
+// C8yBinaryInfo.swift
 // CumulocityCoreLibrary
 //
 // Copyright (c) 2014-2021 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
@@ -9,7 +9,7 @@
 import Foundation
 
 /// Contains information about the file.
-public struct C8yInventoryBinaryInfo: Codable {
+public struct C8yBinaryInfo: Codable {
 
 	/// Name of the binary object.
 	public var name: String?

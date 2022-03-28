@@ -107,7 +107,7 @@ public class BinariesApi: AdaptableApi {
 	/// 	- `object` 
 	/// 	- file 
 	///		  Path of the file to be uploaded.
-	public func postBinariesCollectionResource(`object`: C8yInventoryBinaryInfo, file: Data) throws -> AnyPublisher<C8yBinary, Swift.Error> {
+	public func postBinariesCollectionResource(`object`: C8yBinaryInfo, file: Data) throws -> AnyPublisher<C8yBinary, Swift.Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
 		try multipartBuilder.addBodyPart(named: "object", data: `object`, mimeType: "application/json");
 		try multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/plain");
@@ -149,7 +149,7 @@ public class BinariesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/binaries/\(id)")
 			.set(httpMethod: "get")
-			.add(header: "Accept", value: "application/json")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, text/plain")
 		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)

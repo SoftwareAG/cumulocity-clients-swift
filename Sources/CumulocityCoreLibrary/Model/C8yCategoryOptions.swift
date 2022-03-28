@@ -45,6 +45,20 @@ extension C8yCategoryOptions {
     private static var decoders: [String: PropertyDecoder] = [:]
     private static var encoders: [String: PropertyEncoder] = [:]
 
+	public static func registerAdditionalProperty(typeName: String) {
+		decoders[typeName] = { container in
+			guard let codingKey = JSONCodingKeys(stringValue: typeName) else {
+				return nil
+			}
+			return try? container.decodeAnyIfPresent(forKey: codingKey)
+        }
+		encoders[typeName] = { object, container in
+			if let codingKey = JSONCodingKeys(stringValue: typeName) {
+				try container.encodeAnyIfPresent(object, forKey: codingKey)
+			}
+		}
+	}
+
     public static func registerAdditionalProperty<C: Codable>(typeName: String, for type: C.Type) {
         decoders[typeName] = { container in
             guard let codingKey = JSONCodingKeys(stringValue: typeName) else {

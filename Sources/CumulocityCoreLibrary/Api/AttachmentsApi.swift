@@ -42,7 +42,7 @@ public class AttachmentsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "get")
-			.add(header: "Accept", value: "application/json")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, text/plain")
 		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -154,6 +154,83 @@ public class AttachmentsApi: AdaptableApi {
 			.add(header: "Content-Type", value: "text/plain")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.event+json")
 			.set(httpBody: body)
+		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard (200...299).contains(httpResponse.statusCode) else {
+				throw URLError(.badServerResponse)
+			}
+			return element.data
+		}).decode(type: C8yEventBinary.self, decoder: JSONDecoder()).eraseToAnyPublisher()
+	}
+	
+	/// Attach a file to a specific event
+	/// Upload a file (binary) as an attachment of a specific event by a given ID.<br>
+	/// The size of the attachment is configurable, and the default size is 50 MiB. The default chunk size is 5MiB.
+	/// 
+	/// After the file has been uploaded, the corresponding event will contain the fragment `c8y_IsBinary` similar to:
+	/// 
+	/// ```json
+	/// "c8y_IsBinary": {
+	///     "name": "hello.txt",
+	///     "length": 365,
+	///     "type": "text/plain"
+	/// }
+	/// ```
+	/// 
+	/// When using `multipart/form-data` each value is sent as a block of data (body part), with a user agent-defined delimiter (`boundary`) separating each part. The keys are given in the `Content-Disposition` header of each part.
+	/// 
+	/// ```http
+	/// POST /event/events/{id}/binaries
+	/// Host: https://<TENANT_DOMAIN>
+	/// Authorization: <AUTHORIZATION>
+	/// Accept: application/json
+	/// Content-Type: multipart/form-data;boundary="boundary"
+	/// 
+	/// --boundary
+	/// Content-Disposition: form-data; name="object"
+	/// 
+	/// { "name": "hello.txt", "type": "text/plain" }
+	/// --boundary
+	/// Content-Disposition: form-data; name="file"; filename="hello.txt"
+	/// Content-Type: text/plain
+	/// 
+	/// <FILE_CONTENTS>
+	/// --boundary--
+	/// ```
+	/// 
+	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// ROLE_EVENT_ADMIN <b>OR</b> owner of the source <b>OR</b> EVENT_ADMIN permission on the source
+	/// </div></div>
+	/// 
+	/// The following table gives an overview of the possible response codes and their meanings.
+	/// - Returns:
+	/// 	- 201
+	///		  A file was uploaded.
+	/// 	- 401
+	///		  Authentication information is missing or invalid.
+	/// 	- 404
+	///		  Event not found.
+	/// 	- 409
+	///		  An attachment exists already.
+	/// - Parameters:
+	/// 	- `object` 
+	/// 	- file 
+	///		  Path of the file to be uploaded.
+	/// 	- id 
+	///		  Unique identifier of the event.
+	public func postEventBinaryResource(`object`: C8yBinaryInfo, file: Data, id: String) throws -> AnyPublisher<C8yEventBinary, Swift.Error> {
+		let multipartBuilder = MultipartFormDataBuilder()
+		try multipartBuilder.addBodyPart(named: "object", data: `object`, mimeType: "application/json");
+		try multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/plain");
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/event/events/\(id)/binaries")
+			.set(httpMethod: "post")
+			.add(header: "Content-Type", value: "multipart/form-data")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.event+json")
+			.add(header: "Content-Type", value: multipartBuilder.contentType)
+			.set(httpBody: multipartBuilder.build())
 		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
