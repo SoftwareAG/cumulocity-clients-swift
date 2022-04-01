@@ -26,7 +26,7 @@ public struct C8yMotionMeasurement: Codable {
 	/// Boolean value indicating if motion has been detected (non-zero value) or not (zero value).
 	public struct C8yMotionDetected: Codable {
 	
-		public var value: Int?
+		public var value: Double?
 	
 		public var type: String?
 	

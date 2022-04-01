@@ -15,11 +15,11 @@ import Foundation
 public struct C8yPosition: Codable {
 
 	/// In meters.
-	public var alt: Int?
+	public var alt: Double?
 
-	public var lng: Int?
+	public var lng: Double?
 
-	public var lat: Int?
+	public var lat: Double?
 
 	/// Describes in which protocol the tracking context of a positioning report was sent.
 	public var trackingProtocol: String?

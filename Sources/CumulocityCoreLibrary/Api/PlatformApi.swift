@@ -20,7 +20,7 @@ public class PlatformApi: AdaptableApi {
 		super.init(requestBuilder: requestBuilder)
 	}
 
-	/// Retrieve URIs to collection platform objects
+	/// Retrieve URIs to collection of platform objects
 	/// Retrieve URIs and URI templates to collections of platform objects.
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:

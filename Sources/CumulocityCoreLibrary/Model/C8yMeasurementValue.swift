@@ -10,7 +10,7 @@ import Foundation
 
 public struct C8yMeasurementValue: Codable {
 
-	public var value: Int?
+	public var value: Double?
 
 	public var unit: String?
 

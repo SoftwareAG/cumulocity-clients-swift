@@ -26,7 +26,7 @@ public struct C8yBulkOperation: Codable {
 	public var startDate: String?
 
 	/// Delay between every operation creation in seconds.
-	public var creationRamp: Int?
+	public var creationRamp: Double?
 
 	/// Operation to be executed for every device in a group.
 	public var operationPrototype: C8yBulkOperationPrototype?

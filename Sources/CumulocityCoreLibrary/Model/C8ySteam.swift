@@ -26,14 +26,14 @@ public struct C8ySteam: Codable {
 		public var unit: String?
 	
 		/// The value of the individual measurement.
-		public var value: Int?
+		public var value: Double?
 	
 		enum CodingKeys: String, CodingKey {
 			case unit
 			case value
 		}
 	
-		public init(value: Int) {
+		public init(value: Double) {
 			self.value = value
 		}
 	}

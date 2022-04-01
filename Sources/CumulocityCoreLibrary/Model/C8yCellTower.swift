@@ -14,28 +14,28 @@ public struct C8yCellTower: Codable {
 	public var radioType: String?
 
 	/// The Mobile Country Code (MCC).
-	public var mobileCountryCode: Int?
+	public var mobileCountryCode: Double?
 
 	/// The Mobile Noetwork Code (MNC) for GSM, WCDMA and LTE. The SystemID (sid) for CDMA.
-	public var mobileNetworkCode: Int?
+	public var mobileNetworkCode: Double?
 
 	/// The Location Area Code (LAC) for GSM, WCDMA and LTE. The Network ID for CDMA.
-	public var locationAreaCode: Int?
+	public var locationAreaCode: Double?
 
 	/// The Cell ID (CID) for GSM, WCDMA and LTE. The Basestation ID for CDMA.
-	public var cellId: Int?
+	public var cellId: Double?
 
 	/// The timing advance value for this cell tower when available.
-	public var timingAdvance: Int?
+	public var timingAdvance: Double?
 
 	/// The signal strength for this cell tower in dBm.
-	public var signalStrength: Int?
+	public var signalStrength: Double?
 
 	/// The primary scrambling code for WCDMA and physical CellId for LTE.
-	public var primaryScramblingCode: Int?
+	public var primaryScramblingCode: Double?
 
 	/// Specify with 0/1 if the cell is serving or not. If not specified, the first cell is assumed to be serving.
-	public var serving: Int?
+	public var serving: Double?
 
 	enum CodingKeys: String, CodingKey {
 		case radioType
@@ -49,7 +49,7 @@ public struct C8yCellTower: Codable {
 		case serving
 	}
 
-	public init(mobileCountryCode: Int, mobileNetworkCode: Int, locationAreaCode: Int, cellId: Int) {
+	public init(mobileCountryCode: Double, mobileNetworkCode: Double, locationAreaCode: Double, cellId: Double) {
 		self.mobileCountryCode = mobileCountryCode
 		self.mobileNetworkCode = mobileNetworkCode
 		self.locationAreaCode = locationAreaCode
