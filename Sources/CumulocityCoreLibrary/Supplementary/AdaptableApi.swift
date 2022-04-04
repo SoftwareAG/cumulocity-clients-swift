@@ -13,7 +13,7 @@ public class AdaptableApi {
     let requestBuilder: URLRequestBuilder
     let session: URLSession
 
-	init(requestBuilder: URLRequestBuilder = URLRequestBuilder(), withSession session: URLSession = URLSession.shared) {
+	public init(requestBuilder: URLRequestBuilder = URLRequestBuilder(), withSession session: URLSession = URLSession.shared) {
 		self.requestBuilder = requestBuilder
  		self.session = session
 	}
