@@ -40,14 +40,6 @@ import Combine
 /// 
 public class TenantsApi: AdaptableApi {
 
-	public override init() {
-		super.init()
-	}
-
-	public override init(requestBuilder: URLRequestBuilder) {
-		super.init(requestBuilder: requestBuilder)
-	}
-
 	/// Retrieve all subtenants
 	/// Retrieve all subtenants of the current tenant.
 	/// 
@@ -78,7 +70,7 @@ public class TenantsApi: AdaptableApi {
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenantcollection+json")
 			.set(queryItems: queryItems)
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -127,7 +119,7 @@ public class TenantsApi: AdaptableApi {
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.tenant+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenant+json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -156,7 +148,7 @@ public class TenantsApi: AdaptableApi {
 			.set(resourcePath: "/tenant/currentTenant")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.currenttenant+json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -192,7 +184,7 @@ public class TenantsApi: AdaptableApi {
 			.set(resourcePath: "/tenant/tenants/\(tenantId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenant+json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -249,7 +241,7 @@ public class TenantsApi: AdaptableApi {
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.tenant+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenant+json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -289,7 +281,7 @@ public class TenantsApi: AdaptableApi {
 			.set(resourcePath: "/tenant/tenants/\(tenantId)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}

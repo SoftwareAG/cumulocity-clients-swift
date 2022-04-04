@@ -15,14 +15,6 @@ import Combine
 /// 
 public class OptionsApi: AdaptableApi {
 
-	public override init() {
-		super.init()
-	}
-
-	public override init(requestBuilder: URLRequestBuilder) {
-		super.init(requestBuilder: requestBuilder)
-	}
-
 	/// Retrieve all options
 	/// Retrieve all the options available on the tenant.
 	/// 
@@ -53,7 +45,7 @@ public class OptionsApi: AdaptableApi {
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.optioncollection+json")
 			.set(queryItems: queryItems)
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -121,7 +113,7 @@ public class OptionsApi: AdaptableApi {
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.option+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -153,7 +145,7 @@ public class OptionsApi: AdaptableApi {
 			.set(resourcePath: "/tenant/options/\(category)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.option+json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -191,7 +183,7 @@ public class OptionsApi: AdaptableApi {
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -225,7 +217,7 @@ public class OptionsApi: AdaptableApi {
 			.set(resourcePath: "/tenant/options/\(category)/\(key)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.option+json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -267,7 +259,7 @@ public class OptionsApi: AdaptableApi {
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}

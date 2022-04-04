@@ -15,14 +15,6 @@ import Combine
 /// 
 public class ChildOperationsApi: AdaptableApi {
 
-	public override init() {
-		super.init()
-	}
-
-	public override init(requestBuilder: URLRequestBuilder) {
-		super.init(requestBuilder: requestBuilder)
-	}
-
 	/// Retrieve all child additions of a specific managed object
 	/// Retrieve all child additions of a specific managed object by a given ID, or a subset based on queries.
 	/// 
@@ -65,7 +57,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.set(queryItems: queryItems)
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -107,7 +99,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -149,7 +141,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -202,7 +194,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -242,7 +234,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -280,7 +272,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions/\(childId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json, application/vnd.com.nsn.cumulocity.error+json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -318,7 +310,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions/\(childId)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -371,7 +363,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.set(queryItems: queryItems)
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -413,7 +405,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -455,7 +447,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -508,7 +500,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -548,7 +540,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -586,7 +578,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets/\(childId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json, application/vnd.com.nsn.cumulocity.error+json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -624,7 +616,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets/\(childId)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -677,7 +669,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.set(queryItems: queryItems)
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -719,7 +711,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -761,7 +753,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -814,7 +806,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -854,7 +846,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -892,7 +884,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices/\(childId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json, application/vnd.com.nsn.cumulocity.error+json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -930,7 +922,7 @@ public class ChildOperationsApi: AdaptableApi {
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices/\(childId)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}

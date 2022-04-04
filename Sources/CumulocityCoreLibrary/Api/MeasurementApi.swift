@@ -12,14 +12,6 @@ import Combine
 /// The measurement API resource returns URIs and URI templates to collections of measurements, so that all measurements can be filtered and retrieved. Querying without filters can be slow, hence it is recommended to narrow the scope by using time [range queries](https://en.wikipedia.org/wiki/Range_query_(database)). Moreover, the scope can be significantly reduced by querying by source.
 public class MeasurementApi: AdaptableApi {
 
-	public override init() {
-		super.init()
-	}
-
-	public override init(requestBuilder: URLRequestBuilder) {
-		super.init(requestBuilder: requestBuilder)
-	}
-
 	/// Retrieve URIs to collections of measurements
 	/// Retrieve URIs and URI templates to collections of measurements.
 	/// 
@@ -38,7 +30,7 @@ public class MeasurementApi: AdaptableApi {
 			.set(resourcePath: "/measurement")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.measurementApi+json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}

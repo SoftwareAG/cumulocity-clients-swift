@@ -12,14 +12,6 @@ import Combine
 /// The tenant API resource returns URIs and URI templates to collections of tenants, so that all tenants can be filtered and retrieved.
 public class TenantApi: AdaptableApi {
 
-	public override init() {
-		super.init()
-	}
-
-	public override init(requestBuilder: URLRequestBuilder) {
-		super.init(requestBuilder: requestBuilder)
-	}
-
 	/// Retrieve URIs to collections of tenants
 	/// Retrieve URIs and URI templates to collections of tenants and options.
 	/// 
@@ -38,7 +30,7 @@ public class TenantApi: AdaptableApi {
 			.set(resourcePath: "/tenant")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenantapi+json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}

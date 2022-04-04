@@ -12,14 +12,6 @@ import Combine
 /// The event API resource returns URIs and URI templates to collections of events, so that all events or events of a specified type and/or source device can be retrieved.
 public class EventApi: AdaptableApi {
 
-	public override init() {
-		super.init()
-	}
-
-	public override init(requestBuilder: URLRequestBuilder) {
-		super.init(requestBuilder: requestBuilder)
-	}
-
 	/// Retrieve URIs to collections of events
 	/// Retrieve URIs and URI templates to collections of events.
 	/// 
@@ -38,7 +30,7 @@ public class EventApi: AdaptableApi {
 			.set(resourcePath: "/event")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.eventapi+json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}

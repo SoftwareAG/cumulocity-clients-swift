@@ -12,14 +12,6 @@ import Combine
 /// To discover the URIs of the various interfaces of Cumulocity IoT, a platform interface is provided. This interface aggregates all the underlying API resources.
 public class PlatformApi: AdaptableApi {
 
-	public override init() {
-		super.init()
-	}
-
-	public override init(requestBuilder: URLRequestBuilder) {
-		super.init(requestBuilder: requestBuilder)
-	}
-
 	/// Retrieve URIs to collection of platform objects
 	/// Retrieve URIs and URI templates to collections of platform objects.
 	/// The following table gives an overview of the possible response codes and their meanings.
@@ -31,7 +23,7 @@ public class PlatformApi: AdaptableApi {
 			.set(resourcePath: "/platform")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.platformapi+json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}

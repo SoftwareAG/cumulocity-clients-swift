@@ -12,14 +12,6 @@ import Combine
 /// The user API resource returns URIs and URI templates to collections of users, groups, and roles, so that they can be queried.
 public class UserApi: AdaptableApi {
 
-	public override init() {
-		super.init()
-	}
-
-	public override init(requestBuilder: URLRequestBuilder) {
-		super.init(requestBuilder: requestBuilder)
-	}
-
 	/// Retrieve URIs to collections of users, groups and roles
 	/// Retrieve URIs and URI templates to collections of users, groups, and roles, so that they can be queried.
 	/// 
@@ -38,7 +30,7 @@ public class UserApi: AdaptableApi {
 			.set(resourcePath: "/user")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.userapi+json, application/vnd.com.nsn.cumulocity.error+json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}

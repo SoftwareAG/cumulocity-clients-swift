@@ -12,14 +12,6 @@ import Combine
 /// The inventory stores all master data related to devices, their configuration and their connections. It also contains all related assets (e.g. vehicles, machines, buildings) and their structure. The inventory API resource returns URIs and URI templates to collections of managed objects.
 public class InventoryApi: AdaptableApi {
 
-	public override init() {
-		super.init()
-	}
-
-	public override init(requestBuilder: URLRequestBuilder) {
-		super.init(requestBuilder: requestBuilder)
-	}
-
 	/// Retrieve URIs to collections of managed objects
 	/// Retrieve URIs and URI templates to collections of managed objects.
 	/// 
@@ -40,7 +32,7 @@ public class InventoryApi: AdaptableApi {
 			.set(resourcePath: "/inventory")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.inventoryapi+json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}

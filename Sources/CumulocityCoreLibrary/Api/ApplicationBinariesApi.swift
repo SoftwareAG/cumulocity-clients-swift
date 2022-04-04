@@ -12,14 +12,6 @@ import Combine
 /// An API method to upload an application binary. It is a deployable microservice or web application.
 public class ApplicationBinariesApi: AdaptableApi {
 
-	public override init() {
-		super.init()
-	}
-
-	public override init(requestBuilder: URLRequestBuilder) {
-		super.init(requestBuilder: requestBuilder)
-	}
-
 	/// Retrieve all application attachments
 	/// Retrieve all application attachments.
 	/// This method is not supported by microservice applications.
@@ -44,7 +36,7 @@ public class ApplicationBinariesApi: AdaptableApi {
 			.set(resourcePath: "/application/applications/\(id)/binaries")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.applicationbinaries+json, application/vnd.com.nsn.cumulocity.error+json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -92,7 +84,7 @@ public class ApplicationBinariesApi: AdaptableApi {
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.application+json")
 			.add(header: "Content-Type", value: multipartBuilder.contentType)
 			.set(httpBody: multipartBuilder.build())
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -127,7 +119,7 @@ public class ApplicationBinariesApi: AdaptableApi {
 			.set(resourcePath: "/application/applications/\(id)/binaries/\(binaryId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
@@ -164,7 +156,7 @@ public class ApplicationBinariesApi: AdaptableApi {
 			.set(resourcePath: "/application/applications/\(id)/binaries/\(binaryId)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}

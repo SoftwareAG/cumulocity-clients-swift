@@ -9,16 +9,14 @@
 import Foundation
 
 public class AdaptableApi {
-    
-    private var requestBuilder: URLRequestBuilder
-    
-	init() {
-		self.requestBuilder = URLRequestBuilder()
-	}
 
-    init(requestBuilder: URLRequestBuilder) {
-        self.requestBuilder = requestBuilder
-    }
+    let requestBuilder: URLRequestBuilder
+    let session: URLSession
+
+	init(requestBuilder: URLRequestBuilder = URLRequestBuilder(), withSession session: URLSession = URLSession.shared) {
+		self.requestBuilder = requestBuilder
+ 		self.session = session
+	}
 
     /// Allows to modify any property of the passed `URLRequestBuilder`.
     ///

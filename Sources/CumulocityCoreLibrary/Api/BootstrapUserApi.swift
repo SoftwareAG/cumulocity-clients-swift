@@ -12,14 +12,6 @@ import Combine
 /// API methods to retrieve the bootstrap user of an application.
 public class BootstrapUserApi: AdaptableApi {
 
-	public override init() {
-		super.init()
-	}
-
-	public override init(requestBuilder: URLRequestBuilder) {
-		super.init(requestBuilder: requestBuilder)
-	}
-
 	/// Retrieve the bootstrap user for a specific application
 	/// Retrieve the bootstrap user for a specific application (by a given ID).
 	/// 
@@ -45,7 +37,7 @@ public class BootstrapUserApi: AdaptableApi {
 			.set(resourcePath: "/application/applications/\(id)/bootstrapUser")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.user+json")
-		return URLSession.shared.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
