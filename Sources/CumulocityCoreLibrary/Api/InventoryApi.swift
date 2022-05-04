@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-/// The inventory stores all master data related to devices, their configuration and their connections. It also contains all related assets (e.g. vehicles, machines, buildings) and their structure. The inventory API resource returns URIs and URI templates to collections of managed objects.
+/// The inventory stores all master data related to devices, their configuration and their connections. It also contains all related assets (for example, vehicles, machines, buildings) and their structure. The inventory API resource returns URIs and URI templates to collections of managed objects.
 public class InventoryApi: AdaptableApi {
 
 	/// Retrieve URIs to collections of managed objects

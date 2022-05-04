@@ -11,7 +11,7 @@ import Combine
 
 /// Cumulocity IoT can associate devices and assets with multiple external identities.
 /// For instance, devices can often be identified by the IMEI of their modem, by a micro-controller serial number or by an asset tag.
-/// This is useful, for example, when you have non-functional hardware and need to replace the hardware without losing the data that was recorded.
+/// This is useful, for example, when you have non-functional hardware and must replace the hardware without losing the data that was recorded.
 /// 
 /// The identity API resource returns URIs and URI templates for associating external identifiers with unique identifiers.
 /// 

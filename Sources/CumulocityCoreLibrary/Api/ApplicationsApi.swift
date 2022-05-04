@@ -11,6 +11,13 @@ import Combine
 
 /// API methods to retrieve, create, update and delete applications.
 /// 
+/// ### Application names
+/// 
+/// For each tenant, Cumulocity IoT manages the subscribed applications and provides a number of applications of various types.
+/// In case you want to subscribe a tenant to an application using an API, you must use the application name in the argument (as name).
+/// 
+/// Refer to the tables in [Administration > Managing applications](https://cumulocity.com/guides/10.7.0/users-guide/administration#managing-applications) in the User guide for the respective application name to be used.
+/// 
 /// > **&#9432; Info:** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 /// 
 public class ApplicationsApi: AdaptableApi {
@@ -92,26 +99,17 @@ public class ApplicationsApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// 	- 409
 	///		  Duplicate key/name.
+	/// 	- 422
+	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
 	public func postApplicationCollectionResource(body: C8yApplication) throws -> AnyPublisher<C8yApplication, Swift.Error> {
 		var requestBody = body
-		requestBody.owner = nil
-		requestBody.globalTitle = nil
-		requestBody.legacy = nil
-		requestBody.dynamicOptionsUrl = nil
-		requestBody.upgrade = nil
-		requestBody.requiredRoles = nil
-		requestBody.manifest = nil
-		requestBody.rightDrawer = nil
-		requestBody.roles = nil
-		requestBody.availability = nil
-		requestBody.contentSecurityPolicy = nil
-		requestBody.resourcesUrl = nil
+		requestBody.owner?.`self` = nil
 		requestBody.activeVersionId = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
-		requestBody.breadcrumbs = nil
+		requestBody.resourcesUrl = nil
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications")
 			.set(httpMethod: "post")
@@ -185,20 +183,11 @@ public class ApplicationsApi: AdaptableApi {
 	///		  Unique identifier of the application.
 	public func putApplicationResource(body: C8yApplication, id: String) throws -> AnyPublisher<C8yApplication, Swift.Error> {
 		var requestBody = body
-		requestBody.globalTitle = nil
-		requestBody.legacy = nil
 		requestBody.owner?.`self` = nil
-		requestBody.dynamicOptionsUrl = nil
-		requestBody.upgrade = nil
-		requestBody.requiredRoles = nil
-		requestBody.manifest = nil
-		requestBody.rightDrawer = nil
-		requestBody.roles = nil
-		requestBody.contentSecurityPolicy = nil
 		requestBody.activeVersionId = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
-		requestBody.breadcrumbs = nil
+		requestBody.resourcesUrl = nil
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)")
 			.set(httpMethod: "put")
@@ -267,12 +256,9 @@ public class ApplicationsApi: AdaptableApi {
 	/// 
 	/// A request to the “clone” resource creates a new application based on an already existing one.
 	/// 
-	/// The properties are copied to the newly created application. For name, key and context path a “clone” prefix is added in order to be unique.
+	/// The properties are copied to the newly created application and the prefix "clone" is added to the properties `name`, `key` and `contextPath` in order to be unique.
 	/// 
 	/// If the target application is hosted and has an active version, the new application will have the active version with the same content.
-	/// 
-	/// The response contains a representation of the newly created application.
-	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// ROLE_APPLICATION_MANAGEMENT_ADMIN
 	/// </div></div>

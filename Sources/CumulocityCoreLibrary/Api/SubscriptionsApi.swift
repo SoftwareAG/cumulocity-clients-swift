@@ -62,7 +62,7 @@ public class SubscriptionsApi: AdaptableApi {
 	}
 	
 	/// Create a subscription
-	/// Create a new subscription, e.g. a subscription that forwards measurements and events of a specific type for a given device.
+	/// Create a new subscription, for example, a subscription that forwards measurements and events of a specific type for a given device.
 	/// 
 	/// In general, each subscription may consist of:
 	/// 

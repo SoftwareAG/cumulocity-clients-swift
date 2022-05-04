@@ -9,14 +9,14 @@
 import Foundation
 import Combine
 
-/// The inventory stores devices and other assets relevant to your IoT solution. We refer to them as managed objects and such can be “smart objects”, e.g. smart electricity meters, home automation gateways or GPS devices.
+/// The inventory stores devices and other assets relevant to your IoT solution. We refer to them as managed objects and such can be “smart objects”, for example, smart electricity meters, home automation gateways or GPS devices.
 /// 
 /// > **&#9432; Info:** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 /// 
 public class ManagedObjectsApi: AdaptableApi {
 
 	/// Retrieve all managed objects
-	/// Retrieve all managed objects (e.g. devices, assets, etc.) registered in your tenant, or a subset based on queries.
+	/// Retrieve all managed objects (for example, devices, assets, etc.) registered in your tenant, or a subset based on queries.
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -36,9 +36,9 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 	- currentPage 
 	///		  The current page of the paginated results.
 	/// 	- fragmentType 
-	///		  A characteristic which identifies a managed object or event, e.g. geolocation, electricity sensor, relay state.
+	///		  A characteristic which identifies a managed object or event, for example, geolocation, electricity sensor, relay state.
 	/// 	- ids 
-	///		  The managed object IDs to search for.
+	///		  The managed object IDs to search for (comma separated).
 	/// 	- onlyRoots 
 	///		  When set to `true` it returns managed objects which don't have any parent. If the current user doesn't have access to the parent, this is also root for the user.
 	/// 	- owner 
@@ -100,17 +100,17 @@ public class ManagedObjectsApi: AdaptableApi {
 	}
 	
 	/// Create a managed object
-	/// Create a managed object, e.g. a device with temperature measurements support or a binary switch.<br>
+	/// Create a managed object, for example, a device with temperature measurements support or a binary switch.<br>
 	/// In general, each managed object may consist of:
 	/// 
 	/// *  A unique identifier that references the object.
 	/// *  The name of the object.
 	/// *  The most specific type of the managed object.
 	/// *  A time stamp showing the last update.
-	/// *  Fragments with specific meanings, e.g. `c8y_IsDevice`, `c8y_SupportedOperations`.
+	/// *  Fragments with specific meanings, for example, `c8y_IsDevice`, `c8y_SupportedOperations`.
 	/// *  Any additional custom fragments.
 	/// 
-	/// Imagine, for example, that you want to describe electric meters from different vendors. Depending on the make of the meter, one may have a relay and one may be capable to measure a single phase or three phases (e.g. a three-phase electricity sensor). A fragment `c8y_ThreePhaseElectricitySensor` would identify such an electric meter. Devices' characteristics are identified by storing fragments for each of them.
+	/// Imagine, for example, that you want to describe electric meters from different vendors. Depending on the make of the meter, one may have a relay and one may be capable to measure a single phase or three phases (for example, a three-phase electricity sensor). A fragment `c8y_ThreePhaseElectricitySensor` would identify such an electric meter. Devices' characteristics are identified by storing fragments for each of them.
 	/// 
 	/// > **&#9432; Info:** For more details about fragments with specific meanings, review the sections [Device management library](#section/Device-management-library) and [Sensor library](#section/Sensor-library).
 	/// 
@@ -159,7 +159,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	}
 	
 	/// Retrieve the total number of managed objects
-	/// Retrieve the total number of managed objects (e.g. devices, assets, etc.) registered in your tenant, or a subset based on queries.
+	/// Retrieve the total number of managed objects (for example, devices, assets, etc.) registered in your tenant, or a subset based on queries.
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// ROLE_INVENTORY_READ is not required, but if the current user doesn't have this role, the response will contain the number of inventory objects accessible for the user.
@@ -173,7 +173,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// - Parameters:
 	/// 	- ids 
-	///		  The managed object IDs to search for.
+	///		  The managed object IDs to search for (comma separated).
 	/// 	- childAdditionId 
 	///		  Search for a specific child addition and list all the groups to which it belongs.
 	/// 	- childAssetId 
@@ -181,7 +181,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 	- childDeviceId 
 	///		  Search for a specific child device and list all the groups to which it belongs.
 	/// 	- fragmentType 
-	///		  A characteristic which identifies a managed object or event, e.g. geolocation, electricity sensor, relay state.
+	///		  A characteristic which identifies a managed object or event, for example, geolocation, electricity sensor, relay state.
 	/// 	- owner 
 	///		  Username of the owner of the managed objects.
 	/// 	- text 
@@ -215,7 +215,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	}
 	
 	/// Retrieve a specific managed object
-	/// Retrieve a specific managed object (e.g. device, group, template) by a given ID.
+	/// Retrieve a specific managed object (for example, device, group, template) by a given ID.
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// ROLE_INVENTORY_READ <b>OR</b> owner of the source <b>OR</b> MANAGE_OBJECT_READ permission on the source
@@ -260,9 +260,9 @@ public class ManagedObjectsApi: AdaptableApi {
 	}
 	
 	/// Update a specific managed object
-	/// Update a specific managed object (e.g. device) by a given ID.
+	/// Update a specific managed object (for example, device) by a given ID.
 	/// 
-	/// For example, if you want to specify that your managed object is a device, you would need to add the fragment `c8y_IsDevice`.
+	/// For example, if you want to specify that your managed object is a device, you must add the fragment `c8y_IsDevice`.
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source
@@ -312,9 +312,9 @@ public class ManagedObjectsApi: AdaptableApi {
 	}
 	
 	/// Remove a specific managed object
-	/// Remove a specific managed object (e.g. device) by a given ID.
+	/// Remove a specific managed object (for example, device) by a given ID.
 	/// 
-	/// > **&#9432; Info:** Inventory DELETE requests are not synchronous. The response could be returned before the delete request has been completed.
+	/// > **&#9432; Info:** Inventory DELETE requests are not synchronous. The response could be returned before the delete request has been completed. This may happen especially when the deleted managed object has a lot of associated data. After sending the request, the platform starts deleting the associated data in an asynchronous way. Finally, the requested managed object is deleted after all associated data has been deleted.
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source
@@ -394,7 +394,7 @@ public class ManagedObjectsApi: AdaptableApi {
 		}).decode(type: String.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
-	/// Retrieve all measurements of a specific managed object
+	/// Retrieve all supported measurement fragments of a specific managed object
 	/// Retrieve all measurement types of a specific managed object by a given ID.
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
@@ -430,8 +430,8 @@ public class ManagedObjectsApi: AdaptableApi {
 		}).decode(type: C8ySupportedMeasurements.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
-	/// Retrieve all supported series of a specific managed object
-	/// Retrieve all supported measurement series of a specific managed object by a given ID.
+	/// Retrieve all supported measurement fragments and series of a specific managed object
+	/// Retrieve all supported measurement fragments and series of a specific managed object by a given ID.
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// ROLE_INVENTORY_READ <b>OR</b> owner of the source <b>OR</b> MANAGE_OBJECT_READ permission on the source

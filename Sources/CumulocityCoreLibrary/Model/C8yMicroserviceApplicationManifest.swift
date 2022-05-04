@@ -23,7 +23,7 @@ public struct C8yMicroserviceApplicationManifest: Codable {
 	public var version: String?
 
 	/// Application provider information.
-	/// Simple name allowed for predefined providers e.g. c8y.
+	/// Simple name allowed for predefined providers, for example, c8y.
 	/// Detailed object for external provider.
 	/// 
 	public var provider: C8yProvider?
@@ -48,7 +48,6 @@ public struct C8yMicroserviceApplicationManifest: Codable {
 	public var readinessProbe: C8yApplicationManifestReadinessProbe?
 
 	/// The minimum required resources for the microservice application.
-	/// 
 	public var requestResources: C8yRequestResources?
 
 	/// The recommended resources for this microservice application.
@@ -106,8 +105,8 @@ public struct C8yMicroserviceApplicationManifest: Codable {
 	/// This will affect billing.
 	/// 
 	public enum C8yIsolation: String, Codable {
-		case multi_tenant = "MULTI_TENANT"
-		case per_tenant = "PER_TENANT"
+		case multitenant = "MULTI_TENANT"
+		case pertenant = "PER_TENANT"
 	}
 
 	/// Allows to configure a microservice auto scaling policy.
@@ -130,7 +129,7 @@ public struct C8yMicroserviceApplicationManifest: Codable {
 	}
 
 	/// Application provider information.
-	/// Simple name allowed for predefined providers e.g. c8y.
+	/// Simple name allowed for predefined providers, for example, c8y.
 	/// Detailed object for external provider.
 	/// 
 	public struct C8yProvider: Codable {
@@ -147,7 +146,6 @@ public struct C8yMicroserviceApplicationManifest: Codable {
 	}
 
 	/// The minimum required resources for the microservice application.
-	/// 
 	public struct C8yRequestResources: Codable {
 	
 		/// The required CPU resource for this microservice application.

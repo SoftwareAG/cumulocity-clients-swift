@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// Reference to the tenant owning this application.
+/// Reference to the tenant owning this application. The default value is a reference to the current tenant.
 public struct C8yApplicationOwner: Codable {
 
 	/// A URL linking to this resource.

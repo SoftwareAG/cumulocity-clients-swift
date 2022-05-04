@@ -12,7 +12,7 @@ import Foundation
 public enum C8yDescRetentionRuleDataType: String, Codable {
 	case alarm = "ALARM"
 	case audit = "AUDIT"
-	case bulk_operation = "BULK_OPERATION"
+	case bulkoperation = "BULK_OPERATION"
 	case event = "EVENT"
 	case measurement = "MEASUREMENT"
 	case operation = "OPERATION"

@@ -28,7 +28,7 @@ import Combine
 /// 
 /// **No**, device configuration and firmware update operate on inventory objects, hence they are not counted.
 /// 
-/// #### Are requests done by the UI applications, for example when browsing device details, counted?
+/// #### Are requests done by the UI applications, for example, when browsing device details, counted?
 /// 
 /// **No**, viewing device details performs only GET requests which are not counted.
 /// 

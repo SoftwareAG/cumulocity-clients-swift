@@ -10,7 +10,7 @@ import Foundation
 
 /// Status of this new device request.
 public enum C8yNewDeviceRequestStatus: String, Codable {
-	case waiting_for_connection = "WAITING_FOR_CONNECTION"
-	case pending_acceptance = "PENDING_ACCEPTANCE"
+	case waitingforconnection = "WAITING_FOR_CONNECTION"
+	case pendingacceptance = "PENDING_ACCEPTANCE"
 	case accepted = "ACCEPTED"
 }

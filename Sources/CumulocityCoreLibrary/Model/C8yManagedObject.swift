@@ -105,7 +105,7 @@ public struct C8yManagedObject: Codable {
 	/// A collection of references to device parent objects.
 	public var deviceParents: C8yObjectDeviceParents?
 
-	/// It is possible to add an arbitrary number of additional properties as a list of key-value pairs, e.g. `"property1": {}`, `"property2": "value"`. These properties are known as custom fragments and can be of any type, e.g. object, string. Each custom fragment is identified by a unique name.
+	/// It is possible to add an arbitrary number of additional properties as a list of key-value pairs, for example, `"property1": {}`, `"property2": "value"`. These properties are known as custom fragments and can be of any type, for example, object or string. Each custom fragment is identified by a unique name.
 	/// 
 	/// Review the [Naming conventions of fragments](https://cumulocity.com/guides/concepts/domain-model/#naming-conventions-of-fragments) as there are characters that can not be used when naming custom fragments.
 	/// 

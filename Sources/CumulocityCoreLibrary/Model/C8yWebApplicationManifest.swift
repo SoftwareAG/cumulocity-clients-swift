@@ -21,11 +21,11 @@ public struct C8yWebApplicationManifest: Codable {
 	public var tabsHorizontal: Bool?
 
 	/// The content security policy of the application.
-	/// Only applicable for web applications.
+	/// > **&#9432; Info:** This property is specific to the web application type.
 	/// 
 	public var contentSecurityPolicy: String?
 
-	/// A flag that decides if the application is shown in the app switcher in the UI.
+	/// A flag that decides if the application is shown in the app switcher on the UI.
 	public var noAppSwitcher: Bool?
 
 	enum CodingKeys: String, CodingKey {

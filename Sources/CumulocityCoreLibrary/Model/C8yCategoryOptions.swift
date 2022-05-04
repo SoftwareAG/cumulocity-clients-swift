@@ -27,7 +27,7 @@ public struct C8yCategoryOptions: Codable {
 		}
 	}
 
-	/// It is possible to specify an arbitrary number of existing options as a list of key-value pairs, e.g. `"key1": "value1"`, `"key2": "value2"`.
+	/// It is possible to specify an arbitrary number of existing options as a list of key-value pairs, for example, `"key1": "value1"`, `"key2": "value2"`.
 	public var keyValuePairs: [String: Any]? = [:]
 
 	enum CodingKeys: String, CodingKey {

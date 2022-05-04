@@ -18,7 +18,7 @@ public class EventsApi: AdaptableApi {
 	/// Retrieve all events
 	/// Retrieve all events on your tenant.
 	/// 
-	/// In case of executing [range queries](https://en.wikipedia.org/wiki/Range_query_(database)) between an upper and lower boundary, e.g. querying using `dateFrom`–`dateTo` or `createdFrom`–`createdTo`, the oldest registered events are returned first. It is possible to change the order using the query parameter `revert=true`.
+	/// In case of executing [range queries](https://en.wikipedia.org/wiki/Range_query_(database)) between an upper and lower boundary, for example, querying using `dateFrom`–`dateTo` or `createdFrom`–`createdTo`, the oldest registered events are returned first. It is possible to change the order using the query parameter `revert=true`.
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// ROLE_EVENT_READ
@@ -42,7 +42,7 @@ public class EventsApi: AdaptableApi {
 	/// 	- dateTo 
 	///		  End date or date and time of the event occurrence (provided by the device).
 	/// 	- fragmentType 
-	///		  A characteristic which identifies a managed object or event, e.g. geolocation, electricity sensor, relay state.
+	///		  A characteristic which identifies a managed object or event, for example, geolocation, electricity sensor, relay state.
 	/// 	- fragmentValue 
 	///		  Allows filtering events by the fragment's value, but only when provided together with `fragmentType`.  > **⚠️ Important:** Only fragments with a string value are supported. 
 	/// 	- lastUpdatedFrom 
@@ -175,7 +175,7 @@ public class EventsApi: AdaptableApi {
 	/// 	- dateTo 
 	///		  End date or date and time of the event occurrence (provided by the device).
 	/// 	- fragmentType 
-	///		  A characteristic which identifies a managed object or event, e.g. geolocation, electricity sensor, relay state.
+	///		  A characteristic which identifies a managed object or event, for example, geolocation, electricity sensor, relay state.
 	/// 	- source 
 	///		  The managed object ID to which the event is associated.
 	/// 	- type 
@@ -289,8 +289,6 @@ public class EventsApi: AdaptableApi {
 	/// Remove a specific event
 	/// Remove a specific event by a given ID.
 	/// 
-	/// DELETE requests are not synchronous. The response could be returned before the delete request has been completed. This may happen especially when the deleted event has a lot of associated data. After sending the request, the platform starts deleting the associated data in an asynchronous way. Finally, the requested event is deleted after all associated data has been deleted.
-	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// ROLE_EVENT_ADMIN <b>OR</b> owner of the source <b>OR</b> EVENT_ADMIN permission on the source
 	/// </div></div>
@@ -301,10 +299,10 @@ public class EventsApi: AdaptableApi {
 	///		  An event was removed.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 403
+	///		  Not authorized to perform this operation.
 	/// 	- 404
 	///		  Event not found.
-	/// 	- 405
-	///		  Not authorized to perform this operation.
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the event.

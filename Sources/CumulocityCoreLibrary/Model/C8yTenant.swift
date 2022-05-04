@@ -39,7 +39,7 @@ public struct C8yTenant: Codable {
 	/// Name of the contact person.
 	public var contactName: String?
 
-	/// Phone number of the contact person, provided in the international format, e.g. +48 123 456 7890.
+	/// Phone number of the contact person, provided in the international format, for example, +48 123 456 7890.
 	public var contactPhone: String?
 
 	/// The date and time when the tenant was created.

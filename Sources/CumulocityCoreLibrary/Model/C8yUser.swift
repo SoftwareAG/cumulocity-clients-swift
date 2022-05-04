@@ -53,7 +53,7 @@ public struct C8yUser: Codable {
 	public var password: String?
 
 	/// Indicates the password strength. The value can be GREEN, YELLOW or RED for decreasing password strengths.
-	public var passwordStrength: String?
+	public var passwordStrength: C8yPasswordStrength?
 
 	/// Indicates whether the user is enabled or not.
 	/// Disabled users cannot log in or perform API requests.
@@ -100,6 +100,13 @@ public struct C8yUser: Codable {
 	}
 
 	public init() {
+	}
+
+	/// Indicates the password strength. The value can be GREEN, YELLOW or RED for decreasing password strengths.
+	public enum C8yPasswordStrength: String, Codable {
+		case green = "GREEN"
+		case yellow = "YELLOW"
+		case red = "RED"
 	}
 
 	/// An object with a list of user groups.

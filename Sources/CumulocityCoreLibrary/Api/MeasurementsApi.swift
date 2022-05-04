@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-/// Measurements are produced by reading sensor values. In some cases, this data is read in static intervals and sent to the platform (e.g. temperature sensors or electrical meters). In other cases, the data is read on demand or at irregular intervals (e.g. health devices such as weight scales). Regardless what kind of protocol the device supports, the agent is responsible for converting it into a "push" protocol by uploading data to Cumulocity IoT.
+/// Measurements are produced by reading sensor values. In some cases, this data is read in static intervals and sent to the platform (for example, temperature sensors or electrical meters). In other cases, the data is read on demand or at irregular intervals (for example, health devices such as weight scales). Regardless what kind of protocol the device supports, the agent is responsible for converting it into a "push" protocol by uploading data to Cumulocity IoT.
 /// 
 /// > **&#9432; Info:** The Accept header should be provided in all POST requests, otherwise an empty response body will be returned.
 /// 
@@ -18,7 +18,7 @@ public class MeasurementsApi: AdaptableApi {
 	/// Retrieve all measurements
 	/// Retrieve all measurements on your tenant, or a specific subset based on queries.
 	/// 
-	/// In case of executing [range queries](https://en.wikipedia.org/wiki/Range_query_(database)) between an upper and lower boundary, e.g. querying using `dateFrom`–`dateTo`, the oldest registered measurements are returned first. It is possible to change the order using the query parameter `revert=true`.
+	/// In case of executing [range queries](https://en.wikipedia.org/wiki/Range_query_(database)) between an upper and lower boundary, for example, querying using `dateFrom`–`dateTo`, the oldest registered measurements are returned first. It is possible to change the order using the query parameter `revert=true`.
 	/// 
 	/// For large measurement collections, querying older records without filters can be slow as the server needs to scan from the beginning of the input results set before beginning to return the results. For cases when older measurements should be retrieved, it is recommended to narrow the scope by using range queries based on the time stamp reported by a device. The scope of query can also be reduced significantly when a source device is provided.
 	/// 
@@ -84,9 +84,9 @@ public class MeasurementsApi: AdaptableApi {
 	}
 	
 	/// Create a measurement
-	/// A measurement must be associated with a source (managed object) identified by ID, and must specify the type of measurement and the time when it was measured by the device (e.g. a thermometer).
+	/// A measurement must be associated with a source (managed object) identified by ID, and must specify the type of measurement and the time when it was measured by the device (for example, a thermometer).
 	/// 
-	/// Each measurement fragment is an object (e.g. `c8y_Steam`) containing the actual measurements as properties. The property name represents the name of the measurement (e.g. `Temperature`) and it contains two properties:
+	/// Each measurement fragment is an object (for example, `c8y_Steam`) containing the actual measurements as properties. The property name represents the name of the measurement (for example, `Temperature`) and it contains two properties:
 	/// 
 	/// *   `value` - The value of the individual measurement. The maximum precision for floating point numbers is 64-bit IEEE 754. For integers it's a 64-bit two's complement integer.
 	/// *   `unit` - The unit of the measurements.
@@ -142,9 +142,9 @@ public class MeasurementsApi: AdaptableApi {
 	}
 	
 	/// Create a measurement
-	/// A measurement must be associated with a source (managed object) identified by ID, and must specify the type of measurement and the time when it was measured by the device (e.g. a thermometer).
+	/// A measurement must be associated with a source (managed object) identified by ID, and must specify the type of measurement and the time when it was measured by the device (for example, a thermometer).
 	/// 
-	/// Each measurement fragment is an object (e.g. `c8y_Steam`) containing the actual measurements as properties. The property name represents the name of the measurement (e.g. `Temperature`) and it contains two properties:
+	/// Each measurement fragment is an object (for example, `c8y_Steam`) containing the actual measurements as properties. The property name represents the name of the measurement (for example, `Temperature`) and it contains two properties:
 	/// 
 	/// *   `value` - The value of the individual measurement. The maximum precision for floating point numbers is 64-bit IEEE 754. For integers it's a 64-bit two's complement integer.
 	/// *   `unit` - The unit of the measurements.
@@ -203,7 +203,7 @@ public class MeasurementsApi: AdaptableApi {
 	/// Remove measurement collections
 	/// Remove measurement collections specified by query parameters.
 	/// 
-	/// DELETE requests are not synchronous. The response could be returned before the delete request has been completed. This may happen especially when the deleted measurement has a lot of associated data. After sending the request, the platform starts deleting the associated data in an asynchronous way. Finally, the requested measurement is deleted after all associated data has been deleted.
+	/// DELETE requests are not synchronous. The response could be returned before the delete request has been completed. This may happen especially when there are a lot of measurements to be deleted.
 	/// 
 	/// > **⚠️ Important:** Note that it is possible to call this endpoint without providing any parameter - it may result in deleting all measurements and it is not recommended.
 	/// 
@@ -217,7 +217,7 @@ public class MeasurementsApi: AdaptableApi {
 	///		  A collection of measurements was removed.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
-	/// 	- 405
+	/// 	- 403
 	///		  Not authorized to perform this operation.
 	/// - Parameters:
 	/// 	- dateFrom 
@@ -225,7 +225,7 @@ public class MeasurementsApi: AdaptableApi {
 	/// 	- dateTo 
 	///		  End date or date and time of the measurement.
 	/// 	- fragmentType 
-	///		  A characteristic which identifies a managed object or event, e.g. geolocation, electricity sensor, relay state.
+	///		  A characteristic which identifies a managed object or event, for example, geolocation, electricity sensor, relay state.
 	/// 	- source 
 	///		  The managed object ID to which the measurement is associated.
 	/// 	- type 
@@ -290,8 +290,6 @@ public class MeasurementsApi: AdaptableApi {
 	/// Remove a specific measurement
 	/// Remove a specific measurement by a given ID.
 	/// 
-	/// DELETE requests are not synchronous. The response could be returned before the delete request has been completed. This may happen especially when the deleted measurement has a lot of associated data. After sending the request, the platform starts deleting the associated data in an asynchronous way. Finally, the requested measurement is deleted after all associated data has been deleted.
-	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// ROLE_MEASUREMENT_ADMIN <b>OR</b> owner of the source <b>OR</b> MEASUREMENT_ADMIN permission on the source
 	/// </div></div>
@@ -302,10 +300,10 @@ public class MeasurementsApi: AdaptableApi {
 	///		  A measurement was removed.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 403
+	///		  Not authorized to perform this operation.
 	/// 	- 404
 	///		  Measurement not found.
-	/// 	- 405
-	///		  Not authorized to perform this operation.
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the measurement.
