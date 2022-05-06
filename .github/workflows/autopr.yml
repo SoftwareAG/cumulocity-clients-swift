@@ -1,0 +1,42 @@
+name: AutoPR
+
+on:
+  push:
+    branches: 
+      - 'features/automatic-update-*'
+
+env:
+  USER_NAME: ${{ github.actor }}-bot
+  USER_MAIL: ${{ github.actor }}-bot@users.noreply.github.com
+  TARGET_BRANCH_NAME: main
+
+jobs:
+  create_pr:
+    runs-on: [ ???? ]
+
+    steps:
+      - name: Get Branch Name
+        id: getting_branch
+        shell: bash
+        run: |
+          echo "::set-output name=new_branch_name::$(echo ${GITHUB_REF#refs/heads/})"
+
+      - name: Create Pull Request
+        uses: actions/github-script@v5
+        env:
+          NEW_BRANCH_NAME: ${{ steps.getting_branch.outputs.new_branch_name }}
+        with:
+          script: |
+            const { repo, owner } = context.repo;
+            const result = await github.rest.pulls.create({
+              owner,
+              repo,
+              head: '${{ env.NEW_BRANCH_NAME }}',
+              base: '${{ env.TARGET_BRANCH_NAME }}'
+            });
+            github.rest.pulls.requestReviewers({
+              owner,
+              repo,
+              pull_number: result.data.number,
+              reviewers: [ 'joerghartmann' ]
+            });
