@@ -94,7 +94,7 @@ public struct C8yAuditRecord: Codable {
 	/// The user who carried out the activity.
 	public var user: String?
 
-	/// It is possible to add an arbitrary number of additional properties as a list of key-value pairs, e.g. `"property1": {}`, `"property2": "value"`. These properties can be of any type, e.g. object, string.
+	/// It is possible to add an arbitrary number of additional properties as a list of key-value pairs, for example, `"property1": {}`, `"property2": "value"`. These properties can be of any type, for example, object or string.
 	/// 
 	public var customProperties: [String: Any]? = [:]
 

@@ -43,7 +43,7 @@ public class AuditsApi: AdaptableApi {
 	/// 	- pageSize 
 	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
 	/// 	- revert 
-	///		  When set to `true` the results will be sorted in the opposite way, i.e. to get the latest records first. Unless [range queries](https://en.wikipedia.org/wiki/Range_query_(database)) are used, by default results are sorted by ID.
+	///		  When set to `true` the results will be sorted in the opposite way, that is, to get the latest records first. Unless [range queries](https://en.wikipedia.org/wiki/Range_query_(database)) are used, by default results are sorted by ID.
 	/// 	- source 
 	///		  The platform component ID to which the audit is associated.
 	/// 	- type 

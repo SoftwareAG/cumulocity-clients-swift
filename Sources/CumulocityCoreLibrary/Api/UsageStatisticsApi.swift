@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-/// Days are counted according to server timezone, so be aware that the tenant usage statistics displaying/filtering may not work correctly when the client is not in the same timezone as the server. However, it is possible to send a request with a time range (using the query parameters `dateFrom` and `dateTo`) in zoned format (e.g. `2020-10-26T03:00:00%2B01:00`).
+/// Days are counted according to server timezone, so be aware that the tenant usage statistics displaying/filtering may not work correctly when the client is not in the same timezone as the server. However, it is possible to send a request with a time range (using the query parameters `dateFrom` and `dateTo`) in zoned format (for example, `2020-10-26T03:00:00%2B01:00`).
 /// 
 /// ### Request counting in SmartREST and MQTT
 /// 
@@ -18,26 +18,26 @@ import Combine
 /// 
 /// ### REST specific counting details
 /// 
-/// * All counters increase also when the request is invalid, for example wrong payload or missing permissions.
+/// * All counters increase also when the request is invalid, for example, wrong payload or missing permissions.
 /// * Bulk measurements creation and bulk alarm status update are counted as a single "requestCount"/"deviceRequestCount" and multiple inbound data transfer count.
 /// 
 /// ### SmartREST 1.0 specific counting details
 /// 
-/// * Invalid SmartREST requests are not counted, for example when the template doesn't exist.
+/// * Invalid SmartREST requests are not counted, for example, when the template doesn't exist.
 /// * A new template registration is treated as two separate requests. Create a new inventory object which increases "requestCount", "deviceRequestCount" and "inventoriesCreatedCount". There is also a second request which binds the template with X-ID, this increases "requestCount" and "deviceRequestCount".
 /// * Each row in a SmartREST request is transformed into a separate HTTP request. For example, if one SmartREST request contains 10 rows, then 10 separate calls are executed, meaning that both "requestCount" and "deviceRequestCount" are increased by 10.
 /// 
 /// ### MQTT specific counting details
 /// 
-/// * Invalid requests are counted, for example when sending a message with a wrong template ID.
+/// * Invalid requests are counted, for example, when sending a message with a wrong template ID.
 /// * Device creation request and automatic device creation are counted.
 /// * Each row/line counts as a separate request.
 /// * Creating a custom template counts as a single request, no matter how many rows are sent in the request.
-/// * There is one special SmartREST 2.0 template (402 Create location update event with device update) which is doing two things in one call, i.e. create a new location event and update the location of the device. It is counted as two separate requests.
+/// * There is one special SmartREST 2.0 template (402 Create location update event with device update) which is doing two things in one call, that is, create a new location event and update the location of the device. It is counted as two separate requests.
 /// 
 /// ### JSON via MQTT specific counting details
 /// 
-/// * Invalid requests are counted, for example when the message payload is invalid.
+/// * Invalid requests are counted, for example, when the message payload is invalid.
 /// * Bulk creation requests are counted as a single "requestCount"/"deviceRequestCount" and multiple inbound data transfer count.
 /// * Bulk creation requests with a wrong payload are not counted for inbound data transfer count.
 /// 
@@ -50,17 +50,17 @@ import Combine
 /// |Type of transfer|MQTT counter information|REST counter information|
 /// |:---------------|:-----------------------|:-----------------------|
 /// |Creation of an **alarm** in one request|One alarm creation is counted.|One alarm creation is counted via REST.|
-/// |Update of an **alarm** (e.g. status change)|One alarm update is counted.|One alarm update is counted via REST.|
+/// |Update of an **alarm** (for example, status change)|One alarm update is counted.|One alarm update is counted via REST.|
 /// |Creation of **multiple alarms** in one request|Each alarm creation in a single MQTT request will be counted.|Not supported by C8Y (REST does not support creating multiple alarms in one call).|
-/// |Update of **multiple alarms** (e.g. status change) in one request|Each alarm creation in a single MQTT request will be counted.|Not supported by C8Y (REST does not support updating multiple alarms in one call).|
+/// |Update of **multiple alarms** (for example, status change) in one request|Each alarm creation in a single MQTT request will be counted.|Not supported by C8Y (REST does not support updating multiple alarms in one call).|
 /// |Creation of an **event** in one request|One event creation is counted.|One event creation is counted.|
-/// |Update of an **event** (e.g. text change)|One event update is counted.|One event update is counted.|
+/// |Update of an **event** (for example, text change)|One event update is counted.|One event update is counted.|
 /// |Creation of **multiple events** in one request|Each event creation in a single MQTT request will be counted.|Not supported by C8Y (REST does not support creating multiple events in one call).|
-/// |Update of **multiple events** (e.g. text change) in one request|Each event update in a single MQTT request will be counted.|Not supported by C8Y (REST does not support updating multiple events in one call).|
+/// |Update of **multiple events** (for example, text change) in one request|Each event update in a single MQTT request will be counted.|Not supported by C8Y (REST does not support updating multiple events in one call).|
 /// |Creation of a **measurement** in one request|One measurement creation is counted. |One measurement creation is counted.|
 /// |Creation of **multiple measurements** in one request|Each measurement creation in a single MQTT request will be counted. Example: If MQTT is used to report 5 measurements, the measurementCreated counter will be incremented by five.|REST allows multiple measurements to be created by sending multiple measurements in one call. In this case, each measurement sent via REST is counted individually. The call itself is not counted. For example, if somebody sends 5 measurements via REST in one call, the corresponding counter will be increased by 5. Measurements with multiple series are counted as a singular measurement.|
 /// |Creation of a **managed object** in one request|One managed object creation is counted.|One managed object creation is counted.|
-/// |Update of one **managed object** (e.g. status change)|One managed object update is counted.|One managed object update is counted.|
+/// |Update of one **managed object** (for example, status change)|One managed object update is counted.|One managed object update is counted.|
 /// |Update of **multiple managed objects** in one request|Each managed object update in a single MQTT request will be counted.|Not supported by C8Y (REST does not support updating multiple managed objects in one call).|
 /// |Creation/update of **multiple alarms/measurements/events/inventories** mixed in a single call.|Each MQTT line is processed separately. If it is a creation/update of an event/alarm/measurement/inventory, the corresponding counter is increased by one.|Not supported by the REST API.|
 /// |Assign/unassign of **child devices and child assets** in one request|One managed object update is counted.|One managed object update is counted.|

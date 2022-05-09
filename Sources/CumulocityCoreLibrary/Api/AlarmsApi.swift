@@ -361,7 +361,7 @@ public class AlarmsApi: AdaptableApi {
 	/// Update a specific alarm by a given ID.
 	/// Only text, status, severity and custom properties can be modified. A request will be rejected, when non-modifiable properties are provided in the request body.
 	/// 
-	/// > **&#9432; Info:** Changes to alarms will generate a new audit record. The audit record will include the username and application that triggered the update, if applicable. If the update operation doesn’t change anything (i.e. the request body contains data that is identical to the already present in the database), there will be no audit record added and no notifications will be sent.
+	/// > **&#9432; Info:** Changes to alarms will generate a new audit record. The audit record will include the username and application that triggered the update, if applicable. If the update operation doesn’t change anything (that is, the request body contains data that is identical to the already present in the database), there will be no audit record added and no notifications will be sent.
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// ROLE_ALARM_ADMIN <b>OR</b> owner of the source <b>OR</b> ALARM_ADMIN permission on the source

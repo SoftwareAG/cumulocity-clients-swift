@@ -11,7 +11,7 @@ import Foundation
 /// The status of this bulk operation, in context of the execution of all its single operations.
 public enum C8yBulkOperationStatus: String, Codable {
 	case active = "ACTIVE"
-	case in_progress = "IN_PROGRESS"
+	case inprogress = "IN_PROGRESS"
 	case completed = "COMPLETED"
 	case deleted = "DELETED"
 }

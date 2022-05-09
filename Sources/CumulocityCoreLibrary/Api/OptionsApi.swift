@@ -69,7 +69,7 @@ public class OptionsApi: AdaptableApi {
 	/// 
 	/// | Key |	Default value |	Predefined | Description |
 	/// |--|--|--|--|
-	/// | allow.origin | * | Yes | Comma separated list of domains allowed for execution of CORS. Wildcards are allowed (e.g. `*.cumuclocity.com`) |
+	/// | allow.origin | * | Yes | Comma separated list of domains allowed for execution of CORS. Wildcards are allowed (for example, `*.cumuclocity.com`) |
 	/// 
 	/// **alarm.type.mapping**
 	/// 

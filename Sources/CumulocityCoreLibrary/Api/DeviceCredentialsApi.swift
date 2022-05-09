@@ -76,7 +76,7 @@ public class DeviceCredentialsApi: AdaptableApi {
 	/// |NAME|No|The name of the device representation|
 	/// |ICCID|No|The ICCID of the device (SIM card number). If the ICCID appears in file, the import adds a fragment `c8y_Mobile.iccid`. The ICCID value is not mandatory for each row, see the example for an HTTP request below|
 	/// |IDTYPE|No|The type of the external ID. If IDTYPE doesn't appear in the file, the default value is used. The default value is `c8y_Serial`. The IDTYPE value is not mandatory for each row, see the example for an HTTP request below|
-	/// |PATH|No|The path in the groups hierarchy where the device is added. PATH contains the name of each group separated by `/`, i.e: `main_group/sub_group/.../last_sub_group`. If a group does not exist, the import creates the group|
+	/// |PATH|No|The path in the groups hierarchy where the device is added. PATH contains the name of each group separated by `/`, that is: `main_group/sub_group/.../last_sub_group`. If a group does not exist, the import creates the group|
 	/// |SHELL|No|If this column contains a value of 1, the import adds the SHELL feature to the device (specifically the `c8y_SupportedOperations` fragment). The SHELL value is not mandatory for each row, see the example for an HTTP request below|
 	/// 
 	/// Section two is the rest of the CSV file. Section two contains the device information. The order and quantity of the values must be the same as of the headers.
@@ -88,7 +88,7 @@ public class DeviceCredentialsApi: AdaptableApi {
 	/// A CSV file can appear in many forms (with regard to the optional tenant column and the occurrence of device information):
 	/// 
 	/// * If a user is logged in as the management tenant, then the columns ID, CREDENTIALS and TENANT are mandatory, and the device credentials will be created for the tenant mentioned in the TENANT column.
-	/// * If a user is logged in as a different tenant, e.g. as `sample_tenant`, then the columns ID and CREDENTIALS are mandatory (if the file contains the TENANT column, it is ignored and the device credentials will be created for the tenant that is logged in).
+	/// * If a user is logged in as a different tenant, for example, as `sample_tenant`, then the columns ID and CREDENTIALS are mandatory (if the file contains the TENANT column, it is ignored and the device credentials will be created for the tenant that is logged in).
 	/// * If a user wants to add information about the device, the columns TYPE and NAME must appear in the CSV file.
 	/// * If a user wants to add information about a SIM card number, the columns TYPE, NAME and ICCID must appear in the CSV file.
 	/// * If a user wants to change the type of external ID, the columns TYPE, NAME and IDTYPE must appear in the CSV file.
@@ -97,12 +97,12 @@ public class DeviceCredentialsApi: AdaptableApi {
 	/// 
 	/// It is possible to define a custom [external ID](#tag/External-IDs) mapping and some custom device properties which are added to newly created devices during registration:
 	/// 
-	/// * To add a custom external ID mapping, enter the external ID type as the header of the last column with the prefix "external-", e.g. to add an external ID mapping of type `c8y_Imei`, enter `external-c8y_Imei` in the last column header. The value of this external ID type should be set in the corresponding column of the data rows.
-	/// * To add a custom property to a registered device, enter the custom property name as a header, e.g. "myCustomProperty", and the value would be in the rows below.
+	/// * To add a custom external ID mapping, enter the external ID type as the header of the last column with the prefix "external-", for example, to add an external ID mapping of type `c8y_Imei`, enter `external-c8y_Imei` in the last column header. The value of this external ID type should be set in the corresponding column of the data rows.
+	/// * To add a custom property to a registered device, enter the custom property name as a header, for example, "myCustomProperty", and the value would be in the rows below.
 	/// 
 	/// The custom device properties mapping has the following limitations:
 	/// 
-	/// * Braces '{}' used in data rows will be interpreted as strings of "{}". The system will interpret the value as an object when some custom property is added, e.g. put `com_cumulocity_model_Agent.active` into the headers row and `true` into the data row to create an object `"com_cumulocity_model_Agent": {"active": "true"}"`.
+	/// * Braces '{}' used in data rows will be interpreted as strings of "{}". The system will interpret the value as an object when some custom property is added, for example, put `com_cumulocity_model_Agent.active` into the headers row and `true` into the data row to create an object `"com_cumulocity_model_Agent": {"active": "true"}"`.
 	/// * It is not possible to add array values via bulk registration.
 	/// 
 	/// Example file:

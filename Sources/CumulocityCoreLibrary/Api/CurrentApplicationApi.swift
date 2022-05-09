@@ -12,13 +12,11 @@ import Combine
 /// API methods to retrieve and update the current application and to retrieve its subscribers.
 /// It is the authenticated microservice user's application.
 /// 
-/// > **&#9432; Info:** The Accept header should be provided in all PUT requests, otherwise an empty response body will be returned.
-/// 
 public class CurrentApplicationApi: AdaptableApi {
 
 	/// Retrieve the current application
 	/// Retrieve the current application.
-	/// This only works inside an application, e.g. a microservice.
+	/// This only works inside an application, for example, a microservice.
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// Microservice bootstrap user required.
@@ -51,7 +49,7 @@ public class CurrentApplicationApi: AdaptableApi {
 	/// Update the current application
 	/// 
 	/// Update the current application.
-	/// This only works inside an application, e.g. a microservice. This method is deprecated as it is only used by legacy microservices that are not running on Kubernetes.
+	/// This only works inside an application, for example, a microservice. This method is deprecated as it is only used by legacy microservices that are not running on Kubernetes.
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// Microservice bootstrap user required.
@@ -70,18 +68,11 @@ public class CurrentApplicationApi: AdaptableApi {
 	@available(*, deprecated)
 	public func putCurrentApplicationResource(body: C8yApplication) throws -> AnyPublisher<C8yApplication, Swift.Error> {
 		var requestBody = body
-		requestBody.globalTitle = nil
-		requestBody.legacy = nil
 		requestBody.owner?.`self` = nil
-		requestBody.dynamicOptionsUrl = nil
-		requestBody.upgrade = nil
 		requestBody.activeVersionId = nil
-		requestBody.manifest = nil
-		requestBody.rightDrawer = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
-		requestBody.contentSecurityPolicy = nil
-		requestBody.breadcrumbs = nil
+		requestBody.resourcesUrl = nil
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/currentApplication")
 			.set(httpMethod: "put")
@@ -101,7 +92,7 @@ public class CurrentApplicationApi: AdaptableApi {
 	
 	/// Retrieve the current application settings
 	/// Retrieve the current application settings.
-	/// This only works inside an application, e.g. a microservice.
+	/// This only works inside an application, for example, a microservice.
 	/// 
 	/// <div class="reqRoles"><div><h5></h5></div><div>
 	/// Microservice bootstrap user <b>OR</b> microservice service user required.

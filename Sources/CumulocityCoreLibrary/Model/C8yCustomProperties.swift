@@ -35,7 +35,7 @@ public struct C8yCustomProperties: Codable {
 	/// The preferred language of this user.
 	public var language: String?
 
-	/// It is possible to add an arbitrary number of custom properties as a list of key-value pairs, e.g. `"property": "value"`.
+	/// It is possible to add an arbitrary number of custom properties as a list of key-value pairs, for example, `"property": "value"`.
 	/// 
 	public var customProperties: [String: Any]? = [:]
 

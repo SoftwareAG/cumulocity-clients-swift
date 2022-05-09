@@ -12,5 +12,5 @@ import Foundation
 public enum C8yNewDeviceStatus: String, Codable {
 	case created = "CREATED"
 	case failed = "FAILED"
-	case credential_updated = "CREDENTIAL_UPDATED"
+	case credentialupdated = "CREDENTIAL_UPDATED"
 }

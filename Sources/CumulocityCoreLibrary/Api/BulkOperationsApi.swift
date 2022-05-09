@@ -17,13 +17,13 @@ import Combine
 /// 
 /// When you create a bulk operation, you can run it in two modes:
 /// 
-/// * If `groupId` is passed, it works the standard way, i.e. it takes devices from a group and schedules operations on them.
+/// * If `groupId` is passed, it works the standard way, that means, it takes devices from a group and schedules operations on them.
 /// * If `failedParentId` is passed, it takes the already processed bulk operation by that ID, and schedules operations on devices for which the previous operations failed.
 /// 
 /// Note that passing both `groupId` and `failedParentId` will not work, and a bulk operation works with groups of type `static` and `dynamic`.
 /// 
 /// > **&#9432; Info:** The bulk operations API requires different roles than the rest of the device control API: `BULK_OPERATION_READ` and `BULK_OPERATION_ADMIN`.
-/// > 
+/// >
 /// > The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 /// 
 public class BulkOperationsApi: AdaptableApi {

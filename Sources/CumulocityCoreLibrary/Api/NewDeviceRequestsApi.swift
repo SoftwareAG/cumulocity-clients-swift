@@ -169,10 +169,10 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	///		  A new device request was removed.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 403
+	///		  Not authorized to perform this operation.
 	/// 	- 404
 	///		  New device request not found.
-	/// 	- 405
-	///		  Not authorized to perform this operation.
 	/// - Parameters:
 	/// 	- requestId 
 	///		  Unique identifier of the new device request.

@@ -12,7 +12,7 @@ import Foundation
 public enum C8yBulkOperationGeneralStatus: String, Codable {
 	case scheduled = "SCHEDULED"
 	case executing = "EXECUTING"
-	case executing_with_errors = "EXECUTING_WITH_ERRORS"
+	case executingwitherrors = "EXECUTING_WITH_ERRORS"
 	case successful = "SUCCESSFUL"
 	case failed = "FAILED"
 	case canceled = "CANCELED"
