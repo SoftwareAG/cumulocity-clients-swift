@@ -3,40 +3,53 @@ name: AutoPR
 on:
   push:
     branches: 
-      - 'features/automatic-update-*'
+      - 'features/automatic-update'
 
 env:
   USER_NAME: ${{ github.actor }}-bot
   USER_MAIL: ${{ github.actor }}-bot@users.noreply.github.com
   TARGET_BRANCH_NAME: main
+  SOURCE_BRANCH_NAME: 'features/automatic-update'
 
 jobs:
   create_pr:
     runs-on: [ ???? ]
 
     steps:
-      - name: Get Branch Name
-        id: getting_branch
-        shell: bash
-        run: |
-          echo "::set-output name=new_branch_name::$(echo ${GITHUB_REF#refs/heads/})"
-
       - name: Create Pull Request
         uses: actions/github-script@v5
-        env:
-          NEW_BRANCH_NAME: ${{ steps.getting_branch.outputs.new_branch_name }}
         with:
           script: |
             const { repo, owner } = context.repo;
-            const result = await github.rest.pulls.create({
+            console.log("Listing open pull requests: ")
+            const pulls = await github.rest.pulls.list({
               owner,
               repo,
-              head: '${{ env.NEW_BRANCH_NAME }}',
-              base: '${{ env.TARGET_BRANCH_NAME }}'
+              state: 'open',
+              per_page: 100
             });
-            github.rest.pulls.requestReviewers({
-              owner,
-              repo,
-              pull_number: result.data.number,
-              reviewers: [ 'joerghartmann' ]
-            });
+            let found = false; 
+            for (let pull of pulls.data) {
+              console.log("\t" + pull.url + ":");
+              console.log("\t\t" + pull.head.ref)
+              if ( "${{ env.SOURCE_BRANCH_NAME }}" === pull.head.ref ) {
+                found = true;
+              }
+            }
+            if ( found ) {
+              console.log("Pull request from branch was found, no need to create another.")
+            } else {
+              console.log("No pull request exists. Creating one...")
+              const result = await github.rest.pulls.create({
+                owner,
+                repo,
+                head: '${{ env.SOURCE_BRANCH_NAME }}',
+                base: '${{ env.TARGET_BRANCH_NAME }}'
+              });
+              github.rest.pulls.requestReviewers({
+                owner,
+                repo,
+                pull_number: result.data.number,
+                reviewers: [ 'joerghartmann' ]
+              });
+            }
