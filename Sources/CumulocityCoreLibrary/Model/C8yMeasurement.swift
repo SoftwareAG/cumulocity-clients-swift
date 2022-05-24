@@ -14,7 +14,7 @@ public struct C8yMeasurement: Codable {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		self.id = try container.decodeIfPresent(String.self, forKey: .id)
 		self.`self` = try container.decodeIfPresent(String.self, forKey: .`self`)
-		self.source = try container.decodeIfPresent(C8yMeasurementSource.self, forKey: .source)
+		self.source = try container.decodeIfPresent(C8ySource.self, forKey: .source)
 		self.time = try container.decodeIfPresent(String.self, forKey: .time)
 		self.type = try container.decodeIfPresent(String.self, forKey: .type)
 		self.c8ySteam = try container.decodeIfPresent(C8ySteam.self, forKey: .c8ySteam)
@@ -48,7 +48,7 @@ public struct C8yMeasurement: Codable {
 	public var `self`: String?
 
 	/// The managed object to which the measurement is associated.
-	public var source: C8yMeasurementSource?
+	public var source: C8ySource?
 
 	/// The date and time when the measurement is created.
 	public var time: String?
@@ -75,14 +75,14 @@ public struct C8yMeasurement: Codable {
 		case customFragments
 	}
 
-	public init(source: C8yMeasurementSource, time: String, type: String) {
+	public init(source: C8ySource, time: String, type: String) {
 		self.source = source
 		self.time = time
 		self.type = type
 	}
 
 	/// The managed object to which the measurement is associated.
-	public struct C8yMeasurementSource: Codable {
+	public struct C8ySource: Codable {
 	
 		/// Unique identifier of the object.
 		public var id: String?

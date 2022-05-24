@@ -34,10 +34,10 @@ public class UsageStatisticsApiTest: XCTestCase {
 		wait(for: [expectation], timeout: 10)
 	}
 	
-	public func testGetSummaryUsageStatistics() {
+	public func testGetTenantUsageStatistics() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableUsageStatisticsApi().getSummaryUsageStatistics().sink(receiveCompletion: { completion in
+		try? TestableUsageStatisticsApi().getTenantUsageStatistics().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()
@@ -46,10 +46,10 @@ public class UsageStatisticsApiTest: XCTestCase {
 		wait(for: [expectation], timeout: 10)
 	}
 	
-	public func testGetSummaryAllTenantsUsageStatistics() {
+	public func testGetTenantsUsageStatistics() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableUsageStatisticsApi().getSummaryAllTenantsUsageStatistics().sink(receiveCompletion: { completion in
+		try? TestableUsageStatisticsApi().getTenantsUsageStatistics().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()

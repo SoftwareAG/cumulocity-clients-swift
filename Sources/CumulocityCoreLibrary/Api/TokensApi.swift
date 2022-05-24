@@ -21,9 +21,9 @@ public class TokensApi: AdaptableApi {
 	/// *  The subscription name. This value must be associated with a subscription that's already been created and in essence, the obtained token will give the ability to read notifications for the subscription that is specified here.
 	/// *  The token expiration duration.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_NOTIFICATION_2_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -37,7 +37,7 @@ public class TokensApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func postNotificationTokenResource(body: C8yNotificationTokenClaims) throws -> AnyPublisher<C8yNotificationToken, Swift.Error> {
+	public func createToken(body: C8yNotificationTokenClaims) throws -> AnyPublisher<C8yNotificationToken, Swift.Error> {
 		let requestBody = body
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/token")

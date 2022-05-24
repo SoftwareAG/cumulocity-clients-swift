@@ -25,7 +25,7 @@ public struct C8yBulkNewDeviceRequest: Codable {
 	/// An array with the updated device credentials.
 	public var credentialUpdatedList: [C8yCredentialUpdatedList]?
 
-	/// An array with the updated device credentials.
+	/// An array with details of the failed device credentials.
 	public var failedCreationList: [C8yFailedCreationList]?
 
 	enum CodingKeys: String, CodingKey {
@@ -55,6 +55,13 @@ public struct C8yBulkNewDeviceRequest: Codable {
 	
 		public init() {
 		}
+	
+		/// The device credentials creation status.
+		public enum C8yNewDeviceStatus: String, Codable {
+			case created = "CREATED"
+			case failed = "FAILED"
+			case credentialupdated = "CREDENTIAL_UPDATED"
+		}
 	}
 
 	public struct C8yFailedCreationList: Codable {
@@ -79,6 +86,13 @@ public struct C8yBulkNewDeviceRequest: Codable {
 		}
 	
 		public init() {
+		}
+	
+		/// The device credentials creation status.
+		public enum C8yNewDeviceStatus: String, Codable {
+			case created = "CREATED"
+			case failed = "FAILED"
+			case credentialupdated = "CREDENTIAL_UPDATED"
 		}
 	}
 }

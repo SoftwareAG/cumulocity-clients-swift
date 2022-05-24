@@ -11,9 +11,9 @@ import Foundation
 public struct C8yRetentionRule: Codable {
 
 	/// The data type(s) to which the rule is applied.
-	public var dataType: C8yDescRetentionRuleDataType?
+	public var dataType: C8yDataType?
 
-	/// Indicates whether the rule is editable or not. It can be updated only by the management tenant.
+	/// Indicates whether the rule is editable or not. It can be updated only by the Management tenant.
 	public var editable: Bool?
 
 	/// The fragment type(s) to which the rule is applied. Used by the data types EVENT, MEASUREMENT, OPERATION and BULK_OPERATION.
@@ -46,5 +46,16 @@ public struct C8yRetentionRule: Codable {
 	}
 
 	public init() {
+	}
+
+	/// The data type(s) to which the rule is applied.
+	public enum C8yDataType: String, Codable {
+		case alarm = "ALARM"
+		case audit = "AUDIT"
+		case bulkoperation = "BULK_OPERATION"
+		case event = "EVENT"
+		case measurement = "MEASUREMENT"
+		case operation = "OPERATION"
+		case all = "*"
 	}
 }

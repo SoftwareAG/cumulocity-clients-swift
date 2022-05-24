@@ -15,9 +15,9 @@ public class UserApi: AdaptableApi {
 	/// Retrieve URIs to collections of users, groups and roles
 	/// Retrieve URIs and URI templates to collections of users, groups, and roles, so that they can be queried.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_USER_MANAGEMENT_READ <b>OR</b> ROLE_USER_MANAGEMENT_CREATE
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:

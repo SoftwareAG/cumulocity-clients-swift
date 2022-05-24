@@ -24,9 +24,9 @@ public class OperationsApi: AdaptableApi {
 	/// * The embedded operation object is filled with `deviceName`, but only when requesting resource: Get a collection of operations.
 	/// * Operations are returned in the order of their ascending IDs.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_DEVICE_CONTROL_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -37,38 +37,38 @@ public class OperationsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- agentId 
 	///		  An agent ID that may be part of the operation. If this parameter is set, the operation response objects contain the `deviceExternalIDs` object.
-	/// 	- deviceId 
-	///		  The ID of the device the operation is performed for.
-	/// 	- status 
-	///		  Status of the operation.
-	/// 	- fragmentType 
-	///		  The type of fragment that must be part of the operation.
+	/// 	- bulkOperationId 
+	///		  The bulk operation ID that this operation belongs to.
+	/// 	- currentPage 
+	///		  The current page of the paginated results.
 	/// 	- dateFrom 
 	///		  Start date or date and time of the operation.
 	/// 	- dateTo 
 	///		  End date or date and time of the operation.
-	/// 	- revert 
-	///		  If you are using a range query (that is, at least one of the `dateFrom` or `dateTo` parameters is included in the request), then setting `revert=true` will sort the results by the oldest operations first. By default, the results are sorted by the latest operations first. 
-	/// 	- bulkOperationId 
-	///		  The bulk operation ID that this operation belongs to.
+	/// 	- deviceId 
+	///		  The ID of the device the operation is performed for.
+	/// 	- fragmentType 
+	///		  The type of fragment that must be part of the operation.
 	/// 	- pageSize 
 	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
-	/// 	- currentPage 
-	///		  The current page of the paginated results.
+	/// 	- revert 
+	///		  If you are using a range query (that is, at least one of the `dateFrom` or `dateTo` parameters is included in the request), then setting `revert=true` will sort the results by the oldest operations first. By default, the results are sorted by the latest operations first. 
+	/// 	- status 
+	///		  Status of the operation.
 	/// 	- withTotalPages 
 	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getOperationCollectionResource(agentId: String? = nil, deviceId: String? = nil, status: String? = nil, fragmentType: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, revert: Bool? = nil, bulkOperationId: String? = nil, pageSize: Int? = nil, currentPage: Int? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yOperationCollection, Swift.Error> {
+	public func getOperations(agentId: String? = nil, bulkOperationId: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, deviceId: String? = nil, fragmentType: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, status: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yOperationCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = agentId { queryItems.append(URLQueryItem(name: "agentId", value: String(parameter)))}
-		if let parameter = deviceId { queryItems.append(URLQueryItem(name: "deviceId", value: String(parameter)))}
-		if let parameter = status { queryItems.append(URLQueryItem(name: "status", value: String(parameter)))}
-		if let parameter = fragmentType { queryItems.append(URLQueryItem(name: "fragmentType", value: String(parameter)))}
+		if let parameter = bulkOperationId { queryItems.append(URLQueryItem(name: "bulkOperationId", value: String(parameter)))}
+		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
 		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter)))}
 		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter)))}
-		if let parameter = revert { queryItems.append(URLQueryItem(name: "revert", value: String(parameter)))}
-		if let parameter = bulkOperationId { queryItems.append(URLQueryItem(name: "bulkOperationId", value: String(parameter)))}
+		if let parameter = deviceId { queryItems.append(URLQueryItem(name: "deviceId", value: String(parameter)))}
+		if let parameter = fragmentType { queryItems.append(URLQueryItem(name: "fragmentType", value: String(parameter)))}
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
+		if let parameter = revert { queryItems.append(URLQueryItem(name: "revert", value: String(parameter)))}
+		if let parameter = status { queryItems.append(URLQueryItem(name: "status", value: String(parameter)))}
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/operations")
@@ -89,9 +89,9 @@ public class OperationsApi: AdaptableApi {
 	/// Create an operation
 	/// Create an operation.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_DEVICE_CONTROL_ADMIN <b>OR</b> owner of the device <b>OR</b> ADMIN permissions on the device
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -101,15 +101,14 @@ public class OperationsApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// - Parameters:
 	/// 	- body 
-	public func postOperationCollectionResource(body: C8yOperation) throws -> AnyPublisher<C8yOperation, Swift.Error> {
+	public func createOperation(body: C8yOperation) throws -> AnyPublisher<C8yOperation, Swift.Error> {
 		var requestBody = body
 		requestBody.creationTime = nil
-		requestBody.deviceExternalIDs = nil
+		requestBody.deviceExternalIDs?.`self` = nil
 		requestBody.bulkOperationId = nil
 		requestBody.failureReason = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
-		requestBody.status = nil
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/operations")
 			.set(httpMethod: "post")
@@ -132,9 +131,9 @@ public class OperationsApi: AdaptableApi {
 	/// 
 	/// The DELETE method allows for deletion of operation collections.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_DEVICE_CONTROL_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -147,21 +146,21 @@ public class OperationsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- agentId 
 	///		  An agent ID that may be part of the operation.
-	/// 	- deviceId 
-	///		  The ID of the device the operation is performed for.
-	/// 	- status 
-	///		  Status of the operation.
 	/// 	- dateFrom 
 	///		  Start date or date and time of the operation.
 	/// 	- dateTo 
 	///		  End date or date and time of the operation.
-	public func deleteOperationCollectionResource(agentId: String? = nil, deviceId: String? = nil, status: String? = nil, dateFrom: String? = nil, dateTo: String? = nil) throws -> AnyPublisher<Data, Swift.Error> {
+	/// 	- deviceId 
+	///		  The ID of the device the operation is performed for.
+	/// 	- status 
+	///		  Status of the operation.
+	public func deleteOperations(agentId: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, deviceId: String? = nil, status: String? = nil) throws -> AnyPublisher<Data, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = agentId { queryItems.append(URLQueryItem(name: "agentId", value: String(parameter)))}
-		if let parameter = deviceId { queryItems.append(URLQueryItem(name: "deviceId", value: String(parameter)))}
-		if let parameter = status { queryItems.append(URLQueryItem(name: "status", value: String(parameter)))}
 		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter)))}
 		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter)))}
+		if let parameter = deviceId { queryItems.append(URLQueryItem(name: "deviceId", value: String(parameter)))}
+		if let parameter = status { queryItems.append(URLQueryItem(name: "status", value: String(parameter)))}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/operations")
 			.set(httpMethod: "delete")
@@ -181,9 +180,9 @@ public class OperationsApi: AdaptableApi {
 	/// Retrieve a specific operation
 	/// Retrieve a specific operation (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_DEVICE_CONTROL_READ <b>OR</b> owner of the resource <b>OR</b> ADMIN permission on the device
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -196,7 +195,7 @@ public class OperationsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the operation.
-	public func getOperationResource(id: String) throws -> AnyPublisher<C8yOperation, Swift.Error> {
+	public func getOperation(id: String) throws -> AnyPublisher<C8yOperation, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/operations/\(id)")
 			.set(httpMethod: "get")
@@ -213,13 +212,12 @@ public class OperationsApi: AdaptableApi {
 	}
 	
 	/// Update a specific operation status
-	/// 
 	/// Update a specific operation (by a given ID).
 	/// You can only update its status.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_DEVICE_CONTROL_ADMIN <b>OR</b> owner of the resource <b>OR</b> ADMIN permission on the device
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -235,10 +233,10 @@ public class OperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the operation.
-	public func putOperationResource(body: C8yOperation, id: String) throws -> AnyPublisher<C8yOperation, Swift.Error> {
+	public func updateOperation(body: C8yOperation, id: String) throws -> AnyPublisher<C8yOperation, Swift.Error> {
 		var requestBody = body
 		requestBody.creationTime = nil
-		requestBody.deviceExternalIDs = nil
+		requestBody.deviceExternalIDs?.`self` = nil
 		requestBody.comCumulocityModelWebCamDevice = nil
 		requestBody.bulkOperationId = nil
 		requestBody.failureReason = nil

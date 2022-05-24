@@ -16,21 +16,9 @@ public struct C8yInventoryAssignmentCollection: Codable {
 	/// An array of inventory assigments.
 	public var inventoryAssignments: [C8yInventoryAssignment]?
 
-	/// A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential previous page of managed objects.
-	public var prev: String?
-
-	/// A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential next page of managed objects.
-	public var next: String?
-
-	/// Information about paging statistics.
-	public var statistics: C8yPageStatistics?
-
 	enum CodingKeys: String, CodingKey {
 		case `self` = "self"
 		case inventoryAssignments
-		case prev
-		case next
-		case statistics
 	}
 
 	public init() {

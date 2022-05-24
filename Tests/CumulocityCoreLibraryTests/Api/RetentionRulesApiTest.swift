@@ -22,10 +22,10 @@ public class RetentionRulesApiTest: XCTestCase {
 		}
 	}
 
-	public func testGetRetentionRuleCollectionResource() {
+	public func testGetRetentionRules() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableRetentionRulesApi().getRetentionRuleCollectionResource().sink(receiveCompletion: { completion in
+		try? TestableRetentionRulesApi().getRetentionRules().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()

@@ -31,9 +31,9 @@ public class BulkOperationsApi: AdaptableApi {
 	/// Retrieve a list of bulk operations
 	/// Retrieve a list of bulk operations.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_BULK_OPERATION_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -41,11 +41,20 @@ public class BulkOperationsApi: AdaptableApi {
 	///		  The request has succeeded and the list of bulk operations sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
-	public func getBulkOperationCollectionResource() throws -> AnyPublisher<C8yBulkOperationCollection, Swift.Error> {
+	/// - Parameters:
+	/// 	- currentPage 
+	///		  The current page of the paginated results.
+	/// 	- pageSize 
+	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+	public func getBulkOperations(currentPage: Int? = nil, pageSize: Int? = nil) throws -> AnyPublisher<C8yBulkOperationCollection, Swift.Error> {
+		var queryItems: [URLQueryItem] = []
+		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
+		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/bulkoperations")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.bulkoperationcollection+json, application/vnd.com.nsn.cumulocity.error+json")
+			.set(queryItems: queryItems)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -60,9 +69,9 @@ public class BulkOperationsApi: AdaptableApi {
 	/// Create a bulk operation
 	/// Create a bulk operation.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_BULK_OPERATION_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -72,7 +81,7 @@ public class BulkOperationsApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// - Parameters:
 	/// 	- body 
-	public func postBulkOperationCollectionResource(body: C8yBulkOperation) throws -> AnyPublisher<C8yBulkOperation, Swift.Error> {
+	public func createBulkOperation(body: C8yBulkOperation) throws -> AnyPublisher<C8yBulkOperation, Swift.Error> {
 		var requestBody = body
 		requestBody.generalStatus = nil
 		requestBody.failedParentId = nil
@@ -100,9 +109,9 @@ public class BulkOperationsApi: AdaptableApi {
 	/// Retrieve a specific bulk operation
 	/// Retrieve a specific bulk operation (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_BULK_OPERATION_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -115,7 +124,7 @@ public class BulkOperationsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the bulk operation.
-	public func getBulkOperationResource(id: String) throws -> AnyPublisher<C8yBulkOperation, Swift.Error> {
+	public func getBulkOperation(id: String) throws -> AnyPublisher<C8yBulkOperation, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/bulkoperations/\(id)")
 			.set(httpMethod: "get")
@@ -132,12 +141,11 @@ public class BulkOperationsApi: AdaptableApi {
 	}
 	
 	/// Update a specific bulk operation
-	/// 
 	/// Update a specific bulk operation (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_BULK_OPERATION_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -151,16 +159,13 @@ public class BulkOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the bulk operation.
-	public func putBulkOperationResource(body: C8yBulkOperation, id: String) throws -> AnyPublisher<C8yBulkOperation, Swift.Error> {
+	public func updateBulkOperation(body: C8yBulkOperation, id: String) throws -> AnyPublisher<C8yBulkOperation, Swift.Error> {
 		var requestBody = body
 		requestBody.generalStatus = nil
 		requestBody.failedParentId = nil
-		requestBody.groupId = nil
 		requestBody.`self` = nil
-		requestBody.operationPrototype = nil
 		requestBody.progress = nil
 		requestBody.id = nil
-		requestBody.startDate = nil
 		requestBody.status = nil
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/bulkoperations/\(id)")
@@ -182,9 +187,9 @@ public class BulkOperationsApi: AdaptableApi {
 	/// Delete a specific bulk operation
 	/// Delete a specific bulk operation (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_BULK_OPERATION_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -199,7 +204,7 @@ public class BulkOperationsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the bulk operation.
-	public func deleteBulkOperationResource(id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteBulkOperation(id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/bulkoperations/\(id)")
 			.set(httpMethod: "delete")

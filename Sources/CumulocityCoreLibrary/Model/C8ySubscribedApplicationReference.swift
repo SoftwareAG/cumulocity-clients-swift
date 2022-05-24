@@ -24,18 +24,15 @@ public struct C8ySubscribedApplicationReference: Codable {
 	/// The application to be subscribed to.
 	public struct C8yApplication: Codable {
 	
-		/// The ID of the application.
-		public var id: String?
-	
 		/// A URL linking to this resource.
 		public var `self`: String?
 	
 		enum CodingKeys: String, CodingKey {
-			case id
 			case `self` = "self"
 		}
 	
-		public init() {
+		public init(self: String) {
+			self.self = self
 		}
 	}
 }

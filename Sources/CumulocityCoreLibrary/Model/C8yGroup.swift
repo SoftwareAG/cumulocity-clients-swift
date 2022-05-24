@@ -10,43 +10,48 @@ import Foundation
 
 public struct C8yGroup: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
-
-	/// A unique identifier for this group.
-	public var id: String?
-
-	/// The name of the group.
-	public var name: String?
-
 	/// A list of applications.
 	public var applications: [C8yApplication]?
 
-	/// An object with a list of custom properties for this user.
+	/// An object with a list of custom properties.
 	public var customProperties: C8yCustomProperties?
+
+	/// A description of the group.
+	public var description: String?
 
 	/// An object with a list of the user's device permissions.
 	@available(*, deprecated)
 	public var devicePermissions: C8yDevicePermissions?
 
+	/// A unique identifier for this group.
+	public var id: Int?
+
+	/// The name of the group.
+	public var name: String?
+
 	/// An object containing user roles for this group.
 	public var roles: C8yRoles?
+
+	/// A URL linking to this resource.
+	public var `self`: String?
 
 	/// The list of users in this group.
 	public var users: C8yUsers?
 
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
-		case id
-		case name
 		case applications
 		case customProperties
+		case description
 		case devicePermissions
+		case id
+		case name
 		case roles
+		case `self` = "self"
 		case users
 	}
 
-	public init() {
+	public init(name: String) {
+		self.name = name
 	}
 
 	/// An object containing user roles for this group.
@@ -55,12 +60,16 @@ public struct C8yGroup: Codable {
 		/// A URL linking to this resource.
 		public var `self`: String?
 	
-		/// A list of user roles.
-		public var references: [C8yRole]?
+		/// A list of user role references.
+		public var references: [C8yRoleReference]?
+	
+		/// Information about paging statistics.
+		public var statistics: C8yPageStatistics?
 	
 		enum CodingKeys: String, CodingKey {
 			case `self` = "self"
 			case references
+			case statistics
 		}
 	
 		public init() {

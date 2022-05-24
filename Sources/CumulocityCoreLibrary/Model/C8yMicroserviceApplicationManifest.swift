@@ -14,19 +14,18 @@ public struct C8yMicroserviceApplicationManifest: Codable {
 	/// Document type format discriminator, for future changes in format.
 	public var apiVersion: String?
 
+	/// The billing mode of the application.
+	/// 
+	/// In case of RESOURCES, the number of resources used is exposed for billing calculation per usage.
+	/// In case of SUBSCRIPTION, all resources usage is counted for the microservice owner and the subtenant is charged for subscription.
+	/// 
+	public var billingMode: C8yBillingMode?
+
 	/// The context path in the URL makes the application accessible.
 	public var contextPath: String?
 
-	/// Application version.
-	/// Must be a correct [SemVer](https://semver.org/) value but the "+" sign is disallowed.
-	/// 
-	public var version: String?
-
-	/// Application provider information.
-	/// Simple name allowed for predefined providers, for example, c8y.
-	/// Detailed object for external provider.
-	/// 
-	public var provider: C8yProvider?
+	/// A list of URL extensions for this microservice application.
+	public var extensions: [C8yExtensions]?
 
 	/// Deployment isolation.
 	/// In case of PER_TENANT, there is a separate instance for each tenant.
@@ -35,23 +34,33 @@ public struct C8yMicroserviceApplicationManifest: Codable {
 	/// 
 	public var isolation: C8yIsolation?
 
-	/// Allows to configure a microservice auto scaling policy.
-	/// If the microservice uses a lot of CPU resources, a second instance will be created automatically when this is set to `AUTO`.
-	/// The default is `NONE`, meaning auto scaling will not happen.
+	public var livenessProbe: C8yApplicationManifestProbe?
+
+	/// Application provider information.
+	/// Simple name allowed for predefined providers, for example, c8y.
+	/// Detailed object for external provider.
 	/// 
-	public var scale: C8yScale?
+	public var provider: C8yProvider?
 
-	/// Defines the strategy used to verify if a microservice is alive or requires a restart.
-	public var livenessProbe: C8yApplicationManifestLivenessProbe?
-
-	/// Defines the strategy used to verify if a microservice is ready to accept traffic.
-	public var readinessProbe: C8yApplicationManifestReadinessProbe?
+	public var readinessProbe: C8yApplicationManifestProbe?
 
 	/// The minimum required resources for the microservice application.
 	public var requestResources: C8yRequestResources?
 
 	/// The recommended resources for this microservice application.
 	public var resources: C8yResources?
+
+	/// Roles provided by the microservice.
+	public var roles: [String]?
+
+	/// List of permissions required by a microservice to work.
+	public var requiredRoles: [String]?
+
+	/// Allows to configure a microservice auto scaling policy.
+	/// If the microservice uses a lot of CPU resources, a second instance will be created automatically when this is set to `AUTO`.
+	/// The default is `NONE`, meaning auto scaling will not happen.
+	/// 
+	public var scale: C8yScale?
 
 	/// A list of settings objects for this microservice application.
 	public var settings: [C8ySettings]?
@@ -61,42 +70,41 @@ public struct C8yMicroserviceApplicationManifest: Codable {
 	/// 
 	public var settingsCategory: String?
 
-	/// List of permissions required by a microservice to work.
-	public var requiredRoles: [String]?
+	/// Application version.
+	/// Must be a correct [SemVer](https://semver.org/) value but the "+" sign is disallowed.
+	/// 
+	public var version: String?
 
-	/// Roles provided by the microservice.
-	public var roles: [String]?
+	enum CodingKeys: String, CodingKey {
+		case apiVersion
+		case billingMode
+		case contextPath
+		case extensions
+		case isolation
+		case livenessProbe
+		case provider
+		case readinessProbe
+		case requestResources
+		case resources
+		case roles
+		case requiredRoles
+		case scale
+		case settings
+		case settingsCategory
+		case version
+	}
 
-	/// A list of URL extensions for this microservice application.
-	public var extensions: [C8yExtensions]?
+	public init() {
+	}
 
 	/// The billing mode of the application.
 	/// 
 	/// In case of RESOURCES, the number of resources used is exposed for billing calculation per usage.
 	/// In case of SUBSCRIPTION, all resources usage is counted for the microservice owner and the subtenant is charged for subscription.
 	/// 
-	public var billingMode: C8yBillingMode?
-
-	enum CodingKeys: String, CodingKey {
-		case apiVersion
-		case contextPath
-		case version
-		case provider
-		case isolation
-		case scale
-		case livenessProbe
-		case readinessProbe
-		case requestResources
-		case resources
-		case settings
-		case settingsCategory
-		case requiredRoles
-		case roles
-		case extensions
-		case billingMode
-	}
-
-	public init() {
+	public enum C8yBillingMode: String, Codable {
+		case resources = "RESOURCES"
+		case subscription = "SUBSCRIPTION"
 	}
 
 	/// Deployment isolation.
@@ -118,14 +126,21 @@ public struct C8yMicroserviceApplicationManifest: Codable {
 		case auto = "AUTO"
 	}
 
-	/// The billing mode of the application.
-	/// 
-	/// In case of RESOURCES, the number of resources used is exposed for billing calculation per usage.
-	/// In case of SUBSCRIPTION, all resources usage is counted for the microservice owner and the subtenant is charged for subscription.
-	/// 
-	public enum C8yBillingMode: String, Codable {
-		case resources = "RESOURCES"
-		case subscription = "SUBSCRIPTION"
+	public struct C8yExtensions: Codable {
+	
+		/// The relative path in Cumulocity IoT for this microservice application.
+		public var path: String?
+	
+		/// The type of this extension.
+		public var type: String?
+	
+		enum CodingKeys: String, CodingKey {
+			case path
+			case type
+		}
+	
+		public init() {
+		}
 	}
 
 	/// Application provider information.
@@ -221,23 +236,6 @@ public struct C8yMicroserviceApplicationManifest: Codable {
 		
 			public init() {
 			}
-		}
-	}
-
-	public struct C8yExtensions: Codable {
-	
-		/// The relative path in Cumulocity IoT for this microservice application.
-		public var path: String?
-	
-		/// The type of this extension.
-		public var type: String?
-	
-		enum CodingKeys: String, CodingKey {
-			case path
-			case type
-		}
-	
-		public init() {
 		}
 	}
 }

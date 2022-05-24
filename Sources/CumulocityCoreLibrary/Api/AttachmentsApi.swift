@@ -15,9 +15,9 @@ public class AttachmentsApi: AdaptableApi {
 	/// Retrieve the attached file of a specific event
 	/// Retrieve the attached file (binary) of a specific event by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_EVENT_READ <b>OR</b> EVENT_READ permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -30,7 +30,7 @@ public class AttachmentsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the event.
-	public func getEventBinaryResource(id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func getEventAttachment(id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "get")
@@ -50,9 +50,9 @@ public class AttachmentsApi: AdaptableApi {
 	/// Upload and replace the attached file (binary) of a specific event by a given ID.<br>
 	/// The size of the attachment is configurable, and the default size is 50 MiB. The default chunk size is 5MiB.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_EVENT_ADMIN <b>OR</b> owner of the source <b>OR</b> EVENT_ADMIN permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -66,7 +66,7 @@ public class AttachmentsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the event.
-	public func putEventBinaryResource(body: Data, id: String) throws -> AnyPublisher<C8yEventBinary, Swift.Error> {
+	public func replaceEventAttachment(body: Data, id: String) throws -> AnyPublisher<C8yEventBinary, Swift.Error> {
 		let requestBody = body
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)/binaries")
@@ -120,9 +120,9 @@ public class AttachmentsApi: AdaptableApi {
 	/// --boundary--
 	/// ```
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_EVENT_ADMIN <b>OR</b> owner of the source <b>OR</b> EVENT_ADMIN permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -138,7 +138,7 @@ public class AttachmentsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the event.
-	public func postEventBinaryResource(body: Data, id: String) throws -> AnyPublisher<C8yEventBinary, Swift.Error> {
+	public func uploadEventAttachment(body: Data, id: String) throws -> AnyPublisher<C8yEventBinary, Swift.Error> {
 		let requestBody = body
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)/binaries")
@@ -192,9 +192,9 @@ public class AttachmentsApi: AdaptableApi {
 	/// --boundary--
 	/// ```
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_EVENT_ADMIN <b>OR</b> owner of the source <b>OR</b> EVENT_ADMIN permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -212,7 +212,7 @@ public class AttachmentsApi: AdaptableApi {
 	///		  Path of the file to be uploaded.
 	/// 	- id 
 	///		  Unique identifier of the event.
-	public func postEventBinaryResource(`object`: C8yBinaryInfo, file: Data, id: String) throws -> AnyPublisher<C8yEventBinary, Swift.Error> {
+	public func uploadEventAttachment(`object`: C8yBinaryInfo, file: Data, id: String) throws -> AnyPublisher<C8yEventBinary, Swift.Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
 		try multipartBuilder.addBodyPart(named: "object", data: `object`, mimeType: "application/json");
 		try multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/plain");
@@ -237,9 +237,9 @@ public class AttachmentsApi: AdaptableApi {
 	/// Remove the attached file from a specific event
 	/// Remove the attached file (binary) from a specific event by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_EVENT_ADMIN <b>OR</b> owner of the source <b>OR</b> EVENT_ADMIN permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -252,7 +252,7 @@ public class AttachmentsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the event.
-	public func deleteEventBinaryResource(id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteEventAttachment(id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "delete")

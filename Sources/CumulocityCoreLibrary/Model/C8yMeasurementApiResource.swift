@@ -10,9 +10,6 @@ import Foundation
 
 public struct C8yMeasurementApiResource: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
-
 	/// Collection of all measurements
 	public var measurements: C8yMeasurements?
 
@@ -40,8 +37,10 @@ public struct C8yMeasurementApiResource: Codable {
 	/// Read-only collection of all measurements for a specific source object, particular fragment type and series, and an event type.
 	public var measurementsForSourceAndValueFragmentTypeAndValueFragmentSeries: String?
 
+	/// A URL linking to this resource.
+	public var `self`: String?
+
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
 		case measurements
 		case measurementsForSource
 		case measurementsForSourceAndType
@@ -51,6 +50,7 @@ public struct C8yMeasurementApiResource: Codable {
 		case measurementsForSourceAndDate
 		case measurementsForDateAndFragmentType
 		case measurementsForSourceAndValueFragmentTypeAndValueFragmentSeries
+		case `self` = "self"
 	}
 
 	public init() {
@@ -59,14 +59,14 @@ public struct C8yMeasurementApiResource: Codable {
 	/// Collection of all measurements
 	public struct C8yMeasurements: Codable {
 	
+		public var measurements: [C8yMeasurement]?
+	
 		/// A URL linking to this resource.
 		public var `self`: String?
 	
-		public var measurements: [C8yMeasurement]?
-	
 		enum CodingKeys: String, CodingKey {
-			case `self` = "self"
 			case measurements
+			case `self` = "self"
 		}
 	
 		public init() {

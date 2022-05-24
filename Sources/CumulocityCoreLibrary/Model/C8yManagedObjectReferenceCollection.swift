@@ -19,7 +19,7 @@ public struct C8yManagedObjectReferenceCollection: Codable {
 	/// A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential next page of managed objects.
 	public var next: String?
 
-	/// An array containing the details of all child additions (if any).
+	/// An array containing the details of all children (if any).
 	public var references: [C8yReferences]?
 
 	/// Information about paging statistics.

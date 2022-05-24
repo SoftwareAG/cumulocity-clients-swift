@@ -82,15 +82,15 @@ public struct C8yRealtimeNotification: Codable {
 	/// Configuration parameters for the current connect message.
 	public struct C8yAdvice: Codable {
 	
-		/// Interval (milliseconds) between the sending of the connect message and the response from the server. Overrides server default settings for the current request-response conversation.
-		public var timeout: Int?
-	
 		/// Period (milliseconds) after which the server will close the session, if it doesn't received the next connect message from the client. Overrides server default settings for current request-response conversation.
 		public var interval: Int?
 	
+		/// Interval (milliseconds) between the sending of the connect message and the response from the server. Overrides server default settings for the current request-response conversation.
+		public var timeout: Int?
+	
 		enum CodingKeys: String, CodingKey {
-			case timeout
 			case interval
+			case timeout
 		}
 	
 		public init() {

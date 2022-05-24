@@ -17,9 +17,9 @@ public class TenantApplicationsApi: AdaptableApi {
 	/// Retrieve subscribed applications
 	/// Retrieve the tenant subscribed applications by a given tenant ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// (ROLE_TENANT_MANAGEMENT_READ <b>OR</b> ROLE_TENANT_ADMIN) <b>AND</b> (the current tenant is its parent <b>OR</b> is the management tenant)
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -40,7 +40,7 @@ public class TenantApplicationsApi: AdaptableApi {
 	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
 	/// 	- withTotalPages 
 	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getTenantApplicationReferenceCollectionResource(tenantId: String, currentPage: Int? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yApplicationReferenceCollection, Swift.Error> {
+	public func getSubscribedApplications(tenantId: String, currentPage: Int? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yApplicationReferenceCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
@@ -64,9 +64,9 @@ public class TenantApplicationsApi: AdaptableApi {
 	/// Subscribe to an application
 	/// Subscribe a tenant (by a given ID) to an application.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// (ROLE_APPLICATION_MANAGEMENT_ADMIN <b>AND</b> is the application owner <b>AND</b> is the current tenant) <b>OR</b> ((ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_MANAGEMENT_UPDATE) <b>AND</b> (the current tenant is its parent <b>OR</b> is the management tenant))
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -75,14 +75,15 @@ public class TenantApplicationsApi: AdaptableApi {
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
 	/// 	- 404
-	///		  Tenant not found.
+	///		  Application not found.
+	/// 	- 409
+	///		  The application is already assigned to the tenant.
 	/// - Parameters:
 	/// 	- body 
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func postTenantApplicationReferenceCollectionResource(body: C8ySubscribedApplicationReference, tenantId: String) throws -> AnyPublisher<C8ySubscribedApplicationReference, Swift.Error> {
-		var requestBody = body
-		requestBody.application?.id = nil
+	public func subscribeApplication(body: C8ySubscribedApplicationReference, tenantId: String) throws -> AnyPublisher<C8yApplicationReference, Swift.Error> {
+		let requestBody = body
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)/applications")
 			.set(httpMethod: "post")
@@ -97,15 +98,15 @@ public class TenantApplicationsApi: AdaptableApi {
 				throw URLError(.badServerResponse)
 			}
 			return element.data
-		}).decode(type: C8ySubscribedApplicationReference.self, decoder: JSONDecoder()).eraseToAnyPublisher()
+		}).decode(type: C8yApplicationReference.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
 	/// Unsubscribe from an application
 	/// Unsubscribe a tenant (by a given tenant ID) from an application (by a given application ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// (ROLE_APPLICATION_MANAGEMENT_ADMIN <b>AND</b> is the application owner <b>AND</b> is the current tenant) <b>OR</b> ((ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_MANAGEMENT_UPDATE) <b>AND</b> (the current tenant is its parent <b>OR</b> is the management tenant))
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -120,7 +121,7 @@ public class TenantApplicationsApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- applicationId 
 	///		  Unique identifier of the application.
-	public func deleteTenantApplicationReferenceResource(tenantId: String, applicationId: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func unsubscribeApplication(tenantId: String, applicationId: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)/applications/\(applicationId)")
 			.set(httpMethod: "delete")

@@ -24,7 +24,7 @@ public class LoginOptionsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func getLoginOptionCollectionResource(tenantId: String? = nil) throws -> AnyPublisher<C8yLoginOptionCollection, Swift.Error> {
+	public func getLoginOptions(tenantId: String? = nil) throws -> AnyPublisher<C8yLoginOptionCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = tenantId { queryItems.append(URLQueryItem(name: "tenantId", value: String(parameter)))}
 		let builder = URLRequestBuilder()

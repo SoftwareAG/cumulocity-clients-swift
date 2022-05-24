@@ -10,18 +10,18 @@ import Foundation
 
 public struct C8yBootstrapUser: Codable {
 
-	/// The bootstrap user tenant password.
-	public var password: String?
-
 	/// The bootstrap user tenant username.
 	public var name: String?
+
+	/// The bootstrap user tenant password.
+	public var password: String?
 
 	/// The bootstrap user tenant ID.
 	public var tenant: String?
 
 	enum CodingKeys: String, CodingKey {
-		case password
 		case name
+		case password
 		case tenant
 	}
 

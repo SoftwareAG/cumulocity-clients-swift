@@ -16,12 +16,11 @@ import Combine
 public class CurrentUserApi: AdaptableApi {
 
 	/// Retrieve the current user
-	/// 
 	/// Retrieve the user reference of the current user.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_USER_MANAGEMENT_OWN_READ <b>OR</b> ROLE_SYSTEM
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -29,7 +28,7 @@ public class CurrentUserApi: AdaptableApi {
 	///		  The request has succeeded and the current user is sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
-	public func getCurrentUserResource() throws -> AnyPublisher<C8yCurrentUser, Swift.Error> {
+	public func getCurrentUser() throws -> AnyPublisher<C8yCurrentUser, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser")
 			.set(httpMethod: "get")
@@ -46,12 +45,11 @@ public class CurrentUserApi: AdaptableApi {
 	}
 	
 	/// Update the current user
-	/// 
 	/// Update the current user.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_USER_MANAGEMENT_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -63,12 +61,14 @@ public class CurrentUserApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func putCurrentUserResource(body: C8yCurrentUser) throws -> AnyPublisher<C8yCurrentUser, Swift.Error> {
+	public func updateCurrentUser(body: C8yCurrentUser) throws -> AnyPublisher<C8yCurrentUser, Swift.Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.effectiveRoles = nil
+		requestBody.shouldResetPassword = nil
 		requestBody.id = nil
 		requestBody.lastPasswordChange = nil
+		requestBody.devicePermissions = nil
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser")
 			.set(httpMethod: "put")

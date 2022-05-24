@@ -10,9 +10,6 @@ import Foundation
 
 public struct C8yInventoryApiResource: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
-
 	/// Read-only collection of all managed objects with a particular fragment type or capability (placeholder {fragmentType}).
 	public var managedObjectsForFragmentType: String?
 
@@ -25,12 +22,15 @@ public struct C8yInventoryApiResource: Codable {
 	/// Collection of all managed objects
 	public var managedObjects: C8yManagedObjects?
 
+	/// A URL linking to this resource.
+	public var `self`: String?
+
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
 		case managedObjectsForFragmentType
 		case managedObjectsForType
 		case managedObjectsForListOfIds
 		case managedObjects
+		case `self` = "self"
 	}
 
 	public init() {
@@ -39,15 +39,15 @@ public struct C8yInventoryApiResource: Codable {
 	/// Collection of all managed objects
 	public struct C8yManagedObjects: Codable {
 	
-		/// A URL linking to this resource.
-		public var `self`: String?
-	
 		/// An array containing the referenced managed objects.
 		public var references: [C8yManagedObject]?
 	
+		/// A URL linking to this resource.
+		public var `self`: String?
+	
 		enum CodingKeys: String, CodingKey {
-			case `self` = "self"
 			case references
+			case `self` = "self"
 		}
 	
 		public init() {

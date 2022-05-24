@@ -16,9 +16,9 @@ public class ApplicationBinariesApi: AdaptableApi {
 	/// Retrieve all application attachments.
 	/// This method is not supported by microservice applications.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_APPLICATION_MANAGEMENT_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -31,7 +31,7 @@ public class ApplicationBinariesApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the application.
-	public func getBinaryApplicationContentResource(id: String) throws -> AnyPublisher<C8yApplicationBinaries, Swift.Error> {
+	public func getApplicationAttachments(id: String) throws -> AnyPublisher<C8yApplicationBinaries, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/binaries")
 			.set(httpMethod: "get")
@@ -59,9 +59,9 @@ public class ApplicationBinariesApi: AdaptableApi {
 	/// 
 	/// For a web application, the ZIP file must include an index.html file in the root directory.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_APPLICATION_MANAGEMENT_ADMIN <b>AND</b> tenant is the owner of the application
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -74,7 +74,7 @@ public class ApplicationBinariesApi: AdaptableApi {
 	///		  The ZIP file to be uploaded.
 	/// 	- id 
 	///		  Unique identifier of the application.
-	public func postBinaryApplicationContentResource(file: Data, id: String) throws -> AnyPublisher<C8yApplication, Swift.Error> {
+	public func uploadApplicationAttachment(file: Data, id: String) throws -> AnyPublisher<C8yApplication, Swift.Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
 		try multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "application/zip");
 		let builder = URLRequestBuilder()
@@ -99,9 +99,9 @@ public class ApplicationBinariesApi: AdaptableApi {
 	/// Retrieve a specific application attachment (by a given application ID and a given binary ID).
 	/// This method is not supported by microservice applications.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_APPLICATION_MANAGEMENT_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -114,7 +114,7 @@ public class ApplicationBinariesApi: AdaptableApi {
 	///		  Unique identifier of the application.
 	/// 	- binaryId 
 	///		  Unique identifier of the binary.
-	public func getBinaryApplicationContentResourceById(id: String, binaryId: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func getApplicationAttachment(id: String, binaryId: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/binaries/\(binaryId)")
 			.set(httpMethod: "get")
@@ -134,9 +134,9 @@ public class ApplicationBinariesApi: AdaptableApi {
 	/// Delete  a specific application attachment (by a given application ID and a given binary ID).
 	/// This method is not supported by microservice applications.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_APPLICATION_MANAGEMENT_ADMIN <b>AND</b> tenant is the owner of the application
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -151,7 +151,7 @@ public class ApplicationBinariesApi: AdaptableApi {
 	///		  Unique identifier of the application.
 	/// 	- binaryId 
 	///		  Unique identifier of the binary.
-	public func deleteBinaryApplicationContentResourceById(id: String, binaryId: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteApplicationAttachment(id: String, binaryId: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/binaries/\(binaryId)")
 			.set(httpMethod: "delete")

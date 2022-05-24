@@ -15,9 +15,9 @@ public class TenantApi: AdaptableApi {
 	/// Retrieve URIs to collections of tenants
 	/// Retrieve URIs and URI templates to collections of tenants and options.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_TENANT_MANAGEMENT_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:

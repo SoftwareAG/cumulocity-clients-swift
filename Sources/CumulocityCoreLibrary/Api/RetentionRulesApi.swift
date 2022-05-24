@@ -18,9 +18,9 @@ public class RetentionRulesApi: AdaptableApi {
 	/// Retrieve all retention rules
 	/// Retrieve all retention rules on your tenant.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_RETENTION_RULE_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -37,7 +37,7 @@ public class RetentionRulesApi: AdaptableApi {
 	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
 	/// 	- withTotalPages 
 	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getRetentionRuleCollectionResource(currentPage: Int? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yRetentionRuleCollection, Swift.Error> {
+	public func getRetentionRules(currentPage: Int? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yRetentionRuleCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
@@ -61,9 +61,9 @@ public class RetentionRulesApi: AdaptableApi {
 	/// Create a retention rule
 	/// Create a retention rule on your tenant.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_RETENTION_RULE_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -73,11 +73,12 @@ public class RetentionRulesApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// 	- 403
 	///		  Not authorized to perform this operation.
+	/// 	- 422
+	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func postRetentionRuleCollectionResource(body: C8yRetentionRule) throws -> AnyPublisher<C8yRetentionRule, Swift.Error> {
+	public func createRetentionRule(body: C8yRetentionRule) throws -> AnyPublisher<C8yRetentionRule, Swift.Error> {
 		var requestBody = body
-		requestBody.editable = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
 		let builder = URLRequestBuilder()
@@ -100,9 +101,9 @@ public class RetentionRulesApi: AdaptableApi {
 	/// Retrieve a retention rule
 	/// Retrieve a specific retention rule by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_RETENTION_RULE_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -117,7 +118,7 @@ public class RetentionRulesApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the retention rule.
-	public func getRetentionRuleResource(id: String) throws -> AnyPublisher<C8yRetentionRule, Swift.Error> {
+	public func getRetentionRule(id: String) throws -> AnyPublisher<C8yRetentionRule, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/retention/retentions/\(id)")
 			.set(httpMethod: "get")
@@ -136,9 +137,9 @@ public class RetentionRulesApi: AdaptableApi {
 	/// Update a retention rule
 	/// Update a specific retention rule by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
-	/// ROLE_RETENTION_RULE_ADMIN <b>AND (</b> the rule is editable <b>OR</b> it's the tenant management <b>)</b>
-	/// </div></div>
+	/// <section><h5>Required roles</h5>
+	/// ROLE_RETENTION_RULE_ADMIN <b>AND</b> (the rule is editable <b>OR</b> it's the tenant management)
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -150,13 +151,14 @@ public class RetentionRulesApi: AdaptableApi {
 	///		  Not authorized to perform this operation.
 	/// 	- 404
 	///		  Retention rule not found.
+	/// 	- 422
+	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the retention rule.
-	public func putRetentionRuleResource(body: C8yRetentionRule, id: String) throws -> AnyPublisher<C8yRetentionRule, Swift.Error> {
+	public func updateRetentionRule(body: C8yRetentionRule, id: String) throws -> AnyPublisher<C8yRetentionRule, Swift.Error> {
 		var requestBody = body
-		requestBody.editable = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
 		let builder = URLRequestBuilder()
@@ -179,9 +181,9 @@ public class RetentionRulesApi: AdaptableApi {
 	/// Remove a retention rule
 	/// Remove a specific retention rule by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_RETENTION_RULE_ADMIN <b>AND</b> the rule is editable
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -196,7 +198,7 @@ public class RetentionRulesApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the retention rule.
-	public func deleteRetentionRuleResource(id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteRetentionRule(id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/retention/retentions/\(id)")
 			.set(httpMethod: "delete")

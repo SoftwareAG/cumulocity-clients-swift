@@ -22,10 +22,10 @@ public class AlarmsApiTest: XCTestCase {
 		}
 	}
 
-	public func testGetAlarmCollectionResource() {
+	public func testGetAlarms() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableAlarmsApi().getAlarmCollectionResource().sink(receiveCompletion: { completion in
+		try? TestableAlarmsApi().getAlarms().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()
@@ -34,10 +34,10 @@ public class AlarmsApiTest: XCTestCase {
 		wait(for: [expectation], timeout: 10)
 	}
 	
-	public func testGetAlarmCollectionCountResource() {
+	public func testGetNumberOfAlarms() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableAlarmsApi().getAlarmCollectionCountResource().sink(receiveCompletion: { completion in
+		try? TestableAlarmsApi().getNumberOfAlarms().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()

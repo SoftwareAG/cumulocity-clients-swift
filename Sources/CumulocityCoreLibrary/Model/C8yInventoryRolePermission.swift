@@ -11,31 +11,43 @@ import Foundation
 /// A permission object of an inventory role.
 public struct C8yInventoryRolePermission: Codable {
 
-	/// The permission level.
-	/// Allowed values are:
-	/// 
-	/// * `ADMIN`
-	/// * `READ`
-	/// * `*`
-	/// 
-	public var permission: String?
-
 	/// A unique identifier for this permission.
-	public var id: String?
+	public var id: Int?
 
-	/// The type of this permission.
-	public var type: String?
+	/// The permission level.
+	public var permission: C8yPermission?
 
 	/// The scope of this permission.
-	public var scope: String?
+	public var scope: C8yScope?
+
+	/// The type of this permission. It can be the name of a fragment, for example, `c8y_Restart`.
+	public var type: String?
 
 	enum CodingKeys: String, CodingKey {
-		case permission
 		case id
-		case type
+		case permission
 		case scope
+		case type
 	}
 
 	public init() {
+	}
+
+	/// The permission level.
+	public enum C8yPermission: String, Codable {
+		case admin = "ADMIN"
+		case read = "READ"
+		case all = "*"
+	}
+
+	/// The scope of this permission.
+	public enum C8yScope: String, Codable {
+		case alarm = "ALARM"
+		case audit = "AUDIT"
+		case event = "EVENT"
+		case managedobject = "MANAGED_OBJECT"
+		case measurement = "MEASUREMENT"
+		case operation = "OPERATION"
+		case all = "*"
 	}
 }

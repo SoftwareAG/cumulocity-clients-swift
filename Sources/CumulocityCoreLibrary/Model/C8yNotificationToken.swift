@@ -10,7 +10,7 @@ import Foundation
 
 public struct C8yNotificationToken: Codable {
 
-	/// JWT (JSON web token) access token.
+	/// JWT (JSON Web Token) access token.
 	public var token: String?
 
 	enum CodingKeys: String, CodingKey {

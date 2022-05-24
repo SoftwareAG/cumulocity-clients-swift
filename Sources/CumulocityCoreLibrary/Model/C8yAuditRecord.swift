@@ -19,11 +19,11 @@ public struct C8yAuditRecord: Codable {
 		self.creationTime = try container.decodeIfPresent(String.self, forKey: .creationTime)
 		self.id = try container.decodeIfPresent(String.self, forKey: .id)
 		self.`self` = try container.decodeIfPresent(String.self, forKey: .`self`)
-		self.severity = try container.decodeIfPresent(C8yAuditSeverity.self, forKey: .severity)
-		self.source = try container.decodeIfPresent(C8yAuditSource.self, forKey: .source)
+		self.severity = try container.decodeIfPresent(C8ySeverity.self, forKey: .severity)
+		self.source = try container.decodeIfPresent(C8ySource.self, forKey: .source)
 		self.text = try container.decodeIfPresent(String.self, forKey: .text)
 		self.time = try container.decodeIfPresent(String.self, forKey: .time)
-		self.type = try container.decodeIfPresent(C8yAuditType.self, forKey: .type)
+		self.type = try container.decodeIfPresent(C8yType.self, forKey: .type)
 		self.user = try container.decodeIfPresent(String.self, forKey: .user)
 		if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
 			for (typeName, decoder) in C8yAuditRecord.decoders {
@@ -77,10 +77,10 @@ public struct C8yAuditRecord: Codable {
 	public var `self`: String?
 
 	/// The severity of the audit action.
-	public var severity: C8yAuditSeverity?
+	public var severity: C8ySeverity?
 
 	/// The managed object to which the audit is associated.
-	public var source: C8yAuditSource?
+	public var source: C8ySource?
 
 	/// Details of the action that was carried out.
 	public var text: String?
@@ -89,7 +89,7 @@ public struct C8yAuditRecord: Codable {
 	public var time: String?
 
 	/// Identifies the platform component of the audit.
-	public var type: C8yAuditType?
+	public var type: C8yType?
 
 	/// The user who carried out the activity.
 	public var user: String?
@@ -115,11 +115,16 @@ public struct C8yAuditRecord: Codable {
 		case customProperties
 	}
 
-	public init() {
+	public init(activity: String, source: C8ySource, text: String, time: String, type: C8yType) {
+		self.activity = activity
+		self.source = source
+		self.text = text
+		self.time = time
+		self.type = type
 	}
 
 	/// The severity of the audit action.
-	public enum C8yAuditSeverity: String, Codable {
+	public enum C8ySeverity: String, Codable {
 		case critical = "CRITICAL"
 		case major = "MAJOR"
 		case minor = "MINOR"
@@ -128,7 +133,7 @@ public struct C8yAuditRecord: Codable {
 	}
 
 	/// Identifies the platform component of the audit.
-	public enum C8yAuditType: String, Codable {
+	public enum C8yType: String, Codable {
 		case alarm = "Alarm"
 		case application = "Application"
 		case bulkoperation = "BulkOperation"
@@ -227,7 +232,7 @@ public struct C8yAuditRecord: Codable {
 	}
 
 	/// The managed object to which the audit is associated.
-	public struct C8yAuditSource: Codable {
+	public struct C8ySource: Codable {
 	
 		/// Unique identifier of the object.
 		public var id: String?
@@ -240,7 +245,8 @@ public struct C8yAuditRecord: Codable {
 			case `self` = "self"
 		}
 	
-		public init() {
+		public init(id: String) {
+			self.id = id
 		}
 	}
 }

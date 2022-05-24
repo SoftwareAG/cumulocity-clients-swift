@@ -52,7 +52,7 @@ public class AuditsApi: AdaptableApi {
 	///		  The username to search for.
 	/// 	- withTotalPages 
 	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getAuditRecordCollectionResource(application: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, source: String? = nil, type: String? = nil, user: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yAuditRecordCollection, Swift.Error> {
+	public func getAuditRecords(application: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, source: String? = nil, type: String? = nil, user: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yAuditRecordCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = application { queryItems.append(URLQueryItem(name: "application", value: String(parameter)))}
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
@@ -83,19 +83,19 @@ public class AuditsApi: AdaptableApi {
 	/// Create an audit record
 	/// Create an audit record.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_AUDIT_ADMIN <b>OR</b> ROLE_SYSTEM <b>OR</b> AUDIT_ADMIN permission on the resource
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
 	/// 	- 201
-	///		  The request has succeeded and the audit record is sent in the response.
+	///		  An audit record was created.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
 	/// - Parameters:
 	/// 	- body 
-	public func postAuditRecordCollectionResource(body: C8yAuditRecord) throws -> AnyPublisher<C8yAuditRecord, Swift.Error> {
+	public func createAuditRecord(body: C8yAuditRecord) throws -> AnyPublisher<C8yAuditRecord, Swift.Error> {
 		var requestBody = body
 		requestBody.severity = nil
 		requestBody.application = nil
@@ -125,9 +125,9 @@ public class AuditsApi: AdaptableApi {
 	/// Retrieve a specific audit record
 	/// Retrieve a specific audit record by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_AUDIT_READ <b>OR</b> AUDIT_READ permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -138,7 +138,7 @@ public class AuditsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the audit record.
-	public func getAuditRecordResource(id: String) throws -> AnyPublisher<C8yAuditRecord, Swift.Error> {
+	public func getAuditRecord(id: String) throws -> AnyPublisher<C8yAuditRecord, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/audit/auditRecords/\(id)")
 			.set(httpMethod: "get")

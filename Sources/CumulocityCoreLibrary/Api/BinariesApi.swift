@@ -45,7 +45,7 @@ public class BinariesApi: AdaptableApi {
 	///		  The type of managed object to search for.
 	/// 	- withTotalPages 
 	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getBinariesCollectionResource(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, ids: String? = nil, owner: String? = nil, pageSize: Int? = nil, text: String? = nil, type: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yBinaryCollection, Swift.Error> {
+	public func getBinaries(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, ids: String? = nil, owner: String? = nil, pageSize: Int? = nil, text: String? = nil, type: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yBinaryCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = childAdditionId { queryItems.append(URLQueryItem(name: "childAdditionId", value: String(parameter)))}
 		if let parameter = childAssetId { queryItems.append(URLQueryItem(name: "childAssetId", value: String(parameter)))}
@@ -81,16 +81,16 @@ public class BinariesApi: AdaptableApi {
 	/// 
 	/// After the file has been uploaded, the corresponding managed object will contain the fragment `c8y_IsBinary`.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> ROLE_INVENTORY_CREATE
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
 	/// 	- 201
 	///		  A file was uploaded.
 	/// 	- 400
-	///		  Bad request – invalid payload.
+	///		  Unprocessable Entity – invalid payload.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
 	/// 	- 403
@@ -99,7 +99,7 @@ public class BinariesApi: AdaptableApi {
 	/// 	- `object` 
 	/// 	- file 
 	///		  Path of the file to be uploaded.
-	public func postBinariesCollectionResource(`object`: C8yBinaryInfo, file: Data) throws -> AnyPublisher<C8yBinary, Swift.Error> {
+	public func uploadBinary(`object`: C8yBinaryInfo, file: Data) throws -> AnyPublisher<C8yBinary, Swift.Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
 		try multipartBuilder.addBodyPart(named: "object", data: `object`, mimeType: "application/json");
 		try multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/plain");
@@ -124,9 +124,9 @@ public class BinariesApi: AdaptableApi {
 	/// Retrieve a stored file
 	/// Retrieve a stored file (managed object) by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_READ <b>OR</b> owner of the resource <b>OR</b> MANAGE_OBJECT_READ permission on the resource
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -137,7 +137,7 @@ public class BinariesApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func getBinariesResource(id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func getBinary(id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/binaries/\(id)")
 			.set(httpMethod: "get")
@@ -156,9 +156,9 @@ public class BinariesApi: AdaptableApi {
 	/// Replace a file
 	/// Upload and replace the attached file (binary) of a specific managed object by a given ID.<br>
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> owner of the resource <b>OR</b> MANAGE_OBJECT_ADMIN permission on the resource
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -170,7 +170,7 @@ public class BinariesApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func putBinariesResource(body: Data, id: String) throws -> AnyPublisher<C8yBinary, Swift.Error> {
+	public func replaceBinary(body: Data, id: String) throws -> AnyPublisher<C8yBinary, Swift.Error> {
 		let requestBody = body
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/binaries/\(id)")
@@ -192,9 +192,9 @@ public class BinariesApi: AdaptableApi {
 	/// Remove a stored file
 	/// Remove a managed object and its stored file by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> owner of the resource <b>OR</b> MANAGE_OBJECT_ADMIN permission on the resource
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -205,7 +205,7 @@ public class BinariesApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func deleteBinariesResource(id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func removeBinary(id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/binaries/\(id)")
 			.set(httpMethod: "delete")

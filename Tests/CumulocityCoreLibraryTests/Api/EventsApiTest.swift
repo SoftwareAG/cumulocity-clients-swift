@@ -22,10 +22,10 @@ public class EventsApiTest: XCTestCase {
 		}
 	}
 
-	public func testGetEventCollectionResource() {
+	public func testGetEvents() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableEventsApi().getEventCollectionResource().sink(receiveCompletion: { completion in
+		try? TestableEventsApi().getEvents().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()

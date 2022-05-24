@@ -20,7 +20,7 @@ public class SystemOptionsApi: AdaptableApi {
 	///		  The request has succeeded and the system options are sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
-	public func getSystemOptionCollectionResource() throws -> AnyPublisher<C8ySystemOptionCollection, Swift.Error> {
+	public func getSystemOptions() throws -> AnyPublisher<C8ySystemOptionCollection, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/system/options")
 			.set(httpMethod: "get")
@@ -49,7 +49,7 @@ public class SystemOptionsApi: AdaptableApi {
 	///		  The category of the system options.
 	/// 	- key 
 	///		  The key of a system option.
-	public func getSystemOptionResource(category: String, key: String) throws -> AnyPublisher<C8ySystemOption, Swift.Error> {
+	public func getSystemOption(category: String, key: String) throws -> AnyPublisher<C8ySystemOption, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/system/options/\(category)/\(key)")
 			.set(httpMethod: "get")

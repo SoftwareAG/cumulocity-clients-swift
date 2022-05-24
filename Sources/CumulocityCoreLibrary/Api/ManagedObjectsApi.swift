@@ -63,7 +63,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  When set to true, the returned references of child parents will return the device's parents (if any). Otherwise, it will be an empty array.
 	/// 	- withTotalPages 
 	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getManagedObjectCollectionResource(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, fragmentType: String? = nil, ids: String? = nil, onlyRoots: Bool? = nil, owner: String? = nil, pageSize: Int? = nil, q: String? = nil, query: String? = nil, skipChildrenNames: Bool? = nil, text: String? = nil, type: String? = nil, withChildren: Bool? = nil, withGroups: Bool? = nil, withParents: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectCollection, Swift.Error> {
+	public func getManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, fragmentType: String? = nil, ids: String? = nil, onlyRoots: Bool? = nil, owner: String? = nil, pageSize: Int? = nil, q: String? = nil, query: String? = nil, skipChildrenNames: Bool? = nil, text: String? = nil, type: String? = nil, withChildren: Bool? = nil, withGroups: Bool? = nil, withParents: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = childAdditionId { queryItems.append(URLQueryItem(name: "childAdditionId", value: String(parameter)))}
 		if let parameter = childAssetId { queryItems.append(URLQueryItem(name: "childAssetId", value: String(parameter)))}
@@ -114,9 +114,9 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 
 	/// > **&#9432; Info:** For more details about fragments with specific meanings, review the sections [Device management library](#section/Device-management-library) and [Sensor library](#section/Sensor-library).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> ROLE_INVENTORY_CREATE
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -128,7 +128,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func postManagedObjectCollectionResource(body: C8yManagedObject) throws -> AnyPublisher<C8yManagedObject, Swift.Error> {
+	public func createManagedObject(body: C8yManagedObject) throws -> AnyPublisher<C8yManagedObject, Swift.Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.additionParents = nil
@@ -161,9 +161,9 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// Retrieve the total number of managed objects
 	/// Retrieve the total number of managed objects (for example, devices, assets, etc.) registered in your tenant, or a subset based on queries.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_READ is not required, but if the current user doesn't have this role, the response will contain the number of inventory objects accessible for the user.
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -172,8 +172,6 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
 	/// - Parameters:
-	/// 	- ids 
-	///		  The managed object IDs to search for (comma separated).
 	/// 	- childAdditionId 
 	///		  Search for a specific child addition and list all the groups to which it belongs.
 	/// 	- childAssetId 
@@ -182,19 +180,21 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  Search for a specific child device and list all the groups to which it belongs.
 	/// 	- fragmentType 
 	///		  A characteristic which identifies a managed object or event, for example, geolocation, electricity sensor, relay state.
+	/// 	- ids 
+	///		  The managed object IDs to search for (comma separated).
 	/// 	- owner 
 	///		  Username of the owner of the managed objects.
 	/// 	- text 
 	///		  Search for managed objects where any property value is equal to the given one. Only string values are supported.
 	/// 	- type 
 	///		  The type of managed object to search for.
-	public func getCountManagedObjectCollectionResource(ids: String? = nil, childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, fragmentType: String? = nil, owner: String? = nil, text: String? = nil, type: String? = nil) throws -> AnyPublisher<Int, Swift.Error> {
+	public func getNumberOfManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, fragmentType: String? = nil, ids: String? = nil, owner: String? = nil, text: String? = nil, type: String? = nil) throws -> AnyPublisher<Int, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = ids { queryItems.append(URLQueryItem(name: "ids", value: String(parameter)))}
 		if let parameter = childAdditionId { queryItems.append(URLQueryItem(name: "childAdditionId", value: String(parameter)))}
 		if let parameter = childAssetId { queryItems.append(URLQueryItem(name: "childAssetId", value: String(parameter)))}
 		if let parameter = childDeviceId { queryItems.append(URLQueryItem(name: "childDeviceId", value: String(parameter)))}
 		if let parameter = fragmentType { queryItems.append(URLQueryItem(name: "fragmentType", value: String(parameter)))}
+		if let parameter = ids { queryItems.append(URLQueryItem(name: "ids", value: String(parameter)))}
 		if let parameter = owner { queryItems.append(URLQueryItem(name: "owner", value: String(parameter)))}
 		if let parameter = text { queryItems.append(URLQueryItem(name: "text", value: String(parameter)))}
 		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter)))}
@@ -217,9 +217,9 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// Retrieve a specific managed object
 	/// Retrieve a specific managed object (for example, device, group, template) by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_READ <b>OR</b> owner of the source <b>OR</b> MANAGE_OBJECT_READ permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -238,7 +238,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  Determines if children with ID and name should be returned when fetching the managed object. Set it to false to improve query performance.
 	/// 	- withParents 
 	///		  When set to true, the returned references of child parents will return the device's parents (if any). Otherwise, it will be an empty array.
-	public func getManagedObjectResource(id: String, skipChildrenNames: Bool? = nil, withChildren: Bool? = nil, withParents: Bool? = nil) throws -> AnyPublisher<C8yManagedObject, Swift.Error> {
+	public func getManagedObject(id: String, skipChildrenNames: Bool? = nil, withChildren: Bool? = nil, withParents: Bool? = nil) throws -> AnyPublisher<C8yManagedObject, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = skipChildrenNames { queryItems.append(URLQueryItem(name: "skipChildrenNames", value: String(parameter)))}
 		if let parameter = withChildren { queryItems.append(URLQueryItem(name: "withChildren", value: String(parameter)))}
@@ -264,9 +264,9 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 
 	/// For example, if you want to specify that your managed object is a device, you must add the fragment `c8y_IsDevice`.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -280,7 +280,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func putManagedObjectResource(body: C8yManagedObject, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func updateManagedObject(body: C8yManagedObject, id: String) throws -> AnyPublisher<C8yManagedObject, Swift.Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.additionParents = nil
@@ -289,7 +289,6 @@ public class ManagedObjectsApi: AdaptableApi {
 		requestBody.childAssets = nil
 		requestBody.creationTime = nil
 		requestBody.childAdditions = nil
-		requestBody.name = nil
 		requestBody.`self` = nil
 		requestBody.assetParents = nil
 		requestBody.deviceParents = nil
@@ -298,7 +297,7 @@ public class ManagedObjectsApi: AdaptableApi {
 			.set(resourcePath: "/inventory/managedObjects/\(id)")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
-			.add(header: "Accept", value: "application/json")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobject+json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -308,7 +307,7 @@ public class ManagedObjectsApi: AdaptableApi {
 				throw URLError(.badServerResponse)
 			}
 			return element.data
-		}).eraseToAnyPublisher()
+		}).decode(type: C8yManagedObject.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
 	/// Remove a specific managed object
@@ -316,9 +315,9 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 
 	/// > **&#9432; Info:** Inventory DELETE requests are not synchronous. The response could be returned before the delete request has been completed. This may happen especially when the deleted managed object has a lot of associated data. After sending the request, the platform starts deleting the associated data in an asynchronous way. Finally, the requested managed object is deleted after all associated data has been deleted.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -337,7 +336,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  When set to `true` all the hierarchy will be deleted without checking the type of managed object. It takes precedence over the parameter `cascade`.
 	/// 	- withDeviceUser 
 	///		  When set to `true` and the managed object is a device, it deletes the associated device user (credentials).
-	public func deleteManagedObjectResource(id: String, cascade: Bool? = nil, forceCascade: Bool? = nil, withDeviceUser: Bool? = nil) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteManagedObject(id: String, cascade: Bool? = nil, forceCascade: Bool? = nil, withDeviceUser: Bool? = nil) throws -> AnyPublisher<Data, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = cascade { queryItems.append(URLQueryItem(name: "cascade", value: String(parameter)))}
 		if let parameter = forceCascade { queryItems.append(URLQueryItem(name: "forceCascade", value: String(parameter)))}
@@ -361,9 +360,9 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// Retrieve the latest availability date of a specific managed object
 	/// Retrieve the date when a specific managed object (by a given ID) sent the last message to Cumulocity IoT.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -373,12 +372,10 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// 	- 404
 	///		  Managed object not found.
-	/// 	- 422
-	///		  Invalid data was sent.
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func getLastAvailabilityManagedObjectResource(id: String) throws -> AnyPublisher<String, Swift.Error> {
+	public func getLatestAvailability(id: String) throws -> AnyPublisher<String, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/availability")
 			.set(httpMethod: "get")
@@ -397,9 +394,9 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// Retrieve all supported measurement fragments of a specific managed object
 	/// Retrieve all measurement types of a specific managed object by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_READ <b>OR</b> owner of the source <b>OR</b> MANAGE_OBJECT_READ permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -409,12 +406,10 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// 	- 404
 	///		  Managed object not found.
-	/// 	- 422
-	///		  Invalid data was sent.
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func getSupportedMeasurementsManagedObjectResource(id: String) throws -> AnyPublisher<C8ySupportedMeasurements, Swift.Error> {
+	public func getSupportedMeasurements(id: String) throws -> AnyPublisher<C8ySupportedMeasurements, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/supportedMeasurements")
 			.set(httpMethod: "get")
@@ -433,9 +428,9 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// Retrieve all supported measurement fragments and series of a specific managed object
 	/// Retrieve all supported measurement fragments and series of a specific managed object by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_READ <b>OR</b> owner of the source <b>OR</b> MANAGE_OBJECT_READ permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -445,12 +440,10 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// 	- 404
 	///		  Managed object not found.
-	/// 	- 422
-	///		  Invalid data was sent.
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func getSupportedSeriesManagedObjectResource(id: String) throws -> AnyPublisher<C8ySupportedSeries, Swift.Error> {
+	public func getSupportedSeries(id: String) throws -> AnyPublisher<C8ySupportedSeries, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/supportedSeries")
 			.set(httpMethod: "get")
@@ -466,17 +459,17 @@ public class ManagedObjectsApi: AdaptableApi {
 		}).decode(type: C8ySupportedSeries.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
-	/// Retrieve the username and status of a specific managed object
+	/// Retrieve the username and state of a specific managed object
 	/// Retrieve the device owner's username and state (enabled or disabled) of a specific managed object (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_READ <b>OR</b> owner of the source <b>OR</b> MANAGE_OBJECT_READ permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
 	/// 	- 200
-	///		  The request has succeeded and the username and status are sent in the response.
+	///		  The request has succeeded and the username and state are sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
 	/// 	- 404
@@ -484,7 +477,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func getManagedObjectUserResource(id: String) throws -> AnyPublisher<C8yManagedObjectUser, Swift.Error> {
+	public func getManagedObjectUser(id: String) throws -> AnyPublisher<C8yManagedObjectUser, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/user")
 			.set(httpMethod: "get")
@@ -503,9 +496,9 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// Update the user's details of a specific managed object
 	/// Update the device owner's state (enabled or disabled) of a specific managed object (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -519,7 +512,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func putManagedObjectUserResource(body: C8yManagedObjectUser, id: String) throws -> AnyPublisher<C8yManagedObjectUser, Swift.Error> {
+	public func updateManagedObjectUser(body: C8yManagedObjectUser, id: String) throws -> AnyPublisher<C8yManagedObjectUser, Swift.Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.userName = nil

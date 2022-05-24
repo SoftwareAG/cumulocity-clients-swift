@@ -10,21 +10,28 @@ import Foundation
 
 public struct C8yNewDeviceRequest: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
-
 	/// External ID of the device.
 	public var id: String?
 
+	/// A URL linking to this resource.
+	public var `self`: String?
+
 	/// Status of this new device request.
-	public var status: C8yNewDeviceRequestStatus?
+	public var status: C8yStatus?
 
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
 		case id
+		case `self` = "self"
 		case status
 	}
 
 	public init() {
+	}
+
+	/// Status of this new device request.
+	public enum C8yStatus: String, Codable {
+		case waitingforconnection = "WAITING_FOR_CONNECTION"
+		case pendingacceptance = "PENDING_ACCEPTANCE"
+		case accepted = "ACCEPTED"
 	}
 }

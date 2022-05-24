@@ -18,9 +18,9 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	/// Retrieve a list of new device requests
 	/// Retrieve a list of new device requests.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_DEVICE_CONTROL_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -28,11 +28,23 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	///		  The request has succeeded and the list of new device requests sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
-	public func getNewDeviceRequestCollectionResource() throws -> AnyPublisher<C8yNewDeviceRequestCollection, Swift.Error> {
+	/// - Parameters:
+	/// 	- currentPage 
+	///		  The current page of the paginated results.
+	/// 	- pageSize 
+	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+	/// 	- withTotalPages 
+	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getNewDeviceRequests(currentPage: Int? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yNewDeviceRequestCollection, Swift.Error> {
+		var queryItems: [URLQueryItem] = []
+		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
+		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
+		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/newDeviceRequests")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.newdevicerequestcollection+json")
+			.set(queryItems: queryItems)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -47,9 +59,9 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	/// Create a new device request
 	/// Create a new device request.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_DEVICE_CONTROL_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -59,7 +71,7 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// - Parameters:
 	/// 	- body 
-	public func postNewDeviceRequestCollectionResource(body: C8yNewDeviceRequest) throws -> AnyPublisher<C8yNewDeviceRequest, Swift.Error> {
+	public func createNewDeviceRequest(body: C8yNewDeviceRequest) throws -> AnyPublisher<C8yNewDeviceRequest, Swift.Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.status = nil
@@ -83,9 +95,9 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	/// Retrieve a specific new device request
 	/// Retrieve a specific new device request (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_DEVICE_CONTROL_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -98,7 +110,7 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- requestId 
 	///		  Unique identifier of the new device request.
-	public func getNewDeviceRequestResource(requestId: String) throws -> AnyPublisher<C8yNewDeviceRequest, Swift.Error> {
+	public func getNewDeviceRequest(requestId: String) throws -> AnyPublisher<C8yNewDeviceRequest, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/newDeviceRequests/\(requestId)")
 			.set(httpMethod: "get")
@@ -115,13 +127,12 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	}
 	
 	/// Update a specific new device request status
-	/// 
 	/// Update a specific new device request (by a given ID).
 	/// You can only update its status.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_DEVICE_CONTROL_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -135,7 +146,7 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- requestId 
 	///		  Unique identifier of the new device request.
-	public func putNewDeviceRequestResource(body: C8yNewDeviceRequest, requestId: String) throws -> AnyPublisher<C8yNewDeviceRequest, Swift.Error> {
+	public func updateNewDeviceRequest(body: C8yNewDeviceRequest, requestId: String) throws -> AnyPublisher<C8yNewDeviceRequest, Swift.Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -159,9 +170,9 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	/// Delete a specific new device request
 	/// Delete a specific new device request (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_USER_MANAGEMENT_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -176,7 +187,7 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- requestId 
 	///		  Unique identifier of the new device request.
-	public func deleteNewDeviceRequestResource(requestId: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteNewDeviceRequest(requestId: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/newDeviceRequests/\(requestId)")
 			.set(httpMethod: "delete")

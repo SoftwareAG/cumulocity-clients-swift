@@ -22,10 +22,10 @@ public class ManagedObjectsApiTest: XCTestCase {
 		}
 	}
 
-	public func testGetManagedObjectCollectionResource() {
+	public func testGetManagedObjects() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableManagedObjectsApi().getManagedObjectCollectionResource().sink(receiveCompletion: { completion in
+		try? TestableManagedObjectsApi().getManagedObjects().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()
@@ -34,10 +34,10 @@ public class ManagedObjectsApiTest: XCTestCase {
 		wait(for: [expectation], timeout: 10)
 	}
 	
-	public func testGetCountManagedObjectCollectionResource() {
+	public func testGetNumberOfManagedObjects() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableManagedObjectsApi().getCountManagedObjectCollectionResource().sink(receiveCompletion: { completion in
+		try? TestableManagedObjectsApi().getNumberOfManagedObjects().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()

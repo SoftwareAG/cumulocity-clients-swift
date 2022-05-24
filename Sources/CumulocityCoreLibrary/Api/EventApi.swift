@@ -15,9 +15,9 @@ public class EventApi: AdaptableApi {
 	/// Retrieve URIs to collections of events
 	/// Retrieve URIs and URI templates to collections of events.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_EVENT_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:

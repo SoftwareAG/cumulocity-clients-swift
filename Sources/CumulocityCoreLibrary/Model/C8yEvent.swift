@@ -16,7 +16,7 @@ public struct C8yEvent: Codable {
 		self.lastUpdated = try container.decodeIfPresent(String.self, forKey: .lastUpdated)
 		self.id = try container.decodeIfPresent(String.self, forKey: .id)
 		self.`self` = try container.decodeIfPresent(String.self, forKey: .`self`)
-		self.source = try container.decodeIfPresent(C8yEventSource.self, forKey: .source)
+		self.source = try container.decodeIfPresent(C8ySource.self, forKey: .source)
 		self.text = try container.decodeIfPresent(String.self, forKey: .text)
 		self.time = try container.decodeIfPresent(String.self, forKey: .time)
 		self.type = try container.decodeIfPresent(String.self, forKey: .type)
@@ -58,7 +58,7 @@ public struct C8yEvent: Codable {
 	public var `self`: String?
 
 	/// The managed object to which the event is associated.
-	public var source: C8yEventSource?
+	public var source: C8ySource?
 
 	/// Description of the event.
 	public var text: String?
@@ -88,6 +88,24 @@ public struct C8yEvent: Codable {
 	}
 
 	public init() {
+	}
+
+	/// The managed object to which the event is associated.
+	public struct C8ySource: Codable {
+	
+		/// Unique identifier of the object.
+		public var id: String?
+	
+		/// A URL linking to this resource.
+		public var `self`: String?
+	
+		enum CodingKeys: String, CodingKey {
+			case id
+			case `self` = "self"
+		}
+	
+		public init() {
+		}
 	}
 }
 

@@ -11,11 +11,8 @@ import Foundation
 /// An inventory assignment.
 public struct C8yInventoryAssignment: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
-
 	/// A unique identifier for this inventory assignment.
-	public var id: String?
+	public var id: Int?
 
 	/// A unique identifier for the managed object for which the roles are assigned.
 	public var managedObject: String?
@@ -23,11 +20,14 @@ public struct C8yInventoryAssignment: Codable {
 	/// An array of roles that are assigned to the managed object for the user.
 	public var roles: [C8yInventoryRole]?
 
+	/// A URL linking to this resource.
+	public var `self`: String?
+
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
 		case id
 		case managedObject
 		case roles
+		case `self` = "self"
 	}
 
 	public init() {

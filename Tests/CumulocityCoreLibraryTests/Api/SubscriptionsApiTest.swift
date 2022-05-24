@@ -22,10 +22,10 @@ public class SubscriptionsApiTest: XCTestCase {
 		}
 	}
 
-	public func testGetNotificationSubscriptionCollectionResource() {
+	public func testGetSubscriptions() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableSubscriptionsApi().getNotificationSubscriptionCollectionResource().sink(receiveCompletion: { completion in
+		try? TestableSubscriptionsApi().getSubscriptions().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()

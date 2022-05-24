@@ -24,9 +24,9 @@ public class DeviceCredentialsApi: AdaptableApi {
 	/// Create device credentials
 	/// Create device credentials.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_DEVICE_BOOTSTRAP
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -36,7 +36,7 @@ public class DeviceCredentialsApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// - Parameters:
 	/// 	- body 
-	public func postDeviceCredentialsCollectionResource(body: C8yDeviceCredentials) throws -> AnyPublisher<C8yDeviceCredentials, Swift.Error> {
+	public func createDeviceCredentials(body: C8yDeviceCredentials) throws -> AnyPublisher<C8yDeviceCredentials, Swift.Error> {
 		var requestBody = body
 		requestBody.password = nil
 		requestBody.tenantId = nil
@@ -68,16 +68,16 @@ public class DeviceCredentialsApi: AdaptableApi {
 	/// 
 	/// |Name|Mandatory|Description|
 	/// |--- |--- |--- |
-	/// |ID|Yes|The external ID of a device|
-	/// |CREDENTIALS|Yes|Password for the device's user|
+	/// |ID|Yes|The external ID of a device.|
+	/// |CREDENTIALS|Yes|Password for the device's user.|
 	/// |AUTH_TYPE|No|Required authentication type for the device's user. If the device uses credentials, this can be skipped or filled with "BASIC". Devices that use certificates must set "CERTIFICATES".|
-	/// |TENANT|No|The ID of the tenant for which the registration is executed (only allowed for the management tenant)|
-	/// |TYPE|No|The type of the device representation|
-	/// |NAME|No|The name of the device representation|
-	/// |ICCID|No|The ICCID of the device (SIM card number). If the ICCID appears in file, the import adds a fragment `c8y_Mobile.iccid`. The ICCID value is not mandatory for each row, see the example for an HTTP request below|
-	/// |IDTYPE|No|The type of the external ID. If IDTYPE doesn't appear in the file, the default value is used. The default value is `c8y_Serial`. The IDTYPE value is not mandatory for each row, see the example for an HTTP request below|
-	/// |PATH|No|The path in the groups hierarchy where the device is added. PATH contains the name of each group separated by `/`, that is: `main_group/sub_group/.../last_sub_group`. If a group does not exist, the import creates the group|
-	/// |SHELL|No|If this column contains a value of 1, the import adds the SHELL feature to the device (specifically the `c8y_SupportedOperations` fragment). The SHELL value is not mandatory for each row, see the example for an HTTP request below|
+	/// |TENANT|No|The ID of the tenant for which the registration is executed (only allowed for the management tenant).|
+	/// |TYPE|No|The type of the device representation.|
+	/// |NAME|No|The name of the device representation.|
+	/// |ICCID|No|The ICCID of the device (SIM card number). If the ICCID appears in file, the import adds a fragment `c8y_Mobile.iccid`. The ICCID value is not mandatory for each row, see the example for an HTTP request below.|
+	/// |IDTYPE|No|The type of the external ID. If IDTYPE doesn't appear in the file, the default value is used. The default value is `c8y_Serial`. The IDTYPE value is not mandatory for each row, see the example for an HTTP request below.|
+	/// |PATH|No|The path in the groups hierarchy where the device is added. PATH contains the name of each group separated by `/`, that is: `main_group/sub_group/.../last_sub_group`. If a group does not exist, the import creates the group.|
+	/// |SHELL|No|If this column contains a value of 1, the import adds the SHELL feature to the device (specifically the `c8y_SupportedOperations` fragment). The SHELL value is not mandatory for each row, see the example for an HTTP request below.|
 	/// 
 	/// Section two is the rest of the CSV file. Section two contains the device information. The order and quantity of the values must be the same as of the headers.
 	/// 
@@ -121,9 +121,9 @@ public class DeviceCredentialsApi: AdaptableApi {
 	/// There is also a simple registration method that creates all registration requests at once, then each one needs to go through regular acceptance.
 	/// This simple registration only makes use of the ID and PATH fields from the list above.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_DEVICE_CONTROL_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -134,7 +134,7 @@ public class DeviceCredentialsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- file 
 	///		  The CSV file to be uploaded.
-	public func postBulkNewDeviceRequestCollectionResource(file: Data) throws -> AnyPublisher<C8yBulkNewDeviceRequest, Swift.Error> {
+	public func createBulkDeviceCredentials(file: Data) throws -> AnyPublisher<C8yBulkNewDeviceRequest, Swift.Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
 		try multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/csv");
 		let builder = URLRequestBuilder()

@@ -51,4 +51,11 @@ public struct C8yBinary: Codable {
 
 	public init() {
 	}
+
+	/// Fragment to identify this managed object as a file.
+	public struct C8yIsBinary: Codable {
+	
+		public init() {
+		}
+	}
 }

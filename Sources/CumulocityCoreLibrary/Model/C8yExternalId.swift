@@ -29,7 +29,9 @@ public struct C8yExternalId: Codable {
 		case type
 	}
 
-	public init() {
+	public init(externalId: String, type: String) {
+		self.externalId = externalId
+		self.type = type
 	}
 
 	/// The managed object linked to the external ID.

@@ -29,7 +29,7 @@ public class MeasurementApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement")
 			.set(httpMethod: "get")
-			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.measurementApi+json")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.measurementapi+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)

@@ -76,9 +76,9 @@ public class UsageStatisticsApi: AdaptableApi {
 	/// Retrieve statistics of the current tenant
 	/// Retrieve usage statistics of the current tenant.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_TENANT_STATISTICS_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -135,7 +135,7 @@ public class UsageStatisticsApi: AdaptableApi {
 	///		  End date or date and time of the statistics.
 	/// 	- tenant 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func getSummaryUsageStatistics(dateFrom: String? = nil, dateTo: String? = nil, tenant: String? = nil) throws -> AnyPublisher<C8ySummaryTenantUsageStatistics, Swift.Error> {
+	public func getTenantUsageStatistics(dateFrom: String? = nil, dateTo: String? = nil, tenant: String? = nil) throws -> AnyPublisher<C8ySummaryTenantUsageStatistics, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter)))}
 		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter)))}
@@ -159,9 +159,9 @@ public class UsageStatisticsApi: AdaptableApi {
 	/// Retrieve a summary of all usage statistics
 	/// Retrieve a summary of all tenants usage statistics.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_TENANT_MANAGEMENT_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -174,7 +174,7 @@ public class UsageStatisticsApi: AdaptableApi {
 	///		  Start date or date and time of the statistics.
 	/// 	- dateTo 
 	///		  End date or date and time of the statistics.
-	public func getSummaryAllTenantsUsageStatistics(dateFrom: String? = nil, dateTo: String? = nil) throws -> AnyPublisher<[C8ySummaryAllTenantsUsageStatistics], Swift.Error> {
+	public func getTenantsUsageStatistics(dateFrom: String? = nil, dateTo: String? = nil) throws -> AnyPublisher<[C8ySummaryAllTenantsUsageStatistics], Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter)))}
 		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter)))}

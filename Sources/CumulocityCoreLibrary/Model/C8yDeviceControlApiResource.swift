@@ -10,9 +10,6 @@ import Foundation
 
 public struct C8yDeviceControlApiResource: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
-
 	/// Collection of all operations.
 	public var operations: C8yOperations?
 
@@ -31,14 +28,17 @@ public struct C8yDeviceControlApiResource: Codable {
 	/// Read-only collection of all operations with a particular status, that should be executed on a particular device.
 	public var operationsByDeviceIdAndStatus: String?
 
+	/// A URL linking to this resource.
+	public var `self`: String?
+
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
 		case operations
 		case operationsByStatus
 		case operationsByAgentId
 		case operationsByAgentIdAndStatus
 		case operationsByDeviceId
 		case operationsByDeviceIdAndStatus
+		case `self` = "self"
 	}
 
 	public init() {

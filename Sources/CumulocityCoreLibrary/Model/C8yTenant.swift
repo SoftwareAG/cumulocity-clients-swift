@@ -10,12 +10,6 @@ import Foundation
 
 public struct C8yTenant: Codable {
 
-	/// Unique identifier of a Cumulocity IoT tenant.
-	public var id: String?
-
-	/// A URL linking to this resource.
-	public var `self`: String?
-
 	/// Email address of the tenant's administrator.
 	public var adminEmail: String?
 
@@ -45,11 +39,14 @@ public struct C8yTenant: Codable {
 	/// The date and time when the tenant was created.
 	public var creationTime: String?
 
-	/// A list of custom properties.
+	/// An object with a list of custom properties.
 	public var customProperties: C8yCustomProperties?
 
 	/// URL of the tenant's domain. The domain name permits only the use of alphanumeric characters separated by dots `.`, hyphens `-` and underscores `_`.
 	public var domain: String?
+
+	/// Unique identifier of a Cumulocity IoT tenant.
+	public var id: String?
 
 	/// Collection of the owned applications.
 	public var ownedApplications: C8yOwnedApplications?
@@ -57,12 +54,13 @@ public struct C8yTenant: Codable {
 	/// ID of the parent tenant.
 	public var parent: String?
 
+	/// A URL linking to this resource.
+	public var `self`: String?
+
 	/// Current status of the tenant.
-	public var status: C8yTenantStatus?
+	public var status: C8yStatus?
 
 	enum CodingKeys: String, CodingKey {
-		case id
-		case `self` = "self"
 		case adminEmail
 		case adminName
 		case adminPass
@@ -74,12 +72,20 @@ public struct C8yTenant: Codable {
 		case creationTime
 		case customProperties
 		case domain
+		case id
 		case ownedApplications
 		case parent
+		case `self` = "self"
 		case status
 	}
 
 	public init() {
+	}
+
+	/// Current status of the tenant.
+	public enum C8yStatus: String, Codable {
+		case active = "ACTIVE"
+		case suspended = "SUSPENDED"
 	}
 
 	/// Collection of the subscribed applications.

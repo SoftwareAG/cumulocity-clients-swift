@@ -22,10 +22,10 @@ public class RolesApiTest: XCTestCase {
 		}
 	}
 
-	public func testGetRoleCollectionResource() {
+	public func testGetUserRoles() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableRolesApi().getRoleCollectionResource().sink(receiveCompletion: { completion in
+		try? TestableRolesApi().getUserRoles().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()

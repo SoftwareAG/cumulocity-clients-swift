@@ -13,7 +13,10 @@ public struct C8yCurrentTenant: Codable {
 	/// Indicates if this tenant can create subtenants.
 	public var allowCreateTenants: Bool?
 
-	/// A list of custom properties.
+	/// Collection of the subscribed applications.
+	public var applications: C8yApplications?
+
+	/// An object with a list of custom properties.
 	public var customProperties: C8yCustomProperties?
 
 	/// URL of the tenant's domain. The domain name permits only the use of alphanumeric characters separated by dots `.`, hyphens `-` and underscores `_`.
@@ -25,16 +28,13 @@ public struct C8yCurrentTenant: Codable {
 	/// A URL linking to this resource.
 	public var `self`: String?
 
-	/// Collection of the subscribed applications.
-	public var applications: C8yApplications?
-
 	enum CodingKeys: String, CodingKey {
 		case allowCreateTenants
+		case applications
 		case customProperties
 		case domainName
 		case name
 		case `self` = "self"
-		case applications
 	}
 
 	public init() {

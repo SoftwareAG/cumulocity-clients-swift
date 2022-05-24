@@ -20,10 +20,14 @@ public struct C8yOption: Codable {
 	/// Value of this option.
 	public var value: String?
 
+	/// A URL linking to this resource.
+	public var `self`: String?
+
 	enum CodingKeys: String, CodingKey {
 		case category
 		case key
 		case value
+		case `self` = "self"
 	}
 
 	public init() {

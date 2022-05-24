@@ -12,14 +12,14 @@ public struct C8yOperation: Codable {
 	
 	public init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
-		self.`self` = try container.decodeIfPresent(String.self, forKey: .`self`)
-		self.id = try container.decodeIfPresent(String.self, forKey: .id)
+		self.bulkOperationId = try container.decodeIfPresent(String.self, forKey: .bulkOperationId)
 		self.creationTime = try container.decodeIfPresent(String.self, forKey: .creationTime)
 		self.deviceId = try container.decodeIfPresent(String.self, forKey: .deviceId)
 		self.deviceExternalIDs = try container.decodeIfPresent(C8yExternalIds.self, forKey: .deviceExternalIDs)
-		self.bulkOperationId = try container.decodeIfPresent(String.self, forKey: .bulkOperationId)
-		self.status = try container.decodeIfPresent(C8yOperationStatus.self, forKey: .status)
 		self.failureReason = try container.decodeIfPresent(String.self, forKey: .failureReason)
+		self.id = try container.decodeIfPresent(String.self, forKey: .id)
+		self.`self` = try container.decodeIfPresent(String.self, forKey: .`self`)
+		self.status = try container.decodeIfPresent(C8yStatus.self, forKey: .status)
 		self.comCumulocityModelWebCamDevice = try container.decodeIfPresent(C8yWebCamDevice.self, forKey: .comCumulocityModelWebCamDevice)
 		if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
 			for (typeName, decoder) in C8yOperation.decoders {
@@ -30,14 +30,14 @@ public struct C8yOperation: Codable {
 	
 	public func encode(to encoder: Encoder) throws {
 		var container = encoder.container(keyedBy: CodingKeys.self)
-		try container.encodeIfPresent(self.`self`, forKey: .`self`)
-		try container.encodeIfPresent(self.id, forKey: .id)
+		try container.encodeIfPresent(self.bulkOperationId, forKey: .bulkOperationId)
 		try container.encodeIfPresent(self.creationTime, forKey: .creationTime)
 		try container.encodeIfPresent(self.deviceId, forKey: .deviceId)
 		try container.encodeIfPresent(self.deviceExternalIDs, forKey: .deviceExternalIDs)
-		try container.encodeIfPresent(self.bulkOperationId, forKey: .bulkOperationId)
-		try container.encodeIfPresent(self.status, forKey: .status)
 		try container.encodeIfPresent(self.failureReason, forKey: .failureReason)
+		try container.encodeIfPresent(self.id, forKey: .id)
+		try container.encodeIfPresent(self.`self`, forKey: .`self`)
+		try container.encodeIfPresent(self.status, forKey: .status)
 		try container.encodeIfPresent(self.comCumulocityModelWebCamDevice, forKey: .comCumulocityModelWebCamDevice)
 		var additionalContainer = encoder.container(keyedBy: JSONCodingKeys.self)
 		for (typeName, encoder) in C8yOperation.encoders {
@@ -47,11 +47,8 @@ public struct C8yOperation: Codable {
 		}
 	}
 
-	/// A URL linking to this resource.
-	public var `self`: String?
-
-	/// Unique identifier of this operation.
-	public var id: String?
+	/// Reference to a bulk operation ID if this operation was scheduled from a bulk operation.
+	public var bulkOperationId: String?
 
 	/// Date and time when the operation was created in the database.
 	public var creationTime: String?
@@ -61,16 +58,19 @@ public struct C8yOperation: Codable {
 
 	public var deviceExternalIDs: C8yExternalIds?
 
-	/// Reference to a bulk operation ID if this operation was scheduled from a bulk operation.
-	public var bulkOperationId: String?
-
-	/// The status of the operation.
-	public var status: C8yOperationStatus?
-
 	/// Reason for the failure.
 	public var failureReason: String?
 
-	/// Custom operation of a webcam.
+	/// Unique identifier of this operation.
+	public var id: String?
+
+	/// A URL linking to this resource.
+	public var `self`: String?
+
+	/// The status of the operation.
+	public var status: C8yStatus?
+
+	/// Custom operation of a webcam. Note that this is an example for a custom object of the webcam operation. For other operations you can use other objects.
 	public var comCumulocityModelWebCamDevice: C8yWebCamDevice?
 
 	/// It is possible to add an arbitrary number of additional properties as a list of key-value pairs, for example, `"property1": {}`, `"property2": "value"`. These properties are known as custom fragments and can be of any type, for example, object or string. Each custom fragment is identified by a unique name.
@@ -80,14 +80,14 @@ public struct C8yOperation: Codable {
 	public var customFragments: [String: Any]? = [:]
 
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
-		case id
+		case bulkOperationId
 		case creationTime
 		case deviceId
 		case deviceExternalIDs
-		case bulkOperationId
-		case status
 		case failureReason
+		case id
+		case `self` = "self"
+		case status
 		case comCumulocityModelWebCamDevice = "com_cumulocity_model_WebCamDevice"
 		case customFragments
 	}
@@ -95,7 +95,15 @@ public struct C8yOperation: Codable {
 	public init() {
 	}
 
-	/// Custom operation of a webcam.
+	/// The status of the operation.
+	public enum C8yStatus: String, Codable {
+		case successful = "SUCCESSFUL"
+		case failed = "FAILED"
+		case executing = "EXECUTING"
+		case pending = "PENDING"
+	}
+
+	/// Custom operation of a webcam. Note that this is an example for a custom object of the webcam operation. For other operations you can use other objects.
 	public struct C8yWebCamDevice: Codable {
 	
 		public init() {

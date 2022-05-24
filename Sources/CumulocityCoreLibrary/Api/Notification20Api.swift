@@ -15,9 +15,9 @@ public class Notification20Api: AdaptableApi {
 	/// Retrieve URIs to collections of notification subscriptions
 	/// Retrieve URIs and URI templates to collections of notification subscriptions.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_NOTIFICATION_2_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:

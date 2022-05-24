@@ -11,15 +11,15 @@ import Foundation
 /// A collection of references to addition parent objects.
 public struct C8yObjectAdditionParents: Codable {
 
-	/// Link to this resource's addition parent objects.
-	public var `self`: String?
-
 	/// An array with the references to addition parent objects.
 	public var references: [C8yManagedObjectReferenceTuple]?
 
+	/// Link to this resource's addition parent objects.
+	public var `self`: String?
+
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
 		case references
+		case `self` = "self"
 	}
 
 	public init() {

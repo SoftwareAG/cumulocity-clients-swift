@@ -17,9 +17,9 @@ public class BootstrapUserApi: AdaptableApi {
 	/// 
 	/// This only works for microservice applications.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_APPLICATION_MANAGEMENT_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -32,7 +32,7 @@ public class BootstrapUserApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the application.
-	public func getApplicationUserRepresentation(id: String) throws -> AnyPublisher<C8yBootstrapUser, Swift.Error> {
+	public func getBootstrapUser(id: String) throws -> AnyPublisher<C8yBootstrapUser, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/bootstrapUser")
 			.set(httpMethod: "get")

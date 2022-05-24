@@ -20,9 +20,9 @@ public class EventsApi: AdaptableApi {
 	/// 
 	/// In case of executing [range queries](https://en.wikipedia.org/wiki/Range_query_(database)) between an upper and lower boundary, for example, querying using `dateFrom`–`dateTo` or `createdFrom`–`createdTo`, the oldest registered events are returned first. It is possible to change the order using the query parameter `revert=true`.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_EVENT_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -63,7 +63,7 @@ public class EventsApi: AdaptableApi {
 	///		  When set to `true` also events for related source devices will be included in the request. When this parameter is provided a `source` must be specified.
 	/// 	- withTotalPages 
 	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getEventCollectionResource(createdFrom: String? = nil, createdTo: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, fragmentValue: String? = nil, lastUpdatedFrom: String? = nil, lastUpdatedTo: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, source: String? = nil, type: String? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yEventCollection, Swift.Error> {
+	public func getEvents(createdFrom: String? = nil, createdTo: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, fragmentValue: String? = nil, lastUpdatedFrom: String? = nil, lastUpdatedTo: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, source: String? = nil, type: String? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yEventCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = createdFrom { queryItems.append(URLQueryItem(name: "createdFrom", value: String(parameter)))}
 		if let parameter = createdTo { queryItems.append(URLQueryItem(name: "createdTo", value: String(parameter)))}
@@ -106,9 +106,9 @@ public class EventsApi: AdaptableApi {
 	/// *  A description of the event.
 	/// *  The managed object which originated the event.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_EVENT_ADMIN <b>OR</b> owner of the source <b>OR</b> EVENT_ADMIN permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -122,7 +122,7 @@ public class EventsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func postEventCollectionResource(body: C8yEvent) throws -> AnyPublisher<C8yEvent, Swift.Error> {
+	public func createEvent(body: C8yEvent) throws -> AnyPublisher<C8yEvent, Swift.Error> {
 		var requestBody = body
 		requestBody.lastUpdated = nil
 		requestBody.creationTime = nil
@@ -153,9 +153,9 @@ public class EventsApi: AdaptableApi {
 	/// 
 	/// > **⚠️ Important:** Note that it is possible to call this endpoint without providing any parameter - it will result in deleting all events and it is not recommended.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_EVENT_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -180,7 +180,7 @@ public class EventsApi: AdaptableApi {
 	///		  The managed object ID to which the event is associated.
 	/// 	- type 
 	///		  The type of event to search for.
-	public func deleteEventCollectionResource(createdFrom: String? = nil, createdTo: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, source: String? = nil, type: String? = nil) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteEvents(createdFrom: String? = nil, createdTo: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, source: String? = nil, type: String? = nil) throws -> AnyPublisher<Data, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = createdFrom { queryItems.append(URLQueryItem(name: "createdFrom", value: String(parameter)))}
 		if let parameter = createdTo { queryItems.append(URLQueryItem(name: "createdTo", value: String(parameter)))}
@@ -208,9 +208,9 @@ public class EventsApi: AdaptableApi {
 	/// Retrieve a specific event
 	/// Retrieve a specific event by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_EVENT_READ <b>OR</b> owner of the source <b>OR</b> EVENT_READ permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -223,7 +223,7 @@ public class EventsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the event.
-	public func getEventResource(id: String) throws -> AnyPublisher<C8yEvent, Swift.Error> {
+	public func getEvent(id: String) throws -> AnyPublisher<C8yEvent, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)")
 			.set(httpMethod: "get")
@@ -240,11 +240,11 @@ public class EventsApi: AdaptableApi {
 	}
 	
 	/// Update a specific event
-	/// Update a specific event by a given ID.
+	/// Update a specific event by a given ID. Only its text description and custom fragments can be updated.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_EVENT_ADMIN <b>OR</b> owner of the source <b>OR</b> EVENT_ADMIN permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -260,7 +260,7 @@ public class EventsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the event.
-	public func putEventResource(body: C8yEvent, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func updateEvent(body: C8yEvent, id: String) throws -> AnyPublisher<C8yEvent, Swift.Error> {
 		var requestBody = body
 		requestBody.lastUpdated = nil
 		requestBody.creationTime = nil
@@ -273,7 +273,7 @@ public class EventsApi: AdaptableApi {
 			.set(resourcePath: "/event/events/\(id)")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.event+json")
-			.add(header: "Accept", value: "application/json")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.event+json")
 			.set(httpBody: try JSONEncoder().encode(requestBody))
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -283,15 +283,15 @@ public class EventsApi: AdaptableApi {
 				throw URLError(.badServerResponse)
 			}
 			return element.data
-		}).eraseToAnyPublisher()
+		}).decode(type: C8yEvent.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
 	/// Remove a specific event
 	/// Remove a specific event by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_EVENT_ADMIN <b>OR</b> owner of the source <b>OR</b> EVENT_ADMIN permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -306,7 +306,7 @@ public class EventsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the event.
-	public func deleteEventResource(id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteEvent(id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)")
 			.set(httpMethod: "delete")

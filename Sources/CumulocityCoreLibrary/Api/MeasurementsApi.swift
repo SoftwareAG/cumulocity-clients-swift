@@ -24,9 +24,9 @@ public class MeasurementsApi: AdaptableApi {
 	/// 
 	/// Review [Measurements Specifics](#tag/Measurements-Specifics) for details about data streaming and response formats.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_MEASUREMENT_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -55,7 +55,7 @@ public class MeasurementsApi: AdaptableApi {
 	///		  A characteristic which identifies the measurement.
 	/// 	- withTotalPages 
 	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getMeasurementCollectionResource(currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, source: String? = nil, type: String? = nil, valueFragmentSeries: String? = nil, valueFragmentType: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yMeasurementCollection, Swift.Error> {
+	public func getMeasurements(currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, source: String? = nil, type: String? = nil, valueFragmentSeries: String? = nil, valueFragmentType: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yMeasurementCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
 		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter)))}
@@ -103,9 +103,9 @@ public class MeasurementsApi: AdaptableApi {
 	/// 
 	/// > **&#9432; Info:** For more details about fragments with specific meanings, review the sections [Device management library](#section/Device-management-library) and [Sensor library](#section/Sensor-library).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_MEASUREMENT_ADMIN <b>OR</b> owner of the source <b>OR</b> MEASUREMENT_ADMIN permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -119,7 +119,7 @@ public class MeasurementsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func postMeasurementCollectionResource(body: C8yMeasurement) throws -> AnyPublisher<C8yMeasurement, Swift.Error> {
+	public func createMeasurement(body: C8yMeasurement) throws -> AnyPublisher<C8yMeasurement, Swift.Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -161,9 +161,9 @@ public class MeasurementsApi: AdaptableApi {
 	/// 
 	/// > **&#9432; Info:** For more details about fragments with specific meanings, review the sections [Device management library](#section/Device-management-library) and [Sensor library](#section/Sensor-library).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_MEASUREMENT_ADMIN <b>OR</b> owner of the source <b>OR</b> MEASUREMENT_ADMIN permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -177,7 +177,7 @@ public class MeasurementsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func postMeasurementCollectionResource(body: C8yMeasurementCollection) throws -> AnyPublisher<C8yMeasurementCollection, Swift.Error> {
+	public func createMeasurement(body: C8yMeasurementCollection) throws -> AnyPublisher<C8yMeasurementCollection, Swift.Error> {
 		var requestBody = body
 		requestBody.next = nil
 		requestBody.prev = nil
@@ -207,9 +207,9 @@ public class MeasurementsApi: AdaptableApi {
 	/// 
 	/// > **⚠️ Important:** Note that it is possible to call this endpoint without providing any parameter - it may result in deleting all measurements and it is not recommended.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_MEASUREMENT_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -230,7 +230,7 @@ public class MeasurementsApi: AdaptableApi {
 	///		  The managed object ID to which the measurement is associated.
 	/// 	- type 
 	///		  The type of measurement to search for.
-	public func deleteMeasurementCollectionResource(dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, source: String? = nil, type: String? = nil) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteMeasurements(dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, source: String? = nil, type: String? = nil) throws -> AnyPublisher<Data, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter)))}
 		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter)))}
@@ -256,9 +256,9 @@ public class MeasurementsApi: AdaptableApi {
 	/// Retrieve a specific measurement
 	/// Retrieve a specific measurement by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_MEASUREMENT_READ <b>OR</b> owner of the source <b>OR</b> MEASUREMENT_READ permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -271,7 +271,7 @@ public class MeasurementsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the measurement.
-	public func getMeasurementResource(id: String) throws -> AnyPublisher<C8yMeasurement, Swift.Error> {
+	public func getMeasurement(id: String) throws -> AnyPublisher<C8yMeasurement, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement/measurements/\(id)")
 			.set(httpMethod: "get")
@@ -290,9 +290,9 @@ public class MeasurementsApi: AdaptableApi {
 	/// Remove a specific measurement
 	/// Remove a specific measurement by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_MEASUREMENT_ADMIN <b>OR</b> owner of the source <b>OR</b> MEASUREMENT_ADMIN permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -307,7 +307,7 @@ public class MeasurementsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the measurement.
-	public func deleteMeasurementResource(id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteMeasurement(id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement/measurements/\(id)")
 			.set(httpMethod: "delete")
@@ -331,9 +331,9 @@ public class MeasurementsApi: AdaptableApi {
 	/// 
 	/// > **⚠️ Important:** For the aggregation to be done correctly, a device shall always use the same time zone when it sends dates.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_MEASUREMENT_READ <b>OR</b> owner of the source <b>OR</b> MEASUREMENT_READ permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -354,7 +354,7 @@ public class MeasurementsApi: AdaptableApi {
 	///		  The specific series to search for.
 	/// 	- source 
 	///		  The managed object ID to which the measurement is associated.
-	public func getMeasurementSeriesResource(aggregationType: String? = nil, dateFrom: String, dateTo: String, revert: Bool? = nil, series: String? = nil, source: String) throws -> AnyPublisher<C8yMeasurementSeries, Swift.Error> {
+	public func getMeasurementSeries(aggregationType: String? = nil, dateFrom: String, dateTo: String, revert: Bool? = nil, series: String? = nil, source: String) throws -> AnyPublisher<C8yMeasurementSeries, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = aggregationType { queryItems.append(URLQueryItem(name: "aggregationType", value: String(parameter)))}
 		queryItems.append(URLQueryItem(name: "dateFrom", value: String(dateFrom)))

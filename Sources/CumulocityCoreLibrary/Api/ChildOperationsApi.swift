@@ -18,9 +18,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// Retrieve all child additions of a specific managed object
 	/// Retrieve all child additions of a specific managed object by a given ID, or a subset based on queries.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_READ <b>OR</b> owner of the source <b>OR</b> MANAGE_OBJECT_READ permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -45,7 +45,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Determines if children with ID and name should be returned when fetching the managed object. Set it to false to improve query performance.
 	/// 	- withTotalPages 
 	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getManagedObjectChildAdditionsResource(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectReferenceCollection, Swift.Error> {
+	public func getChildAdditions(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectReferenceCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
@@ -75,9 +75,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// *  Assign multiple existing managed objects (by given child IDs) as child additions of another managed object (by a given ID).
 	/// *  Create a managed object in the inventory and assign it as a child addition to another managed object (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
-	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child OR MANAGE_OBJECT_ADMIN permission on the child))
-	/// </div></div>
+	/// <section><h5>Required roles</h5>
+	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child <b>OR</b> MANAGE_OBJECT_ADMIN permission on the child))
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -91,7 +91,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func postManagedObjectChildAdditionsResource(body: C8yChildOperationsAddOne, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func assignAsChildAddition(body: C8yChildOperationsAddOne, id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let requestBody = body
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
@@ -117,9 +117,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// *  Assign multiple existing managed objects (by given child IDs) as child additions of another managed object (by a given ID).
 	/// *  Create a managed object in the inventory and assign it as a child addition to another managed object (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
-	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child OR MANAGE_OBJECT_ADMIN permission on the child))
-	/// </div></div>
+	/// <section><h5>Required roles</h5>
+	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child <b>OR</b> MANAGE_OBJECT_ADMIN permission on the child))
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -133,7 +133,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func postManagedObjectChildAdditionsResource(body: C8yChildOperationsAddMultiple, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func assignAsChildAddition(body: C8yChildOperationsAddMultiple, id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let requestBody = body
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
@@ -159,9 +159,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// *  Assign multiple existing managed objects (by given child IDs) as child additions of another managed object (by a given ID).
 	/// *  Create a managed object in the inventory and assign it as a child addition to another managed object (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
-	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child OR MANAGE_OBJECT_ADMIN permission on the child))
-	/// </div></div>
+	/// <section><h5>Required roles</h5>
+	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child <b>OR</b> MANAGE_OBJECT_ADMIN permission on the child))
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -175,7 +175,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func postManagedObjectChildAdditionsResource(body: C8yManagedObject, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func assignAsChildAddition(body: C8yManagedObject, id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.additionParents = nil
@@ -208,9 +208,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// Remove specific child additions from its parent
 	/// Remove specific child additions (by given child IDs) from its parent (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> owner of the source (parent) <b>OR</b> owner of the child <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source (parent)
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -226,7 +226,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func deleteManagedObjectChildAdditionResourceMultiple(body: C8yChildOperationsAddMultiple, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func unassignChildAdditions(body: C8yChildOperationsAddMultiple, id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let requestBody = body
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
@@ -248,9 +248,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// Retrieve a specific child addition of a specific managed object
 	/// Retrieve a specific child addition (by a given child ID) of a specific managed object (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_READ <b>OR</b> MANAGE_OBJECT_READ permission on the source (parent)
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -267,7 +267,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	/// 	- childId 
 	///		  Unique identifier of the child object.
-	public func getManagedObjectChildAdditionResource(id: String, childId: String) throws -> AnyPublisher<C8yManagedObjectReference, Swift.Error> {
+	public func getChildAddition(id: String, childId: String) throws -> AnyPublisher<C8yManagedObjectReference, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions/\(childId)")
 			.set(httpMethod: "get")
@@ -286,9 +286,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// Remove a specific child addition from its parent
 	/// Remove a specific child addition (by a given child ID) from its parent (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> owner of the source (parent) <b>OR</b> owner of the child <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source (parent)
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -305,7 +305,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	/// 	- childId 
 	///		  Unique identifier of the child object.
-	public func deleteManagedObjectChildAdditionResource(id: String, childId: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func unassignChildAddition(id: String, childId: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions/\(childId)")
 			.set(httpMethod: "delete")
@@ -324,9 +324,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// Retrieve all child assets of a specific managed object
 	/// Retrieve all child assets of a specific managed object by a given ID, or a subset based on queries.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_READ <b>OR</b> owner of the source <b>OR</b> MANAGE_OBJECT_READ permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -351,7 +351,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Determines if children with ID and name should be returned when fetching the managed object. Set it to false to improve query performance.
 	/// 	- withTotalPages 
 	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getManagedObjectChildAssetsResource(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectReferenceCollection, Swift.Error> {
+	public func getChildAssets(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectReferenceCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
@@ -381,9 +381,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// *  Assign multiple existing managed objects (by given child IDs) as child assets of another managed object (by a given ID).
 	/// *  Create a managed object in the inventory and assign it as a child asset to another managed object (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
-	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child OR MANAGE_OBJECT_ADMIN permission on the child))
-	/// </div></div>
+	/// <section><h5>Required roles</h5>
+	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child <b>OR</b> MANAGE_OBJECT_ADMIN permission on the child))
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -397,7 +397,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func postManagedObjectChildAssetsResource(body: C8yChildOperationsAddOne, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func assignAsChildAsset(body: C8yChildOperationsAddOne, id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let requestBody = body
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
@@ -423,9 +423,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// *  Assign multiple existing managed objects (by given child IDs) as child assets of another managed object (by a given ID).
 	/// *  Create a managed object in the inventory and assign it as a child asset to another managed object (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
-	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child OR MANAGE_OBJECT_ADMIN permission on the child))
-	/// </div></div>
+	/// <section><h5>Required roles</h5>
+	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child <b>OR</b> MANAGE_OBJECT_ADMIN permission on the child))
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -439,7 +439,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func postManagedObjectChildAssetsResource(body: C8yChildOperationsAddMultiple, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func assignAsChildAsset(body: C8yChildOperationsAddMultiple, id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let requestBody = body
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
@@ -465,9 +465,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// *  Assign multiple existing managed objects (by given child IDs) as child assets of another managed object (by a given ID).
 	/// *  Create a managed object in the inventory and assign it as a child asset to another managed object (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
-	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child OR MANAGE_OBJECT_ADMIN permission on the child))
-	/// </div></div>
+	/// <section><h5>Required roles</h5>
+	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child <b>OR</b> MANAGE_OBJECT_ADMIN permission on the child))
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -481,7 +481,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func postManagedObjectChildAssetsResource(body: C8yManagedObject, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func assignAsChildAsset(body: C8yManagedObject, id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.additionParents = nil
@@ -514,9 +514,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// Remove specific child assets from its parent
 	/// Remove specific child assets (by given child IDs) from its parent (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> owner of the source (parent) <b>OR</b> owner of the child <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source (parent)
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -532,7 +532,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func deleteManagedObjectChildAssetResourceMultiple(body: C8yChildOperationsAddMultiple, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func unassignChildAssets(body: C8yChildOperationsAddMultiple, id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let requestBody = body
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
@@ -554,9 +554,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// Retrieve a specific child asset of a specific managed object
 	/// Retrieve a specific child asset (by a given child ID) of a specific managed object (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_READ <b>OR</b> MANAGE_OBJECT_READ permission on the source (parent)
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -573,7 +573,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	/// 	- childId 
 	///		  Unique identifier of the child object.
-	public func getManagedObjectChildAssetResource(id: String, childId: String) throws -> AnyPublisher<C8yManagedObjectReference, Swift.Error> {
+	public func getChildAsset(id: String, childId: String) throws -> AnyPublisher<C8yManagedObjectReference, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets/\(childId)")
 			.set(httpMethod: "get")
@@ -592,9 +592,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// Remove a specific child asset from its parent
 	/// Remove a specific child asset (by a given child ID) from its parent (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> owner of the source (parent) <b>OR</b> owner of the child <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source (parent)
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -611,7 +611,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	/// 	- childId 
 	///		  Unique identifier of the child object.
-	public func deleteManagedObjectChildAssetResource(id: String, childId: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func unassignChildAsset(id: String, childId: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets/\(childId)")
 			.set(httpMethod: "delete")
@@ -630,9 +630,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// Retrieve all child devices of a specific managed object
 	/// Retrieve all child devices of a specific managed object by a given ID, or a subset based on queries.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_READ <b>OR</b> owner of the source <b>OR</b> MANAGE_OBJECT_READ permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -657,7 +657,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Determines if children with ID and name should be returned when fetching the managed object. Set it to false to improve query performance.
 	/// 	- withTotalPages 
 	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getManagedObjectChildDevicesResource(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectReferenceCollection, Swift.Error> {
+	public func getChildDevices(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectReferenceCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
@@ -687,9 +687,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// *  Assign multiple existing managed objects (by given child IDs) as child devices of another managed object (by a given ID).
 	/// *  Create a managed object in the inventory and assign it as a child device to another managed object (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
-	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child OR MANAGE_OBJECT_ADMIN permission on the child))
-	/// </div></div>
+	/// <section><h5>Required roles</h5>
+	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child <b>OR</b> MANAGE_OBJECT_ADMIN permission on the child))
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -703,7 +703,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func postManagedObjectChildDevicesResource(body: C8yChildOperationsAddOne, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func assignAsChildDevice(body: C8yChildOperationsAddOne, id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let requestBody = body
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
@@ -729,9 +729,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// *  Assign multiple existing managed objects (by given child IDs) as child devices of another managed object (by a given ID).
 	/// *  Create a managed object in the inventory and assign it as a child device to another managed object (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
-	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child OR MANAGE_OBJECT_ADMIN permission on the child))
-	/// </div></div>
+	/// <section><h5>Required roles</h5>
+	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child <b>OR</b> MANAGE_OBJECT_ADMIN permission on the child))
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -745,7 +745,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func postManagedObjectChildDevicesResource(body: C8yChildOperationsAddMultiple, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func assignAsChildDevice(body: C8yChildOperationsAddMultiple, id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let requestBody = body
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
@@ -771,9 +771,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// *  Assign multiple existing managed objects (by given child IDs) as child devices of another managed object (by a given ID).
 	/// *  Create a managed object in the inventory and assign it as a child device to another managed object (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
-	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child OR MANAGE_OBJECT_ADMIN permission on the child))
-	/// </div></div>
+	/// <section><h5>Required roles</h5>
+	/// ROLE_INVENTORY_ADMIN <b>OR</b> ((owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source) <b>AND</b> (owner of the child <b>OR</b> MANAGE_OBJECT_ADMIN permission on the child))
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -787,7 +787,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func postManagedObjectChildDevicesResource(body: C8yManagedObject, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func assignAsChildDevice(body: C8yManagedObject, id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.additionParents = nil
@@ -820,9 +820,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// Remove specific child devices from its parent
 	/// Remove specific child devices (by given child IDs) from its parent (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> owner of the source (parent) <b>OR</b> owner of the child <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source (parent)
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -838,7 +838,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func deleteManagedObjectChildDeviceResourceMultiple(body: C8yChildOperationsAddMultiple, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func unassignChildDevices(body: C8yChildOperationsAddMultiple, id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let requestBody = body
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
@@ -860,9 +860,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// Retrieve a specific child device of a specific managed object
 	/// Retrieve a specific child device (by a given child ID) of a specific managed object (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_READ <b>OR</b> MANAGE_OBJECT_READ permission on the source (parent)
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -879,7 +879,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	/// 	- childId 
 	///		  Unique identifier of the child object.
-	public func getManagedObjectChildDeviceResource(id: String, childId: String) throws -> AnyPublisher<C8yManagedObjectReference, Swift.Error> {
+	public func getChildDevice(id: String, childId: String) throws -> AnyPublisher<C8yManagedObjectReference, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices/\(childId)")
 			.set(httpMethod: "get")
@@ -898,9 +898,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// Remove a specific child device from its parent
 	/// Remove a specific child device (by a given child ID) from its parent (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> owner of the source (parent) <b>OR</b> owner of the child <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source (parent)
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -917,7 +917,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	/// 	- childId 
 	///		  Unique identifier of the child object.
-	public func deleteManagedObjectChildDeviceResource(id: String, childId: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func unassignChildDevice(id: String, childId: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices/\(childId)")
 			.set(httpMethod: "delete")

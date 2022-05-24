@@ -22,10 +22,10 @@ public class TenantsApiTest: XCTestCase {
 		}
 	}
 
-	public func testGetTenantCollectionResource() {
+	public func testGetTenants() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableTenantsApi().getTenantCollectionResource().sink(receiveCompletion: { completion in
+		try? TestableTenantsApi().getTenants().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()
@@ -34,10 +34,10 @@ public class TenantsApiTest: XCTestCase {
 		wait(for: [expectation], timeout: 10)
 	}
 	
-	public func testGetCurrentTenantResource() {
+	public func testGetCurrentTenant() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableTenantsApi().getCurrentTenantResource().sink(receiveCompletion: { completion in
+		try? TestableTenantsApi().getCurrentTenant().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()

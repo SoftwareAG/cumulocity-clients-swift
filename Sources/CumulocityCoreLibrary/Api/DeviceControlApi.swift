@@ -18,9 +18,9 @@ public class DeviceControlApi: AdaptableApi {
 	/// Retrieve URIs to collections of operations
 	/// Retrieve URIs to collections of operations.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_DEVICE_CONTROL_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:

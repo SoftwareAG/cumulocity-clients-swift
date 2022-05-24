@@ -11,28 +11,27 @@ import Foundation
 /// An inventory role.
 public struct C8yInventoryRole: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
+	/// A description for this inventory role.
+	public var description: String?
+
+	/// A unique identifier for this inventory role.
+	public var id: Int?
 
 	/// The name of this inventory role.
 	public var name: String?
 
-	/// A unique identifier for this inventory role.
-	/// 
-	public var id: String?
-
-	/// A description for this inventory role.
-	public var description: String?
-
 	/// A set of permissions for this inventory role.
 	public var permissions: [C8yInventoryRolePermission]?
 
+	/// A URL linking to this resource.
+	public var `self`: String?
+
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
-		case name
-		case id
 		case description
+		case id
+		case name
 		case permissions
+		case `self` = "self"
 	}
 
 	public init() {

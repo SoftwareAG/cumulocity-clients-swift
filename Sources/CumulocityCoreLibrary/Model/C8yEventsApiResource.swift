@@ -10,9 +10,6 @@ import Foundation
 
 public struct C8yEventsApiResource: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
-
 	/// Collection of all events
 	public var events: C8yEvents?
 
@@ -34,8 +31,10 @@ public struct C8yEventsApiResource: Codable {
 	/// Read-only collection of all events for a specific source object in a particular time range.
 	public var eventsForSourceAndTime: String?
 
+	/// A URL linking to this resource.
+	public var `self`: String?
+
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
 		case events
 		case eventsForSource
 		case eventsForSourceAndType
@@ -43,6 +42,7 @@ public struct C8yEventsApiResource: Codable {
 		case eventsForFragmentType
 		case eventsForTime
 		case eventsForSourceAndTime
+		case `self` = "self"
 	}
 
 	public init() {
