@@ -106,6 +106,7 @@ public struct C8yLoginOption: Codable {
 		}
 	}
 
+
 	/// The session configuration properties are only available for OAuth internal. See [Changing settings > OAuth internal](https://cumulocity.com/guides/users-guide/administration/#oauth-internal) for more details.
 	public struct C8ySessionConfiguration: Codable {
 	

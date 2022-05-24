@@ -42,15 +42,21 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- query 
 	///		  Use query language to perform operations and/or filter the results. Details about the properties and supported operations can be found in [Query language](#tag/Query-language).
 	/// 	- withChildren 
-	///		  Determines if children with ID and name should be returned when fetching the managed object. Set it to false to improve query performance.
+	///		  Determines if children with ID and name should be returned when fetching the managed object. Set it to `false` to improve query performance.
+	/// 	- withChildrenCount 
+	///		  When set to `true`, the returned result will contain the total number of children in the respective objects (`childAdditions`, `childAssets` and `childDevices`).
+	/// 	- withTotalElements 
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
-	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getChildAdditions(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectReferenceCollection, Swift.Error> {
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getChildAdditions(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectReferenceCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
 		if let parameter = query { queryItems.append(URLQueryItem(name: "query", value: String(parameter)))}
 		if let parameter = withChildren { queryItems.append(URLQueryItem(name: "withChildren", value: String(parameter)))}
+		if let parameter = withChildrenCount { queryItems.append(URLQueryItem(name: "withChildrenCount", value: String(parameter)))}
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter)))}
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
@@ -348,15 +354,21 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- query 
 	///		  Use query language to perform operations and/or filter the results. Details about the properties and supported operations can be found in [Query language](#tag/Query-language).
 	/// 	- withChildren 
-	///		  Determines if children with ID and name should be returned when fetching the managed object. Set it to false to improve query performance.
+	///		  Determines if children with ID and name should be returned when fetching the managed object. Set it to `false` to improve query performance.
+	/// 	- withChildrenCount 
+	///		  When set to `true`, the returned result will contain the total number of children in the respective objects (`childAdditions`, `childAssets` and `childDevices`).
+	/// 	- withTotalElements 
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
-	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getChildAssets(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectReferenceCollection, Swift.Error> {
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getChildAssets(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectReferenceCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
 		if let parameter = query { queryItems.append(URLQueryItem(name: "query", value: String(parameter)))}
 		if let parameter = withChildren { queryItems.append(URLQueryItem(name: "withChildren", value: String(parameter)))}
+		if let parameter = withChildrenCount { queryItems.append(URLQueryItem(name: "withChildrenCount", value: String(parameter)))}
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter)))}
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
@@ -654,15 +666,21 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- query 
 	///		  Use query language to perform operations and/or filter the results. Details about the properties and supported operations can be found in [Query language](#tag/Query-language).
 	/// 	- withChildren 
-	///		  Determines if children with ID and name should be returned when fetching the managed object. Set it to false to improve query performance.
+	///		  Determines if children with ID and name should be returned when fetching the managed object. Set it to `false` to improve query performance.
+	/// 	- withChildrenCount 
+	///		  When set to `true`, the returned result will contain the total number of children in the respective objects (`childAdditions`, `childAssets` and `childDevices`).
+	/// 	- withTotalElements 
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
-	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getChildDevices(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectReferenceCollection, Swift.Error> {
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getChildDevices(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectReferenceCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
 		if let parameter = query { queryItems.append(URLQueryItem(name: "query", value: String(parameter)))}
 		if let parameter = withChildren { queryItems.append(URLQueryItem(name: "withChildren", value: String(parameter)))}
+		if let parameter = withChildrenCount { queryItems.append(URLQueryItem(name: "withChildrenCount", value: String(parameter)))}
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter)))}
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")

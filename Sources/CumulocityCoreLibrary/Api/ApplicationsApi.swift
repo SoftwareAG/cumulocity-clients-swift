@@ -54,9 +54,11 @@ public class ApplicationsApi: AdaptableApi {
 	///		  The type of the application.
 	/// 	- user 
 	///		  The ID of a user that has access to the applications.
+	/// 	- withTotalElements 
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
-	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getApplications(currentPage: Int? = nil, name: String? = nil, owner: String? = nil, pageSize: Int? = nil, providedFor: String? = nil, subscriber: String? = nil, tenant: String? = nil, type: String? = nil, user: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yApplicationCollection, Swift.Error> {
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getApplications(currentPage: Int? = nil, name: String? = nil, owner: String? = nil, pageSize: Int? = nil, providedFor: String? = nil, subscriber: String? = nil, tenant: String? = nil, type: String? = nil, user: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yApplicationCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
 		if let parameter = name { queryItems.append(URLQueryItem(name: "name", value: String(parameter)))}
@@ -67,6 +69,7 @@ public class ApplicationsApi: AdaptableApi {
 		if let parameter = tenant { queryItems.append(URLQueryItem(name: "tenant", value: String(parameter)))}
 		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter)))}
 		if let parameter = user { queryItems.append(URLQueryItem(name: "user", value: String(parameter)))}
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter)))}
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications")

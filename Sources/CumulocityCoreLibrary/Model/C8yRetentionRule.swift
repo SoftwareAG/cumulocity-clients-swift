@@ -58,4 +58,5 @@ public struct C8yRetentionRule: Codable {
 		case operation = "OPERATION"
 		case all = "*"
 	}
+
 }

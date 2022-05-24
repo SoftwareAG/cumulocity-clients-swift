@@ -57,4 +57,16 @@ public class UsageStatisticsApiTest: XCTestCase {
 		}).store(in: &cancellables)
 		wait(for: [expectation], timeout: 10)
 	}
+	
+	public func testGetMetadata() {
+		let expectation = XCTestExpectation(description: "ok")
+		var cancellables = Set<AnyCancellable>()
+		try? TestableUsageStatisticsApi().getMetadata().sink(receiveCompletion: { completion in
+			print(completion)
+		}, receiveValue: { data in
+			expectation.fulfill()
+			print(data)
+		}).store(in: &cancellables)
+		wait(for: [expectation], timeout: 10)
+	}
 }

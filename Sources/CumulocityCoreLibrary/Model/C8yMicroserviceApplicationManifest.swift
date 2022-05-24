@@ -126,6 +126,7 @@ public struct C8yMicroserviceApplicationManifest: Codable {
 		case auto = "AUTO"
 	}
 
+
 	public struct C8yExtensions: Codable {
 	
 		/// The relative path in Cumulocity IoT for this microservice application.
@@ -142,6 +143,7 @@ public struct C8yMicroserviceApplicationManifest: Codable {
 		public init() {
 		}
 	}
+
 
 	/// Application provider information.
 	/// Simple name allowed for predefined providers, for example, c8y.
@@ -195,6 +197,7 @@ public struct C8yMicroserviceApplicationManifest: Codable {
 		public init() {
 		}
 	}
+
 
 	public struct C8ySettings: Codable {
 	

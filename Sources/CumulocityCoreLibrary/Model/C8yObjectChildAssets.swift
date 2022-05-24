@@ -11,6 +11,9 @@ import Foundation
 /// A collection of references to child assets.
 public struct C8yObjectChildAssets: Codable {
 
+	/// The total number of child assets. Only present if the value is greater than 0.
+	public var count: Int?
+
 	/// An array with the references to child assets.
 	public var references: [C8yManagedObjectReferenceTuple]?
 
@@ -18,6 +21,7 @@ public struct C8yObjectChildAssets: Codable {
 	public var `self`: String?
 
 	enum CodingKeys: String, CodingKey {
+		case count
 		case references
 		case `self` = "self"
 	}

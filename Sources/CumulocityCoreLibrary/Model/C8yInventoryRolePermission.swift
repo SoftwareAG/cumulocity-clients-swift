@@ -50,4 +50,6 @@ public struct C8yInventoryRolePermission: Codable {
 		case operation = "OPERATION"
 		case all = "*"
 	}
+
+
 }

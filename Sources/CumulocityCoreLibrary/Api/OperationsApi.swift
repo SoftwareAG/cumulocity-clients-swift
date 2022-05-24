@@ -55,9 +55,11 @@ public class OperationsApi: AdaptableApi {
 	///		  If you are using a range query (that is, at least one of the `dateFrom` or `dateTo` parameters is included in the request), then setting `revert=true` will sort the results by the oldest operations first. By default, the results are sorted by the latest operations first. 
 	/// 	- status 
 	///		  Status of the operation.
+	/// 	- withTotalElements 
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
-	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getOperations(agentId: String? = nil, bulkOperationId: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, deviceId: String? = nil, fragmentType: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, status: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yOperationCollection, Swift.Error> {
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getOperations(agentId: String? = nil, bulkOperationId: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, deviceId: String? = nil, fragmentType: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, status: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yOperationCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = agentId { queryItems.append(URLQueryItem(name: "agentId", value: String(parameter)))}
 		if let parameter = bulkOperationId { queryItems.append(URLQueryItem(name: "bulkOperationId", value: String(parameter)))}
@@ -69,6 +71,7 @@ public class OperationsApi: AdaptableApi {
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
 		if let parameter = revert { queryItems.append(URLQueryItem(name: "revert", value: String(parameter)))}
 		if let parameter = status { queryItems.append(URLQueryItem(name: "status", value: String(parameter)))}
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter)))}
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/operations")

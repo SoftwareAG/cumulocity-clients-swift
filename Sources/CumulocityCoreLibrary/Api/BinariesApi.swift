@@ -44,7 +44,7 @@ public class BinariesApi: AdaptableApi {
 	/// 	- type 
 	///		  The type of managed object to search for.
 	/// 	- withTotalPages 
-	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getBinaries(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, ids: String? = nil, owner: String? = nil, pageSize: Int? = nil, text: String? = nil, type: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yBinaryCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = childAdditionId { queryItems.append(URLQueryItem(name: "childAdditionId", value: String(parameter)))}

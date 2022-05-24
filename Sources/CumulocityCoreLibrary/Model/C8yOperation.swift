@@ -103,6 +103,7 @@ public struct C8yOperation: Codable {
 		case pending = "PENDING"
 	}
 
+
 	/// Custom operation of a webcam. Note that this is an example for a custom object of the webcam operation. For other operations you can use other objects.
 	public struct C8yWebCamDevice: Codable {
 	

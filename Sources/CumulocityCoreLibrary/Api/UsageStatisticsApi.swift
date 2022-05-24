@@ -95,14 +95,17 @@ public class UsageStatisticsApi: AdaptableApi {
 	///		  End date or date and time of the statistics.
 	/// 	- pageSize 
 	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+	/// 	- withTotalElements 
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
-	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getTenantUsageStatisticsCollectionResource(currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yTenantUsageStatisticsCollection, Swift.Error> {
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getTenantUsageStatisticsCollectionResource(currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yTenantUsageStatisticsCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
 		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter)))}
 		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter)))}
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter)))}
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/statistics")
@@ -192,5 +195,161 @@ public class UsageStatisticsApi: AdaptableApi {
 			}
 			return element.data
 		}).decode(type: [C8ySummaryAllTenantsUsageStatistics].self, decoder: JSONDecoder()).eraseToAnyPublisher()
+	}
+	
+	/// Retrieve usage statistics files metadata
+	/// Retrieve usage statistics summary files report metadata.
+	/// 
+	/// <section><h5>Required roles</h5>
+	/// ROLE_TENANT_MANAGEMENT_ADMIN
+	/// </section>
+	/// 
+	/// The following table gives an overview of the possible response codes and their meanings.
+	/// - Returns:
+	/// 	- 200
+	///		  The request has succeeded and the tenant statistics are sent in the response.
+	/// 	- 401
+	///		  Authentication information is missing or invalid.
+	/// - Parameters:
+	/// 	- currentPage 
+	///		  The current page of the paginated results.
+	/// 	- dateFrom 
+	///		  Start date or date and time of the statistics file generation.
+	/// 	- dateTo 
+	///		  End date or date and time of the statistics file generation.
+	/// 	- pageSize 
+	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+	/// 	- withTotalPages 
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getMetadata(currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yTenantUsageStatisticsFileCollection, Swift.Error> {
+		var queryItems: [URLQueryItem] = []
+		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
+		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter)))}
+		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter)))}
+		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
+		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/tenant/statistics/files")
+			.set(httpMethod: "get")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenantStatisticsfilecollection+json")
+			.set(queryItems: queryItems)
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard (200...299).contains(httpResponse.statusCode) else {
+				throw URLError(.badServerResponse)
+			}
+			return element.data
+		}).decode(type: C8yTenantUsageStatisticsFileCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
+	}
+	
+	/// Generate a statistics file report
+	/// Generate a TEST statistics file report for a given time range.
+	/// 
+	/// There are two types of statistics files:
+	/// * REAL - generated by the system on the first day of the month and including statistics from the previous month.
+	/// * TEST - generated by the user with a time range specified in the query parameters (`dateFrom`, `dateTo`).
+	/// <section><h5>Required roles</h5>
+	/// ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_MANAGEMENT_CREATE
+	/// </section>
+	/// 
+	/// The following table gives an overview of the possible response codes and their meanings.
+	/// - Returns:
+	/// 	- 201
+	///		  A statistics file was generated.
+	/// 	- 401
+	///		  Authentication information is missing or invalid.
+	/// 	- 422
+	///		  Unprocessable Entity – invalid payload.
+	/// - Parameters:
+	/// 	- body 
+	public func generateStatisticsFile(body: C8yRangeStatisticsFile) throws -> AnyPublisher<C8yStatisticsFile, Swift.Error> {
+		let requestBody = body
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/tenant/statistics/files")
+			.set(httpMethod: "post")
+			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.tenantstatisticsdate+json")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenantstatisticsfile+json")
+			.set(httpBody: try JSONEncoder().encode(requestBody))
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard (200...299).contains(httpResponse.statusCode) else {
+				throw URLError(.badServerResponse)
+			}
+			return element.data
+		}).decode(type: C8yStatisticsFile.self, decoder: JSONDecoder()).eraseToAnyPublisher()
+	}
+	
+	/// Retrieve a usage statistics file
+	/// Retrieve a specific usage statistics file (by a given ID).
+	/// 
+	/// <section><h5>Required roles</h5>
+	/// ROLE_TENANT_MANAGEMENT_ADMIN
+	/// </section>
+	/// 
+	/// The following table gives an overview of the possible response codes and their meanings.
+	/// - Returns:
+	/// 	- 200
+	///		  The request has succeeded and the file is sent in the response.
+	/// 	- 401
+	///		  Authentication information is missing or invalid.
+	/// 	- 404
+	///		  Statistics file not found.
+	/// - Parameters:
+	/// 	- id 
+	///		  Unique identifier of the statistics file.
+	public func getStatisticsFile(id: String) throws -> AnyPublisher<Data, Swift.Error> {
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/tenant/statistics/files/\(id)")
+			.set(httpMethod: "get")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/octet-stream")
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard (200...299).contains(httpResponse.statusCode) else {
+				throw URLError(.badServerResponse)
+			}
+			return element.data
+		}).eraseToAnyPublisher()
+	}
+	
+	/// Retrieve the latest usage statistics file
+	/// Retrieve the latest usage statistics file with REAL data for a given month.
+	/// 
+	/// There are two types of statistics files:
+	/// * REAL - generated by the system on the first day of the month and includes statistics for the previous month.
+	/// * TEST - generated by the user with a time range specified in the query parameters (`dateFrom`, `dateTo`).
+	/// 
+	/// <section><h5>Required roles</h5>
+	/// ROLE_TENANT_MANAGEMENT_ADMIN
+	/// </section>
+	/// 
+	/// The following table gives an overview of the possible response codes and their meanings.
+	/// - Returns:
+	/// 	- 200
+	///		  The request has succeeded and the file is sent in the response.
+	/// 	- 401
+	///		  Authentication information is missing or invalid.
+	/// - Parameters:
+	/// 	- month 
+	///		  Date (format YYYY-MM-dd) specifying the month for which the statistics file will be downloaded (the day value is ignored).
+	public func getLatestStatisticsFile(month: Date) throws -> AnyPublisher<Data, Swift.Error> {
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/tenant/statistics/files/latest/\(month)")
+			.set(httpMethod: "get")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/octet-stream")
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard (200...299).contains(httpResponse.statusCode) else {
+				throw URLError(.badServerResponse)
+			}
+			return element.data
+		}).eraseToAnyPublisher()
 	}
 }

@@ -53,9 +53,11 @@ public class MeasurementsApi: AdaptableApi {
 	///		  The specific series to search for.
 	/// 	- valueFragmentType 
 	///		  A characteristic which identifies the measurement.
+	/// 	- withTotalElements 
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
-	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getMeasurements(currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, source: String? = nil, type: String? = nil, valueFragmentSeries: String? = nil, valueFragmentType: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yMeasurementCollection, Swift.Error> {
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getMeasurements(currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, source: String? = nil, type: String? = nil, valueFragmentSeries: String? = nil, valueFragmentType: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yMeasurementCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
 		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter)))}
@@ -66,6 +68,7 @@ public class MeasurementsApi: AdaptableApi {
 		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter)))}
 		if let parameter = valueFragmentSeries { queryItems.append(URLQueryItem(name: "valueFragmentSeries", value: String(parameter)))}
 		if let parameter = valueFragmentType { queryItems.append(URLQueryItem(name: "valueFragmentType", value: String(parameter)))}
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter)))}
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement/measurements")

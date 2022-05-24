@@ -11,6 +11,7 @@ import Combine
 
 /// API methods to retrieve the login options configured in the tenant.
 /// 
+/// More detailed information about the parameters and their meaning can be found in [Administration > Changing settings](https://cumulocity.com/guides/users-guide/administration/#changing-settings) in the *Users guide*.
 /// > **&#9432; Info:** If OAuth external is the only login option shown in the response, the user will be automatically redirected to the SSO login screen.
 /// 
 public class LoginOptionsApi: AdaptableApi {
@@ -21,16 +22,21 @@ public class LoginOptionsApi: AdaptableApi {
 	/// - Returns:
 	/// 	- 200
 	///		  The request has succeeded and the login options are sent in the response.
+	/// 	- 400
+	///		  Bad request – invalid parameters.
 	/// - Parameters:
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func getLoginOptions(tenantId: String? = nil) throws -> AnyPublisher<C8yLoginOptionCollection, Swift.Error> {
+	/// 	- management 
+	///		  If this is set to `true`, the management tenant login options will be returned.  > **&#9432; Info:** The `tenantId` parameter must not be present in the request when using the `management` parameter, otherwise it will cause an error. 
+	public func getLoginOptions(tenantId: String? = nil, management: Bool? = nil) throws -> AnyPublisher<C8yLoginOptionCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = tenantId { queryItems.append(URLQueryItem(name: "tenantId", value: String(parameter)))}
+		if let parameter = management { queryItems.append(URLQueryItem(name: "management", value: String(parameter)))}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/loginOptions")
 			.set(httpMethod: "get")
-			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.loginoptioncollection+json")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.loginoptioncollection+json")
 			.set(queryItems: queryItems)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

@@ -47,9 +47,11 @@ public class UsersApi: AdaptableApi {
 	///		  Prefix or full username
 	/// 	- withSubusersCount 
 	///		  If set to `true`, then each of returned user will contain an additional field “subusersCount”. It is the number of direct subusers (users with corresponding “owner”). 
+	/// 	- withTotalElements 
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
-	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getUsers(tenantId: String, currentPage: Int? = nil, groups: String? = nil, onlyDevices: Bool? = nil, owner: String? = nil, pageSize: Int? = nil, username: String? = nil, withSubusersCount: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yUserCollection, Swift.Error> {
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getUsers(tenantId: String, currentPage: Int? = nil, groups: String? = nil, onlyDevices: Bool? = nil, owner: String? = nil, pageSize: Int? = nil, username: String? = nil, withSubusersCount: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yUserCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
 		if let parameter = groups { queryItems.append(URLQueryItem(name: "groups", value: String(parameter)))}
@@ -58,6 +60,7 @@ public class UsersApi: AdaptableApi {
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
 		if let parameter = username { queryItems.append(URLQueryItem(name: "username", value: String(parameter)))}
 		if let parameter = withSubusersCount { queryItems.append(URLQueryItem(name: "withSubusersCount", value: String(parameter)))}
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter)))}
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users")
@@ -328,10 +331,13 @@ public class UsersApi: AdaptableApi {
 	///		  The current page of the paginated results.
 	/// 	- pageSize 
 	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
-	public func getUsersFromUserGroup(tenantId: String, groupId: Int, currentPage: Int? = nil, pageSize: Int? = nil) throws -> AnyPublisher<C8yUserReferenceCollection, Swift.Error> {
+	/// 	- withTotalElements 
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getUsersFromUserGroup(tenantId: String, groupId: Int, currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil) throws -> AnyPublisher<C8yUserReferenceCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter)))}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)/users")
 			.set(httpMethod: "get")

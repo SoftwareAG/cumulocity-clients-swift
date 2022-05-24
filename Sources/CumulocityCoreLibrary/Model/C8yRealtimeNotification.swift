@@ -97,6 +97,7 @@ public struct C8yRealtimeNotification: Codable {
 		}
 	}
 
+
 	/// List of notifications from the channel.
 	public struct C8yData: Codable {
 	
@@ -146,5 +147,6 @@ public struct C8yRealtimeNotification: Codable {
 			public init() {
 			}
 		}
+	
 	}
 }

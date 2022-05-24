@@ -132,6 +132,7 @@ public struct C8yUser: Codable {
 		}
 	}
 
+
 	/// An object with a list of user roles.
 	public struct C8yRoles: Codable {
 	

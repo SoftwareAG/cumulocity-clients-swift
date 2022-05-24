@@ -12,7 +12,7 @@ import Combine
 /// To discover the URIs of the various interfaces of Cumulocity IoT, a platform interface is provided. This interface aggregates all the underlying API resources.
 public class PlatformApi: AdaptableApi {
 
-	/// Retrieve URIs to collection of platform objects
+	/// Retrieve URIs to collection platform objects
 	/// Retrieve URIs and URI templates to collections of platform objects.
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:

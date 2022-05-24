@@ -34,4 +34,5 @@ public struct C8yNewDeviceRequest: Codable {
 		case pendingacceptance = "PENDING_ACCEPTANCE"
 		case accepted = "ACCEPTED"
 	}
+
 }

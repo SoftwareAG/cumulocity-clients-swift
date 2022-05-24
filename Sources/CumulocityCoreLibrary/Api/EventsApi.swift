@@ -61,9 +61,11 @@ public class EventsApi: AdaptableApi {
 	///		  When set to `true` also events for related source assets will be included in the request. When this parameter is provided a `source` must be specified.
 	/// 	- withSourceDevices 
 	///		  When set to `true` also events for related source devices will be included in the request. When this parameter is provided a `source` must be specified.
+	/// 	- withTotalElements 
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
-	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getEvents(createdFrom: String? = nil, createdTo: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, fragmentValue: String? = nil, lastUpdatedFrom: String? = nil, lastUpdatedTo: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, source: String? = nil, type: String? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yEventCollection, Swift.Error> {
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getEvents(createdFrom: String? = nil, createdTo: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, fragmentValue: String? = nil, lastUpdatedFrom: String? = nil, lastUpdatedTo: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, source: String? = nil, type: String? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yEventCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = createdFrom { queryItems.append(URLQueryItem(name: "createdFrom", value: String(parameter)))}
 		if let parameter = createdTo { queryItems.append(URLQueryItem(name: "createdTo", value: String(parameter)))}
@@ -80,6 +82,7 @@ public class EventsApi: AdaptableApi {
 		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter)))}
 		if let parameter = withSourceAssets { queryItems.append(URLQueryItem(name: "withSourceAssets", value: String(parameter)))}
 		if let parameter = withSourceDevices { queryItems.append(URLQueryItem(name: "withSourceDevices", value: String(parameter)))}
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter)))}
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events")

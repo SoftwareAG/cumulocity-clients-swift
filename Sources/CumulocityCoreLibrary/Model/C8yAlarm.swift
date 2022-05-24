@@ -129,6 +129,7 @@ public struct C8yAlarm: Codable {
 		case cleared = "CLEARED"
 	}
 
+
 	/// The managed object to which the alarm is associated.
 	public struct C8ySource: Codable {
 	
@@ -150,6 +151,7 @@ public struct C8yAlarm: Codable {
 		public init() {
 		}
 	}
+
 }
 
 extension C8yAlarm {

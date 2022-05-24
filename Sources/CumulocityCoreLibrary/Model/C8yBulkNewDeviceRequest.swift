@@ -62,6 +62,7 @@ public struct C8yBulkNewDeviceRequest: Codable {
 			case failed = "FAILED"
 			case credentialupdated = "CREDENTIAL_UPDATED"
 		}
+	
 	}
 
 	public struct C8yFailedCreationList: Codable {
@@ -94,5 +95,6 @@ public struct C8yBulkNewDeviceRequest: Codable {
 			case failed = "FAILED"
 			case credentialupdated = "CREDENTIAL_UPDATED"
 		}
+	
 	}
 }

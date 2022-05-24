@@ -176,6 +176,7 @@ public struct C8yAuditRecord: Codable {
 			case scale = "SCALE"
 			case delete = "DELETE"
 		}
+	
 	}
 
 	public struct C8yChanges: Codable {
@@ -229,7 +230,9 @@ public struct C8yAuditRecord: Codable {
 			case added = "ADDED"
 			case replaced = "REPLACED"
 		}
+	
 	}
+
 
 	/// The managed object to which the audit is associated.
 	public struct C8ySource: Codable {
@@ -249,6 +252,7 @@ public struct C8yAuditRecord: Codable {
 			self.id = id
 		}
 	}
+
 }
 
 extension C8yAuditRecord {

@@ -50,20 +50,24 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 	- query 
 	///		  Use query language to perform operations and/or filter the results. Details about the properties and supported operations can be found in [Query language](#tag/Query-language).
 	/// 	- skipChildrenNames 
-	///		  When set to true, the returned references of child devices won't contain their names.
+	///		  When set to `true`, the returned references of child devices won't contain their names.
 	/// 	- text 
 	///		  Search for managed objects where any property value is equal to the given one. Only string values are supported.
 	/// 	- type 
 	///		  The type of managed object to search for.
 	/// 	- withChildren 
-	///		  Determines if children with ID and name should be returned when fetching the managed object. Set it to false to improve query performance.
+	///		  Determines if children with ID and name should be returned when fetching the managed object. Set it to `false` to improve query performance.
+	/// 	- withChildrenCount 
+	///		  When set to `true`, the returned result will contain the total number of children in the respective objects (`childAdditions`, `childAssets` and `childDevices`).
 	/// 	- withGroups 
 	///		  When set to `true` it returns additional information about the groups to which the searched managed object belongs. This results in setting the `assetParents` property with additional information about the groups.
 	/// 	- withParents 
-	///		  When set to true, the returned references of child parents will return the device's parents (if any). Otherwise, it will be an empty array.
+	///		  When set to `true`, the returned references of child parents will return the device's parents (if any). Otherwise, it will be an empty array.
+	/// 	- withTotalElements 
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
-	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, fragmentType: String? = nil, ids: String? = nil, onlyRoots: Bool? = nil, owner: String? = nil, pageSize: Int? = nil, q: String? = nil, query: String? = nil, skipChildrenNames: Bool? = nil, text: String? = nil, type: String? = nil, withChildren: Bool? = nil, withGroups: Bool? = nil, withParents: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectCollection, Swift.Error> {
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, fragmentType: String? = nil, ids: String? = nil, onlyRoots: Bool? = nil, owner: String? = nil, pageSize: Int? = nil, q: String? = nil, query: String? = nil, skipChildrenNames: Bool? = nil, text: String? = nil, type: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withGroups: Bool? = nil, withParents: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = childAdditionId { queryItems.append(URLQueryItem(name: "childAdditionId", value: String(parameter)))}
 		if let parameter = childAssetId { queryItems.append(URLQueryItem(name: "childAssetId", value: String(parameter)))}
@@ -80,8 +84,10 @@ public class ManagedObjectsApi: AdaptableApi {
 		if let parameter = text { queryItems.append(URLQueryItem(name: "text", value: String(parameter)))}
 		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter)))}
 		if let parameter = withChildren { queryItems.append(URLQueryItem(name: "withChildren", value: String(parameter)))}
+		if let parameter = withChildrenCount { queryItems.append(URLQueryItem(name: "withChildrenCount", value: String(parameter)))}
 		if let parameter = withGroups { queryItems.append(URLQueryItem(name: "withGroups", value: String(parameter)))}
 		if let parameter = withParents { queryItems.append(URLQueryItem(name: "withParents", value: String(parameter)))}
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter)))}
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects")
@@ -233,15 +239,18 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 	- id 
 	///		  Unique identifier of the managed object.
 	/// 	- skipChildrenNames 
-	///		  When set to true, the returned references of child devices won't contain their names.
+	///		  When set to `true`, the returned references of child devices won't contain their names.
 	/// 	- withChildren 
-	///		  Determines if children with ID and name should be returned when fetching the managed object. Set it to false to improve query performance.
+	///		  Determines if children with ID and name should be returned when fetching the managed object. Set it to `false` to improve query performance.
+	/// 	- withChildrenCount 
+	///		  When set to `true`, the returned result will contain the total number of children in the respective objects (`childAdditions`, `childAssets` and `childDevices`).
 	/// 	- withParents 
-	///		  When set to true, the returned references of child parents will return the device's parents (if any). Otherwise, it will be an empty array.
-	public func getManagedObject(id: String, skipChildrenNames: Bool? = nil, withChildren: Bool? = nil, withParents: Bool? = nil) throws -> AnyPublisher<C8yManagedObject, Swift.Error> {
+	///		  When set to `true`, the returned references of child parents will return the device's parents (if any). Otherwise, it will be an empty array.
+	public func getManagedObject(id: String, skipChildrenNames: Bool? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withParents: Bool? = nil) throws -> AnyPublisher<C8yManagedObject, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = skipChildrenNames { queryItems.append(URLQueryItem(name: "skipChildrenNames", value: String(parameter)))}
 		if let parameter = withChildren { queryItems.append(URLQueryItem(name: "withChildren", value: String(parameter)))}
+		if let parameter = withChildrenCount { queryItems.append(URLQueryItem(name: "withChildrenCount", value: String(parameter)))}
 		if let parameter = withParents { queryItems.append(URLQueryItem(name: "withParents", value: String(parameter)))}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)")

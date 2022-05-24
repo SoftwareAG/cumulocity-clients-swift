@@ -81,6 +81,8 @@ public struct C8yBulkOperation: Codable {
 		}
 	}
 
+
+
 	/// Contains information about the number of processed operations.
 	public struct C8yProgress: Codable {
 	

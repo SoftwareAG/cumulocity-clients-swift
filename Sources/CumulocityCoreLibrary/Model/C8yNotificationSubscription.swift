@@ -56,6 +56,7 @@ public struct C8yNotificationSubscription: Codable {
 		case tenant = "tenant"
 	}
 
+
 	/// The managed object to which the subscription is associated.
 	public struct C8ySource: Codable {
 	

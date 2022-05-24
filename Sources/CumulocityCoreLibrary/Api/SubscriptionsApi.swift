@@ -37,7 +37,7 @@ public class SubscriptionsApi: AdaptableApi {
 	/// 	- source 
 	///		  The managed object ID to which the subscription is associated.
 	/// 	- withTotalPages 
-	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getSubscriptions(context: String? = nil, currentPage: Int? = nil, pageSize: Int? = nil, source: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yNotificationSubscriptionCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = context { queryItems.append(URLQueryItem(name: "context", value: String(parameter)))}
