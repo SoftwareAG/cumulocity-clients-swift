@@ -1,16 +1,14 @@
 # CumulocityCoreLibrary
 
-## Module Import
+## Working with Xcode
 
-## Convert to a Xcode Project
-
-You can also convert the generated sources into a Xcode project. Open the CumulocityCoreLibrary root directory in your terminal and run the following command:
+The Swift Package can be opened directly in Xcode. As an alternative, the Package can be also converted into a Xcode project. Open the CumulocityCoreLibrary root directory in your terminal and run the following command:
 
 ```groovy
 swift package generate-xcodeproj
 ```
 
-or run the attached shell script:
+or run the shell script located in the root directory:
 
 ```console
 sh xcodeproj.sh
@@ -18,7 +16,9 @@ sh xcodeproj.sh
 
 ## Usage
 
-A `URLRequestBuilder` is required to initialise any API class. It stores basic information - like the URL scheme, host name or additional headers - to be used with every API call.
+### Configure request information
+
+Additional information can be passed to each API class using the `URLRequestBuilder`. It provides dedicated methods to configure URL scheme, host name or additional headers:
 
 ```swift
 let builder = URLRequestBuilder()
@@ -32,14 +32,23 @@ After configuring use the `builder` as argument for creating service instances:
 let service = SystemOptionsApi(requestBuilder: builder)
 ```
 
-## Basic Authentication
+### Configure URL session
 
-The client sends HTTP requests with the `Authorization` header that contains the word `Basic` word followed by a space and a base64-encoded string `username:password`.
+Each API class contains initializers to configure the `URLSession` used for each request. The session object can be used to register a `URLSessionDelegate`.
 
-To include your credentials automatically in API calls, use the `init(requestBuilder: URLRequestBuilder)` and use the passed `URLRequestBuilder` to provide credentials. Either provide the authorization header directly or use the `set(authorization:String, password: String)`method.
+```swift
+let session = URLSession.shared
+let service = SystemOptionsApi(session: session)
+```
+
+### Basic Authentication
+
+The client sends HTTP requests with the `Authorization` header that contains the word `Basic` followed by a space and a base64-encoded string `username:password`. To include your credentials in API calls, use the `init(requestBuilder: URLRequestBuilder)` initializer and pass credentials using `URLRequestBuilder` as described below:
 
 ```swift
 let builder = URLRequestBuilder()
+// configure credentials using the Authorization header
 builder.add(header: "Authorization", value: "")
+// or pass userName and password explicitly
 builder.set(authorization: "userName", password: "password")
 ```
