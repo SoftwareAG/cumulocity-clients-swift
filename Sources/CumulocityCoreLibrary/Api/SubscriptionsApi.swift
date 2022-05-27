@@ -40,11 +40,11 @@ public class SubscriptionsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getSubscriptions(context: String? = nil, currentPage: Int? = nil, pageSize: Int? = nil, source: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yNotificationSubscriptionCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = context { queryItems.append(URLQueryItem(name: "context", value: String(parameter)))}
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
-		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter)))}
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
+		if let parameter = context { queryItems.append(URLQueryItem(name: "context", value: String(parameter))) }
+		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
+		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
+		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
+		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/subscriptions")
 			.set(httpMethod: "get")
@@ -140,8 +140,8 @@ public class SubscriptionsApi: AdaptableApi {
 	///		  The managed object ID to which the subscription is associated.
 	public func deleteSubscriptions(context: String? = nil, source: String? = nil) throws -> AnyPublisher<Data, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = context { queryItems.append(URLQueryItem(name: "context", value: String(parameter)))}
-		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter)))}
+		if let parameter = context { queryItems.append(URLQueryItem(name: "context", value: String(parameter))) }
+		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/subscriptions")
 			.set(httpMethod: "delete")

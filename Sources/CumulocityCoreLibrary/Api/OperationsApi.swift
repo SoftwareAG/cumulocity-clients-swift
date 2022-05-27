@@ -61,18 +61,18 @@ public class OperationsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getOperations(agentId: String? = nil, bulkOperationId: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, deviceId: String? = nil, fragmentType: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, status: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yOperationCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = agentId { queryItems.append(URLQueryItem(name: "agentId", value: String(parameter)))}
-		if let parameter = bulkOperationId { queryItems.append(URLQueryItem(name: "bulkOperationId", value: String(parameter)))}
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
-		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter)))}
-		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter)))}
-		if let parameter = deviceId { queryItems.append(URLQueryItem(name: "deviceId", value: String(parameter)))}
-		if let parameter = fragmentType { queryItems.append(URLQueryItem(name: "fragmentType", value: String(parameter)))}
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
-		if let parameter = revert { queryItems.append(URLQueryItem(name: "revert", value: String(parameter)))}
-		if let parameter = status { queryItems.append(URLQueryItem(name: "status", value: String(parameter)))}
-		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter)))}
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
+		if let parameter = agentId { queryItems.append(URLQueryItem(name: "agentId", value: String(parameter))) }
+		if let parameter = bulkOperationId { queryItems.append(URLQueryItem(name: "bulkOperationId", value: String(parameter))) }
+		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
+		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
+		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
+		if let parameter = deviceId { queryItems.append(URLQueryItem(name: "deviceId", value: String(parameter))) }
+		if let parameter = fragmentType { queryItems.append(URLQueryItem(name: "fragmentType", value: String(parameter))) }
+		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
+		if let parameter = revert { queryItems.append(URLQueryItem(name: "revert", value: String(parameter))) }
+		if let parameter = status { queryItems.append(URLQueryItem(name: "status", value: String(parameter))) }
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
+		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/operations")
 			.set(httpMethod: "get")
@@ -159,11 +159,11 @@ public class OperationsApi: AdaptableApi {
 	///		  Status of the operation.
 	public func deleteOperations(agentId: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, deviceId: String? = nil, status: String? = nil) throws -> AnyPublisher<Data, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = agentId { queryItems.append(URLQueryItem(name: "agentId", value: String(parameter)))}
-		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter)))}
-		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter)))}
-		if let parameter = deviceId { queryItems.append(URLQueryItem(name: "deviceId", value: String(parameter)))}
-		if let parameter = status { queryItems.append(URLQueryItem(name: "status", value: String(parameter)))}
+		if let parameter = agentId { queryItems.append(URLQueryItem(name: "agentId", value: String(parameter))) }
+		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
+		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
+		if let parameter = deviceId { queryItems.append(URLQueryItem(name: "deviceId", value: String(parameter))) }
+		if let parameter = status { queryItems.append(URLQueryItem(name: "status", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/operations")
 			.set(httpMethod: "delete")

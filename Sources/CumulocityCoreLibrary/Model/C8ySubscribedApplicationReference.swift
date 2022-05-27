@@ -31,8 +31,8 @@ public struct C8ySubscribedApplicationReference: Codable {
 			case `self` = "self"
 		}
 	
-		public init(self: String) {
-			self.self = self
+		public init(pSelf: String) {
+			self.`self` = pSelf
 		}
 	}
 }

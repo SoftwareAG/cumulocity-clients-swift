@@ -56,17 +56,17 @@ public class AuditsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getAuditRecords(application: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, source: String? = nil, type: String? = nil, user: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yAuditRecordCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = application { queryItems.append(URLQueryItem(name: "application", value: String(parameter)))}
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
-		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter)))}
-		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter)))}
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
-		if let parameter = revert { queryItems.append(URLQueryItem(name: "revert", value: String(parameter)))}
-		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter)))}
-		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter)))}
-		if let parameter = user { queryItems.append(URLQueryItem(name: "user", value: String(parameter)))}
-		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter)))}
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
+		if let parameter = application { queryItems.append(URLQueryItem(name: "application", value: String(parameter))) }
+		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
+		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
+		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
+		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
+		if let parameter = revert { queryItems.append(URLQueryItem(name: "revert", value: String(parameter))) }
+		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
+		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter))) }
+		if let parameter = user { queryItems.append(URLQueryItem(name: "user", value: String(parameter))) }
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
+		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/audit/auditRecords")
 			.set(httpMethod: "get")

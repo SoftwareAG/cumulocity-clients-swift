@@ -59,17 +59,17 @@ public class MeasurementsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getMeasurements(currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, source: String? = nil, type: String? = nil, valueFragmentSeries: String? = nil, valueFragmentType: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yMeasurementCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
-		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter)))}
-		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter)))}
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
-		if let parameter = revert { queryItems.append(URLQueryItem(name: "revert", value: String(parameter)))}
-		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter)))}
-		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter)))}
-		if let parameter = valueFragmentSeries { queryItems.append(URLQueryItem(name: "valueFragmentSeries", value: String(parameter)))}
-		if let parameter = valueFragmentType { queryItems.append(URLQueryItem(name: "valueFragmentType", value: String(parameter)))}
-		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter)))}
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
+		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
+		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
+		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
+		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
+		if let parameter = revert { queryItems.append(URLQueryItem(name: "revert", value: String(parameter))) }
+		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
+		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter))) }
+		if let parameter = valueFragmentSeries { queryItems.append(URLQueryItem(name: "valueFragmentSeries", value: String(parameter))) }
+		if let parameter = valueFragmentType { queryItems.append(URLQueryItem(name: "valueFragmentType", value: String(parameter))) }
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
+		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement/measurements")
 			.set(httpMethod: "get")
@@ -235,11 +235,11 @@ public class MeasurementsApi: AdaptableApi {
 	///		  The type of measurement to search for.
 	public func deleteMeasurements(dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, source: String? = nil, type: String? = nil) throws -> AnyPublisher<Data, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter)))}
-		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter)))}
-		if let parameter = fragmentType { queryItems.append(URLQueryItem(name: "fragmentType", value: String(parameter)))}
-		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter)))}
-		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter)))}
+		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
+		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
+		if let parameter = fragmentType { queryItems.append(URLQueryItem(name: "fragmentType", value: String(parameter))) }
+		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
+		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement/measurements")
 			.set(httpMethod: "delete")
@@ -359,11 +359,11 @@ public class MeasurementsApi: AdaptableApi {
 	///		  The managed object ID to which the measurement is associated.
 	public func getMeasurementSeries(aggregationType: String? = nil, dateFrom: String, dateTo: String, revert: Bool? = nil, series: String? = nil, source: String) throws -> AnyPublisher<C8yMeasurementSeries, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = aggregationType { queryItems.append(URLQueryItem(name: "aggregationType", value: String(parameter)))}
+		if let parameter = aggregationType { queryItems.append(URLQueryItem(name: "aggregationType", value: String(parameter))) }
 		queryItems.append(URLQueryItem(name: "dateFrom", value: String(dateFrom)))
 		queryItems.append(URLQueryItem(name: "dateTo", value: String(dateTo)))
-		if let parameter = revert { queryItems.append(URLQueryItem(name: "revert", value: String(parameter)))}
-		if let parameter = series { queryItems.append(URLQueryItem(name: "series", value: String(parameter)))}
+		if let parameter = revert { queryItems.append(URLQueryItem(name: "revert", value: String(parameter))) }
+		if let parameter = series { queryItems.append(URLQueryItem(name: "series", value: String(parameter))) }
 		queryItems.append(URLQueryItem(name: "source", value: String(source)))
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement/measurements/series")

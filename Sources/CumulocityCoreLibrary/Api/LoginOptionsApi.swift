@@ -31,8 +31,8 @@ public class LoginOptionsApi: AdaptableApi {
 	///		  If this is set to `true`, the management tenant login options will be returned.  > **&#9432; Info:** The `tenantId` parameter must not be present in the request when using the `management` parameter, otherwise it will cause an error. 
 	public func getLoginOptions(tenantId: String? = nil, management: Bool? = nil) throws -> AnyPublisher<C8yLoginOptionCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = tenantId { queryItems.append(URLQueryItem(name: "tenantId", value: String(parameter)))}
-		if let parameter = management { queryItems.append(URLQueryItem(name: "management", value: String(parameter)))}
+		if let parameter = tenantId { queryItems.append(URLQueryItem(name: "tenantId", value: String(parameter))) }
+		if let parameter = management { queryItems.append(URLQueryItem(name: "management", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/loginOptions")
 			.set(httpMethod: "get")

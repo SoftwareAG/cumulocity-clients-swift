@@ -69,26 +69,26 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, fragmentType: String? = nil, ids: String? = nil, onlyRoots: Bool? = nil, owner: String? = nil, pageSize: Int? = nil, q: String? = nil, query: String? = nil, skipChildrenNames: Bool? = nil, text: String? = nil, type: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withGroups: Bool? = nil, withParents: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = childAdditionId { queryItems.append(URLQueryItem(name: "childAdditionId", value: String(parameter)))}
-		if let parameter = childAssetId { queryItems.append(URLQueryItem(name: "childAssetId", value: String(parameter)))}
-		if let parameter = childDeviceId { queryItems.append(URLQueryItem(name: "childDeviceId", value: String(parameter)))}
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
-		if let parameter = fragmentType { queryItems.append(URLQueryItem(name: "fragmentType", value: String(parameter)))}
-		if let parameter = ids { queryItems.append(URLQueryItem(name: "ids", value: String(parameter)))}
-		if let parameter = onlyRoots { queryItems.append(URLQueryItem(name: "onlyRoots", value: String(parameter)))}
-		if let parameter = owner { queryItems.append(URLQueryItem(name: "owner", value: String(parameter)))}
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
-		if let parameter = q { queryItems.append(URLQueryItem(name: "q", value: String(parameter)))}
-		if let parameter = query { queryItems.append(URLQueryItem(name: "query", value: String(parameter)))}
-		if let parameter = skipChildrenNames { queryItems.append(URLQueryItem(name: "skipChildrenNames", value: String(parameter)))}
-		if let parameter = text { queryItems.append(URLQueryItem(name: "text", value: String(parameter)))}
-		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter)))}
-		if let parameter = withChildren { queryItems.append(URLQueryItem(name: "withChildren", value: String(parameter)))}
-		if let parameter = withChildrenCount { queryItems.append(URLQueryItem(name: "withChildrenCount", value: String(parameter)))}
-		if let parameter = withGroups { queryItems.append(URLQueryItem(name: "withGroups", value: String(parameter)))}
-		if let parameter = withParents { queryItems.append(URLQueryItem(name: "withParents", value: String(parameter)))}
-		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter)))}
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
+		if let parameter = childAdditionId { queryItems.append(URLQueryItem(name: "childAdditionId", value: String(parameter))) }
+		if let parameter = childAssetId { queryItems.append(URLQueryItem(name: "childAssetId", value: String(parameter))) }
+		if let parameter = childDeviceId { queryItems.append(URLQueryItem(name: "childDeviceId", value: String(parameter))) }
+		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
+		if let parameter = fragmentType { queryItems.append(URLQueryItem(name: "fragmentType", value: String(parameter))) }
+		if let parameter = ids { queryItems.append(URLQueryItem(name: "ids", value: String(parameter))) }
+		if let parameter = onlyRoots { queryItems.append(URLQueryItem(name: "onlyRoots", value: String(parameter))) }
+		if let parameter = owner { queryItems.append(URLQueryItem(name: "owner", value: String(parameter))) }
+		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
+		if let parameter = q { queryItems.append(URLQueryItem(name: "q", value: String(parameter))) }
+		if let parameter = query { queryItems.append(URLQueryItem(name: "query", value: String(parameter))) }
+		if let parameter = skipChildrenNames { queryItems.append(URLQueryItem(name: "skipChildrenNames", value: String(parameter))) }
+		if let parameter = text { queryItems.append(URLQueryItem(name: "text", value: String(parameter))) }
+		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter))) }
+		if let parameter = withChildren { queryItems.append(URLQueryItem(name: "withChildren", value: String(parameter))) }
+		if let parameter = withChildrenCount { queryItems.append(URLQueryItem(name: "withChildrenCount", value: String(parameter))) }
+		if let parameter = withGroups { queryItems.append(URLQueryItem(name: "withGroups", value: String(parameter))) }
+		if let parameter = withParents { queryItems.append(URLQueryItem(name: "withParents", value: String(parameter))) }
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
+		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects")
 			.set(httpMethod: "get")
@@ -196,14 +196,14 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  The type of managed object to search for.
 	public func getNumberOfManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, fragmentType: String? = nil, ids: String? = nil, owner: String? = nil, text: String? = nil, type: String? = nil) throws -> AnyPublisher<Int, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = childAdditionId { queryItems.append(URLQueryItem(name: "childAdditionId", value: String(parameter)))}
-		if let parameter = childAssetId { queryItems.append(URLQueryItem(name: "childAssetId", value: String(parameter)))}
-		if let parameter = childDeviceId { queryItems.append(URLQueryItem(name: "childDeviceId", value: String(parameter)))}
-		if let parameter = fragmentType { queryItems.append(URLQueryItem(name: "fragmentType", value: String(parameter)))}
-		if let parameter = ids { queryItems.append(URLQueryItem(name: "ids", value: String(parameter)))}
-		if let parameter = owner { queryItems.append(URLQueryItem(name: "owner", value: String(parameter)))}
-		if let parameter = text { queryItems.append(URLQueryItem(name: "text", value: String(parameter)))}
-		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter)))}
+		if let parameter = childAdditionId { queryItems.append(URLQueryItem(name: "childAdditionId", value: String(parameter))) }
+		if let parameter = childAssetId { queryItems.append(URLQueryItem(name: "childAssetId", value: String(parameter))) }
+		if let parameter = childDeviceId { queryItems.append(URLQueryItem(name: "childDeviceId", value: String(parameter))) }
+		if let parameter = fragmentType { queryItems.append(URLQueryItem(name: "fragmentType", value: String(parameter))) }
+		if let parameter = ids { queryItems.append(URLQueryItem(name: "ids", value: String(parameter))) }
+		if let parameter = owner { queryItems.append(URLQueryItem(name: "owner", value: String(parameter))) }
+		if let parameter = text { queryItems.append(URLQueryItem(name: "text", value: String(parameter))) }
+		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/count")
 			.set(httpMethod: "get")
@@ -248,10 +248,10 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  When set to `true`, the returned references of child parents will return the device's parents (if any). Otherwise, it will be an empty array.
 	public func getManagedObject(id: String, skipChildrenNames: Bool? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withParents: Bool? = nil) throws -> AnyPublisher<C8yManagedObject, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = skipChildrenNames { queryItems.append(URLQueryItem(name: "skipChildrenNames", value: String(parameter)))}
-		if let parameter = withChildren { queryItems.append(URLQueryItem(name: "withChildren", value: String(parameter)))}
-		if let parameter = withChildrenCount { queryItems.append(URLQueryItem(name: "withChildrenCount", value: String(parameter)))}
-		if let parameter = withParents { queryItems.append(URLQueryItem(name: "withParents", value: String(parameter)))}
+		if let parameter = skipChildrenNames { queryItems.append(URLQueryItem(name: "skipChildrenNames", value: String(parameter))) }
+		if let parameter = withChildren { queryItems.append(URLQueryItem(name: "withChildren", value: String(parameter))) }
+		if let parameter = withChildrenCount { queryItems.append(URLQueryItem(name: "withChildrenCount", value: String(parameter))) }
+		if let parameter = withParents { queryItems.append(URLQueryItem(name: "withParents", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)")
 			.set(httpMethod: "get")
@@ -347,9 +347,9 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  When set to `true` and the managed object is a device, it deletes the associated device user (credentials).
 	public func deleteManagedObject(id: String, cascade: Bool? = nil, forceCascade: Bool? = nil, withDeviceUser: Bool? = nil) throws -> AnyPublisher<Data, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = cascade { queryItems.append(URLQueryItem(name: "cascade", value: String(parameter)))}
-		if let parameter = forceCascade { queryItems.append(URLQueryItem(name: "forceCascade", value: String(parameter)))}
-		if let parameter = withDeviceUser { queryItems.append(URLQueryItem(name: "withDeviceUser", value: String(parameter)))}
+		if let parameter = cascade { queryItems.append(URLQueryItem(name: "cascade", value: String(parameter))) }
+		if let parameter = forceCascade { queryItems.append(URLQueryItem(name: "forceCascade", value: String(parameter))) }
+		if let parameter = withDeviceUser { queryItems.append(URLQueryItem(name: "withDeviceUser", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)")
 			.set(httpMethod: "delete")
