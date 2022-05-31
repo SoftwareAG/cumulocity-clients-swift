@@ -45,13 +45,13 @@ public class BinariesApi: AdaptableApi {
 	///		  The type of managed object to search for.
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getBinaries(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, ids: String? = nil, owner: String? = nil, pageSize: Int? = nil, text: String? = nil, type: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yBinaryCollection, Swift.Error> {
+	public func getBinaries(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, ids: [String]? = nil, owner: String? = nil, pageSize: Int? = nil, text: String? = nil, type: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yBinaryCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = childAdditionId { queryItems.append(URLQueryItem(name: "childAdditionId", value: String(parameter))) }
 		if let parameter = childAssetId { queryItems.append(URLQueryItem(name: "childAssetId", value: String(parameter))) }
 		if let parameter = childDeviceId { queryItems.append(URLQueryItem(name: "childDeviceId", value: String(parameter))) }
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
-		if let parameter = ids { queryItems.append(URLQueryItem(name: "ids", value: String(parameter))) }
+		if let parameter = ids { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "ids", value: p)) } }
 		if let parameter = owner { queryItems.append(URLQueryItem(name: "owner", value: String(parameter))) }
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
 		if let parameter = text { queryItems.append(URLQueryItem(name: "text", value: String(parameter))) }

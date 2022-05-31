@@ -67,14 +67,14 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, fragmentType: String? = nil, ids: String? = nil, onlyRoots: Bool? = nil, owner: String? = nil, pageSize: Int? = nil, q: String? = nil, query: String? = nil, skipChildrenNames: Bool? = nil, text: String? = nil, type: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withGroups: Bool? = nil, withParents: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectCollection, Swift.Error> {
+	public func getManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, fragmentType: String? = nil, ids: [String]? = nil, onlyRoots: Bool? = nil, owner: String? = nil, pageSize: Int? = nil, q: String? = nil, query: String? = nil, skipChildrenNames: Bool? = nil, text: String? = nil, type: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withGroups: Bool? = nil, withParents: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = childAdditionId { queryItems.append(URLQueryItem(name: "childAdditionId", value: String(parameter))) }
 		if let parameter = childAssetId { queryItems.append(URLQueryItem(name: "childAssetId", value: String(parameter))) }
 		if let parameter = childDeviceId { queryItems.append(URLQueryItem(name: "childDeviceId", value: String(parameter))) }
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
 		if let parameter = fragmentType { queryItems.append(URLQueryItem(name: "fragmentType", value: String(parameter))) }
-		if let parameter = ids { queryItems.append(URLQueryItem(name: "ids", value: String(parameter))) }
+		if let parameter = ids { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "ids", value: p)) } }
 		if let parameter = onlyRoots { queryItems.append(URLQueryItem(name: "onlyRoots", value: String(parameter))) }
 		if let parameter = owner { queryItems.append(URLQueryItem(name: "owner", value: String(parameter))) }
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
@@ -194,13 +194,13 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  Search for managed objects where any property value is equal to the given one. Only string values are supported.
 	/// 	- type 
 	///		  The type of managed object to search for.
-	public func getNumberOfManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, fragmentType: String? = nil, ids: String? = nil, owner: String? = nil, text: String? = nil, type: String? = nil) throws -> AnyPublisher<Int, Swift.Error> {
+	public func getNumberOfManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, fragmentType: String? = nil, ids: [String]? = nil, owner: String? = nil, text: String? = nil, type: String? = nil) throws -> AnyPublisher<Int, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = childAdditionId { queryItems.append(URLQueryItem(name: "childAdditionId", value: String(parameter))) }
 		if let parameter = childAssetId { queryItems.append(URLQueryItem(name: "childAssetId", value: String(parameter))) }
 		if let parameter = childDeviceId { queryItems.append(URLQueryItem(name: "childDeviceId", value: String(parameter))) }
 		if let parameter = fragmentType { queryItems.append(URLQueryItem(name: "fragmentType", value: String(parameter))) }
-		if let parameter = ids { queryItems.append(URLQueryItem(name: "ids", value: String(parameter))) }
+		if let parameter = ids { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "ids", value: p)) } }
 		if let parameter = owner { queryItems.append(URLQueryItem(name: "owner", value: String(parameter))) }
 		if let parameter = text { queryItems.append(URLQueryItem(name: "text", value: String(parameter))) }
 		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter))) }

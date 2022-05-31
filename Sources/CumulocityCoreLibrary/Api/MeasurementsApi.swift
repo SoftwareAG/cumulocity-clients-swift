@@ -357,13 +357,13 @@ public class MeasurementsApi: AdaptableApi {
 	///		  The specific series to search for.
 	/// 	- source 
 	///		  The managed object ID to which the measurement is associated.
-	public func getMeasurementSeries(aggregationType: String? = nil, dateFrom: String, dateTo: String, revert: Bool? = nil, series: String? = nil, source: String) throws -> AnyPublisher<C8yMeasurementSeries, Swift.Error> {
+	public func getMeasurementSeries(aggregationType: String? = nil, dateFrom: String, dateTo: String, revert: Bool? = nil, series: [String]? = nil, source: String) throws -> AnyPublisher<C8yMeasurementSeries, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = aggregationType { queryItems.append(URLQueryItem(name: "aggregationType", value: String(parameter))) }
 		queryItems.append(URLQueryItem(name: "dateFrom", value: String(dateFrom)))
 		queryItems.append(URLQueryItem(name: "dateTo", value: String(dateTo)))
 		if let parameter = revert { queryItems.append(URLQueryItem(name: "revert", value: String(parameter))) }
-		if let parameter = series { queryItems.append(URLQueryItem(name: "series", value: String(parameter))) }
+		if let parameter = series { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "series", value: p)) } }
 		queryItems.append(URLQueryItem(name: "source", value: String(source)))
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement/measurements/series")

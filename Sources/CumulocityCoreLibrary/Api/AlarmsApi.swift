@@ -192,10 +192,10 @@ public class AlarmsApi: AdaptableApi {
 	/// An alarm must be associated with a source (managed object) identified by ID.<br>
 	/// In general, each alarm may consist of:
 	/// 
-	/// *   A status showing whether the alarm is ACTIVE, ACKNOWLEDGED or CLEARED.
-	/// *   A time stamp to indicate when the alarm was last updated.
-	/// *   The severity of the alarm: CRITICAL, MAJOR, MINOR or WARNING.
-	/// *   A history of changes to the event in form of audit logs.
+	/// *  A status showing whether the alarm is ACTIVE, ACKNOWLEDGED or CLEARED.
+	/// *  A time stamp to indicate when the alarm was last updated.
+	/// *  The severity of the alarm: CRITICAL, MAJOR, MINOR or WARNING.
+	/// *  A history of changes to the event in form of audit logs.
 	/// 
 	/// ### Alarm suppression
 	/// 

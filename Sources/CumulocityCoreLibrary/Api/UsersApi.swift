@@ -51,10 +51,10 @@ public class UsersApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getUsers(tenantId: String, currentPage: Int? = nil, groups: String? = nil, onlyDevices: Bool? = nil, owner: String? = nil, pageSize: Int? = nil, username: String? = nil, withSubusersCount: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yUserCollection, Swift.Error> {
+	public func getUsers(tenantId: String, currentPage: Int? = nil, groups: [String]? = nil, onlyDevices: Bool? = nil, owner: String? = nil, pageSize: Int? = nil, username: String? = nil, withSubusersCount: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yUserCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
-		if let parameter = groups { queryItems.append(URLQueryItem(name: "groups", value: String(parameter))) }
+		if let parameter = groups { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "groups", value: p)) } }
 		if let parameter = onlyDevices { queryItems.append(URLQueryItem(name: "onlyDevices", value: String(parameter))) }
 		if let parameter = owner { queryItems.append(URLQueryItem(name: "owner", value: String(parameter))) }
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
