@@ -50,20 +50,23 @@ public class AuditsApi: AdaptableApi {
 	///		  The type of audit record to search for.
 	/// 	- user 
 	///		  The username to search for.
+	/// 	- withTotalElements 
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
-	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getAuditRecordCollectionResource(application: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, source: String? = nil, type: String? = nil, user: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yAuditRecordCollection, Swift.Error> {
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getAuditRecords(application: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, source: String? = nil, type: String? = nil, user: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yAuditRecordCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = application { queryItems.append(URLQueryItem(name: "application", value: String(parameter)))}
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
-		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter)))}
-		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter)))}
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
-		if let parameter = revert { queryItems.append(URLQueryItem(name: "revert", value: String(parameter)))}
-		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter)))}
-		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter)))}
-		if let parameter = user { queryItems.append(URLQueryItem(name: "user", value: String(parameter)))}
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
+		if let parameter = application { queryItems.append(URLQueryItem(name: "application", value: String(parameter))) }
+		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
+		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
+		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
+		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
+		if let parameter = revert { queryItems.append(URLQueryItem(name: "revert", value: String(parameter))) }
+		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
+		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter))) }
+		if let parameter = user { queryItems.append(URLQueryItem(name: "user", value: String(parameter))) }
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
+		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/audit/auditRecords")
 			.set(httpMethod: "get")
@@ -83,19 +86,19 @@ public class AuditsApi: AdaptableApi {
 	/// Create an audit record
 	/// Create an audit record.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_AUDIT_ADMIN <b>OR</b> ROLE_SYSTEM <b>OR</b> AUDIT_ADMIN permission on the resource
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
 	/// 	- 201
-	///		  The request has succeeded and the audit record is sent in the response.
+	///		  An audit record was created.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
 	/// - Parameters:
 	/// 	- body 
-	public func postAuditRecordCollectionResource(body: C8yAuditRecord) throws -> AnyPublisher<C8yAuditRecord, Swift.Error> {
+	public func createAuditRecord(body: C8yAuditRecord) throws -> AnyPublisher<C8yAuditRecord, Swift.Error> {
 		var requestBody = body
 		requestBody.severity = nil
 		requestBody.application = nil
@@ -125,9 +128,9 @@ public class AuditsApi: AdaptableApi {
 	/// Retrieve a specific audit record
 	/// Retrieve a specific audit record by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_AUDIT_READ <b>OR</b> AUDIT_READ permission on the source
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -138,7 +141,7 @@ public class AuditsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the audit record.
-	public func getAuditRecordResource(id: String) throws -> AnyPublisher<C8yAuditRecord, Swift.Error> {
+	public func getAuditRecord(id: String) throws -> AnyPublisher<C8yAuditRecord, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/audit/auditRecords/\(id)")
 			.set(httpMethod: "get")

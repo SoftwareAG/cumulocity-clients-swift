@@ -25,9 +25,9 @@ public class ApplicationsApi: AdaptableApi {
 	/// Retrieve all applications
 	/// Retrieve all applications on your tenant.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_APPLICATION_MANAGEMENT_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -54,20 +54,23 @@ public class ApplicationsApi: AdaptableApi {
 	///		  The type of the application.
 	/// 	- user 
 	///		  The ID of a user that has access to the applications.
+	/// 	- withTotalElements 
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
-	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getAbstractApplicationCollectionResource(currentPage: Int? = nil, name: String? = nil, owner: String? = nil, pageSize: Int? = nil, providedFor: String? = nil, subscriber: String? = nil, tenant: String? = nil, type: String? = nil, user: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yApplicationCollection, Swift.Error> {
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getApplications(currentPage: Int? = nil, name: String? = nil, owner: String? = nil, pageSize: Int? = nil, providedFor: String? = nil, subscriber: String? = nil, tenant: String? = nil, type: String? = nil, user: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yApplicationCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
-		if let parameter = name { queryItems.append(URLQueryItem(name: "name", value: String(parameter)))}
-		if let parameter = owner { queryItems.append(URLQueryItem(name: "owner", value: String(parameter)))}
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
-		if let parameter = providedFor { queryItems.append(URLQueryItem(name: "providedFor", value: String(parameter)))}
-		if let parameter = subscriber { queryItems.append(URLQueryItem(name: "subscriber", value: String(parameter)))}
-		if let parameter = tenant { queryItems.append(URLQueryItem(name: "tenant", value: String(parameter)))}
-		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter)))}
-		if let parameter = user { queryItems.append(URLQueryItem(name: "user", value: String(parameter)))}
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
+		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
+		if let parameter = name { queryItems.append(URLQueryItem(name: "name", value: String(parameter))) }
+		if let parameter = owner { queryItems.append(URLQueryItem(name: "owner", value: String(parameter))) }
+		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
+		if let parameter = providedFor { queryItems.append(URLQueryItem(name: "providedFor", value: String(parameter))) }
+		if let parameter = subscriber { queryItems.append(URLQueryItem(name: "subscriber", value: String(parameter))) }
+		if let parameter = tenant { queryItems.append(URLQueryItem(name: "tenant", value: String(parameter))) }
+		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter))) }
+		if let parameter = user { queryItems.append(URLQueryItem(name: "user", value: String(parameter))) }
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
+		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications")
 			.set(httpMethod: "get")
@@ -87,9 +90,9 @@ public class ApplicationsApi: AdaptableApi {
 	/// Create an application
 	/// Create an application on your tenant.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_APPLICATION_MANAGEMENT_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -103,7 +106,7 @@ public class ApplicationsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func postApplicationCollectionResource(body: C8yApplication) throws -> AnyPublisher<C8yApplication, Swift.Error> {
+	public func createApplication(body: C8yApplication) throws -> AnyPublisher<C8yApplication, Swift.Error> {
 		var requestBody = body
 		requestBody.owner?.`self` = nil
 		requestBody.activeVersionId = nil
@@ -130,9 +133,9 @@ public class ApplicationsApi: AdaptableApi {
 	/// Retrieve a specific application
 	/// Retrieve a specific application (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_APPLICATION_MANAGEMENT_READ <b>OR</b> current user has explicit access to the application
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -145,7 +148,7 @@ public class ApplicationsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the application.
-	public func getApplicationResource(id: String) throws -> AnyPublisher<C8yApplication, Swift.Error> {
+	public func getApplication(id: String) throws -> AnyPublisher<C8yApplication, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)")
 			.set(httpMethod: "get")
@@ -162,12 +165,11 @@ public class ApplicationsApi: AdaptableApi {
 	}
 	
 	/// Update a specific application
-	/// 
 	/// Update a specific application (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_USER_MANAGEMENT_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -181,7 +183,7 @@ public class ApplicationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the application.
-	public func putApplicationResource(body: C8yApplication, id: String) throws -> AnyPublisher<C8yApplication, Swift.Error> {
+	public func updateApplication(body: C8yApplication, id: String) throws -> AnyPublisher<C8yApplication, Swift.Error> {
 		var requestBody = body
 		requestBody.owner?.`self` = nil
 		requestBody.activeVersionId = nil
@@ -211,9 +213,9 @@ public class ApplicationsApi: AdaptableApi {
 	/// 
 	/// > **&#9432; Info:** With regards to a hosted application, there is a caching mechanism in place that keeps the information about the placement of application files (html, javascript, css, fonts, etc.). Removing a hosted application, in normal circumstances, will cause the subsequent requests for application files to fail with an HTTP 404 error because the application is removed synchronously, its files are immediately removed on the node serving the request and at the same time the information is propagated to other nodes – but in rare cases there might be a delay with this propagation. In such situations, the files of the removed application can be served from those nodes up until the aforementioned cache expires. For the same reason, the cache can also cause HTTP 404 errors when the application is updated as it will keep the path to the files of the old version of the application. The cache is filled on demand, so there should not be issues if application files were not accessed prior to the delete request. The expiration delay of the cache can differ, but should not take more than one minute.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_APPLICATION_MANAGEMENT_ADMIN <b>AND</b> tenant is the owner of the application
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -230,9 +232,9 @@ public class ApplicationsApi: AdaptableApi {
 	///		  Unique identifier of the application.
 	/// 	- force 
 	///		  Force deletion by unsubscribing all tenants from the application first and then deleting the application itself.
-	public func deleteApplicationResource(id: String, force: Bool? = nil) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteApplication(id: String, force: Bool? = nil) throws -> AnyPublisher<Data, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = force { queryItems.append(URLQueryItem(name: "force", value: String(parameter)))}
+		if let parameter = force { queryItems.append(URLQueryItem(name: "force", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)")
 			.set(httpMethod: "delete")
@@ -254,14 +256,14 @@ public class ApplicationsApi: AdaptableApi {
 	/// 
 	/// This method is not supported by microservice applications.
 	/// 
-	/// A request to the “clone” resource creates a new application based on an already existing one.
+	/// A request to the "clone" resource creates a new application based on an already existing one.
 	/// 
 	/// The properties are copied to the newly created application and the prefix "clone" is added to the properties `name`, `key` and `contextPath` in order to be unique.
 	/// 
 	/// If the target application is hosted and has an active version, the new application will have the active version with the same content.
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_APPLICATION_MANAGEMENT_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -272,7 +274,7 @@ public class ApplicationsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the application.
-	public func postApplicationResource(id: String) throws -> AnyPublisher<C8yApplication, Swift.Error> {
+	public func copyApplication(id: String) throws -> AnyPublisher<C8yApplication, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/clone")
 			.set(httpMethod: "post")

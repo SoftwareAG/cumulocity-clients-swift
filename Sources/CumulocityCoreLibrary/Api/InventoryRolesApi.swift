@@ -18,9 +18,9 @@ public class InventoryRolesApi: AdaptableApi {
 	/// Retrieve all inventory roles
 	/// Retrieve all inventory roles.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_USER_MANAGEMENT_READ <b>OR</b> ROLE_USER_MANAGEMENT_CREATE
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -28,11 +28,23 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  The request succeeded and all inventory roles are sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
-	public func getInventoryRoleResource() throws -> AnyPublisher<C8yInventoryRoleCollection, Swift.Error> {
+	/// - Parameters:
+	/// 	- currentPage 
+	///		  The current page of the paginated results.
+	/// 	- pageSize 
+	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+	/// 	- withTotalElements 
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getInventoryRoles(currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil) throws -> AnyPublisher<C8yInventoryRoleCollection, Swift.Error> {
+		var queryItems: [URLQueryItem] = []
+		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
+		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/inventoryroles")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.inventoryrolecollection+json")
+			.set(queryItems: queryItems)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -47,9 +59,9 @@ public class InventoryRolesApi: AdaptableApi {
 	/// Create an inventory role
 	/// Create an inventory role.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_USER_MANAGEMENT_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -61,7 +73,7 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func postInventoryRoleResource(body: C8yInventoryRole) throws -> AnyPublisher<C8yInventoryRole, Swift.Error> {
+	public func createInventoryRole(body: C8yInventoryRole) throws -> AnyPublisher<C8yInventoryRole, Swift.Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -85,9 +97,9 @@ public class InventoryRolesApi: AdaptableApi {
 	/// Retrieve a specific inventory role
 	/// Retrieve a specific inventory role (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
-	/// ROLE_USER_MANAGEMENT_READ <b>OR</b> ROLE_USER_MANAGEMENT_CREATE and has access to the inventory role
-	/// </div></div>
+	/// <section><h5>Required roles</h5>
+	/// ROLE_USER_MANAGEMENT_READ <b>OR</b> ROLE_USER_MANAGEMENT_CREATE <b>AND</b> has access to the inventory role
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -95,10 +107,12 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  The request succeeded and the inventory role is sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 404
+	///		  Role not found.
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the inventory role.
-	public func getInventoryRoleResourceId(id: String) throws -> AnyPublisher<C8yInventoryRole, Swift.Error> {
+	public func getInventoryRole(id: Int) throws -> AnyPublisher<C8yInventoryRole, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/inventoryroles/\(id)")
 			.set(httpMethod: "get")
@@ -117,9 +131,9 @@ public class InventoryRolesApi: AdaptableApi {
 	/// Update a specific inventory role
 	/// Update a specific inventory role (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_USER_MANAGEMENT_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -127,13 +141,15 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  An inventory role was updated.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 404
+	///		  Role not found.
 	/// 	- 422
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the inventory role.
-	public func putInventoryRoleResourceId(body: C8yInventoryRole, id: String) throws -> AnyPublisher<C8yInventoryRole, Swift.Error> {
+	public func updateInventoryRole(body: C8yInventoryRole, id: Int) throws -> AnyPublisher<C8yInventoryRole, Swift.Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -157,9 +173,9 @@ public class InventoryRolesApi: AdaptableApi {
 	/// Remove a specific inventory role
 	/// Remove a specific inventory role (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_USER_MANAGEMENT_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -169,10 +185,12 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// 	- 403
 	///		  Not authorized to perform this operation.
+	/// 	- 404
+	///		  Role not found.
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the inventory role.
-	public func deleteInventoryRoleResourceId(id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteInventoryRole(id: Int) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/inventoryroles/\(id)")
 			.set(httpMethod: "delete")
@@ -188,25 +206,29 @@ public class InventoryRolesApi: AdaptableApi {
 		}).eraseToAnyPublisher()
 	}
 	
-	/// Retrieve all inventory assignment for a user
-	/// Retrieve all inventory assignments for a specific user (by a given user ID) in a specific tenant (by a given tenant ID).
+	/// Retrieve all inventory roles assigned to a user
+	/// Retrieve all inventory roles assigned to a specific user (by a given user ID) in a specific tenant (by a given tenant ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_USER_MANAGEMENT_READ <b>OR</b> ROLE_USER_MANAGEMENT_CREATE <b>AND</b> is the parent of the user
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
 	/// 	- 200
-	///		  The request has succeeded and the inventory assignments are sent in the response.
+	///		  The request has succeeded and the inventory roles are sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 403
+	///		  Not enough permissions/roles to perform this operation.
+	/// 	- 404
+	///		  User not found.
 	/// - Parameters:
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- userId 
 	///		  Unique identifier of the a user.
-	public func getInventoryAssignmentResource(tenantId: String, userId: String) throws -> AnyPublisher<C8yInventoryAssignmentCollection, Swift.Error> {
+	public func getUserInventoryRoles(tenantId: String, userId: String) throws -> AnyPublisher<C8yInventoryAssignmentCollection, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory")
 			.set(httpMethod: "get")
@@ -222,19 +244,23 @@ public class InventoryRolesApi: AdaptableApi {
 		}).decode(type: C8yInventoryAssignmentCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
-	/// Create an inventory assignment for a user
-	/// Create an inventory assignment for a specific user (by a given user ID) in a specific tenant (by a given tenant ID).
+	/// Assign an inventory role to a user
+	/// Assign an existing inventory role to a specific user (by a given user ID) in a specific tenant (by a given tenant ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_USER_MANAGEMENT_ADMIN <b>AND</b> (is not in user hierarchy <b>OR</b> is root in the user hierarchy) <b>OR</b> ROLE_USER_MANAGEMENT_ADMIN <b>AND</b> is in user hiararchy <b>AND</b> has parent access to inventory assignments <b>OR</b> ROLE_USER_MANAGEMENT_CREATE <b>AND</b> is parent of the user <b>AND</b> is not the current user <b>AND</b> has current user access to inventory assignments <b>AND</b> has parent access to inventory assignments
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
 	/// 	- 201
-	///		  An inventory assignment was created.
+	///		  An inventory role was assigned to a user.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 403
+	///		  Not enough permissions/roles to perform this operation.
+	/// 	- 404
+	///		  User not found.
 	/// 	- 422
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
@@ -243,7 +269,7 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- userId 
 	///		  Unique identifier of the a user.
-	public func postInventoryAssignmentResource(body: C8yInventoryAssignment, tenantId: String, userId: String) throws -> AnyPublisher<C8yInventoryAssignment, Swift.Error> {
+	public func assignUserInventoryRole(body: C8yInventoryAssignment, tenantId: String, userId: String) throws -> AnyPublisher<C8yInventoryAssignment, Swift.Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -264,19 +290,23 @@ public class InventoryRolesApi: AdaptableApi {
 		}).decode(type: C8yInventoryAssignment.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
-	/// Retrieve a specific inventory assignment for a user
-	/// Retrieve a specific inventory assignment (by a given ID) for a specific user (by a given user ID) in a specific tenant (by a given tenant ID).
+	/// Retrieve a specific inventory role assigned to a user
+	/// Retrieve a specific inventory role (by a given ID) assigned to a specific user (by a given user ID) in a specific tenant (by a given tenant ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_USER_MANAGEMENT_READ <b>OR</b> ROLE_USER_MANAGEMENT_CREATE <b>AND</b> is the parent of the user
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
 	/// 	- 200
-	///		  The request has succeeded and the inventory assignment sent in the response.
+	///		  The request has succeeded and the inventory role is sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 403
+	///		  Not enough permissions/roles to perform this operation.
+	/// 	- 404
+	///		  Role not found.
 	/// - Parameters:
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
@@ -284,7 +314,7 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unique identifier of the a user.
 	/// 	- id 
 	///		  Unique identifier of the inventory assignment.
-	public func getInventoryAssignmentResourceById(tenantId: String, userId: String, id: String) throws -> AnyPublisher<C8yInventoryAssignment, Swift.Error> {
+	public func getUserInventoryRole(tenantId: String, userId: String, id: Int) throws -> AnyPublisher<C8yInventoryAssignment, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory/\(id)")
 			.set(httpMethod: "get")
@@ -300,13 +330,12 @@ public class InventoryRolesApi: AdaptableApi {
 		}).decode(type: C8yInventoryAssignment.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
-	/// Update a specific inventory assignment for a user
+	/// Update a specific inventory role assigned to a user
+	/// Update a specific inventory role (by a given ID) assigned to a specific user (by a given user ID) in a specific tenant (by a given tenant ID).
 	/// 
-	/// Update a specific inventory assignment (by a given ID) for a specific user (by a given user ID) in a specific tenant (by a given tenant ID).
-	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_USER_MANAGEMENT_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -314,6 +343,10 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  An inventory assignment was updated.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 403
+	///		  Not enough permissions/roles to perform this operation.
+	/// 	- 404
+	///		  Role not found.
 	/// 	- 422
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
@@ -324,11 +357,8 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unique identifier of the a user.
 	/// 	- id 
 	///		  Unique identifier of the inventory assignment.
-	public func putInventoryAssignmentResourceById(body: C8yInventoryAssignment, tenantId: String, userId: String, id: String) throws -> AnyPublisher<C8yInventoryAssignment, Swift.Error> {
-		var requestBody = body
-		requestBody.managedObject = nil
-		requestBody.`self` = nil
-		requestBody.id = nil
+	public func updateUserInventoryRole(body: C8yInventoryAssignmentReference, tenantId: String, userId: String, id: Int) throws -> AnyPublisher<C8yInventoryAssignment, Swift.Error> {
+		let requestBody = body
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory/\(id)")
 			.set(httpMethod: "put")
@@ -346,11 +376,12 @@ public class InventoryRolesApi: AdaptableApi {
 		}).decode(type: C8yInventoryAssignment.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
-	/// Remove a specific inventory assignment for a user
-	/// Remove a specific inventory assignment (by a given ID) for a specific user (by a given user ID) in a specific tenant (by a given tenant ID).
+	/// Remove a specific inventory role assigned to a user
+	/// Remove a specific inventory role (by a given ID) assigned to a specific user (by a given user ID) in a specific tenant (by a given tenant ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_USER_MANAGEMENT_ADMIN <b>AND</b> (is not in user hierarchy <b>OR</b> is root in the user hierarchy) <b>OR</b> ROLE_USER_MANAGEMENT_ADMIN <b>AND</b> is in user hiararchy <b>AND</b> has parent access to inventory assignments <b>OR</b> ROLE_USER_MANAGEMENT_CREATE <b>AND</b> is parent of the user <b>AND</b> is not the current user <b>AND</b> has current user access to inventory assignments <b>AND</b> has parent access to inventory assignments
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -360,6 +391,8 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// 	- 403
 	///		  Not authorized to perform this operation.
+	/// 	- 404
+	///		  Role not found.
 	/// - Parameters:
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
@@ -367,7 +400,7 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unique identifier of the a user.
 	/// 	- id 
 	///		  Unique identifier of the inventory assignment.
-	public func deleteInventoryAssignmentResourceById(tenantId: String, userId: String, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func unassignUserInventoryRole(tenantId: String, userId: String, id: Int) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory/\(id)")
 			.set(httpMethod: "delete")

@@ -1,5 +1,5 @@
 //
-// C8yEventSource.swift
+// C8yInventoryAssignmentReference.swift
 // CumulocityCoreLibrary
 //
 // Copyright (c) 2014-2021 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
@@ -8,20 +8,29 @@
 
 import Foundation
 
-/// The managed object to which the event is associated.
-public struct C8yEventSource: Codable {
+/// An inventory role reference.
+public struct C8yInventoryAssignmentReference: Codable {
 
-	/// Unique identifier of the object.
-	public var id: String?
-
-	/// A URL linking to this resource.
-	public var `self`: String?
+	/// An array of roles that are assigned to the managed object for the user.
+	public var roles: [C8yRoles]?
 
 	enum CodingKeys: String, CodingKey {
-		case id
-		case `self` = "self"
+		case roles
 	}
 
 	public init() {
+	}
+
+	public struct C8yRoles: Codable {
+	
+		/// A unique identifier for this inventory role.
+		public var id: Int?
+	
+		enum CodingKeys: String, CodingKey {
+			case id
+		}
+	
+		public init() {
+		}
 	}
 }

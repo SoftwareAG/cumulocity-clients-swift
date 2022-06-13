@@ -14,7 +14,7 @@ public struct C8yGroupReferenceCollection: Codable {
 	public var `self`: String?
 
 	/// An array of group references.
-	public var references: [C8yGroup]?
+	public var references: [C8yGroupReference]?
 
 	/// A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential previous page of managed objects.
 	public var prev: String?

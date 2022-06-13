@@ -22,10 +22,10 @@ public class CurrentApplicationApiTest: XCTestCase {
 		}
 	}
 
-	public func testGetCurrentApplicationResource() {
+	public func testGetCurrentApplication() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableCurrentApplicationApi().getCurrentApplicationResource().sink(receiveCompletion: { completion in
+		try? TestableCurrentApplicationApi().getCurrentApplication().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()
@@ -34,10 +34,10 @@ public class CurrentApplicationApiTest: XCTestCase {
 		wait(for: [expectation], timeout: 10)
 	}
 	
-	public func testGetCurrentApplicationResourceSettings() {
+	public func testGetCurrentApplicationSettings() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableCurrentApplicationApi().getCurrentApplicationResourceSettings().sink(receiveCompletion: { completion in
+		try? TestableCurrentApplicationApi().getCurrentApplicationSettings().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()
@@ -46,10 +46,10 @@ public class CurrentApplicationApiTest: XCTestCase {
 		wait(for: [expectation], timeout: 10)
 	}
 	
-	public func testGetApplicationUserCollectionRepresentation() {
+	public func testGetSubscribedUsers() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableCurrentApplicationApi().getApplicationUserCollectionRepresentation().sink(receiveCompletion: { completion in
+		try? TestableCurrentApplicationApi().getSubscribedUsers().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()

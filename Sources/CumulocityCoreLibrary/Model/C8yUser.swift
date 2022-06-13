@@ -10,93 +10,94 @@ import Foundation
 
 public struct C8yUser: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
+	/// A list of applications for this user.
+	public var applications: [C8yApplication]?
 
-	/// The user's first name.
-	public var firstName: String?
-
-	/// The user's last name.
-	public var lastName: String?
-
-	/// The user's username. It can have a maximum of 1000 characters.
-	public var userName: String?
-
-	/// A unique identifier for this user.
-	public var id: String?
+	/// An object with a list of custom properties.
+	public var customProperties: C8yCustomProperties?
 
 	/// The user's display name in Cumulocity IoT.
 	public var displayName: String?
 
-	/// The user's phone number.
-	public var phone: String?
-
 	/// The user's email address.
 	public var email: String?
 
-	/// Indicates whether the user is subscribed to the newsletter or not.
-	public var newsletter: Bool?
+	/// Indicates whether the user is enabled or not. Disabled users cannot log in or perform API requests.
+	public var enabled: Bool?
+
+	/// The user's first name.
+	public var firstName: String?
+
+	/// An object with a list of user groups.
+	public var groups: C8yGroups?
+
+	/// A unique identifier for this user.
+	public var id: String?
+
+	/// The user's last name.
+	public var lastName: String?
 
 	/// The date and time when the user's password was last changed, in [ISO 8601 datetime format](https://www.w3.org/TR/NOTE-datetime).
 	public var lastPasswordChange: String?
 
-	/// Indicates whether the user should reset their password or not.
-	public var shouldResetPassword: Bool?
+	/// Indicates whether the user is subscribed to the newsletter or not.
+	public var newsletter: Bool?
 
-	/// When set to `true`, this field will cause Cumulocity IoT to send a password reset email to the email address specified.
-	/// If there is no password specified when creating a new user with a POST request, this must be specified and it must be set to `true`.
+	/// The user's password. Only Latin1 characters are allowed.
 	/// 
-	public var sendPasswordResetEmail: Bool?
-
-	/// The user's password. Only Latin1 characters are allowed. If you do not specify a password when creating a new user with a POST request, it must contain the field `sendPasswordResetEmail` with a value of `true`.
+	/// If you do not specify a password when creating a new user with a POST request, it must contain the property `sendPasswordResetEmail` with a value of `true`.
 	/// 
 	public var password: String?
 
 	/// Indicates the password strength. The value can be GREEN, YELLOW or RED for decreasing password strengths.
 	public var passwordStrength: C8yPasswordStrength?
 
-	/// Indicates whether the user is enabled or not.
-	/// Disabled users cannot log in or perform API requests.
-	/// 
-	public var enabled: Bool?
-
-	/// An object with a list of custom properties for this user.
-	public var customProperties: C8yCustomProperties?
-
-	/// An object with a list of user groups.
-	public var groups: C8yGroups?
+	/// The user's phone number.
+	public var phone: String?
 
 	/// An object with a list of user roles.
 	public var roles: C8yRoles?
+
+	/// A URL linking to this resource.
+	public var `self`: String?
+
+	/// When set to `true`, this field will cause Cumulocity IoT to send a password reset email to the email address specified.
+	/// 
+	/// If there is no password specified when creating a new user with a POST request, this must be specified and it must be set to `true`.
+	/// 
+	public var sendPasswordResetEmail: Bool?
+
+	/// Indicates if the user should reset the password on the next login.
+	public var shouldResetPassword: Bool?
+
+	/// The user's username. It can have a maximum of 1000 characters.
+	public var userName: String?
 
 	/// An object with a list of the user's device permissions.
 	@available(*, deprecated)
 	public var devicePermissions: C8yDevicePermissions?
 
-	/// A list of applications for this user.
-	public var applications: [C8yApplication]?
-
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
-		case firstName
-		case lastName
-		case userName
-		case id
+		case applications
+		case customProperties
 		case displayName
-		case phone
 		case email
-		case newsletter
+		case enabled
+		case firstName
+		case groups
+		case id
+		case lastName
 		case lastPasswordChange
-		case shouldResetPassword
-		case sendPasswordResetEmail
+		case newsletter
 		case password
 		case passwordStrength
-		case enabled
-		case customProperties
-		case groups
+		case phone
 		case roles
+		case `self` = "self"
+		case sendPasswordResetEmail
+		case shouldResetPassword
+		case userName
 		case devicePermissions
-		case applications
 	}
 
 	public init() {
@@ -116,16 +117,21 @@ public struct C8yUser: Codable {
 		public var `self`: String?
 	
 		/// A list of user group references.
-		public var references: [C8yGroup]?
+		public var references: [C8yGroupReference]?
+	
+		/// Information about paging statistics.
+		public var statistics: C8yPageStatistics?
 	
 		enum CodingKeys: String, CodingKey {
 			case `self` = "self"
 			case references
+			case statistics
 		}
 	
 		public init() {
 		}
 	}
+
 
 	/// An object with a list of user roles.
 	public struct C8yRoles: Codable {
@@ -134,11 +140,15 @@ public struct C8yUser: Codable {
 		public var `self`: String?
 	
 		/// A list of user role references.
-		public var references: [C8yRole]?
+		public var references: [C8yRoleReference]?
+	
+		/// Information about paging statistics.
+		public var statistics: C8yPageStatistics?
 	
 		enum CodingKeys: String, CodingKey {
 			case `self` = "self"
 			case references
+			case statistics
 		}
 	
 		public init() {

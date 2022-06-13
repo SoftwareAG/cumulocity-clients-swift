@@ -11,15 +11,15 @@ import Foundation
 /// All available login options of the tenant.
 public struct C8yLoginOptionCollection: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
-
 	/// An array containing the available login options.
 	public var loginOptions: [C8yLoginOption]?
 
+	/// A URL linking to this resource.
+	public var `self`: String?
+
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
 		case loginOptions
+		case `self` = "self"
 	}
 
 	public init() {

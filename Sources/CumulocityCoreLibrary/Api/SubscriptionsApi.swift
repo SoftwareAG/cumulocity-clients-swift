@@ -15,9 +15,9 @@ public class SubscriptionsApi: AdaptableApi {
 	/// Retrieve all subscriptions
 	/// Retrieve all subscriptions on your tenant, or a specific subset based on queries.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_NOTIFICATION_2_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -37,14 +37,14 @@ public class SubscriptionsApi: AdaptableApi {
 	/// 	- source 
 	///		  The managed object ID to which the subscription is associated.
 	/// 	- withTotalPages 
-	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getNotificationSubscriptionCollectionResource(context: String? = nil, currentPage: Int? = nil, pageSize: Int? = nil, source: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yNotificationSubscriptionCollection, Swift.Error> {
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getSubscriptions(context: String? = nil, currentPage: Int? = nil, pageSize: Int? = nil, source: String? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yNotificationSubscriptionCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = context { queryItems.append(URLQueryItem(name: "context", value: String(parameter)))}
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
-		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter)))}
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
+		if let parameter = context { queryItems.append(URLQueryItem(name: "context", value: String(parameter))) }
+		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
+		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
+		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
+		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/subscriptions")
 			.set(httpMethod: "get")
@@ -72,9 +72,9 @@ public class SubscriptionsApi: AdaptableApi {
 	/// *  The applicable filter criteria.
 	/// *  The option to only include specific custom fragments in the forwarded data.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_NOTIFICATION_2_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -92,7 +92,7 @@ public class SubscriptionsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func postNotificationSubscriptionResource(body: C8yNotificationSubscription) throws -> AnyPublisher<C8yNotificationSubscription, Swift.Error> {
+	public func createSubscription(body: C8yNotificationSubscription) throws -> AnyPublisher<C8yNotificationSubscription, Swift.Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -119,9 +119,9 @@ public class SubscriptionsApi: AdaptableApi {
 	/// 
 	/// >**&#9432; Info:** The request will result in an error if there are no query parameters. The `source` parameter is optional only if the `context` parameter equals `tenant`.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_NOTIFICATION_2_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -138,10 +138,10 @@ public class SubscriptionsApi: AdaptableApi {
 	///		  The context to which the subscription is associated. > **&#9432; Info:** If the value is `mo`, then `source` must also be provided in the query. 
 	/// 	- source 
 	///		  The managed object ID to which the subscription is associated.
-	public func deleteNotificationSubscriptionBySourceResource(context: String? = nil, source: String? = nil) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteSubscriptions(context: String? = nil, source: String? = nil) throws -> AnyPublisher<Data, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = context { queryItems.append(URLQueryItem(name: "context", value: String(parameter)))}
-		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter)))}
+		if let parameter = context { queryItems.append(URLQueryItem(name: "context", value: String(parameter))) }
+		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/subscriptions")
 			.set(httpMethod: "delete")
@@ -161,9 +161,9 @@ public class SubscriptionsApi: AdaptableApi {
 	/// Retrieve a specific subscription
 	/// Retrieve a specific subscription by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_NOTIFICATION_2_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -178,7 +178,7 @@ public class SubscriptionsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the notification subscription.
-	public func getNotificationSubscriptionResource(id: String) throws -> AnyPublisher<C8yNotificationSubscription, Swift.Error> {
+	public func getSubscription(id: String) throws -> AnyPublisher<C8yNotificationSubscription, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/subscriptions/\(id)")
 			.set(httpMethod: "get")
@@ -197,9 +197,9 @@ public class SubscriptionsApi: AdaptableApi {
 	/// Remove a specific subscription
 	/// Remove a specific subscription by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_NOTIFICATION_2_ADMIN
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -214,7 +214,7 @@ public class SubscriptionsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the notification subscription.
-	public func deleteNotificationSubscriptionResource(id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteSubscription(id: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/subscriptions/\(id)")
 			.set(httpMethod: "delete")

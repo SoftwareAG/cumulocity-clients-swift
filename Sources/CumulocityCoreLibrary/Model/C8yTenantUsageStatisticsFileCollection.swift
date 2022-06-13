@@ -1,5 +1,5 @@
 //
-// C8yUserCollection.swift
+// C8yTenantUsageStatisticsFileCollection.swift
 // CumulocityCoreLibrary
 //
 // Copyright (c) 2014-2021 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
@@ -8,7 +8,8 @@
 
 import Foundation
 
-public struct C8yUserCollection: Codable {
+/// Statistics files metadata.
+public struct C8yTenantUsageStatisticsFileCollection: Codable {
 
 	/// A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential next page of managed objects.
 	public var next: String?
@@ -22,15 +23,15 @@ public struct C8yUserCollection: Codable {
 	/// Information about paging statistics.
 	public var statistics: C8yPageStatistics?
 
-	/// An array of users.
-	public var users: [C8yUser]?
+	/// An array containing the usage statistics files metadata.
+	public var statisticsFiles: [C8yStatisticsFile]?
 
 	enum CodingKeys: String, CodingKey {
 		case next
 		case prev
 		case `self` = "self"
 		case statistics
-		case users
+		case statisticsFiles
 	}
 
 	public init() {

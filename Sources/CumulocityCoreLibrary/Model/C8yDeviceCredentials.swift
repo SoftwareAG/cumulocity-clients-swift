@@ -10,11 +10,14 @@ import Foundation
 
 public struct C8yDeviceCredentials: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
-
 	/// The external ID of the device.
 	public var id: String?
+
+	/// Password of these device credentials.
+	public var password: String?
+
+	/// A URL linking to this resource.
+	public var `self`: String?
 
 	/// Tenant ID for these device credentials.
 	public var tenantId: String?
@@ -22,15 +25,12 @@ public struct C8yDeviceCredentials: Codable {
 	/// Username of these device credentials.
 	public var username: String?
 
-	/// Password of these device credentials.
-	public var password: String?
-
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
 		case id
+		case password
+		case `self` = "self"
 		case tenantId
 		case username
-		case password
 	}
 
 	public init() {

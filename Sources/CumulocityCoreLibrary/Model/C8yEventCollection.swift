@@ -10,27 +10,27 @@ import Foundation
 
 public struct C8yEventCollection: Codable {
 
+	/// An array containing the results (events) of the request.
+	public var events: [C8yEvent]?
+
+	/// A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential next page of managed objects.
+	public var next: String?
+
 	/// A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential previous page of managed objects.
 	public var prev: String?
 
 	/// A URL linking to this resource.
 	public var `self`: String?
 
-	/// A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] to a potential next page of managed objects.
-	public var next: String?
-
 	/// Information about paging statistics.
 	public var statistics: C8yPageStatistics?
 
-	/// An array containing the results (events) of the request.
-	public var events: [C8yEvent]?
-
 	enum CodingKeys: String, CodingKey {
+		case events
+		case next
 		case prev
 		case `self` = "self"
-		case next
 		case statistics
-		case events
 	}
 
 	public init() {

@@ -22,10 +22,10 @@ public class SystemOptionsApiTest: XCTestCase {
 		}
 	}
 
-	public func testGetSystemOptionCollectionResource() {
+	public func testGetSystemOptions() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableSystemOptionsApi().getSystemOptionCollectionResource().sink(receiveCompletion: { completion in
+		try? TestableSystemOptionsApi().getSystemOptions().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()

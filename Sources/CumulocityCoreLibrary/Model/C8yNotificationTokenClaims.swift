@@ -10,19 +10,19 @@ import Foundation
 
 public struct C8yNotificationTokenClaims: Codable {
 
+	/// The token expiration duration.
+	public var expiresInMinutes: Int?
+
 	/// The subscriber name which the client wishes to be identified with.
 	public var subscriber: String?
 
 	/// The subscription name. This value must match the same that was used when the subscription was created.
 	public var subscription: String?
 
-	/// The token expiration duration.
-	public var expiresInMinutes: Int?
-
 	enum CodingKeys: String, CodingKey {
+		case expiresInMinutes
 		case subscriber
 		case subscription
-		case expiresInMinutes
 	}
 
 	public init(subscriber: String, subscription: String) {

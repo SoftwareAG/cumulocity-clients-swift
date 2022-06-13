@@ -22,20 +22,11 @@ public struct C8yApplicationBinaries: Codable {
 
 	public struct C8yAttachments: Codable {
 	
-		/// The date and time when the attachment was created.
-		public var created: String?
-	
 		/// The application context path.
 		public var contextPath: String?
 	
-		/// The length of the attachment, in bytes.
-		public var length: Int?
-	
-		/// The name of the attachment.
-		public var name: String?
-	
-		/// The ID of the attachment.
-		public var id: String?
+		/// The date and time when the attachment was created.
+		public var created: String?
 	
 		/// A description for the attachment.
 		public var description: String?
@@ -43,14 +34,23 @@ public struct C8yApplicationBinaries: Codable {
 		/// A download URL for the attachment.
 		public var downloadUrl: String?
 	
+		/// The ID of the attachment.
+		public var id: String?
+	
+		/// The length of the attachment, in bytes.
+		public var length: Int?
+	
+		/// The name of the attachment.
+		public var name: String?
+	
 		enum CodingKeys: String, CodingKey {
-			case created
 			case contextPath
-			case length
-			case name
-			case id
+			case created
 			case description
 			case downloadUrl
+			case id
+			case length
+			case name
 		}
 	
 		public init() {

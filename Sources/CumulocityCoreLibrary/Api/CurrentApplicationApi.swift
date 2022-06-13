@@ -18,9 +18,9 @@ public class CurrentApplicationApi: AdaptableApi {
 	/// Retrieve the current application.
 	/// This only works inside an application, for example, a microservice.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// Microservice bootstrap user required.
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -30,7 +30,7 @@ public class CurrentApplicationApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// 	- 403
 	///		  Not enough permissions/roles to perform this operation.
-	public func getCurrentApplicationResource() throws -> AnyPublisher<C8yApplication, Swift.Error> {
+	public func getCurrentApplication() throws -> AnyPublisher<C8yApplication, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/currentApplication")
 			.set(httpMethod: "get")
@@ -47,13 +47,12 @@ public class CurrentApplicationApi: AdaptableApi {
 	}
 	
 	/// Update the current application
-	/// 
 	/// Update the current application.
 	/// This only works inside an application, for example, a microservice. This method is deprecated as it is only used by legacy microservices that are not running on Kubernetes.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// Microservice bootstrap user required.
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -66,7 +65,7 @@ public class CurrentApplicationApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- body 
 	@available(*, deprecated)
-	public func putCurrentApplicationResource(body: C8yApplication) throws -> AnyPublisher<C8yApplication, Swift.Error> {
+	public func updateApplication(body: C8yApplication) throws -> AnyPublisher<C8yApplication, Swift.Error> {
 		var requestBody = body
 		requestBody.owner?.`self` = nil
 		requestBody.activeVersionId = nil
@@ -94,9 +93,9 @@ public class CurrentApplicationApi: AdaptableApi {
 	/// Retrieve the current application settings.
 	/// This only works inside an application, for example, a microservice.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// Microservice bootstrap user <b>OR</b> microservice service user required.
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -106,7 +105,7 @@ public class CurrentApplicationApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// 	- 403
 	///		  Not enough permissions/roles to perform this operation.
-	public func getCurrentApplicationResourceSettings() throws -> AnyPublisher<[C8yApplicationSettings], Swift.Error> {
+	public func getCurrentApplicationSettings() throws -> AnyPublisher<[C8yApplicationSettings], Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/currentApplication/settings")
 			.set(httpMethod: "get")
@@ -125,9 +124,9 @@ public class CurrentApplicationApi: AdaptableApi {
 	/// Retrieve the subscribed users of the current application
 	/// Retrieve the subscribed users of the current application.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// Microservice bootstrap user required.
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -135,7 +134,7 @@ public class CurrentApplicationApi: AdaptableApi {
 	///		  The request has succeeded and the list of subscribed users for the current application is sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
-	public func getApplicationUserCollectionRepresentation() throws -> AnyPublisher<C8yApplicationUserCollection, Swift.Error> {
+	public func getSubscribedUsers() throws -> AnyPublisher<C8yApplicationUserCollection, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/currentApplication/subscriptions")
 			.set(httpMethod: "get")

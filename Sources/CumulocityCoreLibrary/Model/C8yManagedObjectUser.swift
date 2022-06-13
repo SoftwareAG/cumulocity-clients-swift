@@ -10,19 +10,19 @@ import Foundation
 
 public struct C8yManagedObjectUser: Codable {
 
+	/// Specifies if the device's owner is enabled or not.
+	public var enabled: Bool?
+
 	/// A URL linking to this resource.
 	public var `self`: String?
 
 	/// The username of the device's owner.
 	public var userName: String?
 
-	/// Specifies if the device's owner is enabled or not.
-	public var enabled: Bool?
-
 	enum CodingKeys: String, CodingKey {
+		case enabled
 		case `self` = "self"
 		case userName
-		case enabled
 	}
 
 	public init() {

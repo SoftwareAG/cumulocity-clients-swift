@@ -1,5 +1,5 @@
 //
-// C8yExternalIDCollection.swift
+// C8yRangeStatisticsFile.swift
 // CumulocityCoreLibrary
 //
 // Copyright (c) 2014-2021 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
@@ -8,19 +8,21 @@
 
 import Foundation
 
-public struct C8yExternalIDCollection: Codable {
+public struct C8yRangeStatisticsFile: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
+	/// Statistics generation start date.
+	public var dateFrom: String?
 
-	/// An array containing the details of all external IDs (if any).
-	public var externalIds: [C8yExternalId]?
+	/// Statistics generation end date.
+	public var dateTo: String?
 
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
-		case externalIds
+		case dateFrom
+		case dateTo
 	}
 
-	public init() {
+	public init(dateFrom: String, dateTo: String) {
+		self.dateFrom = dateFrom
+		self.dateTo = dateTo
 	}
 }

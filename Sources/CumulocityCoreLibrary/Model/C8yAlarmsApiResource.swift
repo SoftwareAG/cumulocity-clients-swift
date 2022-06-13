@@ -10,9 +10,6 @@ import Foundation
 
 public struct C8yAlarmsApiResource: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
-
 	/// Collection of all alarms
 	public var alarms: C8yAlarms?
 
@@ -37,8 +34,10 @@ public struct C8yAlarmsApiResource: Codable {
 	/// Read-only collection of all alarms for a specific source object in a particular status.
 	public var alarmsForSourceAndStatus: String?
 
+	/// A URL linking to this resource.
+	public var `self`: String?
+
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
 		case alarms
 		case alarmsForSource
 		case alarmsForStatus
@@ -47,6 +46,7 @@ public struct C8yAlarmsApiResource: Codable {
 		case alarmsForSourceAndTime
 		case alarmsForTime
 		case alarmsForSourceAndStatus
+		case `self` = "self"
 	}
 
 	public init() {

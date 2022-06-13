@@ -43,9 +43,9 @@ public class TenantsApi: AdaptableApi {
 	/// Retrieve all subtenants
 	/// Retrieve all subtenants of the current tenant.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_TENANT_MANAGEMENT_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -58,13 +58,16 @@ public class TenantsApi: AdaptableApi {
 	///		  The current page of the paginated results.
 	/// 	- pageSize 
 	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+	/// 	- withTotalElements 
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
-	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getTenantCollectionResource(currentPage: Int? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yTenantCollection, Swift.Error> {
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getTenants(currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yTenantCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
+		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
+		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
+		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
+		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants")
 			.set(httpMethod: "get")
@@ -84,9 +87,9 @@ public class TenantsApi: AdaptableApi {
 	/// Create a tenant
 	/// Create a subtenant for the current tenant.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// (ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_MANAGEMENT_CREATE) <b>AND</b> the current tenant is allowed to create subtenants
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -102,11 +105,10 @@ public class TenantsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func postTenantCollectionResource(body: C8yTenant) throws -> AnyPublisher<C8yTenant, Swift.Error> {
+	public func createTenant(body: C8yTenant) throws -> AnyPublisher<C8yTenant, Swift.Error> {
 		var requestBody = body
 		requestBody.allowCreateTenants = nil
 		requestBody.parent = nil
-		requestBody.customProperties = nil
 		requestBody.creationTime = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -133,9 +135,9 @@ public class TenantsApi: AdaptableApi {
 	/// Retrieve the current tenant
 	/// Retrieve information about the current tenant.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_USER_MANAGEMENT_OWN_READ <b>OR</b> ROLE_SYSTEM
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -143,7 +145,7 @@ public class TenantsApi: AdaptableApi {
 	///		  The request has succeeded and the information is sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
-	public func getCurrentTenantResource() throws -> AnyPublisher<C8yCurrentTenant, Swift.Error> {
+	public func getCurrentTenant() throws -> AnyPublisher<C8yCurrentTenant, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/currentTenant")
 			.set(httpMethod: "get")
@@ -162,9 +164,9 @@ public class TenantsApi: AdaptableApi {
 	/// Retrieve a specific tenant
 	/// Retrieve a specific tenant by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_TENANT_MANAGEMENT_READ <b>AND</b> the current tenant is its parent <b>OR</b> is the management tenant
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -179,7 +181,7 @@ public class TenantsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func getTenantResource(tenantId: String) throws -> AnyPublisher<C8yTenant, Swift.Error> {
+	public func getTenant(tenantId: String) throws -> AnyPublisher<C8yTenant, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)")
 			.set(httpMethod: "get")
@@ -198,9 +200,9 @@ public class TenantsApi: AdaptableApi {
 	/// Update a specific tenant
 	/// Update a specific tenant by a given ID.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// (ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_MANAGEMENT_UPDATE) <b>AND</b> (the current tenant is its parent <b>AND</b> the current tenant is allowed to create subtenants) <b>OR</b> is the management tenant
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -218,21 +220,15 @@ public class TenantsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func putTenantResource(body: C8yTenant, tenantId: String) throws -> AnyPublisher<C8yTenant, Swift.Error> {
+	public func updateTenant(body: C8yTenant, tenantId: String) throws -> AnyPublisher<C8yTenant, Swift.Error> {
 		var requestBody = body
+		requestBody.adminName = nil
 		requestBody.allowCreateTenants = nil
 		requestBody.parent = nil
 		requestBody.creationTime = nil
-		requestBody.adminPass = nil
-		requestBody.adminName = nil
-		requestBody.customProperties = nil
-		requestBody.domain = nil
 		requestBody.`self` = nil
-		requestBody.company = nil
 		requestBody.id = nil
-		requestBody.contactPhone = nil
 		requestBody.ownedApplications = nil
-		requestBody.adminEmail = nil
 		requestBody.applications = nil
 		requestBody.status = nil
 		let builder = URLRequestBuilder()
@@ -259,9 +255,9 @@ public class TenantsApi: AdaptableApi {
 	/// >
 	/// > Administrators in Enterprise Tenants are only allowed to suspend active subtenants, but not to delete them.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_TENANT_MANAGEMENT_ADMIN <b>AND</b> is the management tenant
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -276,7 +272,7 @@ public class TenantsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func deleteTenantResource(tenantId: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteTenant(tenantId: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)")
 			.set(httpMethod: "delete")

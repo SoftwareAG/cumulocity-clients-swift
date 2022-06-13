@@ -22,10 +22,10 @@ public class CurrentUserApiTest: XCTestCase {
 		}
 	}
 
-	public func testGetCurrentUserResource() {
+	public func testGetCurrentUser() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableCurrentUserApi().getCurrentUserResource().sink(receiveCompletion: { completion in
+		try? TestableCurrentUserApi().getCurrentUser().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()

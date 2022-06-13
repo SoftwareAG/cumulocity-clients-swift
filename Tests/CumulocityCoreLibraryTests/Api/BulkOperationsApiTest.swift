@@ -22,10 +22,10 @@ public class BulkOperationsApiTest: XCTestCase {
 		}
 	}
 
-	public func testGetBulkOperationCollectionResource() {
+	public func testGetBulkOperations() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableBulkOperationsApi().getBulkOperationCollectionResource().sink(receiveCompletion: { completion in
+		try? TestableBulkOperationsApi().getBulkOperations().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()

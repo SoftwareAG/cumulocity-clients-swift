@@ -22,10 +22,10 @@ public class OptionsApiTest: XCTestCase {
 		}
 	}
 
-	public func testGetOptionCollectionResource() {
+	public func testGetOptions() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableOptionsApi().getOptionCollectionResource().sink(receiveCompletion: { completion in
+		try? TestableOptionsApi().getOptions().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()

@@ -17,22 +17,20 @@ public struct C8yWebApplicationManifest: Codable {
 	@available(*, deprecated)
 	public var pWebpaas: Bool?
 
-	/// A flag that decides if the application tabs are displayed horizontally or not.
-	public var tabsHorizontal: Bool?
-
 	/// The content security policy of the application.
-	/// > **&#9432; Info:** This property is specific to the web application type.
-	/// 
 	public var contentSecurityPolicy: String?
 
 	/// A flag that decides if the application is shown in the app switcher on the UI.
 	public var noAppSwitcher: Bool?
 
+	/// A flag that decides if the application tabs are displayed horizontally or not.
+	public var tabsHorizontal: Bool?
+
 	enum CodingKeys: String, CodingKey {
 		case pWebpaas
-		case tabsHorizontal
 		case contentSecurityPolicy
 		case noAppSwitcher
+		case tabsHorizontal
 	}
 
 	public init() {

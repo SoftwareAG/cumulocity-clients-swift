@@ -49,9 +49,9 @@ public class DeviceStatisticsApi: AdaptableApi {
 	/// Retrieve monthly device statistics
 	/// Retrieve monthly device statistics from a specific tenant (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_TENANT_STATISTICS_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -73,13 +73,13 @@ public class DeviceStatisticsApi: AdaptableApi {
 	/// 	- pageSize 
 	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
 	/// 	- withTotalPages 
-	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getTenantDeviceStatisticsMonthlyCollection(tenantId: String, date: Date, currentPage: Int? = nil, deviceId: String? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yDeviceStatisticsCollection, Swift.Error> {
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getMonthlyDeviceStatistics(tenantId: String, date: Date, currentPage: Int? = nil, deviceId: String? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yDeviceStatisticsCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
-		if let parameter = deviceId { queryItems.append(URLQueryItem(name: "deviceId", value: String(parameter)))}
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
+		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
+		if let parameter = deviceId { queryItems.append(URLQueryItem(name: "deviceId", value: String(parameter))) }
+		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
+		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/statistics/device/\(tenantId)/monthly/\(date)")
 			.set(httpMethod: "get")
@@ -99,9 +99,9 @@ public class DeviceStatisticsApi: AdaptableApi {
 	/// Retrieve daily device statistics
 	/// Retrieve daily device statistics from a specific tenant (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_TENANT_STATISTICS_READ
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -123,13 +123,13 @@ public class DeviceStatisticsApi: AdaptableApi {
 	/// 	- pageSize 
 	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
 	/// 	- withTotalPages 
-	///		  When set to true, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getTenantDeviceStatisticsDailyCollection(tenantId: String, date: Date, currentPage: Int? = nil, deviceId: String? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yDeviceStatisticsCollection, Swift.Error> {
+	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	public func getDailyDeviceStatistics(tenantId: String, date: Date, currentPage: Int? = nil, deviceId: String? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yDeviceStatisticsCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter)))}
-		if let parameter = deviceId { queryItems.append(URLQueryItem(name: "deviceId", value: String(parameter)))}
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter)))}
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter)))}
+		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
+		if let parameter = deviceId { queryItems.append(URLQueryItem(name: "deviceId", value: String(parameter))) }
+		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
+		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/statistics/device/\(tenantId)/daily/\(date)")
 			.set(httpMethod: "get")

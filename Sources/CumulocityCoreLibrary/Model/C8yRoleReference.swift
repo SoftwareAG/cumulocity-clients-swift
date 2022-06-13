@@ -1,5 +1,5 @@
 //
-// C8ySubscriptionContext.swift
+// C8yRoleReference.swift
 // CumulocityCoreLibrary
 //
 // Copyright (c) 2014-2021 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
@@ -8,10 +8,19 @@
 
 import Foundation
 
-/// The Context within which the subscription is to be processed.
-/// > **&#9432; Info:** If the value is `mo`, then `source` must also be provided in the request body.
-/// 
-public enum C8ySubscriptionContext: String, Codable {
-	case mo = "mo"
-	case tenant = "tenant"
+public struct C8yRoleReference: Codable {
+
+	/// A user role.
+	public var role: C8yRole?
+
+	/// A URL linking to this resource.
+	public var `self`: String?
+
+	enum CodingKeys: String, CodingKey {
+		case role
+		case `self` = "self"
+	}
+
+	public init() {
+	}
 }

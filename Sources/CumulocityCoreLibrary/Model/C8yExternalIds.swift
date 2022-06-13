@@ -10,15 +10,15 @@ import Foundation
 
 public struct C8yExternalIds: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
-
 	/// An array containing the details of all external IDs (if any).
 	public var externalIds: [C8yExternalId]?
 
+	/// A URL linking to this resource.
+	public var `self`: String?
+
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
 		case externalIds
+		case `self` = "self"
 	}
 
 	public init() {

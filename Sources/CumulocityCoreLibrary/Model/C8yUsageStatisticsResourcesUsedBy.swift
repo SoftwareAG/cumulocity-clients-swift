@@ -10,8 +10,8 @@ import Foundation
 
 public struct C8yUsageStatisticsResourcesUsedBy: Codable {
 
-	/// Name of the microservice.
-	public var name: String?
+	/// Reason for calculating statistics of the specified microservice.
+	public var cause: String?
 
 	/// Number of CPU usage for a single microservice.
 	public var cpu: Int?
@@ -19,14 +19,14 @@ public struct C8yUsageStatisticsResourcesUsedBy: Codable {
 	/// Number of memory usage for a single microservice.
 	public var memory: Int?
 
-	/// Reason for calculating statistics of the specified microservice.
-	public var cause: String?
+	/// Name of the microservice.
+	public var name: String?
 
 	enum CodingKeys: String, CodingKey {
-		case name
+		case cause
 		case cpu
 		case memory
-		case cause
+		case name
 	}
 
 	public init() {

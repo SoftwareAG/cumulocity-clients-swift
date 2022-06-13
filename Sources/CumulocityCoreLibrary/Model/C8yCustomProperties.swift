@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// An object with a list of custom properties for this user.
+/// An object with a list of custom properties.
 public struct C8yCustomProperties: Codable {
 	
 	public init(from decoder: Decoder) throws {
@@ -32,7 +32,7 @@ public struct C8yCustomProperties: Codable {
 		}
 	}
 
-	/// The preferred language of this user.
+	/// The preferred language to be used in the platform.
 	public var language: String?
 
 	/// It is possible to add an arbitrary number of custom properties as a list of key-value pairs, for example, `"property": "value"`.

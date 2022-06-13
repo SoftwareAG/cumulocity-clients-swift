@@ -18,9 +18,9 @@ public struct C8yAlarm: Codable {
 		self.id = try container.decodeIfPresent(String.self, forKey: .id)
 		self.lastUpdated = try container.decodeIfPresent(String.self, forKey: .lastUpdated)
 		self.`self` = try container.decodeIfPresent(String.self, forKey: .`self`)
-		self.severity = try container.decodeIfPresent(C8yAlarmSeverity.self, forKey: .severity)
-		self.source = try container.decodeIfPresent(C8yAlarmSource.self, forKey: .source)
-		self.status = try container.decodeIfPresent(C8yAlarmStatus.self, forKey: .status)
+		self.severity = try container.decodeIfPresent(C8ySeverity.self, forKey: .severity)
+		self.source = try container.decodeIfPresent(C8ySource.self, forKey: .source)
+		self.status = try container.decodeIfPresent(C8yStatus.self, forKey: .status)
 		self.text = try container.decodeIfPresent(String.self, forKey: .text)
 		self.time = try container.decodeIfPresent(String.self, forKey: .time)
 		self.type = try container.decodeIfPresent(String.self, forKey: .type)
@@ -72,13 +72,13 @@ public struct C8yAlarm: Codable {
 	public var `self`: String?
 
 	/// The severity of the alarm.
-	public var severity: C8yAlarmSeverity?
+	public var severity: C8ySeverity?
 
 	/// The managed object to which the alarm is associated.
-	public var source: C8yAlarmSource?
+	public var source: C8ySource?
 
 	/// The status of the alarm. If not specified, a new alarm will be created as ACTIVE.
-	public var status: C8yAlarmStatus?
+	public var status: C8yStatus?
 
 	/// Description of the alarm.
 	public var text: String?
@@ -115,7 +115,7 @@ public struct C8yAlarm: Codable {
 	}
 
 	/// The severity of the alarm.
-	public enum C8yAlarmSeverity: String, Codable {
+	public enum C8ySeverity: String, Codable {
 		case critical = "CRITICAL"
 		case major = "MAJOR"
 		case minor = "MINOR"
@@ -123,14 +123,15 @@ public struct C8yAlarm: Codable {
 	}
 
 	/// The status of the alarm. If not specified, a new alarm will be created as ACTIVE.
-	public enum C8yAlarmStatus: String, Codable {
+	public enum C8yStatus: String, Codable {
 		case active = "ACTIVE"
 		case acknowledged = "ACKNOWLEDGED"
 		case cleared = "CLEARED"
 	}
 
+
 	/// The managed object to which the alarm is associated.
-	public struct C8yAlarmSource: Codable {
+	public struct C8ySource: Codable {
 	
 		/// Unique identifier of the object.
 		public var id: String?
@@ -150,6 +151,7 @@ public struct C8yAlarm: Codable {
 		public init() {
 		}
 	}
+
 }
 
 extension C8yAlarm {

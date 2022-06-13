@@ -22,10 +22,10 @@ public class BinariesApiTest: XCTestCase {
 		}
 	}
 
-	public func testGetBinariesCollectionResource() {
+	public func testGetBinaries() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableBinariesApi().getBinariesCollectionResource().sink(receiveCompletion: { completion in
+		try? TestableBinariesApi().getBinaries().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()

@@ -11,15 +11,15 @@ import Foundation
 /// A collection of references to device parent objects.
 public struct C8yObjectDeviceParents: Codable {
 
-	/// Link to this resource's parent objects.
-	public var `self`: String?
-
 	/// An array with the references to parent objects.
 	public var references: [C8yManagedObjectReferenceTuple]?
 
+	/// Link to this resource's parent objects.
+	public var `self`: String?
+
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
 		case references
+		case `self` = "self"
 	}
 
 	public init() {

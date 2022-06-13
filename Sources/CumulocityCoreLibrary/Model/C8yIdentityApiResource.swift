@@ -10,19 +10,19 @@ import Foundation
 
 public struct C8yIdentityApiResource: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
-
 	/// Single external ID, represented by the type and the value of the external ID.
 	public var externalId: String?
 
 	/// Represents a collection of external IDs for a specified global ID.
 	public var externalIdsOfGlobalId: String?
 
+	/// A URL linking to this resource.
+	public var `self`: String?
+
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
 		case externalId
 		case externalIdsOfGlobalId
+		case `self` = "self"
 	}
 
 	public init() {

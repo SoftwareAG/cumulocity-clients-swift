@@ -18,15 +18,15 @@ public struct C8yManagedObject: Codable {
 		self.name = try container.decodeIfPresent(String.self, forKey: .name)
 		self.owner = try container.decodeIfPresent(String.self, forKey: .owner)
 		self.`self` = try container.decodeIfPresent(String.self, forKey: .`self`)
-		self.c8yIsDevice = try container.decodeIfPresent(C8yIsDevice.self, forKey: .c8yIsDevice)
-		self.c8ySupportedOperations = try container.decodeIfPresent([String].self, forKey: .c8ySupportedOperations)
-		self.c8yDeviceTypes = try container.decodeIfPresent([String].self, forKey: .c8yDeviceTypes)
 		self.childAdditions = try container.decodeIfPresent(C8yObjectChildAdditions.self, forKey: .childAdditions)
 		self.childAssets = try container.decodeIfPresent(C8yObjectChildAssets.self, forKey: .childAssets)
 		self.childDevices = try container.decodeIfPresent(C8yObjectChildDevices.self, forKey: .childDevices)
 		self.additionParents = try container.decodeIfPresent(C8yObjectAdditionParents.self, forKey: .additionParents)
 		self.assetParents = try container.decodeIfPresent(C8yObjectAssetParents.self, forKey: .assetParents)
 		self.deviceParents = try container.decodeIfPresent(C8yObjectDeviceParents.self, forKey: .deviceParents)
+		self.c8yIsDevice = try container.decodeIfPresent(C8yIsDevice.self, forKey: .c8yIsDevice)
+		self.c8yDeviceTypes = try container.decodeIfPresent([String].self, forKey: .c8yDeviceTypes)
+		self.c8ySupportedOperations = try container.decodeIfPresent([String].self, forKey: .c8ySupportedOperations)
 		if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
 			for (typeName, decoder) in C8yManagedObject.decoders {
 				self.customFragments?[typeName] = try? decoder(additionalContainer)
@@ -42,15 +42,15 @@ public struct C8yManagedObject: Codable {
 		try container.encodeIfPresent(self.name, forKey: .name)
 		try container.encodeIfPresent(self.owner, forKey: .owner)
 		try container.encodeIfPresent(self.`self`, forKey: .`self`)
-		try container.encodeIfPresent(self.c8yIsDevice, forKey: .c8yIsDevice)
-		try container.encodeIfPresent(self.c8ySupportedOperations, forKey: .c8ySupportedOperations)
-		try container.encodeIfPresent(self.c8yDeviceTypes, forKey: .c8yDeviceTypes)
 		try container.encodeIfPresent(self.childAdditions, forKey: .childAdditions)
 		try container.encodeIfPresent(self.childAssets, forKey: .childAssets)
 		try container.encodeIfPresent(self.childDevices, forKey: .childDevices)
 		try container.encodeIfPresent(self.additionParents, forKey: .additionParents)
 		try container.encodeIfPresent(self.assetParents, forKey: .assetParents)
 		try container.encodeIfPresent(self.deviceParents, forKey: .deviceParents)
+		try container.encodeIfPresent(self.c8yIsDevice, forKey: .c8yIsDevice)
+		try container.encodeIfPresent(self.c8yDeviceTypes, forKey: .c8yDeviceTypes)
+		try container.encodeIfPresent(self.c8ySupportedOperations, forKey: .c8ySupportedOperations)
 		var additionalContainer = encoder.container(keyedBy: JSONCodingKeys.self)
 		for (typeName, encoder) in C8yManagedObject.encoders {
 			if let property = self.customFragments?[typeName] {
@@ -77,16 +77,6 @@ public struct C8yManagedObject: Codable {
 	/// A URL linking to this resource.
 	public var `self`: String?
 
-	/// A fragment which identifies this managed object as a device.
-	public var c8yIsDevice: C8yIsDevice?
-
-	/// Lists the operations that are available for a particular device, so that applications can trigger the operations.
-	public var c8ySupportedOperations: [String]?
-
-	/// This fragment must be added in order to publish sample commands for a subset of devices sharing the same device type. If the fragment is present, the list of sample commands for a device type will be extended with the sample commands for the `c8y_DeviceTypes`. New sample commands created from the user interface will be created in the context of the `c8y_DeviceTypes`.
-	/// 
-	public var c8yDeviceTypes: [String]?
-
 	/// A collection of references to child additions.
 	public var childAdditions: C8yObjectChildAdditions?
 
@@ -105,6 +95,15 @@ public struct C8yManagedObject: Codable {
 	/// A collection of references to device parent objects.
 	public var deviceParents: C8yObjectDeviceParents?
 
+	/// A fragment which identifies this managed object as a device.
+	public var c8yIsDevice: C8yIsDevice?
+
+	/// This fragment must be added in order to publish sample commands for a subset of devices sharing the same device type. If the fragment is present, the list of sample commands for a device type will be extended with the sample commands for the `c8y_DeviceTypes`. New sample commands created from the user interface will be created in the context of the `c8y_DeviceTypes`.
+	public var c8yDeviceTypes: [String]?
+
+	/// Lists the operations that are available for a particular device, so that applications can trigger the operations.
+	public var c8ySupportedOperations: [String]?
+
 	/// It is possible to add an arbitrary number of additional properties as a list of key-value pairs, for example, `"property1": {}`, `"property2": "value"`. These properties are known as custom fragments and can be of any type, for example, object or string. Each custom fragment is identified by a unique name.
 	/// 
 	/// Review the [Naming conventions of fragments](https://cumulocity.com/guides/concepts/domain-model/#naming-conventions-of-fragments) as there are characters that can not be used when naming custom fragments.
@@ -118,19 +117,26 @@ public struct C8yManagedObject: Codable {
 		case name
 		case owner
 		case `self` = "self"
-		case c8yIsDevice = "c8y_IsDevice"
-		case c8ySupportedOperations = "c8y_SupportedOperations"
-		case c8yDeviceTypes = "c8y_DeviceTypes"
 		case childAdditions
 		case childAssets
 		case childDevices
 		case additionParents
 		case assetParents
 		case deviceParents
+		case c8yIsDevice = "c8y_IsDevice"
+		case c8yDeviceTypes = "c8y_DeviceTypes"
+		case c8ySupportedOperations = "c8y_SupportedOperations"
 		case customFragments
 	}
 
 	public init() {
+	}
+
+	/// A fragment which identifies this managed object as a device.
+	public struct C8yIsDevice: Codable {
+	
+		public init() {
+		}
 	}
 }
 

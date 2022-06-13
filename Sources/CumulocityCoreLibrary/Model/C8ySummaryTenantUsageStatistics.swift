@@ -11,14 +11,14 @@ import Foundation
 /// Summary of the usage statistics.
 public struct C8ySummaryTenantUsageStatistics: Codable {
 
-	/// Date of this usage statistics summary.
-	public var day: String?
-
 	/// Number of created alarms.
 	public var alarmsCreatedCount: Int?
 
 	/// Number of updates made to the alarms.
 	public var alarmsUpdatedCount: Int?
+
+	/// Date of this usage statistics summary.
+	public var day: String?
 
 	/// Number of devices in the tenant identified by the fragment `c8y_IsDevice`. Updated only three times a day starting at 8:57, 16:57 and 23:57.
 	public var deviceCount: Int?
@@ -33,7 +33,7 @@ public struct C8ySummaryTenantUsageStatistics: Codable {
 	/// 
 	public var deviceRequestCount: Int?
 
-	/// Number of devices with all children. Updated only three times a day starting at 8:57, 16:57 and 23:57.
+	/// Number of devices with children. Updated only three times a day starting at 8:57, 16:57 and 23:57.
 	public var deviceWithChildrenCount: Int?
 
 	/// Number of created events.
@@ -67,9 +67,6 @@ public struct C8ySummaryTenantUsageStatistics: Codable {
 	/// Resources usage for each subscribed microservice application.
 	public var resources: C8yUsageStatisticsResources?
 
-	/// A URL linking to this resource.
-	public var `self`: String?
-
 	/// Database storage in use, specified in bytes. It is affected by your retention rules and by the regularly running database optimization functions in Cumulocity IoT. If the size decreases, it does not necessarily mean that data was deleted. Updated only three times a day starting at 8:57, 16:57 and 23:57.
 	public var storageSize: Int?
 
@@ -80,9 +77,9 @@ public struct C8ySummaryTenantUsageStatistics: Codable {
 	public var totalResourceCreateAndUpdateCount: Int?
 
 	enum CodingKeys: String, CodingKey {
-		case day
 		case alarmsCreatedCount
 		case alarmsUpdatedCount
+		case day
 		case deviceCount
 		case deviceEndpointCount
 		case deviceRequestCount
@@ -94,7 +91,6 @@ public struct C8ySummaryTenantUsageStatistics: Codable {
 		case measurementsCreatedCount
 		case requestCount
 		case resources
-		case `self` = "self"
 		case storageSize
 		case subscribedApplications
 		case totalResourceCreateAndUpdateCount

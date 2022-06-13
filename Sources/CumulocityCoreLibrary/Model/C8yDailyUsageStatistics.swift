@@ -11,14 +11,14 @@ import Foundation
 /// Daily usage statistics.
 public struct C8yDailyUsageStatistics: Codable {
 
-	/// Date of this usage statistics object.
-	public var day: String?
-
 	/// Number of created alarms.
 	public var alarmsCreatedCount: Int?
 
 	/// Number of updates made to the alarms.
 	public var alarmsUpdatedCount: Int?
+
+	/// Date of this usage statistics object.
+	public var day: String?
 
 	/// Number of devices in the tenant identified by the fragment `c8y_IsDevice`. Updated only three times a day starting at 8:57, 16:57 and 23:57.
 	public var deviceCount: Int?
@@ -33,7 +33,7 @@ public struct C8yDailyUsageStatistics: Codable {
 	/// 
 	public var deviceRequestCount: Int?
 
-	/// Number of devices with all children. Updated only three times a day starting at 8:57, 16:57 and 23:57.
+	/// Number of devices with children. Updated only three times a day starting at 8:57, 16:57 and 23:57.
 	public var deviceWithChildrenCount: Int?
 
 	/// Number of created events.
@@ -80,9 +80,9 @@ public struct C8yDailyUsageStatistics: Codable {
 	public var totalResourceCreateAndUpdateCount: Int?
 
 	enum CodingKeys: String, CodingKey {
-		case day
 		case alarmsCreatedCount
 		case alarmsUpdatedCount
+		case day
 		case deviceCount
 		case deviceEndpointCount
 		case deviceRequestCount

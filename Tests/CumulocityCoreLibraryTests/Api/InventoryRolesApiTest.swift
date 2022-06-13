@@ -22,10 +22,10 @@ public class InventoryRolesApiTest: XCTestCase {
 		}
 	}
 
-	public func testGetInventoryRoleResource() {
+	public func testGetInventoryRoles() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableInventoryRolesApi().getInventoryRoleResource().sink(receiveCompletion: { completion in
+		try? TestableInventoryRolesApi().getInventoryRoles().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()

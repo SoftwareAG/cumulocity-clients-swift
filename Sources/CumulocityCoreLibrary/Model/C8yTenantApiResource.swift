@@ -10,11 +10,11 @@ import Foundation
 
 public struct C8yTenantApiResource: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
-
 	/// Collection of tenant options
 	public var options: C8yOptions?
+
+	/// A URL linking to this resource.
+	public var `self`: String?
 
 	/// Collection of subtenants
 	public var tenants: C8yTenants?
@@ -41,8 +41,8 @@ public struct C8yTenantApiResource: Codable {
 	public var tenantSystemOptionsForCategoryAndKey: String?
 
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
 		case options
+		case `self` = "self"
 		case tenants
 		case tenantApplications
 		case tenantApplicationForId

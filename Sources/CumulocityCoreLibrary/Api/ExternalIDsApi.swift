@@ -18,9 +18,9 @@ public class ExternalIDsApi: AdaptableApi {
 	/// Retrieve all external IDs of a specific managed object
 	/// Retrieve all external IDs of a existing managed object (identified by ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_IDENTITY_READ <b>OR</b> owner of the resource <b>OR</b> MANAGED_OBJECT_READ permission on the resource
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -31,7 +31,7 @@ public class ExternalIDsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func getExternalIDCollectionResource(id: String) throws -> AnyPublisher<C8yExternalIDCollection, Swift.Error> {
+	public func getExternalIds(id: String) throws -> AnyPublisher<C8yExternalIds, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/identity/globalIds/\(id)/externalIds")
 			.set(httpMethod: "get")
@@ -44,15 +44,15 @@ public class ExternalIDsApi: AdaptableApi {
 				throw URLError(.badServerResponse)
 			}
 			return element.data
-		}).decode(type: C8yExternalIDCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
+		}).decode(type: C8yExternalIds.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
 	/// Create an external ID
 	/// Create an external ID for an existing managed object (identified by ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_IDENTITY_ADMIN <b>OR</b> owner of the resource <b>OR</b> MANAGED_OBJECT_ADMIN permission on the resource
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -60,11 +60,13 @@ public class ExternalIDsApi: AdaptableApi {
 	///		  An external ID was created.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 409
+	///		  Duplicate – Identity already bound to a different Global ID.
 	/// - Parameters:
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func postExternalIDCollectionResource(body: C8yExternalId, id: String) throws -> AnyPublisher<C8yExternalId, Swift.Error> {
+	public func createExternalId(body: C8yExternalId, id: String) throws -> AnyPublisher<C8yExternalId, Swift.Error> {
 		var requestBody = body
 		requestBody.managedObject = nil
 		requestBody.`self` = nil
@@ -88,9 +90,9 @@ public class ExternalIDsApi: AdaptableApi {
 	/// Retrieve a specific external ID
 	/// Retrieve a specific external ID of a particular type.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_IDENTITY_READ <b>OR</b> owner of the resource <b>OR</b> MANAGED_OBJECT_READ permission on the resource
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -105,7 +107,7 @@ public class ExternalIDsApi: AdaptableApi {
 	///		  The identifier used in the external system that Cumulocity IoT interfaces with.
 	/// 	- externalId 
 	///		  The type of the external identifier.
-	public func getExternalIDResource(type: String, externalId: String) throws -> AnyPublisher<C8yExternalId, Swift.Error> {
+	public func getExternalId(type: String, externalId: String) throws -> AnyPublisher<C8yExternalId, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/identity/externalIds/\(type)/\(externalId)")
 			.set(httpMethod: "get")
@@ -124,9 +126,9 @@ public class ExternalIDsApi: AdaptableApi {
 	/// Remove a specific external ID
 	/// Remove a specific external ID of a particular type.
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// <section><h5>Required roles</h5>
 	/// ROLE_IDENTITY_ADMIN <b>OR</b> owner of the resource <b>OR</b> MANAGED_OBJECT_ADMIN permission on the resource
-	/// </div></div>
+	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
@@ -141,7 +143,7 @@ public class ExternalIDsApi: AdaptableApi {
 	///		  The identifier used in the external system that Cumulocity IoT interfaces with.
 	/// 	- externalId 
 	///		  The type of the external identifier.
-	public func deleteExternalIDResource(type: String, externalId: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteExternalId(type: String, externalId: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/identity/externalIds/\(type)/\(externalId)")
 			.set(httpMethod: "delete")

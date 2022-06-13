@@ -10,9 +10,6 @@ import Foundation
 
 public struct C8yApplicationApiResource: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
-
 	/// Collection of all applications..
 	public var applications: String?
 
@@ -31,14 +28,17 @@ public struct C8yApplicationApiResource: Codable {
 	/// Read-only collection of all applications owned by a particular user.
 	public var applicationsByUser: String?
 
+	/// A URL linking to this resource.
+	public var `self`: String?
+
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
 		case applications
 		case applicationById
 		case applicationsByName
 		case applicationsByTenant
 		case applicationsByOwner
 		case applicationsByUser
+		case `self` = "self"
 	}
 
 	public init() {

@@ -11,19 +11,19 @@ import Foundation
 /// A user role.
 public struct C8yRole: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
+	/// A unique identifier for this user role.
+	public var id: String?
 
 	/// The name of this user role.
 	public var name: String?
 
-	/// A unique identifier for this user role.
-	public var id: String?
+	/// A URL linking to this resource.
+	public var `self`: String?
 
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
-		case name
 		case id
+		case name
+		case `self` = "self"
 	}
 
 	public init() {

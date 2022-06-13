@@ -32,7 +32,7 @@ public struct C8ySummaryAllTenantsUsageStatistics: Codable {
 	/// 
 	public var deviceRequestCount: Int?
 
-	/// Number of devices with all children. Updated only three times a day starting at 8:57, 16:57 and 23:57.
+	/// Number of devices with children. Updated only three times a day starting at 8:57, 16:57 and 23:57.
 	public var deviceWithChildrenCount: Int?
 
 	/// Tenant external reference.
@@ -87,10 +87,10 @@ public struct C8ySummaryAllTenantsUsageStatistics: Codable {
 	/// Names of the tenant subscribed applications. Updated only three times a day starting at 8:57, 16:57 and 23:57.
 	public var subscribedApplications: [String]?
 
-	/// Tenant's company name.
+	/// The tenant's company name.
 	public var tenantCompany: String?
 
-	/// A list of custom properties.
+	/// An object with a list of custom properties.
 	public var tenantCustomProperties: C8yCustomProperties?
 
 	/// URL of the tenant's domain. The domain name permits only the use of alphanumeric characters separated by dots `.`, hyphens `-` and underscores `_`.

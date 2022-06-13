@@ -29,16 +29,16 @@ public struct C8yBulkOperation: Codable {
 	public var creationRamp: Double?
 
 	/// Operation to be executed for every device in a group.
-	public var operationPrototype: C8yBulkOperationPrototype?
+	public var operationPrototype: C8yOperationPrototype?
 
 	/// The status of this bulk operation, in context of the execution of all its single operations.
-	public var status: C8yBulkOperationStatus?
+	public var status: C8yStatus?
 
 	/// The general status of this bulk operation. The general status is visible for end users and they can filter and evaluate bulk operations by this status.
-	public var generalStatus: C8yBulkOperationGeneralStatus?
+	public var generalStatus: C8yGeneralStatus?
 
 	/// Contains information about the number of processed operations.
-	public var progress: C8yBulkOperationProgress?
+	public var progress: C8yProgress?
 
 	enum CodingKeys: String, CodingKey {
 		case `self` = "self"
@@ -54,5 +54,62 @@ public struct C8yBulkOperation: Codable {
 	}
 
 	public init() {
+	}
+
+	/// The status of this bulk operation, in context of the execution of all its single operations.
+	public enum C8yStatus: String, Codable {
+		case active = "ACTIVE"
+		case inprogress = "IN_PROGRESS"
+		case completed = "COMPLETED"
+		case deleted = "DELETED"
+	}
+
+	/// The general status of this bulk operation. The general status is visible for end users and they can filter and evaluate bulk operations by this status.
+	public enum C8yGeneralStatus: String, Codable {
+		case scheduled = "SCHEDULED"
+		case executing = "EXECUTING"
+		case executingwitherrors = "EXECUTING_WITH_ERRORS"
+		case successful = "SUCCESSFUL"
+		case failed = "FAILED"
+		case canceled = "CANCELED"
+	}
+
+	/// Operation to be executed for every device in a group.
+	public struct C8yOperationPrototype: Codable {
+	
+		public init() {
+		}
+	}
+
+
+
+	/// Contains information about the number of processed operations.
+	public struct C8yProgress: Codable {
+	
+		/// Number of pending operations.
+		public var pending: Int?
+	
+		/// Number of failed operations.
+		public var failed: Int?
+	
+		/// Number of operations being executed.
+		public var executing: Int?
+	
+		/// Number of operations successfully processed.
+		public var successful: Int?
+	
+		/// Total number of processed operations.
+		public var all: Int?
+	
+		enum CodingKeys: String, CodingKey {
+			case pending
+			case failed
+			case executing
+			case successful
+			case all
+		}
+	
+		public init() {
+		}
 	}
 }

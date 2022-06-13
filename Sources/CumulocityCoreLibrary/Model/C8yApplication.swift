@@ -170,4 +170,6 @@ public struct C8yApplication: Codable {
 		case hosted = "HOSTED"
 		case microservice = "MICROSERVICE"
 	}
+
+
 }

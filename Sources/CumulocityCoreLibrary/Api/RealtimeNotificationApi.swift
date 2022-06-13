@@ -227,7 +227,7 @@ public class RealtimeNotificationApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// - Parameters:
 	/// 	- body 
-	public func postNotificationRealtimeResource(body: C8yRealtimeNotification) throws -> AnyPublisher<C8yRealtimeNotification, Swift.Error> {
+	public func createRealtimeNotification(body: C8yRealtimeNotification) throws -> AnyPublisher<C8yRealtimeNotification, Swift.Error> {
 		var requestBody = body
 		requestBody.clientId = nil
 		requestBody.data = nil

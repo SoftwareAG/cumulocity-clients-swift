@@ -22,10 +22,10 @@ public class ApplicationsApiTest: XCTestCase {
 		}
 	}
 
-	public func testGetAbstractApplicationCollectionResource() {
+	public func testGetApplications() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableApplicationsApi().getAbstractApplicationCollectionResource().sink(receiveCompletion: { completion in
+		try? TestableApplicationsApi().getApplications().sink(receiveCompletion: { completion in
 			print(completion)
 		}, receiveValue: { data in
 			expectation.fulfill()
