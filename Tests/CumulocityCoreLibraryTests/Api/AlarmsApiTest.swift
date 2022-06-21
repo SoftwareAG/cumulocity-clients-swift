@@ -26,7 +26,8 @@ public class AlarmsApiTest: XCTestCase {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
 		try? TestableAlarmsApi().getAlarms().sink(receiveCompletion: { completion in
-			print(completion)
+			let message = try? completion.error()
+			print(message?.statusCode)
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)
@@ -38,7 +39,8 @@ public class AlarmsApiTest: XCTestCase {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
 		try? TestableAlarmsApi().getNumberOfAlarms().sink(receiveCompletion: { completion in
-			print(completion)
+			let message = try? completion.error()
+			print(message?.statusCode)
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)

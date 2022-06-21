@@ -26,7 +26,8 @@ public class CurrentApplicationApiTest: XCTestCase {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
 		try? TestableCurrentApplicationApi().getCurrentApplication().sink(receiveCompletion: { completion in
-			print(completion)
+			let message = try? completion.error()
+			print(message?.statusCode)
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)
@@ -38,7 +39,8 @@ public class CurrentApplicationApiTest: XCTestCase {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
 		try? TestableCurrentApplicationApi().getCurrentApplicationSettings().sink(receiveCompletion: { completion in
-			print(completion)
+			let message = try? completion.error()
+			print(message?.statusCode)
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)
@@ -50,7 +52,8 @@ public class CurrentApplicationApiTest: XCTestCase {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
 		try? TestableCurrentApplicationApi().getSubscribedUsers().sink(receiveCompletion: { completion in
-			print(completion)
+			let message = try? completion.error()
+			print(message?.statusCode)
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)

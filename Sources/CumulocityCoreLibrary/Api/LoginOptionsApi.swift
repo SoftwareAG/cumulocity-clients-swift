@@ -42,9 +42,16 @@ public class LoginOptionsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard (200...299).contains(httpResponse.statusCode) else {
-				throw URLError(.badServerResponse)
+			guard httpResponse.statusCode != 400 else {
+				let decoder = JSONDecoder()
+				let error400 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error400)
 			}
+			// generic error fallback
+			guard (200..<300) ~= httpResponse.statusCode else {
+				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
+			}
+			
 			return element.data
 		}).decode(type: C8yLoginOptionCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}

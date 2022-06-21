@@ -26,7 +26,8 @@ public class BulkOperationsApiTest: XCTestCase {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
 		try? TestableBulkOperationsApi().getBulkOperations().sink(receiveCompletion: { completion in
-			print(completion)
+			let message = try? completion.error()
+			print(message?.statusCode)
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)
