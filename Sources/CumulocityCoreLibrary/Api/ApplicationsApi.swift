@@ -103,7 +103,7 @@ public class ApplicationsApi: AdaptableApi {
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
-	/// 	- 200
+	/// 	- 201
 	///		  An application was created.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
@@ -115,7 +115,7 @@ public class ApplicationsApi: AdaptableApi {
 	/// 	- body 
 	public func createApplication(body: C8yApplication) throws -> AnyPublisher<C8yApplication, Swift.Error> {
 		var requestBody = body
-		requestBody.owner?.`self` = nil
+		requestBody.owner = nil
 		requestBody.activeVersionId = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -219,10 +219,11 @@ public class ApplicationsApi: AdaptableApi {
 	///		  Unique identifier of the application.
 	public func updateApplication(body: C8yApplication, id: String) throws -> AnyPublisher<C8yApplication, Swift.Error> {
 		var requestBody = body
-		requestBody.owner?.`self` = nil
+		requestBody.owner = nil
 		requestBody.activeVersionId = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
+		requestBody.type = nil
 		requestBody.resourcesUrl = nil
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)")
@@ -332,6 +333,8 @@ public class ApplicationsApi: AdaptableApi {
 	///		  An application was copied.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 422
+	///		  Unprocessable Entity – method not supported
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the application.
@@ -348,6 +351,9 @@ public class ApplicationsApi: AdaptableApi {
 				let decoder = JSONDecoder()
 				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
+			}
+			guard httpResponse.statusCode != 422 else {
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: "Unprocessable Entity – method not supported")
 			}
 			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {

@@ -34,7 +34,7 @@ public class AttachmentsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "get")
-			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, text/plain")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/octet-stream")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)

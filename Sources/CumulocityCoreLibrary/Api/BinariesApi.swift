@@ -161,7 +161,7 @@ public class BinariesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/binaries/\(id)")
 			.set(httpMethod: "get")
-			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, text/plain")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/octet-stream")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)

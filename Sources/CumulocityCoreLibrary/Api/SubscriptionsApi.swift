@@ -169,7 +169,7 @@ public class SubscriptionsApi: AdaptableApi {
 	/// 	- 403
 	///		  Not enough permissions/roles to perform this operation.
 	/// 	- 422
-	///		  Unprocessable Entity – Error in query parameters
+	///		  Unprocessable Entity – error in query parameters
 	/// - Parameters:
 	/// 	- context 
 	///		  The context to which the subscription is associated. > **&#9432; Info:** If the value is `mo`, then `source` must also be provided in the query. 
@@ -199,7 +199,7 @@ public class SubscriptionsApi: AdaptableApi {
 				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error403)
 			}
 			guard httpResponse.statusCode != 422 else {
-				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: "Unprocessable Entity – Error in query parameters")
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: "Unprocessable Entity – error in query parameters")
 			}
 			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {

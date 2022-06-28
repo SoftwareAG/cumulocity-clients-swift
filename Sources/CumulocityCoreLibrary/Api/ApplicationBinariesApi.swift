@@ -137,7 +137,7 @@ public class ApplicationBinariesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/binaries/\(binaryId)")
 			.set(httpMethod: "get")
-			.add(header: "Accept", value: "application/json")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/zip")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)

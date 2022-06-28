@@ -79,7 +79,7 @@ public class CurrentApplicationApi: AdaptableApi {
 	@available(*, deprecated)
 	public func updateApplication(body: C8yApplication) throws -> AnyPublisher<C8yApplication, Swift.Error> {
 		var requestBody = body
-		requestBody.owner?.`self` = nil
+		requestBody.owner = nil
 		requestBody.activeVersionId = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
