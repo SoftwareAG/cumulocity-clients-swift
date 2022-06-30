@@ -77,7 +77,7 @@ public class CurrentApplicationApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- body 
 	@available(*, deprecated)
-	public func updateApplication(body: C8yApplication) throws -> AnyPublisher<C8yApplication, Swift.Error> {
+	public func updateCurrentApplication(body: C8yApplication) throws -> AnyPublisher<C8yApplication, Swift.Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.activeVersionId = nil
