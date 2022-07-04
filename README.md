@@ -16,9 +16,22 @@ sh xcodeproj.sh
 
 ## Usage
 
+Use the public factory to access `API` classes. The factory is available as a singleton and groups `API` classes by category.
+
+```swift
+let factory = Cumulocity.Core.shared
+let api = factory.applications.applicationsApi
+```
+
+In addition, each `API` class provides a public initializer.
+
+```swift
+let api = ApplicationsApi()
+```
+
 ### Configure request information
 
-Additional information can be passed to each API class using the `URLRequestBuilder`. It provides dedicated methods to configure URL scheme, host name or additional headers:
+Additional request information need to be configured for each `API` class, such as HTTP scheme, host name or additional headers (i.e. Authorization header). Those information are stored in `URLRequestBuilder`.
 
 ```swift
 let builder = URLRequestBuilder()
@@ -26,19 +39,35 @@ builder.set(scheme: "http")
 builder.set(host: "host")
 ```
 
-After configuring use the `builder` as argument for creating service instances:
+The factory allows to configure a default `URLRequestBuilder`. The instance hold on the factory will be used when accessing `API` classes through the factory.
 
 ```swift
-let service = SystemOptionsApi(requestBuilder: builder)
+let factory = Cumulocity.Core.shared
+factory.requestBuilder.set(scheme: "http")
+```
+
+In addition, each `API` class provides a public initializer to pass an individual `URLRequestBuilder`.
+ 
+```swift
+let builder = URLRequestBuilder()
+let api = ApplicationsApi(requestBuilder: builder)
 ```
 
 ### Configure URL session
 
+The factory holds an instance of `URLSession.shared` to allow to add a `URLSessionDelegate`.
+
 Each API class contains initializers to configure the `URLSession` used for each request. The session object can be used to register a `URLSessionDelegate`.
 
 ```swift
-let session = URLSession.shared
-let service = SystemOptionsApi(session: session)
+let factory = Cumulocity.Core.shared
+factory.session.delegate = /// ...
+```
+
+The `URLSession` may also be passed to individual `API` classes through it's initializer.
+
+```swift
+let api = ApplicationsApi(session: session)
 ```
 
 ### Basic Authentication
