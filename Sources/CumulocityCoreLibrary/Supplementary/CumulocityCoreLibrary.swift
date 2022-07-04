@@ -15,23 +15,23 @@ extension Cumulocity {
 
 	public class Core {
 
-		static let shared = Core()
+		public static let shared = Core()
 
-	    let requestBuilder: URLRequestBuilder = URLRequestBuilder()
-	    var session: URLSession = URLSession.shared
-	    lazy var applications: ApplicationsFactory = ApplicationsFactory(with: self)
-	    lazy var measurements: MeasurementsFactory = MeasurementsFactory(with: self)
-	    lazy var alarms: AlarmsFactory = AlarmsFactory(with: self)
-	    lazy var tenants: TenantsFactory = TenantsFactory(with: self)
-	    lazy var users: UsersFactory = UsersFactory(with: self)
-	    lazy var audits: AuditsFactory = AuditsFactory(with: self)
-	    lazy var realtimeNotifications: RealtimenotificationsFactory = RealtimenotificationsFactory(with: self)
-	    lazy var events: EventsFactory = EventsFactory(with: self)
-	    lazy var notifications20: Notifications20Factory = Notifications20Factory(with: self)
-	    lazy var retentions: RetentionsFactory = RetentionsFactory(with: self)
-	    lazy var identity: IdentityFactory = IdentityFactory(with: self)
-	    lazy var deviceControl: DevicecontrolFactory = DevicecontrolFactory(with: self)
-	    lazy var inventory: InventoryFactory = InventoryFactory(with: self)
+	    public let requestBuilder: URLRequestBuilder = URLRequestBuilder()
+	    public var session: URLSession = URLSession.shared
+	    public lazy var applications: ApplicationsFactory = ApplicationsFactory(with: self)
+	    public lazy var measurements: MeasurementsFactory = MeasurementsFactory(with: self)
+	    public lazy var alarms: AlarmsFactory = AlarmsFactory(with: self)
+	    public lazy var tenants: TenantsFactory = TenantsFactory(with: self)
+	    public lazy var users: UsersFactory = UsersFactory(with: self)
+	    public lazy var audits: AuditsFactory = AuditsFactory(with: self)
+	    public lazy var realtimeNotifications: RealtimenotificationsFactory = RealtimenotificationsFactory(with: self)
+	    public lazy var events: EventsFactory = EventsFactory(with: self)
+	    public lazy var notifications20: Notifications20Factory = Notifications20Factory(with: self)
+	    public lazy var retentions: RetentionsFactory = RetentionsFactory(with: self)
+	    public lazy var identity: IdentityFactory = IdentityFactory(with: self)
+	    public lazy var deviceControl: DevicecontrolFactory = DevicecontrolFactory(with: self)
+	    public lazy var inventory: InventoryFactory = InventoryFactory(with: self)
 
 	    private init() {
 	    }
