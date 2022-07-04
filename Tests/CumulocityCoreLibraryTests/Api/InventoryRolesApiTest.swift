@@ -2,7 +2,7 @@
 // InventoryRolesApiTest.swift
 // CumulocityCoreLibrary
 //
-// Copyright (c) 2014-2021 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+// Copyright (c) 2014-2022 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
 // Use, reproduction, transfer, publication or disclosure is prohibited except as specifically provided for in your License Agreement with Software AG.
 //
 
@@ -16,9 +16,14 @@ public class InventoryRolesApiTest: XCTestCase {
 	class TestableInventoryRolesApi: InventoryRolesApi {
 
 		override func adapt(builder: URLRequestBuilder) -> URLRequestBuilder {
-			return builder.set(scheme: "https")
-				.set(host: "iotaccstage2.eu-latest.cumulocity.com")
-				.add(header: "Authorization", value: "Basic bW9iaWxlOm1vYmlsZTAxJA==")
+			guard let testDataUrl = Bundle.module.path(forResource: "TestData", ofType: "plist") else { return builder }
+			let resources = NSDictionary(contentsOfFile: testDataUrl)
+			let scheme = resources["Scheme"] as? String ?? ""
+			let hostName = resources["HostName"] as? String ?? ""
+			let authorization = resources["Authorization"] as? String ?? ""
+			return builder.set(scheme: scheme)
+				.set(host: hostName)
+				.add(header: "Authorization", value: authorization)
 		}
 	}
 
@@ -27,7 +32,7 @@ public class InventoryRolesApiTest: XCTestCase {
 		var cancellables = Set<AnyCancellable>()
 		try? TestableInventoryRolesApi().getInventoryRoles().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode)
+			print(message?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)

@@ -18,6 +18,7 @@ let package = Package(
             dependencies: []),
 		.testTarget(
 			name: "CumulocityCoreLibraryTests",
-			dependencies: ["CumulocityCoreLibrary"])
+			dependencies: ["CumulocityCoreLibrary"],
+			resources: [.process("Resources")])
     ]
 )
