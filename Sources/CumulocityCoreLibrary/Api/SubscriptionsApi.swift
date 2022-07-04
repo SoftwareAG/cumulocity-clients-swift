@@ -2,7 +2,7 @@
 // SubscriptionsApi.swift
 // CumulocityCoreLibrary
 //
-// Copyright (c) 2014-2021 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+// Copyright (c) 2014-2022 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
 // Use, reproduction, transfer, publication or disclosure is prohibited except as specifically provided for in your License Agreement with Software AG.
 //
 
@@ -54,9 +54,21 @@ public class SubscriptionsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard (200...299).contains(httpResponse.statusCode) else {
-				throw URLError(.badServerResponse)
+			guard httpResponse.statusCode != 401 else {
+				let decoder = JSONDecoder()
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
 			}
+			guard httpResponse.statusCode != 403 else {
+				let decoder = JSONDecoder()
+				let error403 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error403)
+			}
+			// generic error fallback
+			guard (200..<300) ~= httpResponse.statusCode else {
+				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
+			}
+			
 			return element.data
 		}).decode(type: C8yNotificationSubscriptionCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -107,9 +119,34 @@ public class SubscriptionsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard (200...299).contains(httpResponse.statusCode) else {
-				throw URLError(.badServerResponse)
+			guard httpResponse.statusCode != 401 else {
+				let decoder = JSONDecoder()
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
 			}
+			guard httpResponse.statusCode != 403 else {
+				let decoder = JSONDecoder()
+				let error403 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error403)
+			}
+			guard httpResponse.statusCode != 404 else {
+				let decoder = JSONDecoder()
+				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error404)
+			}
+			guard httpResponse.statusCode != 409 else {
+				let decoder = JSONDecoder()
+				let error409 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error409)
+			}
+			guard httpResponse.statusCode != 422 else {
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: "Unprocessable Entity – invalid payload.")
+			}
+			// generic error fallback
+			guard (200..<300) ~= httpResponse.statusCode else {
+				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
+			}
+			
 			return element.data
 		}).decode(type: C8yNotificationSubscription.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -132,7 +169,7 @@ public class SubscriptionsApi: AdaptableApi {
 	/// 	- 403
 	///		  Not enough permissions/roles to perform this operation.
 	/// 	- 422
-	///		  Unprocessable Entity – Error in query parameters
+	///		  Unprocessable Entity – error in query parameters
 	/// - Parameters:
 	/// 	- context 
 	///		  The context to which the subscription is associated. > **&#9432; Info:** If the value is `mo`, then `source` must also be provided in the query. 
@@ -151,9 +188,24 @@ public class SubscriptionsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard (200...299).contains(httpResponse.statusCode) else {
-				throw URLError(.badServerResponse)
+			guard httpResponse.statusCode != 401 else {
+				let decoder = JSONDecoder()
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
 			}
+			guard httpResponse.statusCode != 403 else {
+				let decoder = JSONDecoder()
+				let error403 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error403)
+			}
+			guard httpResponse.statusCode != 422 else {
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: "Unprocessable Entity – error in query parameters")
+			}
+			// generic error fallback
+			guard (200..<300) ~= httpResponse.statusCode else {
+				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
+			}
+			
 			return element.data
 		}).eraseToAnyPublisher()
 	}
@@ -187,9 +239,26 @@ public class SubscriptionsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard (200...299).contains(httpResponse.statusCode) else {
-				throw URLError(.badServerResponse)
+			guard httpResponse.statusCode != 401 else {
+				let decoder = JSONDecoder()
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
 			}
+			guard httpResponse.statusCode != 403 else {
+				let decoder = JSONDecoder()
+				let error403 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error403)
+			}
+			guard httpResponse.statusCode != 404 else {
+				let decoder = JSONDecoder()
+				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error404)
+			}
+			// generic error fallback
+			guard (200..<300) ~= httpResponse.statusCode else {
+				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
+			}
+			
 			return element.data
 		}).decode(type: C8yNotificationSubscription.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -223,9 +292,26 @@ public class SubscriptionsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard (200...299).contains(httpResponse.statusCode) else {
-				throw URLError(.badServerResponse)
+			guard httpResponse.statusCode != 401 else {
+				let decoder = JSONDecoder()
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
 			}
+			guard httpResponse.statusCode != 403 else {
+				let decoder = JSONDecoder()
+				let error403 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error403)
+			}
+			guard httpResponse.statusCode != 404 else {
+				let decoder = JSONDecoder()
+				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error404)
+			}
+			// generic error fallback
+			guard (200..<300) ~= httpResponse.statusCode else {
+				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
+			}
+			
 			return element.data
 		}).eraseToAnyPublisher()
 	}

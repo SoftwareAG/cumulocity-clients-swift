@@ -2,7 +2,7 @@
 // BinariesApi.swift
 // CumulocityCoreLibrary
 //
-// Copyright (c) 2014-2021 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+// Copyright (c) 2014-2022 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
 // Use, reproduction, transfer, publication or disclosure is prohibited except as specifically provided for in your License Agreement with Software AG.
 //
 
@@ -66,9 +66,16 @@ public class BinariesApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard (200...299).contains(httpResponse.statusCode) else {
-				throw URLError(.badServerResponse)
+			guard httpResponse.statusCode != 401 else {
+				let decoder = JSONDecoder()
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
 			}
+			// generic error fallback
+			guard (200..<300) ~= httpResponse.statusCode else {
+				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
+			}
+			
 			return element.data
 		}).decode(type: C8yBinaryCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -114,9 +121,22 @@ public class BinariesApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard (200...299).contains(httpResponse.statusCode) else {
-				throw URLError(.badServerResponse)
+			guard httpResponse.statusCode != 400 else {
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: "Unprocessable Entity – invalid payload.")
 			}
+			guard httpResponse.statusCode != 401 else {
+				let decoder = JSONDecoder()
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
+			}
+			guard httpResponse.statusCode != 403 else {
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: "Not authorized to perform this operation.")
+			}
+			// generic error fallback
+			guard (200..<300) ~= httpResponse.statusCode else {
+				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
+			}
+			
 			return element.data
 		}).decode(type: C8yBinary.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -141,14 +161,21 @@ public class BinariesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/binaries/\(id)")
 			.set(httpMethod: "get")
-			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, text/plain")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/octet-stream")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard (200...299).contains(httpResponse.statusCode) else {
-				throw URLError(.badServerResponse)
+			guard httpResponse.statusCode != 401 else {
+				let decoder = JSONDecoder()
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
 			}
+			// generic error fallback
+			guard (200..<300) ~= httpResponse.statusCode else {
+				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
+			}
+			
 			return element.data
 		}).eraseToAnyPublisher()
 	}
@@ -182,9 +209,16 @@ public class BinariesApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard (200...299).contains(httpResponse.statusCode) else {
-				throw URLError(.badServerResponse)
+			guard httpResponse.statusCode != 401 else {
+				let decoder = JSONDecoder()
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
 			}
+			// generic error fallback
+			guard (200..<300) ~= httpResponse.statusCode else {
+				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
+			}
+			
 			return element.data
 		}).decode(type: C8yBinary.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -214,9 +248,16 @@ public class BinariesApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard (200...299).contains(httpResponse.statusCode) else {
-				throw URLError(.badServerResponse)
+			guard httpResponse.statusCode != 401 else {
+				let decoder = JSONDecoder()
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
 			}
+			// generic error fallback
+			guard (200..<300) ~= httpResponse.statusCode else {
+				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
+			}
+			
 			return element.data
 		}).eraseToAnyPublisher()
 	}

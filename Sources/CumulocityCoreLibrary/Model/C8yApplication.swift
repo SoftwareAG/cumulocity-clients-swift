@@ -2,7 +2,7 @@
 // C8yApplication.swift
 // CumulocityCoreLibrary
 //
-// Copyright (c) 2014-2021 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+// Copyright (c) 2014-2022 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
 // Use, reproduction, transfer, publication or disclosure is prohibited except as specifically provided for in your License Agreement with Software AG.
 //
 
@@ -14,6 +14,7 @@ public struct C8yApplication: Codable {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		self.availability = try container.decodeIfPresent(C8yAvailability.self, forKey: .availability)
 		self.contextPath = try container.decodeIfPresent(String.self, forKey: .contextPath)
+		self.description = try container.decodeIfPresent(String.self, forKey: .description)
 		self.id = try container.decodeIfPresent(String.self, forKey: .id)
 		self.key = try container.decodeIfPresent(String.self, forKey: .key)
 		self.name = try container.decodeIfPresent(String.self, forKey: .name)
@@ -38,6 +39,7 @@ public struct C8yApplication: Codable {
 		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encodeIfPresent(self.availability, forKey: .availability)
 		try container.encodeIfPresent(self.contextPath, forKey: .contextPath)
+		try container.encodeIfPresent(self.description, forKey: .description)
 		try container.encodeIfPresent(self.id, forKey: .id)
 		try container.encodeIfPresent(self.key, forKey: .key)
 		try container.encodeIfPresent(self.name, forKey: .name)
@@ -63,6 +65,9 @@ public struct C8yApplication: Codable {
 
 	/// The context path in the URL makes the application accessible. Mandatory when the type of the application is `HOSTED`.
 	public var contextPath: String?
+
+	/// Description of the application.
+	public var description: String?
 
 	/// Unique identifier of the application.
 	public var id: String?
@@ -135,6 +140,7 @@ public struct C8yApplication: Codable {
 	enum CodingKeys: String, CodingKey {
 		case availability
 		case contextPath
+		case description
 		case id
 		case key
 		case name
