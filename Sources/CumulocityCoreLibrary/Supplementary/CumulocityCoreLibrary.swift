@@ -40,10 +40,10 @@ extension Cumulocity {
 
 			private var factory: Core
 
-			lazy var applicationsApi: ApplicationsApi = ApplicationsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var applicationBinariesApi: ApplicationBinariesApi = ApplicationBinariesApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var bootstrapUserApi: BootstrapUserApi = BootstrapUserApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var currentApplicationApi: CurrentApplicationApi = CurrentApplicationApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var applicationsApi: ApplicationsApi = ApplicationsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var applicationBinariesApi: ApplicationBinariesApi = ApplicationBinariesApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var bootstrapUserApi: BootstrapUserApi = BootstrapUserApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var currentApplicationApi: CurrentApplicationApi = CurrentApplicationApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 
 			fileprivate init(with factory: Core) {
 				self.factory = factory
@@ -54,7 +54,7 @@ extension Cumulocity {
 
 			private var factory: Core
 
-			lazy var measurementsApi: MeasurementsApi = MeasurementsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var measurementsApi: MeasurementsApi = MeasurementsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 
 			fileprivate init(with factory: Core) {
 				self.factory = factory
@@ -65,7 +65,7 @@ extension Cumulocity {
 
 			private var factory: Core
 
-			lazy var alarmsApi: AlarmsApi = AlarmsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var alarmsApi: AlarmsApi = AlarmsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 
 			fileprivate init(with factory: Core) {
 				self.factory = factory
@@ -76,13 +76,13 @@ extension Cumulocity {
 
 			private var factory: Core
 
-			lazy var tenantsApi: TenantsApi = TenantsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var tenantApplicationsApi: TenantApplicationsApi = TenantApplicationsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var deviceStatisticsApi: DeviceStatisticsApi = DeviceStatisticsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var usageStatisticsApi: UsageStatisticsApi = UsageStatisticsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var optionsApi: OptionsApi = OptionsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var loginOptionsApi: LoginOptionsApi = LoginOptionsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var systemOptionsApi: SystemOptionsApi = SystemOptionsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var tenantsApi: TenantsApi = TenantsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var tenantApplicationsApi: TenantApplicationsApi = TenantApplicationsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var deviceStatisticsApi: DeviceStatisticsApi = DeviceStatisticsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var usageStatisticsApi: UsageStatisticsApi = UsageStatisticsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var optionsApi: OptionsApi = OptionsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var loginOptionsApi: LoginOptionsApi = LoginOptionsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var systemOptionsApi: SystemOptionsApi = SystemOptionsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 
 			fileprivate init(with factory: Core) {
 				self.factory = factory
@@ -93,11 +93,11 @@ extension Cumulocity {
 
 			private var factory: Core
 
-			lazy var currentUserApi: CurrentUserApi = CurrentUserApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var usersApi: UsersApi = UsersApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var groupsApi: GroupsApi = GroupsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var rolesApi: RolesApi = RolesApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var inventoryRolesApi: InventoryRolesApi = InventoryRolesApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var currentUserApi: CurrentUserApi = CurrentUserApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var usersApi: UsersApi = UsersApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var groupsApi: GroupsApi = GroupsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var rolesApi: RolesApi = RolesApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var inventoryRolesApi: InventoryRolesApi = InventoryRolesApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 
 			fileprivate init(with factory: Core) {
 				self.factory = factory
@@ -108,7 +108,7 @@ extension Cumulocity {
 
 			private var factory: Core
 
-			lazy var auditsApi: AuditsApi = AuditsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var auditsApi: AuditsApi = AuditsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 
 			fileprivate init(with factory: Core) {
 				self.factory = factory
@@ -119,7 +119,7 @@ extension Cumulocity {
 
 			private var factory: Core
 
-			lazy var realtimeNotificationApi: RealtimeNotificationApi = RealtimeNotificationApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var realtimeNotificationApi: RealtimeNotificationApi = RealtimeNotificationApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 
 			fileprivate init(with factory: Core) {
 				self.factory = factory
@@ -130,8 +130,8 @@ extension Cumulocity {
 
 			private var factory: Core
 
-			lazy var eventsApi: EventsApi = EventsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var attachmentsApi: AttachmentsApi = AttachmentsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var eventsApi: EventsApi = EventsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var attachmentsApi: AttachmentsApi = AttachmentsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 
 			fileprivate init(with factory: Core) {
 				self.factory = factory
@@ -142,8 +142,8 @@ extension Cumulocity {
 
 			private var factory: Core
 
-			lazy var subscriptionsApi: SubscriptionsApi = SubscriptionsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var tokensApi: TokensApi = TokensApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var subscriptionsApi: SubscriptionsApi = SubscriptionsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var tokensApi: TokensApi = TokensApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 
 			fileprivate init(with factory: Core) {
 				self.factory = factory
@@ -154,7 +154,7 @@ extension Cumulocity {
 
 			private var factory: Core
 
-			lazy var retentionRulesApi: RetentionRulesApi = RetentionRulesApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var retentionRulesApi: RetentionRulesApi = RetentionRulesApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 
 			fileprivate init(with factory: Core) {
 				self.factory = factory
@@ -165,8 +165,8 @@ extension Cumulocity {
 
 			private var factory: Core
 
-			lazy var identityApi: IdentityApi = IdentityApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var externalIDsApi: ExternalIDsApi = ExternalIDsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var identityApi: IdentityApi = IdentityApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var externalIDsApi: ExternalIDsApi = ExternalIDsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 
 			fileprivate init(with factory: Core) {
 				self.factory = factory
@@ -177,10 +177,10 @@ extension Cumulocity {
 
 			private var factory: Core
 
-			lazy var operationsApi: OperationsApi = OperationsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var bulkOperationsApi: BulkOperationsApi = BulkOperationsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var deviceCredentialsApi: DeviceCredentialsApi = DeviceCredentialsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var newDeviceRequestsApi: NewDeviceRequestsApi = NewDeviceRequestsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var operationsApi: OperationsApi = OperationsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var bulkOperationsApi: BulkOperationsApi = BulkOperationsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var deviceCredentialsApi: DeviceCredentialsApi = DeviceCredentialsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var newDeviceRequestsApi: NewDeviceRequestsApi = NewDeviceRequestsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 
 			fileprivate init(with factory: Core) {
 				self.factory = factory
@@ -191,10 +191,10 @@ extension Cumulocity {
 
 			private var factory: Core
 
-			lazy var inventoryApi: InventoryApi = InventoryApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var managedObjectsApi: ManagedObjectsApi = ManagedObjectsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var binariesApi: BinariesApi = BinariesApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			lazy var childOperationsApi: ChildOperationsApi = ChildOperationsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var inventoryApi: InventoryApi = InventoryApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var managedObjectsApi: ManagedObjectsApi = ManagedObjectsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var binariesApi: BinariesApi = BinariesApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var childOperationsApi: ChildOperationsApi = ChildOperationsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 
 			fileprivate init(with factory: Core) {
 				self.factory = factory
