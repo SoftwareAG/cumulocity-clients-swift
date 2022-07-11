@@ -19,6 +19,57 @@ extension KeyedEncodingContainer {
             try self.encode(intValue, forKey: key)
         } else if let doublevalue = value as? Double {
             try self.encode(doublevalue, forKey: key)
+        } else if let nestedDictionary = value as? [String:Any] {
+            try self.encode(nestedDictionary, forKey: key)
+        } else if let nestedArray = value as? [Any] {
+            try self.encode(nestedArray, forKey: key)
+        }
+    }
+
+    public mutating func encode(_ value: Dictionary<String, Any>, forKey key: K) throws {
+        var container = self.nestedContainer(keyedBy: JSONCodingKeys.self, forKey: key)
+        try container.encode(value)
+    }
+
+    public mutating func encode(_ value: Array<Any>, forKey key: K) throws {
+        var container = self.nestedUnkeyedContainer(forKey: key)
+        try container.encode(value)
+    }
+
+    public mutating func encode(_ object: Dictionary<String,Any>) throws {
+        for key in object.keys {
+            let value = object[key] as Any
+            try self.encodeAnyIfPresent(value, forKey: JSONCodingKeys(stringValue: key) as! K)
+        }
+    }
+}
+
+extension UnkeyedEncodingContainer {
+
+    mutating func encode(_ value: Dictionary<String, Any>) throws {
+        var nestedContainer = self.nestedContainer(keyedBy: JSONCodingKeys.self)
+        try nestedContainer.encode(value)
+    }
+
+    mutating func encode(_ object: Array<Any>) throws {
+        for value in object {
+            if let intValue = value as? Int {
+                try? self.encode(intValue)
+            } else if let floatValue = value as? Float {
+                try? self.encode(floatValue)
+            } else if let doubleValue = value as? Double {
+                try? self.encode(doubleValue)
+            } else if let stringValue = value as? String {
+                try? self.encode(stringValue)
+            } else if let dateValue = value as? Date {
+                try? self.encode(dateValue)
+            } else if let boolValue = value as? Bool {
+                try? self.encode(boolValue)
+            } else if let nestedDictionary = value as? [String:Any] {
+                try? self.encode(nestedDictionary)
+            } else if let nestedArray = value as? [Any] {
+                try? self.encode(nestedArray)
+            }
         }
     }
 }
