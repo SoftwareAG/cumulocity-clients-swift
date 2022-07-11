@@ -18,9 +18,9 @@ public class BootstrapUserApiTest: XCTestCase {
 		override func adapt(builder: URLRequestBuilder) -> URLRequestBuilder {
 			guard let testDataUrl = Bundle.module.path(forResource: "TestData", ofType: "plist") else { return builder }
 			let resources = NSDictionary(contentsOfFile: testDataUrl)
-			let scheme = resources["Scheme"] as? String ?? ""
-			let hostName = resources["HostName"] as? String ?? ""
-			let authorization = resources["Authorization"] as? String ?? ""
+			let scheme = resources?["Scheme"] as? String ?? ""
+			let hostName = resources?["HostName"] as? String ?? ""
+			let authorization = resources?["Authorization"] as? String ?? ""
 			return builder.set(scheme: scheme)
 				.set(host: hostName)
 				.add(header: "Authorization", value: authorization)
