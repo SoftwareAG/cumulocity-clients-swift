@@ -36,7 +36,7 @@ extension KeyedEncodingContainer {
         try container.encode(value)
     }
 
-    public mutating func encode(_ object: Dictionary<String,Any>) throws {
+    public mutating func encode(_ object: Dictionary<String, Any>) throws {
         for key in object.keys {
             let value = object[key] as Any
             try self.encodeAnyIfPresent(value, forKey: JSONCodingKeys(stringValue: key) as! K)

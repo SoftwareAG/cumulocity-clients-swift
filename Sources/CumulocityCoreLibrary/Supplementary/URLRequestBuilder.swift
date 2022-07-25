@@ -48,6 +48,9 @@ public class URLRequestBuilder {
 	}
 
 	public func add(header: String, value: String) -> URLRequestBuilder {
+		guard !value.isEmpty else {
+			return self
+		}
 		self.requestHeaders[header] = value
 		return self
 	}
