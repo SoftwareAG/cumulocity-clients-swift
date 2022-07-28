@@ -138,7 +138,7 @@ public class RolesApi: AdaptableApi {
 	///		  The current page of the paginated results.
 	/// 	- pageSize 
 	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
-	public func getGroupRoles(tenantId: String, groupId: Int, currentPage: Int? = nil, pageSize: Int? = nil) throws -> AnyPublisher<[C8yRoleReferenceCollection], Swift.Error> {
+	public func getGroupRoles(tenantId: String, groupId: Int, currentPage: Int? = nil, pageSize: Int? = nil) throws -> AnyPublisher<C8yRoleReferenceCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
@@ -172,7 +172,7 @@ public class RolesApi: AdaptableApi {
 			}
 			
 			return element.data
-		}).decode(type: [C8yRoleReferenceCollection].self, decoder: JSONDecoder()).eraseToAnyPublisher()
+		}).decode(type: C8yRoleReferenceCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
 	/// Assign a role to a specific user group in a specific tenant

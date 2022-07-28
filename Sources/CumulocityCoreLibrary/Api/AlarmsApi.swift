@@ -58,7 +58,7 @@ public class AlarmsApi: AdaptableApi {
 	/// 	- status 
 	///		  The status of the alarm to search for.
 	/// 	- type 
-	///		  The type of alarm to search for.
+	///		  The types of alarm to search for (comma separated).
 	/// 	- withSourceAssets 
 	///		  When set to `true` also alarms for related source assets will be included in the request. When this parameter is provided a `source` must be specified.
 	/// 	- withSourceDevices 
@@ -67,7 +67,7 @@ public class AlarmsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getAlarms(createdFrom: String? = nil, createdTo: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, lastUpdatedFrom: String? = nil, lastUpdatedTo: String? = nil, pageSize: Int? = nil, resolved: Bool? = nil, severity: String? = nil, source: String? = nil, status: String? = nil, type: String? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yAlarmCollection, Swift.Error> {
+	public func getAlarms(createdFrom: String? = nil, createdTo: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, lastUpdatedFrom: String? = nil, lastUpdatedTo: String? = nil, pageSize: Int? = nil, resolved: Bool? = nil, severity: String? = nil, source: String? = nil, status: String? = nil, type: [String]? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yAlarmCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = createdFrom { queryItems.append(URLQueryItem(name: "createdFrom", value: String(parameter))) }
 		if let parameter = createdTo { queryItems.append(URLQueryItem(name: "createdTo", value: String(parameter))) }
@@ -81,7 +81,7 @@ public class AlarmsApi: AdaptableApi {
 		if let parameter = severity { queryItems.append(URLQueryItem(name: "severity", value: String(parameter))) }
 		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
 		if let parameter = status { queryItems.append(URLQueryItem(name: "status", value: String(parameter))) }
-		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter))) }
+		if let parameter = type { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "type", value: p)) } }
 		if let parameter = withSourceAssets { queryItems.append(URLQueryItem(name: "withSourceAssets", value: String(parameter))) }
 		if let parameter = withSourceDevices { queryItems.append(URLQueryItem(name: "withSourceDevices", value: String(parameter))) }
 		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
@@ -323,12 +323,12 @@ public class AlarmsApi: AdaptableApi {
 	/// 	- status 
 	///		  The status of the alarm to search for.
 	/// 	- type 
-	///		  The type of alarm to search for.
+	///		  The types of alarm to search for (comma separated).
 	/// 	- withSourceAssets 
 	///		  When set to `true` also alarms for related source assets will be included in the request. When this parameter is provided a `source` must be specified.
 	/// 	- withSourceDevices 
 	///		  When set to `true` also alarms for related source devices will be included in the request. When this parameter is provided a `source` must be specified.
-	public func deleteAlarms(createdFrom: String? = nil, createdTo: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, resolved: Bool? = nil, severity: String? = nil, source: String? = nil, status: String? = nil, type: String? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteAlarms(createdFrom: String? = nil, createdTo: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, resolved: Bool? = nil, severity: String? = nil, source: String? = nil, status: String? = nil, type: [String]? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil) throws -> AnyPublisher<Data, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = createdFrom { queryItems.append(URLQueryItem(name: "createdFrom", value: String(parameter))) }
 		if let parameter = createdTo { queryItems.append(URLQueryItem(name: "createdTo", value: String(parameter))) }
@@ -338,7 +338,7 @@ public class AlarmsApi: AdaptableApi {
 		if let parameter = severity { queryItems.append(URLQueryItem(name: "severity", value: String(parameter))) }
 		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
 		if let parameter = status { queryItems.append(URLQueryItem(name: "status", value: String(parameter))) }
-		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter))) }
+		if let parameter = type { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "type", value: p)) } }
 		if let parameter = withSourceAssets { queryItems.append(URLQueryItem(name: "withSourceAssets", value: String(parameter))) }
 		if let parameter = withSourceDevices { queryItems.append(URLQueryItem(name: "withSourceDevices", value: String(parameter))) }
 		let builder = URLRequestBuilder()
@@ -517,12 +517,12 @@ public class AlarmsApi: AdaptableApi {
 	/// 	- status 
 	///		  The status of the alarm to search for.
 	/// 	- type 
-	///		  The type of alarm to search for.
+	///		  The types of alarm to search for (comma separated).
 	/// 	- withSourceAssets 
 	///		  When set to `true` also alarms for related source assets will be included in the request. When this parameter is provided a `source` must be specified.
 	/// 	- withSourceDevices 
 	///		  When set to `true` also alarms for related source devices will be included in the request. When this parameter is provided a `source` must be specified.
-	public func getNumberOfAlarms(dateFrom: String? = nil, dateTo: String? = nil, resolved: Bool? = nil, severity: String? = nil, source: String? = nil, status: String? = nil, type: String? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil) throws -> AnyPublisher<Int, Swift.Error> {
+	public func getNumberOfAlarms(dateFrom: String? = nil, dateTo: String? = nil, resolved: Bool? = nil, severity: String? = nil, source: String? = nil, status: String? = nil, type: [String]? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil) throws -> AnyPublisher<Int, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
 		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
@@ -530,7 +530,7 @@ public class AlarmsApi: AdaptableApi {
 		if let parameter = severity { queryItems.append(URLQueryItem(name: "severity", value: String(parameter))) }
 		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
 		if let parameter = status { queryItems.append(URLQueryItem(name: "status", value: String(parameter))) }
-		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter))) }
+		if let parameter = type { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "type", value: p)) } }
 		if let parameter = withSourceAssets { queryItems.append(URLQueryItem(name: "withSourceAssets", value: String(parameter))) }
 		if let parameter = withSourceDevices { queryItems.append(URLQueryItem(name: "withSourceDevices", value: String(parameter))) }
 		let builder = URLRequestBuilder()
