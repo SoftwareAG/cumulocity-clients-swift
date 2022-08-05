@@ -17,7 +17,7 @@ extension Cumulocity {
 
 		public static let shared = Core()
 
-	    public let requestBuilder: URLRequestBuilder = URLRequestBuilder()
+	    public var requestBuilder: URLRequestBuilder = URLRequestBuilder()
 	    public var session: URLSession = URLSession.shared
 	    public lazy var applications: ApplicationsFactory = ApplicationsFactory(with: self)
 	    public lazy var measurements: MeasurementsFactory = MeasurementsFactory(with: self)
