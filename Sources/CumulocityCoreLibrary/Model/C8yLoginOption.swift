@@ -12,7 +12,7 @@ import Foundation
 public struct C8yLoginOption: Codable {
 
 	/// For basic authentication case only.
-	public var authenticationRestrictions: C8yAuthenticationRestrictions?
+	public var authenticationRestrictions: C8yBasicAuthenticationRestrictions?
 
 	/// Indicates if password strength is enforced.
 	public var enforceStrength: Bool?
@@ -29,14 +29,14 @@ public struct C8yLoginOption: Codable {
 	/// A URL linking to the token generating endpoint.
 	public var initRequest: String?
 
-	/// The tenant domain
+	/// The tenant domain.
 	public var loginRedirectDomain: String?
 
 	/// A URL linking to this resource.
 	public var `self`: String?
 
 	/// The session configuration properties are only available for OAuth internal. See [Changing settings > OAuth internal](https://cumulocity.com/guides/users-guide/administration/#oauth-internal) for more details.
-	public var sessionConfiguration: C8ySessionConfiguration?
+	public var sessionConfiguration: C8yOAuthSessionConfiguration?
 
 	/// Enforce password strength validation on subtenant level. `enforceStrength` enforces it on all tenants in the platform.
 	public var strengthValidity: Bool?
@@ -84,52 +84,4 @@ public struct C8yLoginOption: Codable {
 		case authorizationcode = "AUTHORIZATION_CODE"
 	}
 
-	/// For basic authentication case only.
-	public struct C8yAuthenticationRestrictions: Codable {
-	
-		/// List of types of clients which are not allowed to use basic authentication. Currently the only supported option is WEB_BROWSERS.
-		public var forbiddenClients: [String]?
-	
-		/// List of user agents, passed in `User-Agent` HTTP header, which are blocked if basic authentication is used.
-		public var forbiddenUserAgents: [String]?
-	
-		/// List of user agents, passed in `User-Agent` HTTP header, which are allowed to use basic authentication.
-		public var trustedUserAgents: [String]?
-	
-		enum CodingKeys: String, CodingKey {
-			case forbiddenClients
-			case forbiddenUserAgents
-			case trustedUserAgents
-		}
-	
-		public init() {
-		}
-	}
-
-
-	/// The session configuration properties are only available for OAuth internal. See [Changing settings > OAuth internal](https://cumulocity.com/guides/users-guide/administration/#oauth-internal) for more details.
-	public struct C8ySessionConfiguration: Codable {
-	
-		/// Maximum session duration (in milliseconds) during which a user does not have to login again.
-		public var absoluteTimeoutMillis: Int?
-	
-		/// Maximum number of parallel sessions for one user.
-		public var maximumNumberOfParallelSessions: Int?
-	
-		/// Amount of time before a token expires (in milliseconds) during which the token may be renewed.
-		public var renewalTimeoutMillis: Int?
-	
-		/// Switch to turn additional user agent verification on or off during the session.
-		public var userAgentValidationRequired: Bool?
-	
-		enum CodingKeys: String, CodingKey {
-			case absoluteTimeoutMillis
-			case maximumNumberOfParallelSessions
-			case renewalTimeoutMillis
-			case userAgentValidationRequired
-		}
-	
-		public init() {
-		}
-	}
 }

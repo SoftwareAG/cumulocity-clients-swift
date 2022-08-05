@@ -588,4 +588,45 @@ public class UsersApi: AdaptableApi {
 			return element.data
 		}).eraseToAnyPublisher()
 	}
+	
+	/// Terminate a user's session
+	/// After logging out, a user has to enter valid credentials again to get access to the platform.
+	/// 
+	/// The request is responsible for removing cookies from the browser and invalidating internal platform access tokens.
+	/// 
+	/// The following table gives an overview of the possible response codes and their meanings.
+	/// - Returns:
+	/// 	- 200
+	///		  The request has succeeded and the user is logged out.
+	/// 	- 401
+	///		  Authentication information is missing or invalid.
+	/// - Parameters:
+	/// 	- cookie 
+	///		  The authorization cookie storing the access token of the user. This parameter is specific to OAI-Secure authentication.
+	/// 	- xXSRFTOKEN 
+	///		  Prevents XRSF attack of the authenticated user. This parameter is specific to OAI-Secure authentication.
+	public func logout(cookie: String? = nil, xXSRFTOKEN: String? = nil) throws -> AnyPublisher<Data, Swift.Error> {
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/user/logout")
+			.set(httpMethod: "post")
+			.add(header: "Cookie", value: "\(cookie)")
+			.add(header: "X-XSRF-TOKEN", value: "\(xXSRFTOKEN)")
+			.add(header: "Accept", value: "application/json")
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard httpResponse.statusCode != 401 else {
+				let decoder = JSONDecoder()
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
+			}
+			// generic error fallback
+			guard (200..<300) ~= httpResponse.statusCode else {
+				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
+			}
+			
+			return element.data
+		}).eraseToAnyPublisher()
+	}
 }

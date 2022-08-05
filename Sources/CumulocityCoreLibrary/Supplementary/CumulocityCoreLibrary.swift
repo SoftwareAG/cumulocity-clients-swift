@@ -17,7 +17,7 @@ extension Cumulocity {
 
 		public static let shared = Core()
 
-	    public let requestBuilder: URLRequestBuilder = URLRequestBuilder()
+	    public var requestBuilder: URLRequestBuilder = URLRequestBuilder()
 	    public var session: URLSession = URLSession.shared
 	    public lazy var applications: ApplicationsFactory = ApplicationsFactory(with: self)
 	    public lazy var measurements: MeasurementsFactory = MeasurementsFactory(with: self)
@@ -82,6 +82,7 @@ extension Cumulocity {
 			public lazy var usageStatisticsApi: UsageStatisticsApi = UsageStatisticsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var optionsApi: OptionsApi = OptionsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var loginOptionsApi: LoginOptionsApi = LoginOptionsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var loginTokensApi: LoginTokensApi = LoginTokensApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var systemOptionsApi: SystemOptionsApi = SystemOptionsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 
 			fileprivate init(with factory: Core) {
