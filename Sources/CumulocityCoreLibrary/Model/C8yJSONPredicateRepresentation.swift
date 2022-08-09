@@ -15,7 +15,7 @@ public struct C8yJSONPredicateRepresentation: Codable {
 	public var childPredicates: [C8yJSONPredicateRepresentation]?
 
 	/// Operator executed on the parameter from the JWT access token claim pointed by `parameterPath` and the provided parameter `value`.
-	public var operator: C8yOperator?
+	public var `operator`: C8yOperator?
 
 	/// Path to the claim from the JWT access token from the external authorization server.
 	public var parameterPath: String?
@@ -25,7 +25,7 @@ public struct C8yJSONPredicateRepresentation: Codable {
 
 	enum CodingKeys: String, CodingKey {
 		case childPredicates
-		case operator
+		case `operator` = "operator"
 		case parameterPath
 		case value
 	}
@@ -41,7 +41,7 @@ public struct C8yJSONPredicateRepresentation: Codable {
 		case lt = "LT"
 		case gte = "GTE"
 		case lte = "LTE"
-		case in = "IN"
+		case `in` = "IN"
 		case and = "AND"
 		case or = "OR"
 	}
