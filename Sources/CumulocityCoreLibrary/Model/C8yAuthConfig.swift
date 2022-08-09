@@ -122,7 +122,7 @@ public struct C8yAuthConfig: Codable {
 
 	/// Indicates whether user data are managed internally by the Cumulocity IoT platform or by an external server. Note that the value is case insensitive.
 	public enum C8yUserManagementSource: String, Codable {
-		case internal = "INTERNAL"
+		case `internal` = "INTERNAL"
 		case remote = "REMOTE"
 	}
 
