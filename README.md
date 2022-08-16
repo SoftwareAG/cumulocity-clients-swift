@@ -13,7 +13,6 @@ or run the shell script located in the root directory:
 ```console
 sh xcodeproj.sh
 ```
-
 ## Usage
 
 Use the public factory to access `API` classes. The factory is available as a singleton and groups `API` classes by category.
@@ -70,18 +69,6 @@ The `URLSession` may also be passed to individual `API` classes through it's ini
 let api = ApplicationsApi(session: session)
 ```
 
-### Basic Authentication
-
-The client sends HTTP requests with the `Authorization` header that contains the word `Basic` followed by a space and a base64-encoded string `username:password`. To include your credentials in API calls, use the `init(requestBuilder: URLRequestBuilder)` initializer and pass credentials using `URLRequestBuilder` as described below:
-
-```swift
-let builder = URLRequestBuilder()
-// configure credentials using the Authorization header
-builder.add(header: "Authorization", value: "")
-// or pass userName and password explicitly
-builder.set(authorization: "userName", password: "password")
-```
-
 ### Working with errors
 
 Use `sink(receiveCompletion:receiveValue:)` to observe values received by the publisher and process them using a closure you specify. HTTP error codes will be forwarded and can be accessed using a completion handler. The client describes two error types:
@@ -114,7 +101,7 @@ sink(receiveCompletion: { completion in
 })
 ```
 
-Error handling can be simplifid by calling one of the following extension methods:
+Error handling can be simplified by calling one of the following extension methods:
 
 ```swift
 sink(receiveCompletion: { completion in
@@ -123,4 +110,16 @@ sink(receiveCompletion: { completion in
 	/// error?.statusCode = HTTP status code
 	/// error?.reason = Codable reason sent by the server
 })
+```
+
+### Basic Authentication
+
+The client sends HTTP requests with the `Authorization` header that contains the word `Basic` followed by a space and a base64-encoded string `username:password`. To include your credentials in API calls, use the `init(requestBuilder: URLRequestBuilder)` initializer and pass credentials using `URLRequestBuilder` as described below:
+
+```swift
+let builder = URLRequestBuilder()
+// configure credentials using the Authorization header
+builder.add(header: "Authorization", value: "")
+// or pass userName and password explicitly
+builder.set(authorization: "userName", password: "password")
 ```
