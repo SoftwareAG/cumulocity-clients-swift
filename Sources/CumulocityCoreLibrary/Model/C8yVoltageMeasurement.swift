@@ -11,6 +11,7 @@ import Foundation
 /// A voltage sensor measures the voltage difference between two points in an electric circuit.
 public struct C8yVoltageMeasurement: Codable {
 
+	/// A measurement is a value with a unit.
 	public var voltage: C8yMeasurementValue?
 
 	enum CodingKeys: String, CodingKey {

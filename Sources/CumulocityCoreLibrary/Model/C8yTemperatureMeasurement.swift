@@ -8,8 +8,10 @@
 
 import Foundation
 
+/// Measurement of the temperature.
 public struct C8yTemperatureMeasurement: Codable {
 
+	/// A measurement is a value with a unit.
 	public var t: C8yMeasurementValue?
 
 	enum CodingKeys: String, CodingKey {

@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Detailed information about a neighbouring cell tower.
 public struct C8yCellTower: Codable {
 
 	/// The radio type of this cell tower. Can also be put directly in root JSON element if all cellTowers have same radioType.

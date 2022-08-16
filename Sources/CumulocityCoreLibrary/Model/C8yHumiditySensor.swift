@@ -9,7 +9,6 @@
 import Foundation
 
 /// A humidity sensor measures the amount of water vapour in the air. In a managed object, a humidity sensor is modeled as a simple empty fragment.
-/// 
 public struct C8yHumiditySensor: Codable {
 
 	public init() {

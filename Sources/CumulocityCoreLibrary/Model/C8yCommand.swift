@@ -9,7 +9,6 @@
 import Foundation
 
 /// To carry out interactive sessions with a device, use the `c8y_Command` fragment. If this fragment is in the list of supported operations for a device, a tab `Shell` will be shown. Using the `Shell` tab, the user can send commands in an arbitrary, device-specific syntax to the device. The command is sent to the device in a property `text`.
-/// 
 public struct C8yCommand: Codable {
 
 	/// The command sent to the device.

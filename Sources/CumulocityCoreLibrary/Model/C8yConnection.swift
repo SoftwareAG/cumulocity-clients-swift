@@ -9,11 +9,10 @@
 import Foundation
 
 /// The availability information computed by Cumulocity IoT is stored in fragments `c8y_Availability` and `c8y_Connection` of the device.
-/// 
 public struct C8yConnection: Codable {
 
 	/// The current status, one of `AVAILABLE`, `CONNECTED`, `MAINTENANCE`, `DISCONNECTED`.
-	public var status: C8yAvailability?
+	public var status: C8yAvailabilityStatus?
 
 	enum CodingKeys: String, CodingKey {
 		case status

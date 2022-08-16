@@ -9,7 +9,6 @@
 import Foundation
 
 /// A moisture sensor measures the water content of a substance. In a managed object, a moisture sensor is modeled as a simple empty fragment.
-/// 
 public struct C8yMoistureSensor: Codable {
 
 	public init() {

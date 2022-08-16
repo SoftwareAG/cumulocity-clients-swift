@@ -9,7 +9,6 @@
 import Foundation
 
 /// Provides detailed information about the closest mobile cell towers. When the functionality is activated, the location of the device is determined based on this fragment, in order to track the device whereabouts when GPS tracking is not available.
-/// 
 public struct C8yCellInfo: Codable {
 
 	/// The radio type of this cell tower.

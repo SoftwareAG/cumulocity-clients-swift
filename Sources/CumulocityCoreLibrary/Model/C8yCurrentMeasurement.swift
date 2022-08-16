@@ -8,8 +8,10 @@
 
 import Foundation
 
+/// Current measurement.
 public struct C8yCurrentMeasurement: Codable {
 
+	/// A measurement is a value with a unit.
 	public var current: C8yMeasurementValue?
 
 	enum CodingKeys: String, CodingKey {
