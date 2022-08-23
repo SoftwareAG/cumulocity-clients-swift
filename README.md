@@ -106,9 +106,10 @@ Error handling can be simplified by calling one of the following extension metho
 ```swift
 sink(receiveCompletion: { completion in
 	/// access the error message
-	let error = try? completion.error()
-	/// error?.statusCode = HTTP status code
-	/// error?.reason = Codable reason sent by the server
+	let error = completion.error()
+	/// error?.response(): HTTPURLResponse for advanced error processing
+	/// error?.statusCode(): HTTP status code
+	/// error?.reason(): Codable reason sent by the server
 })
 ```
 

@@ -76,11 +76,11 @@ public class AuditsApi: AdaptableApi {
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
 				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
+				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
-				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
+				throw Errors.undescribedError(response: httpResponse)
 			}
 			
 			return element.data
@@ -125,11 +125,11 @@ public class AuditsApi: AdaptableApi {
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
 				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
+				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
-				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
+				throw Errors.undescribedError(response: httpResponse)
 			}
 			
 			return element.data
@@ -164,11 +164,11 @@ public class AuditsApi: AdaptableApi {
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
 				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
+				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
-				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
+				throw Errors.undescribedError(response: httpResponse)
 			}
 			
 			return element.data
