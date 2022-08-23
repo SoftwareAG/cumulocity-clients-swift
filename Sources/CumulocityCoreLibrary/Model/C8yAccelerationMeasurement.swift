@@ -8,8 +8,10 @@
 
 import Foundation
 
+/// Measurement of the acceleration sensor.
 public struct C8yAccelerationMeasurement: Codable {
 
+	/// A measurement is a value with a unit.
 	public var acceleration: C8yMeasurementValue?
 
 	enum CodingKeys: String, CodingKey {

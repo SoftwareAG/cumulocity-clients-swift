@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// A measurement is a value with a unit.
 public struct C8yMeasurementValue: Codable {
 
 	public var value: Double?

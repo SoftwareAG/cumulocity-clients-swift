@@ -9,7 +9,6 @@
 import Foundation
 
 /// A current sensor measures the current flowing through it. In a managed object, a current sensor is modeled as a simple empty fragment.
-/// 
 public struct C8yCurrentSensor: Codable {
 
 	public init() {

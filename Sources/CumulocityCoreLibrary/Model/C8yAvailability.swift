@@ -8,10 +8,20 @@
 
 import Foundation
 
-/// The current status, one of `AVAILABLE`, `CONNECTED`, `MAINTENANCE`, `DISCONNECTED`.
-public enum C8yAvailability: String, Codable {
-	case available = "AVAILABLE"
-	case connected = "CONNECTED"
-	case maintenance = "MAINTENANCE"
-	case disconnected = "DISCONNECTED"
+/// The availability information computed by Cumulocity IoT is stored in fragments `c8y_Availability` and `c8y_Connection` of the device.
+public struct C8yAvailability: Codable {
+
+	/// The current status, one of `AVAILABLE`, `CONNECTED`, `MAINTENANCE`, `DISCONNECTED`.
+	public var status: C8yAvailabilityStatus?
+
+	/// The time when the device sent the last message to Cumulocity IoT.
+	public var lastMessage: String?
+
+	enum CodingKeys: String, CodingKey {
+		case status
+		case lastMessage
+	}
+
+	public init() {
+	}
 }

@@ -9,7 +9,6 @@
 import Foundation
 
 /// Holds basic connectivity-related information, such as the equipment identifier of the modem (IMEI) in the device. This identifier is globally unique and often used to identify a mobile device.
-/// 
 public struct C8yMobile: Codable {
 
 	/// The equipment identifier (IMEI) of the modem in the device.

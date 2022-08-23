@@ -18,6 +18,7 @@ public struct C8yManagedObject: Codable {
 		self.name = try container.decodeIfPresent(String.self, forKey: .name)
 		self.owner = try container.decodeIfPresent(String.self, forKey: .owner)
 		self.`self` = try container.decodeIfPresent(String.self, forKey: .`self`)
+		self.type = try container.decodeIfPresent(String.self, forKey: .type)
 		self.childAdditions = try container.decodeIfPresent(C8yObjectChildAdditions.self, forKey: .childAdditions)
 		self.childAssets = try container.decodeIfPresent(C8yObjectChildAssets.self, forKey: .childAssets)
 		self.childDevices = try container.decodeIfPresent(C8yObjectChildDevices.self, forKey: .childDevices)
@@ -42,6 +43,7 @@ public struct C8yManagedObject: Codable {
 		try container.encodeIfPresent(self.name, forKey: .name)
 		try container.encodeIfPresent(self.owner, forKey: .owner)
 		try container.encodeIfPresent(self.`self`, forKey: .`self`)
+		try container.encodeIfPresent(self.type, forKey: .type)
 		try container.encodeIfPresent(self.childAdditions, forKey: .childAdditions)
 		try container.encodeIfPresent(self.childAssets, forKey: .childAssets)
 		try container.encodeIfPresent(self.childDevices, forKey: .childDevices)
@@ -76,6 +78,9 @@ public struct C8yManagedObject: Codable {
 
 	/// A URL linking to this resource.
 	public var `self`: String?
+
+	/// The fragment type can be interpreted as _device class_, this means, devices with the same type can receive the same types of configuration, software, firmware and operations. The type value is indexed and is therefore used for queries.
+	public var type: String?
 
 	/// A collection of references to child additions.
 	public var childAdditions: C8yObjectChildAdditions?
@@ -117,6 +122,7 @@ public struct C8yManagedObject: Codable {
 		case name
 		case owner
 		case `self` = "self"
+		case type
 		case childAdditions
 		case childAssets
 		case childDevices

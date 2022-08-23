@@ -78,6 +78,7 @@ extension Cumulocity {
 
 			public lazy var tenantsApi: TenantsApi = TenantsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var tenantApplicationsApi: TenantApplicationsApi = TenantApplicationsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var trustedCertificatesApi: TrustedCertificatesApi = TrustedCertificatesApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var deviceStatisticsApi: DeviceStatisticsApi = DeviceStatisticsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var usageStatisticsApi: UsageStatisticsApi = UsageStatisticsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var optionsApi: OptionsApi = OptionsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)

@@ -9,7 +9,6 @@
 import Foundation
 
 /// In a managed object, a three phase electricity meter is modeled as a simple empty fragment.
-/// 
 public struct C8yThreePhaseElectricitySensor: Codable {
 
 	public init() {

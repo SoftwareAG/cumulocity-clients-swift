@@ -14,6 +14,7 @@ import Foundation
 /// 
 public struct C8yMoistureMeasurement: Codable {
 
+	/// A measurement is a value with a unit.
 	public var moisture: C8yMeasurementValue?
 
 	enum CodingKeys: String, CodingKey {

@@ -9,7 +9,6 @@
 import Foundation
 
 /// A light sensor measures the intensity of light. In a managed object, a light sensor is modeled as a simple empty fragment.
-/// 
 public struct C8yLightSensor: Codable {
 
 	public init() {

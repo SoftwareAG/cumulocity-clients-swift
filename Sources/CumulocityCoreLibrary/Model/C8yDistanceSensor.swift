@@ -9,7 +9,6 @@
 import Foundation
 
 /// A distance sensor measures the distance between itself and the closest object in a certain direction. In a managed object, a distance sensor is modeled as a simple empty fragment.
-/// 
 public struct C8yDistanceSensor: Codable {
 
 	public init() {

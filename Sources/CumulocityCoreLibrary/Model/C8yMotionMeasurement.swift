@@ -8,11 +8,13 @@
 
 import Foundation
 
+/// Measurement of the motion sensor.
 public struct C8yMotionMeasurement: Codable {
 
 	/// Boolean value indicating if motion has been detected (non-zero value) or not (zero value).
 	public var motionDetected: C8yMotionDetected?
 
+	/// A measurement is a value with a unit.
 	public var speed: C8yMeasurementValue?
 
 	enum CodingKeys: String, CodingKey {

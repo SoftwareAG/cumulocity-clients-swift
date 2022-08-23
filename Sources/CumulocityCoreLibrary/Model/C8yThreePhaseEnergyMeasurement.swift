@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Measurement of the three phase energy meter.
 public struct C8yThreePhaseEnergyMeasurement: Codable {
 
 	public var additionalProperties: [String: C8yMeasurementValue]? = [:]
