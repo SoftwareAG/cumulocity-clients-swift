@@ -15,7 +15,7 @@ public enum Errors: Error {
 	/// Thrown when the resource is finished but the HTTP statuc code does not match a successful operation.
 	case badResponseError(response: HTTPURLResponse, reason: Codable)
 
-	func response() -> HTTPURLResponse {
+	public func response() -> HTTPURLResponse {
 		switch self {
 		case .undescribedError(let response):
 			return response
@@ -24,11 +24,11 @@ public enum Errors: Error {
 		}
 	}
 
-	func statusCode() -> Int {
+	public func statusCode() -> Int {
     	return response().statusCode
 	}
 
-	func reason() -> Codable? {
+	public func reason() -> Codable? {
 		switch self {
 		case .undescribedError(_):
 			return nil
@@ -40,7 +40,7 @@ public enum Errors: Error {
 
 public extension Subscribers.Completion {
 
-	func error() throws -> Errors? {
+	public func error() throws -> Errors? {
 		if case .failure(let failure) = self {
 			if let error = failure as? Errors {
 				return error
