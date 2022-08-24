@@ -13,7 +13,7 @@ public enum Errors: Error {
 	/// Thrown when the HTTP status code did not match any response declarations in OpenAPI.
 	case undescribedError(response: HTTPURLResponse)
 	/// Thrown when the resource is finished but the HTTP statuc code does not match a successful operation.
-    case badResponseError(response: HTTPURLResponse, reason: Codable)
+	case badResponseError(response: HTTPURLResponse, reason: Codable)
 
 	func response() -> HTTPURLResponse {
 		switch self {
@@ -26,7 +26,7 @@ public enum Errors: Error {
 
 	func statusCode() -> Int {
     	return response().statusCode
-    }
+	}
 
 	func reason() -> Codable? {
 		switch self {
@@ -40,12 +40,12 @@ public enum Errors: Error {
 
 public extension Subscribers.Completion {
 
-    func error() throws -> Errors? {
+	func error() throws -> Errors? {
 		if case .failure(let failure) = self {
 			if let error = failure as? Errors {
 				return error
  			}
 		}
 		return nil
-    }
+	}
 }
