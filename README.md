@@ -2,17 +2,11 @@
 
 ## Working with Xcode
 
-The Swift Package can be opened directly in Xcode. As an alternative, the Package can be also converted into a Xcode project. Open the CumulocityCoreLibrary root directory in your terminal and run the following command:
+The Swift Package can be opened directly in Xcode: Double click the package description file and Xcode will open the package. 
 
-```groovy
-swift package generate-xcodeproj
-```
+To include the Swift Package in your project use the Swift Package Manager. Just simply add this package to your Xcode project using:
 
-or run the shell script located in the root directory:
-
-```console
-sh xcodeproj.sh
-```
+`Xcode` > `File` > `Swift Packages` > `Add Package Dependency` > `Select your project` > `enter the URL of this repository and choose a branch`
 ## Usage
 
 Use the public factory to access `API` classes. The factory is available as a singleton and groups `API` classes by category.
@@ -124,3 +118,15 @@ builder.add(header: "Authorization", value: "")
 // or pass userName and password explicitly
 builder.set(authorization: "userName", password: "password")
 ```
+
+## Contribution
+
+If you've spotted something that doesn't work as you'd expect, or if you have a new feature you'd like to add, we're happy to accept contributions and bug reports.
+
+For bug reports, please raise an issue directly in this repository by selecting the "issues" tab and then clicking the "new issue" button. Please ensure that your bug report is as detailed as possible and allows us to reproduce your issue easily.
+
+In the case of new contributions, please create a new branch from the latest version of `main`. When your feature is complete and ready to evaluate, raise a new pull request.
+
+---
+
+These tools are provided as-is and without warranty or support. They do not constitute part of the Software AG product suite. Users are free to use, fork and modify them, subject to the license agreement. While Software AG welcomes contributions, we cannot guarantee to include every contribution in the master project.
