@@ -123,7 +123,7 @@ builder.set(authorization: "userName", password: "password")
 
 If you've spotted something that doesn't work as you'd expect, or if you have a new feature you'd like to add, we're happy to accept contributions and bug reports.
 
-For bug reports, please raise an issue directly in this repository by selecting the "issues" tab and then clicking the "new issue" button. Please ensure that your bug report is as detailed as possible and allows us to reproduce your issue easily.
+For bug reports, please raise an issue directly in this repository by selecting the `issues` tab and then clicking the `new issue` button. Please ensure that your bug report is as detailed as possible and allows us to reproduce your issue easily.
 
 In the case of new contributions, please create a new branch from the latest version of `main`. When your feature is complete and ready to evaluate, raise a new pull request.
 
