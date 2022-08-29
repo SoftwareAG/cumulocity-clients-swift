@@ -28,10 +28,6 @@ public enum Errors: Error {
     	return response().statusCode
 	}
 
-	public func statusCode() -> Int {
-    	return response().statusCode
-    }
-
 	public func reason() -> Codable? {
 		switch self {
 		case .undescribedError(_):
@@ -45,11 +41,11 @@ public enum Errors: Error {
 public extension Subscribers.Completion {
 
 	public func error() throws -> Errors? {
-	  if case .failure(let failure) = self {
+		if case .failure(let failure) = self {
 			if let error = failure as? Errors {
 				return error
- 		  }
-	  }
-	  return nil
-  }
+ 			}
+		}
+		return nil
+	}
 }
