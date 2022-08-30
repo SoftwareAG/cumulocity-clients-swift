@@ -49,7 +49,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getChildAdditions(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectReferenceCollection, Swift.Error> {
+	public func getChildAdditions(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yManagedObjectReferenceCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
@@ -69,17 +69,17 @@ public class ChildOperationsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			guard httpResponse.statusCode != 422 else {
 				let decoder = JSONDecoder()
-				let error422 = try decoder.decode(C8yError.self, from: element.data)
+				let error422 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error422)
 			}
 			// generic error fallback
@@ -114,26 +114,27 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func assignAsChildAddition(body: C8yChildOperationsAddOne, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func assignAsChildAddition(body: C8yChildOperationsAddOne, id: String) -> AnyPublisher<Data, Swift.Error> {
 		let requestBody = body
+		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json")
 			.add(header: "Accept", value: "application/json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback
@@ -168,26 +169,27 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func assignAsChildAddition(body: C8yChildOperationsAddMultiple, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func assignAsChildAddition(body: C8yChildOperationsAddMultiple, id: String) -> AnyPublisher<Data, Swift.Error> {
 		let requestBody = body
+		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.add(header: "Accept", value: "application/json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback
@@ -222,7 +224,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func assignAsChildAddition(body: C8yManagedObject, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func assignAsChildAddition(body: C8yManagedObject, id: String) -> AnyPublisher<Data, Swift.Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.additionParents = nil
@@ -235,24 +237,25 @@ public class ChildOperationsApi: AdaptableApi {
 		requestBody.assetParents = nil
 		requestBody.deviceParents = nil
 		requestBody.id = nil
+		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
 			.add(header: "Accept", value: "application/json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback
@@ -285,26 +288,27 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func unassignChildAdditions(body: C8yChildOperationsAddMultiple, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func unassignChildAdditions(body: C8yChildOperationsAddMultiple, id: String) -> AnyPublisher<Data, Swift.Error> {
 		let requestBody = body
+		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
 			.set(httpMethod: "delete")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.add(header: "Accept", value: "application/json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			guard httpResponse.statusCode != 422 else {
@@ -341,7 +345,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	/// 	- childId 
 	///		  Unique identifier of the child object.
-	public func getChildAddition(id: String, childId: String) throws -> AnyPublisher<C8yManagedObjectReference, Swift.Error> {
+	public func getChildAddition(id: String, childId: String) -> AnyPublisher<C8yManagedObjectReference, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions/\(childId)")
 			.set(httpMethod: "get")
@@ -352,17 +356,17 @@ public class ChildOperationsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			guard httpResponse.statusCode != 422 else {
 				let decoder = JSONDecoder()
-				let error422 = try decoder.decode(C8yError.self, from: element.data)
+				let error422 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error422)
 			}
 			// generic error fallback
@@ -396,7 +400,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	/// 	- childId 
 	///		  Unique identifier of the child object.
-	public func unassignChildAddition(id: String, childId: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func unassignChildAddition(id: String, childId: String) -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions/\(childId)")
 			.set(httpMethod: "delete")
@@ -407,17 +411,17 @@ public class ChildOperationsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			guard httpResponse.statusCode != 422 else {
 				let decoder = JSONDecoder()
-				let error422 = try decoder.decode(C8yError.self, from: element.data)
+				let error422 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error422)
 			}
 			// generic error fallback
@@ -463,7 +467,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getChildAssets(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectReferenceCollection, Swift.Error> {
+	public func getChildAssets(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yManagedObjectReferenceCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
@@ -483,17 +487,17 @@ public class ChildOperationsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			guard httpResponse.statusCode != 422 else {
 				let decoder = JSONDecoder()
-				let error422 = try decoder.decode(C8yError.self, from: element.data)
+				let error422 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error422)
 			}
 			// generic error fallback
@@ -528,26 +532,27 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func assignAsChildAsset(body: C8yChildOperationsAddOne, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func assignAsChildAsset(body: C8yChildOperationsAddOne, id: String) -> AnyPublisher<Data, Swift.Error> {
 		let requestBody = body
+		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json")
 			.add(header: "Accept", value: "application/json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback
@@ -582,26 +587,27 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func assignAsChildAsset(body: C8yChildOperationsAddMultiple, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func assignAsChildAsset(body: C8yChildOperationsAddMultiple, id: String) -> AnyPublisher<Data, Swift.Error> {
 		let requestBody = body
+		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.add(header: "Accept", value: "application/json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback
@@ -636,7 +642,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func assignAsChildAsset(body: C8yManagedObject, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func assignAsChildAsset(body: C8yManagedObject, id: String) -> AnyPublisher<Data, Swift.Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.additionParents = nil
@@ -649,24 +655,25 @@ public class ChildOperationsApi: AdaptableApi {
 		requestBody.assetParents = nil
 		requestBody.deviceParents = nil
 		requestBody.id = nil
+		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
 			.add(header: "Accept", value: "application/json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback
@@ -699,26 +706,27 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func unassignChildAssets(body: C8yChildOperationsAddMultiple, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func unassignChildAssets(body: C8yChildOperationsAddMultiple, id: String) -> AnyPublisher<Data, Swift.Error> {
 		let requestBody = body
+		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
 			.set(httpMethod: "delete")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.add(header: "Accept", value: "application/json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			guard httpResponse.statusCode != 422 else {
@@ -755,7 +763,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	/// 	- childId 
 	///		  Unique identifier of the child object.
-	public func getChildAsset(id: String, childId: String) throws -> AnyPublisher<C8yManagedObjectReference, Swift.Error> {
+	public func getChildAsset(id: String, childId: String) -> AnyPublisher<C8yManagedObjectReference, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets/\(childId)")
 			.set(httpMethod: "get")
@@ -766,17 +774,17 @@ public class ChildOperationsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			guard httpResponse.statusCode != 422 else {
 				let decoder = JSONDecoder()
-				let error422 = try decoder.decode(C8yError.self, from: element.data)
+				let error422 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error422)
 			}
 			// generic error fallback
@@ -810,7 +818,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	/// 	- childId 
 	///		  Unique identifier of the child object.
-	public func unassignChildAsset(id: String, childId: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func unassignChildAsset(id: String, childId: String) -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets/\(childId)")
 			.set(httpMethod: "delete")
@@ -821,17 +829,17 @@ public class ChildOperationsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			guard httpResponse.statusCode != 422 else {
 				let decoder = JSONDecoder()
-				let error422 = try decoder.decode(C8yError.self, from: element.data)
+				let error422 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error422)
 			}
 			// generic error fallback
@@ -877,7 +885,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getChildDevices(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yManagedObjectReferenceCollection, Swift.Error> {
+	public func getChildDevices(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yManagedObjectReferenceCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
@@ -897,17 +905,17 @@ public class ChildOperationsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			guard httpResponse.statusCode != 422 else {
 				let decoder = JSONDecoder()
-				let error422 = try decoder.decode(C8yError.self, from: element.data)
+				let error422 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error422)
 			}
 			// generic error fallback
@@ -942,26 +950,27 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func assignAsChildDevice(body: C8yChildOperationsAddOne, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func assignAsChildDevice(body: C8yChildOperationsAddOne, id: String) -> AnyPublisher<Data, Swift.Error> {
 		let requestBody = body
+		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json")
 			.add(header: "Accept", value: "application/json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback
@@ -996,26 +1005,27 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func assignAsChildDevice(body: C8yChildOperationsAddMultiple, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func assignAsChildDevice(body: C8yChildOperationsAddMultiple, id: String) -> AnyPublisher<Data, Swift.Error> {
 		let requestBody = body
+		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.add(header: "Accept", value: "application/json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback
@@ -1050,7 +1060,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func assignAsChildDevice(body: C8yManagedObject, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func assignAsChildDevice(body: C8yManagedObject, id: String) -> AnyPublisher<Data, Swift.Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.additionParents = nil
@@ -1063,24 +1073,25 @@ public class ChildOperationsApi: AdaptableApi {
 		requestBody.assetParents = nil
 		requestBody.deviceParents = nil
 		requestBody.id = nil
+		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
 			.add(header: "Accept", value: "application/json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback
@@ -1113,26 +1124,27 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func unassignChildDevices(body: C8yChildOperationsAddMultiple, id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func unassignChildDevices(body: C8yChildOperationsAddMultiple, id: String) -> AnyPublisher<Data, Swift.Error> {
 		let requestBody = body
+		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
 			.set(httpMethod: "delete")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.add(header: "Accept", value: "application/json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			guard httpResponse.statusCode != 422 else {
@@ -1169,7 +1181,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	/// 	- childId 
 	///		  Unique identifier of the child object.
-	public func getChildDevice(id: String, childId: String) throws -> AnyPublisher<C8yManagedObjectReference, Swift.Error> {
+	public func getChildDevice(id: String, childId: String) -> AnyPublisher<C8yManagedObjectReference, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices/\(childId)")
 			.set(httpMethod: "get")
@@ -1180,17 +1192,17 @@ public class ChildOperationsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			guard httpResponse.statusCode != 422 else {
 				let decoder = JSONDecoder()
-				let error422 = try decoder.decode(C8yError.self, from: element.data)
+				let error422 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error422)
 			}
 			// generic error fallback
@@ -1224,7 +1236,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	/// 	- childId 
 	///		  Unique identifier of the child object.
-	public func unassignChildDevice(id: String, childId: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func unassignChildDevice(id: String, childId: String) -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices/\(childId)")
 			.set(httpMethod: "delete")
@@ -1235,17 +1247,17 @@ public class ChildOperationsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			guard httpResponse.statusCode != 422 else {
 				let decoder = JSONDecoder()
-				let error422 = try decoder.decode(C8yError.self, from: element.data)
+				let error422 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error422)
 			}
 			// generic error fallback

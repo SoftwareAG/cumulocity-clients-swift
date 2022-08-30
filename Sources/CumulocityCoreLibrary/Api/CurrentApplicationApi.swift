@@ -30,7 +30,7 @@ public class CurrentApplicationApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// 	- 403
 	///		  Not enough permissions/roles to perform this operation.
-	public func getCurrentApplication() throws -> AnyPublisher<C8yApplication, Swift.Error> {
+	public func getCurrentApplication() -> AnyPublisher<C8yApplication, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/currentApplication")
 			.set(httpMethod: "get")
@@ -41,12 +41,12 @@ public class CurrentApplicationApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {
 				let decoder = JSONDecoder()
-				let error403 = try decoder.decode(C8yError.self, from: element.data)
+				let error403 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error403)
 			}
 			// generic error fallback
@@ -77,31 +77,32 @@ public class CurrentApplicationApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- body 
 	@available(*, deprecated)
-	public func updateCurrentApplication(body: C8yApplication) throws -> AnyPublisher<C8yApplication, Swift.Error> {
+	public func updateCurrentApplication(body: C8yApplication) -> AnyPublisher<C8yApplication, Swift.Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.activeVersionId = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
 		requestBody.resourcesUrl = nil
+		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/currentApplication")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.application+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.application+json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {
 				let decoder = JSONDecoder()
-				let error403 = try decoder.decode(C8yError.self, from: element.data)
+				let error403 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error403)
 			}
 			// generic error fallback
@@ -129,7 +130,7 @@ public class CurrentApplicationApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// 	- 403
 	///		  Not enough permissions/roles to perform this operation.
-	public func getCurrentApplicationSettings() throws -> AnyPublisher<[C8yApplicationSettings], Swift.Error> {
+	public func getCurrentApplicationSettings() -> AnyPublisher<[C8yApplicationSettings], Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/currentApplication/settings")
 			.set(httpMethod: "get")
@@ -140,12 +141,12 @@ public class CurrentApplicationApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {
 				let decoder = JSONDecoder()
-				let error403 = try decoder.decode(C8yError.self, from: element.data)
+				let error403 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error403)
 			}
 			// generic error fallback
@@ -170,7 +171,7 @@ public class CurrentApplicationApi: AdaptableApi {
 	///		  The request has succeeded and the list of subscribed users for the current application is sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
-	public func getSubscribedUsers() throws -> AnyPublisher<C8yApplicationUserCollection, Swift.Error> {
+	public func getSubscribedUsers() -> AnyPublisher<C8yApplicationUserCollection, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/currentApplication/subscriptions")
 			.set(httpMethod: "get")
@@ -181,7 +182,7 @@ public class CurrentApplicationApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback
