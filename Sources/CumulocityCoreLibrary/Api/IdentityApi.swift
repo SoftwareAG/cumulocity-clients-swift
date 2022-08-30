@@ -30,7 +30,7 @@ public class IdentityApi: AdaptableApi {
 	///		  The request has succeeded and the URIs are sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
-	public func getIdentityApiResource() throws -> AnyPublisher<C8yIdentityApiResource, Swift.Error> {
+	public func getIdentityApiResource() -> AnyPublisher<C8yIdentityApiResource, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/identity")
 			.set(httpMethod: "get")
@@ -41,7 +41,7 @@ public class IdentityApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback

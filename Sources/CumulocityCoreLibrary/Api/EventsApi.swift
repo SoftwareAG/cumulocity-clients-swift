@@ -65,7 +65,7 @@ public class EventsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getEvents(createdFrom: String? = nil, createdTo: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, fragmentValue: String? = nil, lastUpdatedFrom: String? = nil, lastUpdatedTo: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, source: String? = nil, type: String? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yEventCollection, Swift.Error> {
+	public func getEvents(createdFrom: String? = nil, createdTo: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, fragmentValue: String? = nil, lastUpdatedFrom: String? = nil, lastUpdatedTo: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, source: String? = nil, type: String? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yEventCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = createdFrom { queryItems.append(URLQueryItem(name: "createdFrom", value: String(parameter))) }
 		if let parameter = createdTo { queryItems.append(URLQueryItem(name: "createdTo", value: String(parameter))) }
@@ -95,7 +95,7 @@ public class EventsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback
@@ -132,26 +132,27 @@ public class EventsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createEvent(body: C8yEvent) throws -> AnyPublisher<C8yEvent, Swift.Error> {
+	public func createEvent(body: C8yEvent) -> AnyPublisher<C8yEvent, Swift.Error> {
 		var requestBody = body
 		requestBody.lastUpdated = nil
 		requestBody.creationTime = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
 		requestBody.source?.`self` = nil
+		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.event+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.event+json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {
@@ -203,7 +204,7 @@ public class EventsApi: AdaptableApi {
 	///		  The managed object ID to which the event is associated.
 	/// 	- type 
 	///		  The type of event to search for.
-	public func deleteEvents(createdFrom: String? = nil, createdTo: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, source: String? = nil, type: String? = nil) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteEvents(createdFrom: String? = nil, createdTo: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, source: String? = nil, type: String? = nil) -> AnyPublisher<Data, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = createdFrom { queryItems.append(URLQueryItem(name: "createdFrom", value: String(parameter))) }
 		if let parameter = createdTo { queryItems.append(URLQueryItem(name: "createdTo", value: String(parameter))) }
@@ -223,7 +224,7 @@ public class EventsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {
@@ -256,7 +257,7 @@ public class EventsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the event.
-	public func getEvent(id: String) throws -> AnyPublisher<C8yEvent, Swift.Error> {
+	public func getEvent(id: String) -> AnyPublisher<C8yEvent, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)")
 			.set(httpMethod: "get")
@@ -267,12 +268,12 @@ public class EventsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback
@@ -305,7 +306,7 @@ public class EventsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the event.
-	public func updateEvent(body: C8yEvent, id: String) throws -> AnyPublisher<C8yEvent, Swift.Error> {
+	public func updateEvent(body: C8yEvent, id: String) -> AnyPublisher<C8yEvent, Swift.Error> {
 		var requestBody = body
 		requestBody.lastUpdated = nil
 		requestBody.creationTime = nil
@@ -314,24 +315,25 @@ public class EventsApi: AdaptableApi {
 		requestBody.source = nil
 		requestBody.time = nil
 		requestBody.type = nil
+		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.event+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.event+json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			guard httpResponse.statusCode != 422 else {
@@ -366,7 +368,7 @@ public class EventsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the event.
-	public func deleteEvent(id: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteEvent(id: String) -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)")
 			.set(httpMethod: "delete")
@@ -377,7 +379,7 @@ public class EventsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {
@@ -385,7 +387,7 @@ public class EventsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback

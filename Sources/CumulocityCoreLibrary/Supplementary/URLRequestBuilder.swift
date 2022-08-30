@@ -68,7 +68,7 @@ public class URLRequestBuilder {
 		return self
 	}
 
-	public func set(httpBody: Data) -> URLRequestBuilder {
+	public func set(httpBody: Data?) -> URLRequestBuilder {
         self.httpBody = httpBody
         return self
     }

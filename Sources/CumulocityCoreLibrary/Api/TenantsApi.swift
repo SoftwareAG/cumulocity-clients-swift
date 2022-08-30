@@ -62,7 +62,7 @@ public class TenantsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getTenants(currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yTenantCollection, Swift.Error> {
+	public func getTenants(currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yTenantCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
@@ -79,7 +79,7 @@ public class TenantsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback
@@ -112,7 +112,7 @@ public class TenantsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createTenant(body: C8yTenant) throws -> AnyPublisher<C8yTenant, Swift.Error> {
+	public func createTenant(body: C8yTenant) -> AnyPublisher<C8yTenant, Swift.Error> {
 		var requestBody = body
 		requestBody.allowCreateTenants = nil
 		requestBody.parent = nil
@@ -122,19 +122,20 @@ public class TenantsApi: AdaptableApi {
 		requestBody.ownedApplications = nil
 		requestBody.applications = nil
 		requestBody.status = nil
+		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.tenant+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenant+json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {
@@ -168,7 +169,7 @@ public class TenantsApi: AdaptableApi {
 	///		  The request has succeeded and the information is sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
-	public func getCurrentTenant() throws -> AnyPublisher<C8yCurrentTenant, Swift.Error> {
+	public func getCurrentTenant() -> AnyPublisher<C8yCurrentTenant, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/currentTenant")
 			.set(httpMethod: "get")
@@ -179,7 +180,7 @@ public class TenantsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback
@@ -211,7 +212,7 @@ public class TenantsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func getTenant(tenantId: String) throws -> AnyPublisher<C8yTenant, Swift.Error> {
+	public func getTenant(tenantId: String) -> AnyPublisher<C8yTenant, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)")
 			.set(httpMethod: "get")
@@ -222,7 +223,7 @@ public class TenantsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {
@@ -230,7 +231,7 @@ public class TenantsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback
@@ -265,7 +266,7 @@ public class TenantsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func updateTenant(body: C8yTenant, tenantId: String) throws -> AnyPublisher<C8yTenant, Swift.Error> {
+	public func updateTenant(body: C8yTenant, tenantId: String) -> AnyPublisher<C8yTenant, Swift.Error> {
 		var requestBody = body
 		requestBody.adminName = nil
 		requestBody.allowCreateTenants = nil
@@ -276,19 +277,20 @@ public class TenantsApi: AdaptableApi {
 		requestBody.ownedApplications = nil
 		requestBody.applications = nil
 		requestBody.status = nil
+		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.tenant+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenant+json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {
@@ -296,7 +298,7 @@ public class TenantsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			guard httpResponse.statusCode != 422 else {
@@ -335,7 +337,7 @@ public class TenantsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func deleteTenant(tenantId: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteTenant(tenantId: String) -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)")
 			.set(httpMethod: "delete")
@@ -346,7 +348,7 @@ public class TenantsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {
@@ -354,7 +356,7 @@ public class TenantsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback

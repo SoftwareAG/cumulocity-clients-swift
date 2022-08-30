@@ -31,7 +31,7 @@ public class ApplicationBinariesApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the application.
-	public func getApplicationAttachments(id: String) throws -> AnyPublisher<C8yApplicationBinaries, Swift.Error> {
+	public func getApplicationAttachments(id: String) -> AnyPublisher<C8yApplicationBinaries, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/binaries")
 			.set(httpMethod: "get")
@@ -42,12 +42,12 @@ public class ApplicationBinariesApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				let error404 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback
@@ -86,9 +86,9 @@ public class ApplicationBinariesApi: AdaptableApi {
 	///		  The ZIP file to be uploaded.
 	/// 	- id 
 	///		  Unique identifier of the application.
-	public func uploadApplicationAttachment(file: Data, id: String) throws -> AnyPublisher<C8yApplication, Swift.Error> {
+	public func uploadApplicationAttachment(file: Data, id: String) -> AnyPublisher<C8yApplication, Swift.Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
-		try multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "application/zip");
+		try? multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "application/zip");
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/binaries")
 			.set(httpMethod: "post")
@@ -102,7 +102,7 @@ public class ApplicationBinariesApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback
@@ -133,7 +133,7 @@ public class ApplicationBinariesApi: AdaptableApi {
 	///		  Unique identifier of the application.
 	/// 	- binaryId 
 	///		  Unique identifier of the binary.
-	public func getApplicationAttachment(id: String, binaryId: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func getApplicationAttachment(id: String, binaryId: String) -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/binaries/\(binaryId)")
 			.set(httpMethod: "get")
@@ -144,7 +144,7 @@ public class ApplicationBinariesApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback
@@ -177,7 +177,7 @@ public class ApplicationBinariesApi: AdaptableApi {
 	///		  Unique identifier of the application.
 	/// 	- binaryId 
 	///		  Unique identifier of the binary.
-	public func deleteApplicationAttachment(id: String, binaryId: String) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteApplicationAttachment(id: String, binaryId: String) -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/binaries/\(binaryId)")
 			.set(httpMethod: "delete")
@@ -188,7 +188,7 @@ public class ApplicationBinariesApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {

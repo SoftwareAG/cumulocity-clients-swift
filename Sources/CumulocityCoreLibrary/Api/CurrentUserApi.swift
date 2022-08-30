@@ -28,7 +28,7 @@ public class CurrentUserApi: AdaptableApi {
 	///		  The request has succeeded and the current user is sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
-	public func getCurrentUser() throws -> AnyPublisher<C8yCurrentUser, Swift.Error> {
+	public func getCurrentUser() -> AnyPublisher<C8yCurrentUser, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser")
 			.set(httpMethod: "get")
@@ -39,7 +39,7 @@ public class CurrentUserApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback
@@ -68,7 +68,7 @@ public class CurrentUserApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func updateCurrentUser(body: C8yCurrentUser) throws -> AnyPublisher<C8yCurrentUser, Swift.Error> {
+	public func updateCurrentUser(body: C8yCurrentUser) -> AnyPublisher<C8yCurrentUser, Swift.Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.effectiveRoles = nil
@@ -76,19 +76,20 @@ public class CurrentUserApi: AdaptableApi {
 		requestBody.id = nil
 		requestBody.lastPasswordChange = nil
 		requestBody.devicePermissions = nil
+		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.currentuser+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.currentuser+json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				let error401 = try! decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 422 else {
