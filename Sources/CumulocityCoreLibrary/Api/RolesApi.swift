@@ -37,7 +37,7 @@ public class RolesApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getUserRoles(currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yUserRoleCollection, Swift.Error> {
+	public func getUserRoles(currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yUserRoleCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
@@ -54,7 +54,7 @@ public class RolesApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback
@@ -84,7 +84,7 @@ public class RolesApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- name 
 	///		  The name of the user role.
-	public func getUserRole(name: String) -> AnyPublisher<C8yRole, Swift.Error> {
+	public func getUserRole(name: String) throws -> AnyPublisher<C8yRole, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/roles/\(name)")
 			.set(httpMethod: "get")
@@ -95,12 +95,12 @@ public class RolesApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
+				let error404 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback
@@ -138,7 +138,7 @@ public class RolesApi: AdaptableApi {
 	///		  The current page of the paginated results.
 	/// 	- pageSize 
 	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
-	public func getGroupRoles(tenantId: String, groupId: Int, currentPage: Int? = nil, pageSize: Int? = nil) -> AnyPublisher<C8yRoleReferenceCollection, Swift.Error> {
+	public func getGroupRoles(tenantId: String, groupId: Int, currentPage: Int? = nil, pageSize: Int? = nil) throws -> AnyPublisher<C8yRoleReferenceCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
@@ -153,17 +153,17 @@ public class RolesApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {
 				let decoder = JSONDecoder()
-				let error403 = try! decoder.decode(C8yError.self, from: element.data)
+				let error403 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error403)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
+				let error404 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback
@@ -202,22 +202,21 @@ public class RolesApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- groupId 
 	///		  Unique identifier of the user group.
-	public func assignGroupRole(body: C8ySubscribedRole, tenantId: String, groupId: Int) -> AnyPublisher<C8yRoleReference, Swift.Error> {
+	public func assignGroupRole(body: C8ySubscribedRole, tenantId: String, groupId: Int) throws -> AnyPublisher<C8yRoleReference, Swift.Error> {
 		let requestBody = body
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)/roles")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.rolereference+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.rolereference+json")
-			.set(httpBody: encodedRequestBody)
+			.set(httpBody: try JSONEncoder().encode(requestBody))
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {
@@ -225,7 +224,7 @@ public class RolesApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
+				let error404 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			guard httpResponse.statusCode != 409 else {
@@ -267,7 +266,7 @@ public class RolesApi: AdaptableApi {
 	///		  Unique identifier of the user group.
 	/// 	- roleId 
 	///		  Unique identifier of the user role.
-	public func unassignGroupRole(tenantId: String, groupId: Int, roleId: String) -> AnyPublisher<Data, Swift.Error> {
+	public func unassignGroupRole(tenantId: String, groupId: Int, roleId: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)/roles/\(roleId)")
 			.set(httpMethod: "delete")
@@ -278,7 +277,7 @@ public class RolesApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {
@@ -286,7 +285,7 @@ public class RolesApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
+				let error404 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback
@@ -325,32 +324,31 @@ public class RolesApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- userId 
 	///		  Unique identifier of the a user.
-	public func assignUserRole(body: C8ySubscribedRole, tenantId: String, userId: String) -> AnyPublisher<C8yRoleReference, Swift.Error> {
+	public func assignUserRole(body: C8ySubscribedRole, tenantId: String, userId: String) throws -> AnyPublisher<C8yRoleReference, Swift.Error> {
 		let requestBody = body
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.rolereference+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.rolereference+json")
-			.set(httpBody: encodedRequestBody)
+			.set(httpBody: try JSONEncoder().encode(requestBody))
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {
 				let decoder = JSONDecoder()
-				let error403 = try! decoder.decode(C8yError.self, from: element.data)
+				let error403 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error403)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
+				let error404 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			guard httpResponse.statusCode != 422 else {
@@ -389,7 +387,7 @@ public class RolesApi: AdaptableApi {
 	///		  Unique identifier of the a user.
 	/// 	- roleId 
 	///		  Unique identifier of the user role.
-	public func unassignUserRole(tenantId: String, userId: String, roleId: String) -> AnyPublisher<Data, Swift.Error> {
+	public func unassignUserRole(tenantId: String, userId: String, roleId: String) throws -> AnyPublisher<Data, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/\(roleId)")
 			.set(httpMethod: "delete")
@@ -400,7 +398,7 @@ public class RolesApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {
@@ -408,7 +406,7 @@ public class RolesApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
+				let error404 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback

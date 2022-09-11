@@ -58,7 +58,7 @@ public class ApplicationsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getApplications(currentPage: Int? = nil, name: String? = nil, owner: String? = nil, pageSize: Int? = nil, providedFor: String? = nil, subscriber: String? = nil, tenant: String? = nil, type: String? = nil, user: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yApplicationCollection, Swift.Error> {
+	public func getApplications(currentPage: Int? = nil, name: String? = nil, owner: String? = nil, pageSize: Int? = nil, providedFor: String? = nil, subscriber: String? = nil, tenant: String? = nil, type: String? = nil, user: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yApplicationCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
 		if let parameter = name { queryItems.append(URLQueryItem(name: "name", value: String(parameter))) }
@@ -82,7 +82,7 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback
@@ -113,32 +113,31 @@ public class ApplicationsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createApplication(body: C8yApplication) -> AnyPublisher<C8yApplication, Swift.Error> {
+	public func createApplication(body: C8yApplication) throws -> AnyPublisher<C8yApplication, Swift.Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.activeVersionId = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
 		requestBody.resourcesUrl = nil
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.application+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.application+json")
-			.set(httpBody: encodedRequestBody)
+			.set(httpBody: try JSONEncoder().encode(requestBody))
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 409 else {
 				let decoder = JSONDecoder()
-				let error409 = try! decoder.decode(C8yError.self, from: element.data)
+				let error409 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error409)
 			}
 			guard httpResponse.statusCode != 422 else {
@@ -171,7 +170,7 @@ public class ApplicationsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the application.
-	public func getApplication(id: String) -> AnyPublisher<C8yApplication, Swift.Error> {
+	public func getApplication(id: String) throws -> AnyPublisher<C8yApplication, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)")
 			.set(httpMethod: "get")
@@ -182,12 +181,12 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
+				let error404 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback
@@ -218,7 +217,7 @@ public class ApplicationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the application.
-	public func updateApplication(body: C8yApplication, id: String) -> AnyPublisher<C8yApplication, Swift.Error> {
+	public func updateApplication(body: C8yApplication, id: String) throws -> AnyPublisher<C8yApplication, Swift.Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.activeVersionId = nil
@@ -226,25 +225,24 @@ public class ApplicationsApi: AdaptableApi {
 		requestBody.id = nil
 		requestBody.type = nil
 		requestBody.resourcesUrl = nil
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.application+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.application+json")
-			.set(httpBody: encodedRequestBody)
+			.set(httpBody: try JSONEncoder().encode(requestBody))
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
+				let error404 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback
@@ -281,7 +279,7 @@ public class ApplicationsApi: AdaptableApi {
 	///		  Unique identifier of the application.
 	/// 	- force 
 	///		  Force deletion by unsubscribing all tenants from the application first and then deleting the application itself.
-	public func deleteApplication(id: String, force: Bool? = nil) -> AnyPublisher<Data, Swift.Error> {
+	public func deleteApplication(id: String, force: Bool? = nil) throws -> AnyPublisher<Data, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = force { queryItems.append(URLQueryItem(name: "force", value: String(parameter))) }
 		let builder = URLRequestBuilder()
@@ -295,7 +293,7 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {
@@ -303,7 +301,7 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
+				let error404 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error404)
 			}
 			// generic error fallback
@@ -340,7 +338,7 @@ public class ApplicationsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the application.
-	public func copyApplication(id: String) -> AnyPublisher<C8yApplication, Swift.Error> {
+	public func copyApplication(id: String) throws -> AnyPublisher<C8yApplication, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/clone")
 			.set(httpMethod: "post")
@@ -351,7 +349,7 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 422 else {
@@ -382,7 +380,7 @@ public class ApplicationsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- name 
 	///		  The name of the application.
-	public func getApplicationsByName(name: String) -> AnyPublisher<C8yApplicationCollection, Swift.Error> {
+	public func getApplicationsByName(name: String) throws -> AnyPublisher<C8yApplicationCollection, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applicationsByName/\(name)")
 			.set(httpMethod: "get")
@@ -393,7 +391,7 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback
@@ -421,7 +419,7 @@ public class ApplicationsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func getApplicationsByTenant(tenantId: String) -> AnyPublisher<C8yApplicationCollection, Swift.Error> {
+	public func getApplicationsByTenant(tenantId: String) throws -> AnyPublisher<C8yApplicationCollection, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applicationsByTenant/\(tenantId)")
 			.set(httpMethod: "get")
@@ -432,7 +430,7 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback
@@ -468,7 +466,7 @@ public class ApplicationsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getApplicationsByOwner(tenantId: String, currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yApplicationCollection, Swift.Error> {
+	public func getApplicationsByOwner(tenantId: String, currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yApplicationCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
@@ -485,7 +483,7 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback
@@ -521,7 +519,7 @@ public class ApplicationsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getApplicationsByUser(username: String, currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yApplicationCollection, Swift.Error> {
+	public func getApplicationsByUser(username: String, currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yApplicationCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
@@ -538,7 +536,7 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback

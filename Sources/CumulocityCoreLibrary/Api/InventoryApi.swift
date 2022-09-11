@@ -27,7 +27,7 @@ public class InventoryApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// 	- 403
 	///		  Not authorized to perform this operation.
-	public func getInventoryApiResource() -> AnyPublisher<C8yInventoryApiResource, Swift.Error> {
+	public func getInventoryApiResource() throws -> AnyPublisher<C8yInventoryApiResource, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory")
 			.set(httpMethod: "get")
@@ -38,7 +38,7 @@ public class InventoryApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {

@@ -52,7 +52,7 @@ public class AuditsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getAuditRecords(application: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, source: String? = nil, type: String? = nil, user: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yAuditRecordCollection, Swift.Error> {
+	public func getAuditRecords(application: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, source: String? = nil, type: String? = nil, user: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yAuditRecordCollection, Swift.Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = application { queryItems.append(URLQueryItem(name: "application", value: String(parameter))) }
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
@@ -75,7 +75,7 @@ public class AuditsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback
@@ -102,7 +102,7 @@ public class AuditsApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// - Parameters:
 	/// 	- body 
-	public func createAuditRecord(body: C8yAuditRecord) -> AnyPublisher<C8yAuditRecord, Swift.Error> {
+	public func createAuditRecord(body: C8yAuditRecord) throws -> AnyPublisher<C8yAuditRecord, Swift.Error> {
 		var requestBody = body
 		requestBody.severity = nil
 		requestBody.application = nil
@@ -112,20 +112,19 @@ public class AuditsApi: AdaptableApi {
 		requestBody.`self` = nil
 		requestBody.id = nil
 		requestBody.source?.`self` = nil
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/audit/auditRecords")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.auditrecord+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.auditrecord+json")
-			.set(httpBody: encodedRequestBody)
+			.set(httpBody: try JSONEncoder().encode(requestBody))
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback
@@ -153,7 +152,7 @@ public class AuditsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the audit record.
-	public func getAuditRecord(id: String) -> AnyPublisher<C8yAuditRecord, Swift.Error> {
+	public func getAuditRecord(id: String) throws -> AnyPublisher<C8yAuditRecord, Swift.Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/audit/auditRecords/\(id)")
 			.set(httpMethod: "get")
@@ -164,7 +163,7 @@ public class AuditsApi: AdaptableApi {
 			}
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
 			}
 			// generic error fallback
