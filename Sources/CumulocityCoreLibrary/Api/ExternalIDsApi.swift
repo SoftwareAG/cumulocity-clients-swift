@@ -43,11 +43,11 @@ public class ExternalIDsApi: AdaptableApi {
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
 				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
 			}
 			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
-				throw Errors.undescribedError(response: httpResponse)
+				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
 			}
 			
 			return element.data
@@ -90,14 +90,14 @@ public class ExternalIDsApi: AdaptableApi {
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
 				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
 			}
 			guard httpResponse.statusCode != 409 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Duplicate – Identity already bound to a different Global ID.")
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: "Duplicate – Identity already bound to a different Global ID.")
 			}
 			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
-				throw Errors.undescribedError(response: httpResponse)
+				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
 			}
 			
 			return element.data
@@ -136,16 +136,16 @@ public class ExternalIDsApi: AdaptableApi {
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
 				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
 				let error404 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error404)
 			}
 			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
-				throw Errors.undescribedError(response: httpResponse)
+				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
 			}
 			
 			return element.data
@@ -184,16 +184,16 @@ public class ExternalIDsApi: AdaptableApi {
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
 				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
 			}
 			guard httpResponse.statusCode != 404 else {
 				let decoder = JSONDecoder()
 				let error404 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error404)
 			}
 			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
-				throw Errors.undescribedError(response: httpResponse)
+				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
 			}
 			
 			return element.data

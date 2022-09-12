@@ -52,19 +52,19 @@ public class TokensApi: AdaptableApi {
 			guard httpResponse.statusCode != 401 else {
 				let decoder = JSONDecoder()
 				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error401)
 			}
 			guard httpResponse.statusCode != 403 else {
 				let decoder = JSONDecoder()
 				let error403 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error403)
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: error403)
 			}
 			guard httpResponse.statusCode != 422 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Unprocessable Entity – invalid payload.")
+				throw Errors.badResponseError(statusCode: httpResponse.statusCode, reason: "Unprocessable Entity – invalid payload.")
 			}
 			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
-				throw Errors.undescribedError(response: httpResponse)
+				throw Errors.undescribedError(statusCode: httpResponse.statusCode, response: httpResponse)
 			}
 			
 			return element.data

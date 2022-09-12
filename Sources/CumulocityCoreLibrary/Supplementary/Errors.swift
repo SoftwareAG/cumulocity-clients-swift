@@ -11,41 +11,26 @@ import Combine
 
 public enum Errors: Error {
 	/// Thrown when the HTTP status code did not match any response declarations in OpenAPI.
-	case undescribedError(response: HTTPURLResponse)
+	case undescribedError(statusCode: Int, response: HTTPURLResponse)
 	/// Thrown when the resource is finished but the HTTP statuc code does not match a successful operation.
-	case badResponseError(response: HTTPURLResponse, reason: Codable)
-
-	public func response() -> HTTPURLResponse {
-		switch self {
-		case .undescribedError(let response):
-			return response
-		case .badResponseError(let response, _):
-			return response
-		}
-	}
-
-	public func statusCode() -> Int {
-    	return response().statusCode
-	}
-
-	public func reason() -> Codable? {
-		switch self {
-		case .undescribedError(_):
-			return nil
-		case .badResponseError(_, let reason):
-			return reason
-		}
-	}
+    case badResponseError(statusCode: Int, reason: Codable)
 }
 
 public extension Subscribers.Completion {
 
-	public func error() throws -> Errors? {
-		if case .failure(let failure) = self {
-			if let error = failure as? Errors {
-				return error
- 			}
-		}
-		return nil
-	}
+    func error() throws -> (statusCode: Int, reason: Codable?) {
+        if case .failure(let failure) = self {
+            if let error = failure as? Errors {
+                if case Errors.undescribedError(let statusCode, _) = error {
+                    return (statusCode: statusCode, reason: nil)
+                }
+                if case Errors.badResponseError(let statusCode, let reason) = error {
+                    return (statusCode: statusCode, reason: reason)
+                }
+            }
+        }
+        throw FinishedCompletionError.error
+    }
+
+    private enum FinishedCompletionError: Error { case error }
 }
