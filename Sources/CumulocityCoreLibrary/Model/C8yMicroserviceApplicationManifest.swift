@@ -63,7 +63,7 @@ public struct C8yMicroserviceApplicationManifest: Codable {
 	public var scale: C8yScale?
 
 	/// A list of settings objects for this microservice application.
-	public var settings: [C8ySettings]?
+	public var settings: [C8yApplicationSettings]?
 
 	/// Allows to specify a custom category for microservice settings.
 	/// By default, `contextPath` is used.
@@ -198,47 +198,4 @@ public struct C8yMicroserviceApplicationManifest: Codable {
 		}
 	}
 
-
-	public struct C8ySettings: Codable {
-	
-		/// The name of the setting.
-		public var key: String?
-	
-		/// The value schema determines the values that the microservice can process.
-		public var valueSchema: C8yValueSchema?
-	
-		/// The default value.
-		public var defaultValue: String?
-	
-		/// Indicates if the value is editable.
-		public var editable: Bool?
-	
-		/// Indicated wether this setting is inherited.
-		public var inheritFromOwner: Bool?
-	
-		enum CodingKeys: String, CodingKey {
-			case key
-			case valueSchema
-			case defaultValue
-			case editable
-			case inheritFromOwner
-		}
-	
-		public init() {
-		}
-	
-		/// The value schema determines the values that the microservice can process.
-		public struct C8yValueSchema: Codable {
-		
-			/// The value schema type.
-			public var type: String?
-		
-			enum CodingKeys: String, CodingKey {
-				case type
-			}
-		
-			public init() {
-			}
-		}
-	}
 }
