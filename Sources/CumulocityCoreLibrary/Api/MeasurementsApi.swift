@@ -44,7 +44,7 @@ public class MeasurementsApi: AdaptableApi {
 	/// 	- pageSize 
 	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
 	/// 	- revert 
-	///		  If you are using a range query (that is, at least one of the `dateFrom` or `dateTo` parameters is included in the request), then setting `revert=true` will sort the results by the latest measurements first. By default, the results are sorted by the oldest measurements first. 
+	///		  If you are using a range query (that is, at least one of the `dateFrom` or `dateTo` parameters is included in the request), then setting `revert=true` will sort the results by the newest measurements first. By default, the results are sorted by the oldest measurements first. 
 	/// 	- source 
 	///		  The managed object ID to which the measurement is associated.
 	/// 	- type 
@@ -422,7 +422,7 @@ public class MeasurementsApi: AdaptableApi {
 	/// 	- dateTo 
 	///		  End date or date and time of the measurement.
 	/// 	- revert 
-	///		  If you are using a range query (that is, at least one of the `dateFrom` or `dateTo` parameters is included in the request), then setting `revert=true` will sort the results by the latest measurements first. By default, the results are sorted by the oldest measurements first. 
+	///		  If you are using a range query (that is, at least one of the `dateFrom` or `dateTo` parameters is included in the request), then setting `revert=true` will sort the results by the newest measurements first. By default, the results are sorted by the oldest measurements first. 
 	/// 	- series 
 	///		  The specific series to search for.
 	/// 	- source 

@@ -63,6 +63,21 @@ The `URLSession` may also be passed to individual `API` classes through it's ini
 let api = ApplicationsApi(session: session)
 ```
 
+### Use your own domain model
+
+The CumulocityCoreLibrary allows custom data models. The following classes are designed to be extendible:
+
+- `C8yAlarm`, `C8yAuditRecord`, `C8yCategoryOptions`, `C8yCustomProperties`, `C8yEvent`, `C8yManagedObject`, `C8yMeasurement`, `C8yOperation`
+
+Those classes allow to add an arbitrary number of additional properties as a list of key-value pairs. These properties are known as custom fragments and can be of any type. Each custom fragment is identified by a unique name. Thus, developers can propagate their custom fragments using:
+
+```swift
+C8yAlarm.registerAdditionalProperty<C: Codable>(typeName: String, for type: C.Type)
+```
+
+Each of the extensible objects contains a dictionary object holding instances of custom fragments. Use the custom fragment's key to access it's value.
+
+In addition, developers may create subclasses. The client implementation respects subclassing by using generic type arguments.
 ### Working with errors
 
 Use `sink(receiveCompletion:receiveValue:)` to observe values received by the publisher and process them using a closure you specify. HTTP error codes will be forwarded and can be accessed using a completion handler. The client describes two error types:
