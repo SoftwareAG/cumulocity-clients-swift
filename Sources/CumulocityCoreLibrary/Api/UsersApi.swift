@@ -609,8 +609,8 @@ public class UsersApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/logout")
 			.set(httpMethod: "post")
-			.add(header: "Cookie", value: "\(cookie)")
-			.add(header: "X-XSRF-TOKEN", value: "\(xXSRFTOKEN)")
+			.add(header: "Cookie", value: String(describing: cookie))
+			.add(header: "X-XSRF-TOKEN", value: String(describing: xXSRFTOKEN))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

@@ -23,7 +23,7 @@ public struct C8yOperation: Codable {
 		self.comCumulocityModelWebCamDevice = try container.decodeIfPresent(C8yWebCamDevice.self, forKey: .comCumulocityModelWebCamDevice)
 		if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
 			for (typeName, decoder) in C8yOperation.decoders {
-				self.customFragments?[typeName] = try? decoder(additionalContainer)
+				self.customFragments[typeName] = try? decoder(additionalContainer)
 			}
 		}
 	}
@@ -41,7 +41,7 @@ public struct C8yOperation: Codable {
 		try container.encodeIfPresent(self.comCumulocityModelWebCamDevice, forKey: .comCumulocityModelWebCamDevice)
 		var additionalContainer = encoder.container(keyedBy: JSONCodingKeys.self)
 		for (typeName, encoder) in C8yOperation.encoders {
-			if let property = self.customFragments?[typeName] {
+			if let property = self.customFragments[typeName] {
 				try encoder(property, &additionalContainer)
 			}
 		}
@@ -77,7 +77,16 @@ public struct C8yOperation: Codable {
 	/// 
 	/// Review the [Naming conventions of fragments](https://cumulocity.com/guides/concepts/domain-model/#naming-conventions-of-fragments) as there are characters that can not be used when naming custom fragments.
 	/// 
-	public var customFragments: [String: Any]? = [:]
+	public var customFragments: [String: Any] = [:]
+	
+	subscript(key: String) -> Any? {
+	        get {
+	            return customFragments[key]
+	        }
+	        set(newValue) {
+	            customFragments[key] = newValue
+	        }
+	    }
 
 	enum CodingKeys: String, CodingKey {
 		case bulkOperationId

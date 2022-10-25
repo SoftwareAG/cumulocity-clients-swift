@@ -26,7 +26,7 @@ public struct C8yAlarm: Codable {
 		self.type = try container.decodeIfPresent(String.self, forKey: .type)
 		if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
 			for (typeName, decoder) in C8yAlarm.decoders {
-				self.customFragments?[typeName] = try? decoder(additionalContainer)
+				self.customFragments[typeName] = try? decoder(additionalContainer)
 			}
 		}
 	}
@@ -47,7 +47,7 @@ public struct C8yAlarm: Codable {
 		try container.encodeIfPresent(self.type, forKey: .type)
 		var additionalContainer = encoder.container(keyedBy: JSONCodingKeys.self)
 		for (typeName, encoder) in C8yAlarm.encoders {
-			if let property = self.customFragments?[typeName] {
+			if let property = self.customFragments[typeName] {
 				try encoder(property, &additionalContainer)
 			}
 		}
@@ -93,7 +93,16 @@ public struct C8yAlarm: Codable {
 	/// 
 	/// Review the [Naming conventions of fragments](https://cumulocity.com/guides/concepts/domain-model/#naming-conventions-of-fragments) as there are characters that can not be used when naming custom fragments.
 	/// 
-	public var customFragments: [String: Any]? = [:]
+	public var customFragments: [String: Any] = [:]
+	
+	subscript(key: String) -> Any? {
+	        get {
+	            return customFragments[key]
+	        }
+	        set(newValue) {
+	            customFragments[key] = newValue
+	        }
+	    }
 
 	enum CodingKeys: String, CodingKey {
 		case count
