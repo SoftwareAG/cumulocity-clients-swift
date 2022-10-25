@@ -16,7 +16,7 @@ import Combine
 public class AlarmsApi: AdaptableApi {
 
 	/// Retrieve all alarms
-	/// Retrieve all alarms on your tenant, or a specific subset based on queries.
+	/// Retrieve all alarms on your tenant, or a specific subset based on queries. The results are sorted by the newest alarms first.
 	/// 
 	/// #### Query parameters
 	/// 
