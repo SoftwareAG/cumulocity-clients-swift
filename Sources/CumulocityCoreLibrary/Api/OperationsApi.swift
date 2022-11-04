@@ -99,6 +99,8 @@ public class OperationsApi: AdaptableApi {
 	/// Create an operation
 	/// Create an operation.
 	/// 
+	/// It is possible to add custom fragments to operations, for example `com_cumulocity_model_WebCamDevice` is a custom object of the webcam operation.
+	/// 
 	/// <section><h5>Required roles</h5>
 	/// ROLE_DEVICE_CONTROL_ADMIN <b>OR</b> owner of the device <b>OR</b> ADMIN permissions on the device
 	/// </section>
@@ -109,6 +111,8 @@ public class OperationsApi: AdaptableApi {
 	///		  An operation was created.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 422
+	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
 	public func createOperation(body: C8yOperation) throws -> AnyPublisher<C8yOperation, Swift.Error> {
@@ -119,6 +123,7 @@ public class OperationsApi: AdaptableApi {
 		requestBody.failureReason = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
+		requestBody.status = nil
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/operations")
 			.set(httpMethod: "post")
@@ -133,6 +138,9 @@ public class OperationsApi: AdaptableApi {
 				let decoder = JSONDecoder()
 				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
+			}
+			guard httpResponse.statusCode != 422 else {
+				throw Errors.badResponseError(response: httpResponse, reason: "Unprocessable Entity – invalid payload.")
 			}
 			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
@@ -276,7 +284,6 @@ public class OperationsApi: AdaptableApi {
 		var requestBody = body
 		requestBody.creationTime = nil
 		requestBody.deviceExternalIDs?.`self` = nil
-		requestBody.comCumulocityModelWebCamDevice = nil
 		requestBody.bulkOperationId = nil
 		requestBody.failureReason = nil
 		requestBody.`self` = nil

@@ -20,7 +20,6 @@ public struct C8yOperation: Codable {
 		self.id = try container.decodeIfPresent(String.self, forKey: .id)
 		self.`self` = try container.decodeIfPresent(String.self, forKey: .`self`)
 		self.status = try container.decodeIfPresent(C8yStatus.self, forKey: .status)
-		self.comCumulocityModelWebCamDevice = try container.decodeIfPresent(C8yWebCamDevice.self, forKey: .comCumulocityModelWebCamDevice)
 		if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
 			for (typeName, decoder) in C8yOperation.decoders {
 				self.customFragments[typeName] = try? decoder(additionalContainer)
@@ -38,7 +37,6 @@ public struct C8yOperation: Codable {
 		try container.encodeIfPresent(self.id, forKey: .id)
 		try container.encodeIfPresent(self.`self`, forKey: .`self`)
 		try container.encodeIfPresent(self.status, forKey: .status)
-		try container.encodeIfPresent(self.comCumulocityModelWebCamDevice, forKey: .comCumulocityModelWebCamDevice)
 		var additionalContainer = encoder.container(keyedBy: JSONCodingKeys.self)
 		for (typeName, encoder) in C8yOperation.encoders {
 			if let property = self.customFragments[typeName] {
@@ -70,9 +68,6 @@ public struct C8yOperation: Codable {
 	/// The status of the operation.
 	public var status: C8yStatus?
 
-	/// Custom operation of a webcam. Note that this is an example for a custom object of the webcam operation. For other operations you can use other objects.
-	public var comCumulocityModelWebCamDevice: C8yWebCamDevice?
-
 	/// It is possible to add an arbitrary number of additional properties as a list of key-value pairs, for example, `"property1": {}`, `"property2": "value"`. These properties are known as custom fragments and can be of any type, for example, object or string. Each custom fragment is identified by a unique name.
 	/// 
 	/// Review the [Naming conventions of fragments](https://cumulocity.com/guides/concepts/domain-model/#naming-conventions-of-fragments) as there are characters that can not be used when naming custom fragments.
@@ -97,7 +92,6 @@ public struct C8yOperation: Codable {
 		case id
 		case `self` = "self"
 		case status
-		case comCumulocityModelWebCamDevice = "com_cumulocity_model_WebCamDevice"
 		case customFragments
 	}
 
@@ -112,13 +106,6 @@ public struct C8yOperation: Codable {
 		case pending = "PENDING"
 	}
 
-
-	/// Custom operation of a webcam. Note that this is an example for a custom object of the webcam operation. For other operations you can use other objects.
-	public struct C8yWebCamDevice: Codable {
-	
-		public init() {
-		}
-	}
 }
 
 extension C8yOperation {

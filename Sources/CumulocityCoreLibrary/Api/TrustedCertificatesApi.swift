@@ -366,4 +366,173 @@ public class TrustedCertificatesApi: AdaptableApi {
 			return element.data
 		}).eraseToAnyPublisher()
 	}
+	
+	/// Provide the proof of possession for an already uploaded certificate
+	/// Provide the proof of possession for a specific uploaded certificate (by a given fingerprint) for a specific tenant (by a given ID).
+	/// 
+	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// (ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_ADMIN) <b>AND</b> is the current tenant
+	/// </div></div>
+	/// 
+	/// The following table gives an overview of the possible response codes and their meanings.
+	/// - Returns:
+	/// 	- 200
+	///		  The provided signed verification code check was successful.
+	/// 	- 400
+	///		  The provided signed verification code is not correct.
+	/// 	- 401
+	///		  Authentication information is missing or invalid.
+	/// 	- 404
+	///		  Trusted certificate not found.
+	/// 	- 422
+	///		  Proof of possession for the certificate was not confirmed.
+	/// - Parameters:
+	/// 	- body 
+	/// 	- tenantId 
+	///		  Unique identifier of a Cumulocity IoT tenant.
+	/// 	- fingerprint 
+	///		  Unique identifier of a trusted certificate.
+	public func proveCertificatePossession(body: C8yUploadedTrustedCertSignedVerificationCode, tenantId: String, fingerprint: String) throws -> AnyPublisher<C8yTrustedCertificate, Swift.Error> {
+		let requestBody = body
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates-pop/\(fingerprint)/pop")
+			.set(httpMethod: "post")
+			.add(header: "Content-Type", value: "application/json")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
+			.set(httpBody: try JSONEncoder().encode(requestBody))
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard httpResponse.statusCode != 400 else {
+				let decoder = JSONDecoder()
+				let error400 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(response: httpResponse, reason: error400)
+			}
+			guard httpResponse.statusCode != 401 else {
+				let decoder = JSONDecoder()
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(response: httpResponse, reason: error401)
+			}
+			guard httpResponse.statusCode != 404 else {
+				let decoder = JSONDecoder()
+				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(response: httpResponse, reason: error404)
+			}
+			guard httpResponse.statusCode != 422 else {
+				let decoder = JSONDecoder()
+				let error422 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(response: httpResponse, reason: error422)
+			}
+			// generic error fallback
+			guard (200..<300) ~= httpResponse.statusCode else {
+				throw Errors.undescribedError(response: httpResponse)
+			}
+			
+			return element.data
+		}).decode(type: C8yTrustedCertificate.self, decoder: JSONDecoder()).eraseToAnyPublisher()
+	}
+	
+	/// Confirm an already uploaded certificate
+	/// Confirm an already uploaded certificate (by a given fingerprint) for a specific tenant (by a given ID).
+	/// 
+	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// (ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_ADMIN) <b>AND</b> is the management tenant
+	/// </div></div>
+	/// 
+	/// The following table gives an overview of the possible response codes and their meanings.
+	/// - Returns:
+	/// 	- 200
+	///		  The certificate is confirmed.
+	/// 	- 401
+	///		  Authentication information is missing or invalid.
+	/// 	- 404
+	///		  Trusted certificate not found.
+	/// 	- 422
+	///		  The verification was not successful. Certificate not confirmed.
+	/// - Parameters:
+	/// 	- tenantId 
+	///		  Unique identifier of a Cumulocity IoT tenant.
+	/// 	- fingerprint 
+	///		  Unique identifier of a trusted certificate.
+	public func confirmCertificate(tenantId: String, fingerprint: String) throws -> AnyPublisher<C8yTrustedCertificate, Swift.Error> {
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates-pop/\(fingerprint)/confirmed")
+			.set(httpMethod: "post")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard httpResponse.statusCode != 401 else {
+				let decoder = JSONDecoder()
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(response: httpResponse, reason: error401)
+			}
+			guard httpResponse.statusCode != 404 else {
+				let decoder = JSONDecoder()
+				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(response: httpResponse, reason: error404)
+			}
+			guard httpResponse.statusCode != 422 else {
+				let decoder = JSONDecoder()
+				let error422 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(response: httpResponse, reason: error422)
+			}
+			// generic error fallback
+			guard (200..<300) ~= httpResponse.statusCode else {
+				throw Errors.undescribedError(response: httpResponse)
+			}
+			
+			return element.data
+		}).decode(type: C8yTrustedCertificate.self, decoder: JSONDecoder()).eraseToAnyPublisher()
+	}
+	
+	/// Generate a verification code for the proof of possession operation for the given certificate
+	/// Generate a verification code for the proof of possession operation for the certificate (by a given fingerprint).
+	/// 
+	/// <div class="reqRoles"><div><h5></h5></div><div>
+	/// (ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_ADMIN) <b>AND</b> is the current tenant
+	/// </div></div>
+	/// 
+	/// The following table gives an overview of the possible response codes and their meanings.
+	/// - Returns:
+	/// 	- 200
+	///		  The verification code was generated.
+	/// 	- 401
+	///		  Authentication information is missing or invalid.
+	/// 	- 404
+	///		  Trusted certificate not found.
+	/// - Parameters:
+	/// 	- tenantId 
+	///		  Unique identifier of a Cumulocity IoT tenant.
+	/// 	- fingerprint 
+	///		  Unique identifier of a trusted certificate.
+	public func generateVerificationCode(tenantId: String, fingerprint: String) throws -> AnyPublisher<C8yTrustedCertificate, Swift.Error> {
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates-pop/\(fingerprint)/verification-code")
+			.set(httpMethod: "post")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard httpResponse.statusCode != 401 else {
+				let decoder = JSONDecoder()
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(response: httpResponse, reason: error401)
+			}
+			guard httpResponse.statusCode != 404 else {
+				let decoder = JSONDecoder()
+				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(response: httpResponse, reason: error404)
+			}
+			// generic error fallback
+			guard (200..<300) ~= httpResponse.statusCode else {
+				throw Errors.undescribedError(response: httpResponse)
+			}
+			
+			return element.data
+		}).decode(type: C8yTrustedCertificate.self, decoder: JSONDecoder()).eraseToAnyPublisher()
+	}
 }

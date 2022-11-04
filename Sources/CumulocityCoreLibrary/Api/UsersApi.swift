@@ -122,6 +122,7 @@ public class UsersApi: AdaptableApi {
 		requestBody.shouldResetPassword = nil
 		requestBody.id = nil
 		requestBody.lastPasswordChange = nil
+		requestBody.twoFactorAuthenticationEnabled = nil
 		requestBody.devicePermissions = nil
 		requestBody.applications = nil
 		let builder = URLRequestBuilder()
@@ -257,6 +258,7 @@ public class UsersApi: AdaptableApi {
 		requestBody.id = nil
 		requestBody.lastPasswordChange = nil
 		requestBody.userName = nil
+		requestBody.twoFactorAuthenticationEnabled = nil
 		requestBody.devicePermissions = nil
 		requestBody.applications = nil
 		let builder = URLRequestBuilder()
@@ -347,6 +349,122 @@ public class UsersApi: AdaptableApi {
 			
 			return element.data
 		}).eraseToAnyPublisher()
+	}
+	
+	/// Update a specific user's password of a specific tenant
+	/// Update a specific user's password (by a given user ID) of a specific tenant (by a given tenant ID).
+	/// 
+	/// Changing the user's password creates a corresponding audit record of type "User" and activity "User updated", and specifying that the password has been changed.
+	/// 
+	/// > **⚠️ Important:** If the tenant uses OAI-Secure authentication, the target user will be logged out.
+	/// 
+	/// <section><h5>Required roles</h5>
+	/// ROLE_USER_MANAGEMENT_ADMIN <b>OR</b> ROLE_USER_MANAGEMENT_CREATE <b>AND</b> has access to device permissions and applications
+	/// </section>
+	/// 
+	/// The following table gives an overview of the possible response codes and their meanings.
+	/// - Returns:
+	/// 	- 200
+	///		  A user was updated.
+	/// 	- 401
+	///		  Authentication information is missing or invalid.
+	/// 	- 403
+	///		  Not enough permissions/roles to perform this operation.
+	/// 	- 422
+	///		  Unprocessable Entity – invalid payload.
+	/// - Parameters:
+	/// 	- body 
+	/// 	- tenantId 
+	///		  Unique identifier of a Cumulocity IoT tenant.
+	/// 	- userId 
+	///		  Unique identifier of the a user.
+	public func updateUserPassword(body: C8yPasswordChange, tenantId: String, userId: String) throws -> AnyPublisher<Data, Swift.Error> {
+		let requestBody = body
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/password")
+			.set(httpMethod: "put")
+			.add(header: "Content-Type", value: "application/json")
+			.add(header: "Accept", value: "application/json")
+			.set(httpBody: try JSONEncoder().encode(requestBody))
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard httpResponse.statusCode != 401 else {
+				let decoder = JSONDecoder()
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(response: httpResponse, reason: error401)
+			}
+			guard httpResponse.statusCode != 403 else {
+				let decoder = JSONDecoder()
+				let error403 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(response: httpResponse, reason: error403)
+			}
+			guard httpResponse.statusCode != 422 else {
+				throw Errors.badResponseError(response: httpResponse, reason: "Unprocessable Entity – invalid payload.")
+			}
+			// generic error fallback
+			guard (200..<300) ~= httpResponse.statusCode else {
+				throw Errors.undescribedError(response: httpResponse)
+			}
+			
+			return element.data
+		}).eraseToAnyPublisher()
+	}
+	
+	/// Retrieve the TFA settings of a specific user
+	/// Retrieve the two-factor authentication settings for the specified user.
+	/// 
+	/// <section><h5>Required roles</h5>
+	/// ROLE_USER_MANAGEMENT_READ <b>OR</b> (ROLE_USER_MANAGEMENT_CREATE <b>AND</b> is parent of the user) <b>OR</b> is the current user
+	/// </section>
+	/// 
+	/// The following table gives an overview of the possible response codes and their meanings.
+	/// - Returns:
+	/// 	- 200
+	///		  The request has succeeded and the TFA settings are sent in the response.
+	/// 	- 401
+	///		  Authentication information is missing or invalid.
+	/// 	- 403
+	///		  Not enough permissions/roles to perform this operation.
+	/// 	- 404
+	///		  User not found.
+	/// - Parameters:
+	/// 	- tenantId 
+	///		  Unique identifier of a Cumulocity IoT tenant.
+	/// 	- userId 
+	///		  Unique identifier of the a user.
+	public func getUserTfaSettings(tenantId: String, userId: String) throws -> AnyPublisher<C8yUserTfaData, Swift.Error> {
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/tfa")
+			.set(httpMethod: "get")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard httpResponse.statusCode != 401 else {
+				let decoder = JSONDecoder()
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(response: httpResponse, reason: error401)
+			}
+			guard httpResponse.statusCode != 403 else {
+				let decoder = JSONDecoder()
+				let error403 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(response: httpResponse, reason: error403)
+			}
+			guard httpResponse.statusCode != 404 else {
+				let decoder = JSONDecoder()
+				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(response: httpResponse, reason: error404)
+			}
+			// generic error fallback
+			guard (200..<300) ~= httpResponse.statusCode else {
+				throw Errors.undescribedError(response: httpResponse)
+			}
+			
+			return element.data
+		}).decode(type: C8yUserTfaData.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
 	/// Retrieve a user by username in a specific tenant

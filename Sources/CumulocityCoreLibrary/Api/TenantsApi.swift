@@ -365,4 +365,50 @@ public class TenantsApi: AdaptableApi {
 			return element.data
 		}).eraseToAnyPublisher()
 	}
+	
+	/// Retrieve TFA settings of a specific tenant
+	/// Retrieve the two-factor authentication settings of a specific tenant by a given tenant ID.
+	/// 
+	/// <section><h5>Required roles</h5>
+	/// ((ROLE_TENANT_MANAGEMENT_READ <b>OR</b> ROLE_USER_MANAGEMENT_READ) <b>AND</b> (the current tenant is its parent <b>OR</b> is the management tenant <b>OR</b> the current user belongs to the tenant)) <b>OR</b> (the user belongs to the tenant <b>AND</b> ROLE_USER_MANAGEMENT_OWN_READ)
+	/// </section>
+	/// 
+	/// The following table gives an overview of the possible response codes and their meanings.
+	/// - Returns:
+	/// 	- 200
+	///		  The request has succeeded and the TFA settings are sent in the response.
+	/// 	- 401
+	///		  Authentication information is missing or invalid.
+	/// 	- 404
+	///		  Tenant not found.
+	/// - Parameters:
+	/// 	- tenantId 
+	///		  Unique identifier of a Cumulocity IoT tenant.
+	public func getTenantTfaSettings(tenantId: String) throws -> AnyPublisher<C8yTenantTfaData, Swift.Error> {
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/tfa")
+			.set(httpMethod: "get")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard httpResponse.statusCode != 401 else {
+				let decoder = JSONDecoder()
+				let error401 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(response: httpResponse, reason: error401)
+			}
+			guard httpResponse.statusCode != 404 else {
+				let decoder = JSONDecoder()
+				let error404 = try decoder.decode(C8yError.self, from: element.data)
+				throw Errors.badResponseError(response: httpResponse, reason: error404)
+			}
+			// generic error fallback
+			guard (200..<300) ~= httpResponse.statusCode else {
+				throw Errors.undescribedError(response: httpResponse)
+			}
+			
+			return element.data
+		}).decode(type: C8yTenantTfaData.self, decoder: JSONDecoder()).eraseToAnyPublisher()
+	}
 }

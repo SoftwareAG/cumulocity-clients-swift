@@ -79,6 +79,8 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	///		  A new device request was created.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 422
+	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
 	public func createNewDeviceRequest(body: C8yNewDeviceRequest) throws -> AnyPublisher<C8yNewDeviceRequest, Swift.Error> {
@@ -99,6 +101,9 @@ public class NewDeviceRequestsApi: AdaptableApi {
 				let decoder = JSONDecoder()
 				let error401 = try decoder.decode(C8yError.self, from: element.data)
 				throw Errors.badResponseError(response: httpResponse, reason: error401)
+			}
+			guard httpResponse.statusCode != 422 else {
+				throw Errors.badResponseError(response: httpResponse, reason: "Unprocessable Entity – invalid payload.")
 			}
 			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {

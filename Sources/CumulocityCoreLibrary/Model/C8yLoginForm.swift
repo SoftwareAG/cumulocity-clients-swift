@@ -19,7 +19,7 @@ public struct C8yLoginForm: Codable {
 	/// Used in cases of basic or OAI-Secure authentication.
 	public var password: String?
 
-	/// Used if TFA code is required.
+	/// Current TFA code, sent by the user, if a TFA code is required to log in.
 	public var tfaCode: String?
 
 	/// Used in cases of basic or OAI-Secure authentication.
