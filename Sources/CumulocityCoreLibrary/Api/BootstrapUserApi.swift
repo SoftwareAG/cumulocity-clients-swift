@@ -32,7 +32,7 @@ public class BootstrapUserApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the application.
-	public func getBootstrapUser(id: String) throws -> AnyPublisher<C8yBootstrapUser, Swift.Error> {
+	public func getBootstrapUser(id: String) -> AnyPublisher<C8yBootstrapUser, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/bootstrapUser")
 			.set(httpMethod: "get")
@@ -41,21 +41,12 @@ public class BootstrapUserApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 400 else {
-				let decoder = JSONDecoder()
-				let error400 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error400)
-			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yBootstrapUser.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}

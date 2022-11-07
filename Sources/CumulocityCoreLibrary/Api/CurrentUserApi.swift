@@ -28,7 +28,7 @@ public class CurrentUserApi: AdaptableApi {
 	///		  The request has succeeded and the current user is sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
-	public func getCurrentUser() throws -> AnyPublisher<C8yCurrentUser, Swift.Error> {
+	public func getCurrentUser() -> AnyPublisher<C8yCurrentUser, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser")
 			.set(httpMethod: "get")
@@ -37,16 +37,12 @@ public class CurrentUserApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yCurrentUser.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -68,7 +64,7 @@ public class CurrentUserApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func updateCurrentUser(body: C8yCurrentUser) throws -> AnyPublisher<C8yCurrentUser, Swift.Error> {
+	public func updateCurrentUser(body: C8yCurrentUser) -> AnyPublisher<C8yCurrentUser, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.effectiveRoles = nil
@@ -77,29 +73,28 @@ public class CurrentUserApi: AdaptableApi {
 		requestBody.lastPasswordChange = nil
 		requestBody.twoFactorAuthenticationEnabled = nil
 		requestBody.devicePermissions = nil
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<C8yCurrentUser, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.currentuser+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.currentuser+json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 422 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Unprocessable Entity – invalid payload.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yCurrentUser.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -123,31 +118,30 @@ public class CurrentUserApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func updateCurrentUserPassword(body: C8yPasswordChange) throws -> AnyPublisher<Data, Swift.Error> {
+	public func updateCurrentUserPassword(body: C8yPasswordChange) -> AnyPublisher<Data, Error> {
 		let requestBody = body
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser/password")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 422 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Unprocessable Entity – invalid payload.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).eraseToAnyPublisher()
 	}
@@ -167,7 +161,7 @@ public class CurrentUserApi: AdaptableApi {
 	///		  The request has succeeded and the secret is sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
-	public func generateTfaSecret() throws -> AnyPublisher<C8yCurrentUserTotpSecret, Swift.Error> {
+	public func generateTfaSecret() -> AnyPublisher<C8yCurrentUserTotpSecret, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser/totpSecret")
 			.set(httpMethod: "post")
@@ -176,16 +170,12 @@ public class CurrentUserApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yCurrentUserTotpSecret.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -205,7 +195,7 @@ public class CurrentUserApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// 	- 404
 	///		  User not found.
-	public func getTfaState() throws -> AnyPublisher<C8yCurrentUserTotpSecretActivity, Swift.Error> {
+	public func getTfaState() -> AnyPublisher<C8yCurrentUserTotpSecretActivity, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser/totpSecret/activity")
 			.set(httpMethod: "get")
@@ -214,21 +204,12 @@ public class CurrentUserApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yCurrentUserTotpSecretActivity.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -254,36 +235,30 @@ public class CurrentUserApi: AdaptableApi {
 	///		  User not found.
 	/// - Parameters:
 	/// 	- body 
-	public func setTfaState(body: C8yCurrentUserTotpSecretActivity) throws -> AnyPublisher<Data, Swift.Error> {
+	public func setTfaState(body: C8yCurrentUserTotpSecretActivity) -> AnyPublisher<Data, Error> {
 		let requestBody = body
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser/totpSecret/activity")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 403 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Cannot deactivate TOTP setup.")
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).eraseToAnyPublisher()
 	}
@@ -309,37 +284,30 @@ public class CurrentUserApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func verifyTfaCode(body: C8yCurrentUserTotpCode) throws -> AnyPublisher<Data, Swift.Error> {
+	public func verifyTfaCode(body: C8yCurrentUserTotpCode) -> AnyPublisher<Data, Error> {
 		let requestBody = body
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser/totpSecret/verify")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 403 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Invalid verification code.")
-			}
-			guard httpResponse.statusCode != 404 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Cannot validate TFA TOTP code - user's TFA TOTP secret does not exist.")
-			}
-			guard httpResponse.statusCode != 422 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Unprocessable Entity – invalid payload.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).eraseToAnyPublisher()
 	}

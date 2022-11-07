@@ -67,7 +67,7 @@ public class AlarmsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getAlarms(createdFrom: String? = nil, createdTo: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, lastUpdatedFrom: String? = nil, lastUpdatedTo: String? = nil, pageSize: Int? = nil, resolved: Bool? = nil, severity: String? = nil, source: String? = nil, status: String? = nil, type: [String]? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) throws -> AnyPublisher<C8yAlarmCollection, Swift.Error> {
+	public func getAlarms(createdFrom: String? = nil, createdTo: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, lastUpdatedFrom: String? = nil, lastUpdatedTo: String? = nil, pageSize: Int? = nil, resolved: Bool? = nil, severity: String? = nil, source: String? = nil, status: String? = nil, type: [String]? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yAlarmCollection, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = createdFrom { queryItems.append(URLQueryItem(name: "createdFrom", value: String(parameter))) }
 		if let parameter = createdTo { queryItems.append(URLQueryItem(name: "createdTo", value: String(parameter))) }
@@ -95,16 +95,12 @@ public class AlarmsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yAlarmCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -153,7 +149,7 @@ public class AlarmsApi: AdaptableApi {
 	///		  When set to `true` also alarms for related source assets will be included in the request. When this parameter is provided a `source` must be specified.
 	/// 	- withSourceDevices 
 	///		  When set to `true` also alarms for related source devices will be included in the request. When this parameter is provided a `source` must be specified.
-	public func updateAlarms(body: C8yAlarm, createdFrom: String? = nil, createdTo: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, resolved: Bool? = nil, severity: String? = nil, source: String? = nil, status: String? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil) throws -> AnyPublisher<Data, Swift.Error> {
+	public func updateAlarms(body: C8yAlarm, createdFrom: String? = nil, createdTo: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, resolved: Bool? = nil, severity: String? = nil, source: String? = nil, status: String? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil) -> AnyPublisher<Data, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = createdFrom { queryItems.append(URLQueryItem(name: "createdFrom", value: String(parameter))) }
 		if let parameter = createdTo { queryItems.append(URLQueryItem(name: "createdTo", value: String(parameter))) }
@@ -177,33 +173,29 @@ public class AlarmsApi: AdaptableApi {
 		requestBody.text = nil
 		requestBody.time = nil
 		requestBody.type = nil
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/alarm/alarms")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.alarm+json")
 			.add(header: "Accept", value: "application/json")
 			.set(queryItems: queryItems)
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 403 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Not authorized to perform this operation.")
-			}
-			guard httpResponse.statusCode != 422 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Unprocessable Entity – invalid payload.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).eraseToAnyPublisher()
 	}
@@ -248,7 +240,7 @@ public class AlarmsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createAlarm(body: C8yAlarm) throws -> AnyPublisher<C8yAlarm, Swift.Error> {
+	public func createAlarm(body: C8yAlarm) -> AnyPublisher<C8yAlarm, Error> {
 		var requestBody = body
 		requestBody.firstOccurrenceTime = nil
 		requestBody.lastUpdated = nil
@@ -257,32 +249,28 @@ public class AlarmsApi: AdaptableApi {
 		requestBody.`self` = nil
 		requestBody.id = nil
 		requestBody.source?.`self` = nil
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<C8yAlarm, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/alarm/alarms")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.alarm+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.alarm+json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 403 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Not authorized to perform this operation.")
-			}
-			guard httpResponse.statusCode != 422 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Unprocessable Entity – invalid payload.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yAlarm.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -328,7 +316,7 @@ public class AlarmsApi: AdaptableApi {
 	///		  When set to `true` also alarms for related source assets will be included in the request. When this parameter is provided a `source` must be specified.
 	/// 	- withSourceDevices 
 	///		  When set to `true` also alarms for related source devices will be included in the request. When this parameter is provided a `source` must be specified.
-	public func deleteAlarms(createdFrom: String? = nil, createdTo: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, resolved: Bool? = nil, severity: String? = nil, source: String? = nil, status: String? = nil, type: [String]? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil) throws -> AnyPublisher<Data, Swift.Error> {
+	public func deleteAlarms(createdFrom: String? = nil, createdTo: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, resolved: Bool? = nil, severity: String? = nil, source: String? = nil, status: String? = nil, type: [String]? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil) -> AnyPublisher<Data, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = createdFrom { queryItems.append(URLQueryItem(name: "createdFrom", value: String(parameter))) }
 		if let parameter = createdTo { queryItems.append(URLQueryItem(name: "createdTo", value: String(parameter))) }
@@ -350,19 +338,12 @@ public class AlarmsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 403 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Not authorized to perform this operation.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).eraseToAnyPublisher()
 	}
@@ -387,7 +368,7 @@ public class AlarmsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the alarm.
-	public func getAlarm(id: String) throws -> AnyPublisher<C8yAlarm, Swift.Error> {
+	public func getAlarm(id: String) -> AnyPublisher<C8yAlarm, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/alarm/alarms/\(id)")
 			.set(httpMethod: "get")
@@ -396,24 +377,12 @@ public class AlarmsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 403 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Not authorized to perform this operation.")
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yAlarm.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -444,7 +413,7 @@ public class AlarmsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the alarm.
-	public func updateAlarm(body: C8yAlarm, id: String) throws -> AnyPublisher<C8yAlarm, Swift.Error> {
+	public func updateAlarm(body: C8yAlarm, id: String) -> AnyPublisher<C8yAlarm, Error> {
 		var requestBody = body
 		requestBody.firstOccurrenceTime = nil
 		requestBody.lastUpdated = nil
@@ -455,37 +424,28 @@ public class AlarmsApi: AdaptableApi {
 		requestBody.source = nil
 		requestBody.time = nil
 		requestBody.type = nil
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<C8yAlarm, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/alarm/alarms/\(id)")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.alarm+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.alarm+json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 403 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Not authorized to perform this operation.")
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			guard httpResponse.statusCode != 422 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Unprocessable Entity – invalid payload.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yAlarm.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -522,7 +482,7 @@ public class AlarmsApi: AdaptableApi {
 	///		  When set to `true` also alarms for related source assets will be included in the request. When this parameter is provided a `source` must be specified.
 	/// 	- withSourceDevices 
 	///		  When set to `true` also alarms for related source devices will be included in the request. When this parameter is provided a `source` must be specified.
-	public func getNumberOfAlarms(dateFrom: String? = nil, dateTo: String? = nil, resolved: Bool? = nil, severity: String? = nil, source: String? = nil, status: String? = nil, type: [String]? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil) throws -> AnyPublisher<Int, Swift.Error> {
+	public func getNumberOfAlarms(dateFrom: String? = nil, dateTo: String? = nil, resolved: Bool? = nil, severity: String? = nil, source: String? = nil, status: String? = nil, type: [String]? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil) -> AnyPublisher<Int, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
 		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
@@ -542,16 +502,12 @@ public class AlarmsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: Int.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
