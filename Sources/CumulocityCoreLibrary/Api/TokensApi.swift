@@ -37,9 +37,14 @@ public class TokensApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createToken(body: C8yNotificationTokenClaims) -> AnyPublisher<C8yNotificationToken, Swift.Error> {
+	public func createToken(body: C8yNotificationTokenClaims) -> AnyPublisher<C8yNotificationToken, Error> {
 		let requestBody = body
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<C8yNotificationToken, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/token")
 			.set(httpMethod: "post")
@@ -50,24 +55,12 @@ public class TokensApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 403 else {
-				let decoder = JSONDecoder()
-				let error403 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error403)
-			}
-			guard httpResponse.statusCode != 422 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Unprocessable Entity – invalid payload.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yNotificationToken.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}

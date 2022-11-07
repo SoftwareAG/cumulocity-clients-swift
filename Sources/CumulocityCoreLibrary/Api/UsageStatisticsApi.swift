@@ -99,7 +99,7 @@ public class UsageStatisticsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getTenantUsageStatisticsCollectionResource(currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yTenantUsageStatisticsCollection, Swift.Error> {
+	public func getTenantUsageStatisticsCollectionResource(currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yTenantUsageStatisticsCollection, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
 		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
@@ -116,16 +116,12 @@ public class UsageStatisticsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yTenantUsageStatisticsCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -145,7 +141,7 @@ public class UsageStatisticsApi: AdaptableApi {
 	///		  End date or date and time of the statistics.
 	/// 	- tenant 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func getTenantUsageStatistics(dateFrom: String? = nil, dateTo: String? = nil, tenant: String? = nil) -> AnyPublisher<C8ySummaryTenantUsageStatistics, Swift.Error> {
+	public func getTenantUsageStatistics(dateFrom: String? = nil, dateTo: String? = nil, tenant: String? = nil) -> AnyPublisher<C8ySummaryTenantUsageStatistics, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
 		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
@@ -159,16 +155,12 @@ public class UsageStatisticsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8ySummaryTenantUsageStatistics.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -191,7 +183,7 @@ public class UsageStatisticsApi: AdaptableApi {
 	///		  Start date or date and time of the statistics.
 	/// 	- dateTo 
 	///		  End date or date and time of the statistics.
-	public func getTenantsUsageStatistics(dateFrom: String? = nil, dateTo: String? = nil) -> AnyPublisher<[C8ySummaryAllTenantsUsageStatistics], Swift.Error> {
+	public func getTenantsUsageStatistics(dateFrom: String? = nil, dateTo: String? = nil) -> AnyPublisher<[C8ySummaryAllTenantsUsageStatistics], Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
 		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
@@ -204,16 +196,12 @@ public class UsageStatisticsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: [C8ySummaryAllTenantsUsageStatistics].self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -242,7 +230,7 @@ public class UsageStatisticsApi: AdaptableApi {
 	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getMetadata(currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yTenantUsageStatisticsFileCollection, Swift.Error> {
+	public func getMetadata(currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yTenantUsageStatisticsFileCollection, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
 		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
@@ -258,16 +246,12 @@ public class UsageStatisticsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yTenantUsageStatisticsFileCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -292,9 +276,14 @@ public class UsageStatisticsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func generateStatisticsFile(body: C8yRangeStatisticsFile) -> AnyPublisher<C8yStatisticsFile, Swift.Error> {
+	public func generateStatisticsFile(body: C8yRangeStatisticsFile) -> AnyPublisher<C8yStatisticsFile, Error> {
 		let requestBody = body
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<C8yStatisticsFile, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/statistics/files")
 			.set(httpMethod: "post")
@@ -305,19 +294,12 @@ public class UsageStatisticsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 422 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Unprocessable Entity – invalid payload.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yStatisticsFile.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -340,7 +322,7 @@ public class UsageStatisticsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the statistics file.
-	public func getStatisticsFile(id: String) -> AnyPublisher<Data, Swift.Error> {
+	public func getStatisticsFile(id: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/statistics/files/\(id)")
 			.set(httpMethod: "get")
@@ -349,21 +331,12 @@ public class UsageStatisticsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).eraseToAnyPublisher()
 	}
@@ -388,7 +361,7 @@ public class UsageStatisticsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- month 
 	///		  Date (format YYYY-MM-dd) specifying the month for which the statistics file will be downloaded (the day value is ignored).
-	public func getLatestStatisticsFile(month: Date) -> AnyPublisher<Data, Swift.Error> {
+	public func getLatestStatisticsFile(month: Date) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/statistics/files/latest/\(month)")
 			.set(httpMethod: "get")
@@ -397,16 +370,12 @@ public class UsageStatisticsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).eraseToAnyPublisher()
 	}

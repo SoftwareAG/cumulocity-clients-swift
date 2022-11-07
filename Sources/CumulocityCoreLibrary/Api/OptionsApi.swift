@@ -35,7 +35,7 @@ public class OptionsApi: AdaptableApi {
 	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getOptions(currentPage: Int? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yOptionCollection, Swift.Error> {
+	public func getOptions(currentPage: Int? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yOptionCollection, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
@@ -49,16 +49,12 @@ public class OptionsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yOptionCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -112,10 +108,15 @@ public class OptionsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createOption(body: C8yOption) -> AnyPublisher<C8yOption, Swift.Error> {
+	public func createOption(body: C8yOption) -> AnyPublisher<C8yOption, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<C8yOption, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/options")
 			.set(httpMethod: "post")
@@ -126,19 +127,12 @@ public class OptionsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 422 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Unprocessable Entity – invalid payload.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yOption.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -159,7 +153,7 @@ public class OptionsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- category 
 	///		  The category of the options.
-	public func getOptionsByCategory(category: String) -> AnyPublisher<C8yCategoryOptions, Swift.Error> {
+	public func getOptionsByCategory(category: String) -> AnyPublisher<C8yCategoryOptions, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/options/\(category)")
 			.set(httpMethod: "get")
@@ -168,16 +162,12 @@ public class OptionsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yCategoryOptions.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -201,9 +191,14 @@ public class OptionsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- category 
 	///		  The category of the options.
-	public func updateOptionsByCategory(body: C8yCategoryOptions, category: String) -> AnyPublisher<C8yCategoryOptions, Swift.Error> {
+	public func updateOptionsByCategory(body: C8yCategoryOptions, category: String) -> AnyPublisher<C8yCategoryOptions, Error> {
 		let requestBody = body
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<C8yCategoryOptions, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/options/\(category)")
 			.set(httpMethod: "put")
@@ -214,19 +209,12 @@ public class OptionsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 422 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Unprocessable Entity – invalid payload.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yCategoryOptions.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -251,7 +239,7 @@ public class OptionsApi: AdaptableApi {
 	///		  The category of the options.
 	/// 	- key 
 	///		  The key of an option.
-	public func getOption(category: String, key: String) -> AnyPublisher<C8yOption, Swift.Error> {
+	public func getOption(category: String, key: String) -> AnyPublisher<C8yOption, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/options/\(category)/\(key)")
 			.set(httpMethod: "get")
@@ -260,19 +248,12 @@ public class OptionsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Option not found.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yOption.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -300,9 +281,14 @@ public class OptionsApi: AdaptableApi {
 	///		  The category of the options.
 	/// 	- key 
 	///		  The key of an option.
-	public func updateOption(body: C8yCategoryKeyOption, category: String, key: String) -> AnyPublisher<C8yOption, Swift.Error> {
+	public func updateOption(body: C8yCategoryKeyOption, category: String, key: String) -> AnyPublisher<C8yOption, Error> {
 		let requestBody = body
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<C8yOption, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/options/\(category)/\(key)")
 			.set(httpMethod: "put")
@@ -313,22 +299,12 @@ public class OptionsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Option not found.")
-			}
-			guard httpResponse.statusCode != 422 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Unprocessable Entity – invalid payload.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yOption.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -353,7 +329,7 @@ public class OptionsApi: AdaptableApi {
 	///		  The category of the options.
 	/// 	- key 
 	///		  The key of an option.
-	public func deleteOption(category: String, key: String) -> AnyPublisher<Data, Swift.Error> {
+	public func deleteOption(category: String, key: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/options/\(category)/\(key)")
 			.set(httpMethod: "delete")
@@ -362,19 +338,12 @@ public class OptionsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Option not found.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).eraseToAnyPublisher()
 	}

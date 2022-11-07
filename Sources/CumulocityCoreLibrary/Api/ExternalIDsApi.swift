@@ -31,7 +31,7 @@ public class ExternalIDsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func getExternalIds(id: String) -> AnyPublisher<C8yExternalIds, Swift.Error> {
+	public func getExternalIds(id: String) -> AnyPublisher<C8yExternalIds, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/identity/globalIds/\(id)/externalIds")
 			.set(httpMethod: "get")
@@ -40,16 +40,12 @@ public class ExternalIDsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yExternalIds.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -73,11 +69,16 @@ public class ExternalIDsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func createExternalId(body: C8yExternalId, id: String) -> AnyPublisher<C8yExternalId, Swift.Error> {
+	public func createExternalId(body: C8yExternalId, id: String) -> AnyPublisher<C8yExternalId, Error> {
 		var requestBody = body
 		requestBody.managedObject = nil
 		requestBody.`self` = nil
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<C8yExternalId, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/identity/globalIds/\(id)/externalIds")
 			.set(httpMethod: "post")
@@ -88,19 +89,12 @@ public class ExternalIDsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 409 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Duplicate – Identity already bound to a different Global ID.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yExternalId.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -125,7 +119,7 @@ public class ExternalIDsApi: AdaptableApi {
 	///		  The identifier used in the external system that Cumulocity IoT interfaces with.
 	/// 	- externalId 
 	///		  The type of the external identifier.
-	public func getExternalId(type: String, externalId: String) -> AnyPublisher<C8yExternalId, Swift.Error> {
+	public func getExternalId(type: String, externalId: String) -> AnyPublisher<C8yExternalId, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/identity/externalIds/\(type)/\(externalId)")
 			.set(httpMethod: "get")
@@ -134,21 +128,12 @@ public class ExternalIDsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yExternalId.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -173,7 +158,7 @@ public class ExternalIDsApi: AdaptableApi {
 	///		  The identifier used in the external system that Cumulocity IoT interfaces with.
 	/// 	- externalId 
 	///		  The type of the external identifier.
-	public func deleteExternalId(type: String, externalId: String) -> AnyPublisher<Data, Swift.Error> {
+	public func deleteExternalId(type: String, externalId: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/identity/externalIds/\(type)/\(externalId)")
 			.set(httpMethod: "delete")
@@ -182,21 +167,12 @@ public class ExternalIDsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).eraseToAnyPublisher()
 	}

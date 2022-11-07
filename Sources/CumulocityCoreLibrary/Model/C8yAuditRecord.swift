@@ -27,7 +27,7 @@ public struct C8yAuditRecord: Codable {
 		self.user = try container.decodeIfPresent(String.self, forKey: .user)
 		if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
 			for (typeName, decoder) in C8yAuditRecord.decoders {
-				self.customProperties?[typeName] = try? decoder(additionalContainer)
+				self.customProperties[typeName] = try? decoder(additionalContainer)
 			}
 		}
 	}
@@ -49,7 +49,7 @@ public struct C8yAuditRecord: Codable {
 		try container.encodeIfPresent(self.user, forKey: .user)
 		var additionalContainer = encoder.container(keyedBy: JSONCodingKeys.self)
 		for (typeName, encoder) in C8yAuditRecord.encoders {
-			if let property = self.customProperties?[typeName] {
+			if let property = self.customProperties[typeName] {
 				try encoder(property, &additionalContainer)
 			}
 		}
@@ -96,7 +96,16 @@ public struct C8yAuditRecord: Codable {
 
 	/// It is possible to add an arbitrary number of additional properties as a list of key-value pairs, for example, `"property1": {}`, `"property2": "value"`. These properties can be of any type, for example, object or string.
 	/// 
-	public var customProperties: [String: Any]? = [:]
+	public var customProperties: [String: Any] = [:]
+	
+	subscript(key: String) -> Any? {
+	        get {
+	            return customProperties[key]
+	        }
+	        set(newValue) {
+	            customProperties[key] = newValue
+	        }
+	    }
 
 	enum CodingKeys: String, CodingKey {
 		case activity

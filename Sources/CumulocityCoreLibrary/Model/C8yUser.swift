@@ -70,6 +70,9 @@ public struct C8yUser: Codable {
 	/// Indicates if the user should reset the password on the next login.
 	public var shouldResetPassword: Bool?
 
+	/// Indicates if the user has to use two-factor authentication to log in.
+	public var twoFactorAuthenticationEnabled: Bool?
+
 	/// The user's username. It can have a maximum of 1000 characters.
 	public var userName: String?
 
@@ -96,6 +99,7 @@ public struct C8yUser: Codable {
 		case `self` = "self"
 		case sendPasswordResetEmail
 		case shouldResetPassword
+		case twoFactorAuthenticationEnabled
 		case userName
 		case devicePermissions
 	}

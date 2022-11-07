@@ -29,7 +29,7 @@ public class LoginOptionsApi: AdaptableApi {
 	///		  If this is set to `true`, the management tenant login options will be returned.  > **&#9432; Info:** The `tenantId` parameter must not be present in the request when using the `management` parameter, otherwise it will cause an error. 
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func getLoginOptions(management: Bool? = nil, tenantId: String? = nil) -> AnyPublisher<C8yLoginOptionCollection, Swift.Error> {
+	public func getLoginOptions(management: Bool? = nil, tenantId: String? = nil) -> AnyPublisher<C8yLoginOptionCollection, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = management { queryItems.append(URLQueryItem(name: "management", value: String(parameter))) }
 		if let parameter = tenantId { queryItems.append(URLQueryItem(name: "tenantId", value: String(parameter))) }
@@ -42,16 +42,12 @@ public class LoginOptionsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 400 else {
-				let decoder = JSONDecoder()
-				let error400 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error400)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yLoginOptionCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -75,10 +71,15 @@ public class LoginOptionsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createLoginOption(body: C8yAuthConfig) -> AnyPublisher<C8yAuthConfig, Swift.Error> {
+	public func createLoginOption(body: C8yAuthConfig) -> AnyPublisher<C8yAuthConfig, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<C8yAuthConfig, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/loginOptions")
 			.set(httpMethod: "post")
@@ -89,22 +90,12 @@ public class LoginOptionsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 400 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Duplicated – The login option already exists.")
-			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 422 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Unprocessable Entity – invalid payload.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yAuthConfig.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}

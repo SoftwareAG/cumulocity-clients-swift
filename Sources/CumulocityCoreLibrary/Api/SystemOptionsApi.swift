@@ -20,7 +20,7 @@ public class SystemOptionsApi: AdaptableApi {
 	///		  The request has succeeded and the system options are sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
-	public func getSystemOptions() -> AnyPublisher<C8ySystemOptionCollection, Swift.Error> {
+	public func getSystemOptions() -> AnyPublisher<C8ySystemOptionCollection, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/system/options")
 			.set(httpMethod: "get")
@@ -29,16 +29,12 @@ public class SystemOptionsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8ySystemOptionCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -56,7 +52,7 @@ public class SystemOptionsApi: AdaptableApi {
 	///		  The category of the system options.
 	/// 	- key 
 	///		  The key of a system option.
-	public func getSystemOption(category: String, key: String) -> AnyPublisher<C8ySystemOption, Swift.Error> {
+	public func getSystemOption(category: String, key: String) -> AnyPublisher<C8ySystemOption, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/system/options/\(category)/\(key)")
 			.set(httpMethod: "get")
@@ -65,16 +61,12 @@ public class SystemOptionsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8ySystemOption.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}

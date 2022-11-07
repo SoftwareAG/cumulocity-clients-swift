@@ -30,7 +30,7 @@ public class AttachmentsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the event.
-	public func getEventAttachment(id: String) -> AnyPublisher<Data, Swift.Error> {
+	public func getEventAttachment(id: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "get")
@@ -39,21 +39,12 @@ public class AttachmentsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).eraseToAnyPublisher()
 	}
@@ -78,9 +69,14 @@ public class AttachmentsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the event.
-	public func replaceEventAttachment(body: Data, id: String) -> AnyPublisher<C8yEventBinary, Swift.Error> {
+	public func replaceEventAttachment(body: Data, id: String) -> AnyPublisher<C8yEventBinary, Error> {
 		let requestBody = body
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<C8yEventBinary, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "put")
@@ -91,21 +87,12 @@ public class AttachmentsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yEventBinary.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -163,9 +150,14 @@ public class AttachmentsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the event.
-	public func uploadEventAttachment(body: Data, id: String) -> AnyPublisher<C8yEventBinary, Swift.Error> {
+	public func uploadEventAttachment(body: Data, id: String) -> AnyPublisher<C8yEventBinary, Error> {
 		let requestBody = body
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<C8yEventBinary, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "post")
@@ -176,26 +168,12 @@ public class AttachmentsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			guard httpResponse.statusCode != 409 else {
-				let decoder = JSONDecoder()
-				let error409 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error409)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yEventBinary.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -255,7 +233,7 @@ public class AttachmentsApi: AdaptableApi {
 	///		  Path of the file to be uploaded.
 	/// 	- id 
 	///		  Unique identifier of the event.
-	public func uploadEventAttachment(`object`: C8yBinaryInfo, file: Data, id: String) -> AnyPublisher<C8yEventBinary, Swift.Error> {
+	public func uploadEventAttachment(`object`: C8yBinaryInfo, file: Data, id: String) -> AnyPublisher<C8yEventBinary, Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
 		try? multipartBuilder.addBodyPart(named: "object", data: `object`, mimeType: "application/json");
 		try? multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/plain");
@@ -270,26 +248,12 @@ public class AttachmentsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			guard httpResponse.statusCode != 409 else {
-				let decoder = JSONDecoder()
-				let error409 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error409)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yEventBinary.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -312,7 +276,7 @@ public class AttachmentsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the event.
-	public func deleteEventAttachment(id: String) -> AnyPublisher<Data, Swift.Error> {
+	public func deleteEventAttachment(id: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "delete")
@@ -321,21 +285,12 @@ public class AttachmentsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).eraseToAnyPublisher()
 	}

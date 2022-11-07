@@ -59,7 +59,7 @@ public class OperationsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getOperations(agentId: String? = nil, bulkOperationId: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, deviceId: String? = nil, fragmentType: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, status: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yOperationCollection, Swift.Error> {
+	public func getOperations(agentId: String? = nil, bulkOperationId: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, deviceId: String? = nil, fragmentType: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, status: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yOperationCollection, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = agentId { queryItems.append(URLQueryItem(name: "agentId", value: String(parameter))) }
 		if let parameter = bulkOperationId { queryItems.append(URLQueryItem(name: "bulkOperationId", value: String(parameter))) }
@@ -82,22 +82,20 @@ public class OperationsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yOperationCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
 	/// Create an operation
 	/// Create an operation.
+	/// 
+	/// It is possible to add custom fragments to operations, for example `com_cumulocity_model_WebCamDevice` is a custom object of the webcam operation.
 	/// 
 	/// <section><h5>Required roles</h5>
 	/// ROLE_DEVICE_CONTROL_ADMIN <b>OR</b> owner of the device <b>OR</b> ADMIN permissions on the device
@@ -109,9 +107,11 @@ public class OperationsApi: AdaptableApi {
 	///		  An operation was created.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 422
+	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createOperation(body: C8yOperation) -> AnyPublisher<C8yOperation, Swift.Error> {
+	public func createOperation(body: C8yOperation) -> AnyPublisher<C8yOperation, Error> {
 		var requestBody = body
 		requestBody.creationTime = nil
 		requestBody.deviceExternalIDs?.`self` = nil
@@ -119,7 +119,13 @@ public class OperationsApi: AdaptableApi {
 		requestBody.failureReason = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
+		requestBody.status = nil
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<C8yOperation, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/operations")
 			.set(httpMethod: "post")
@@ -130,16 +136,12 @@ public class OperationsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yOperation.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -172,7 +174,7 @@ public class OperationsApi: AdaptableApi {
 	///		  The ID of the device the operation is performed for.
 	/// 	- status 
 	///		  Status of the operation.
-	public func deleteOperations(agentId: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, deviceId: String? = nil, status: String? = nil) -> AnyPublisher<Data, Swift.Error> {
+	public func deleteOperations(agentId: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, deviceId: String? = nil, status: String? = nil) -> AnyPublisher<Data, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = agentId { queryItems.append(URLQueryItem(name: "agentId", value: String(parameter))) }
 		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
@@ -188,19 +190,12 @@ public class OperationsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 403 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Not authorized to perform this operation.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).eraseToAnyPublisher()
 	}
@@ -223,7 +218,7 @@ public class OperationsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the operation.
-	public func getOperation(id: String) -> AnyPublisher<C8yOperation, Swift.Error> {
+	public func getOperation(id: String) -> AnyPublisher<C8yOperation, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/operations/\(id)")
 			.set(httpMethod: "get")
@@ -232,21 +227,12 @@ public class OperationsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yOperation.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -273,17 +259,21 @@ public class OperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the operation.
-	public func updateOperation(body: C8yOperation, id: String) -> AnyPublisher<C8yOperation, Swift.Error> {
+	public func updateOperation(body: C8yOperation, id: String) -> AnyPublisher<C8yOperation, Error> {
 		var requestBody = body
 		requestBody.creationTime = nil
 		requestBody.deviceExternalIDs?.`self` = nil
-		requestBody.comCumulocityModelWebCamDevice = nil
 		requestBody.bulkOperationId = nil
 		requestBody.failureReason = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
 		requestBody.deviceId = nil
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<C8yOperation, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/operations/\(id)")
 			.set(httpMethod: "put")
@@ -294,26 +284,12 @@ public class OperationsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			guard httpResponse.statusCode != 422 else {
-				let decoder = JSONDecoder()
-				let error422 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error422)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yOperation.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}

@@ -67,7 +67,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, fragmentType: String? = nil, ids: [String]? = nil, onlyRoots: Bool? = nil, owner: String? = nil, pageSize: Int? = nil, q: String? = nil, query: String? = nil, skipChildrenNames: Bool? = nil, text: String? = nil, type: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withGroups: Bool? = nil, withParents: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yManagedObjectCollection, Swift.Error> {
+	public func getManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, fragmentType: String? = nil, ids: [String]? = nil, onlyRoots: Bool? = nil, owner: String? = nil, pageSize: Int? = nil, q: String? = nil, query: String? = nil, skipChildrenNames: Bool? = nil, text: String? = nil, type: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withGroups: Bool? = nil, withParents: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yManagedObjectCollection, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = childAdditionId { queryItems.append(URLQueryItem(name: "childAdditionId", value: String(parameter))) }
 		if let parameter = childAssetId { queryItems.append(URLQueryItem(name: "childAssetId", value: String(parameter))) }
@@ -98,21 +98,12 @@ public class ManagedObjectsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 422 else {
-				let decoder = JSONDecoder()
-				let error422 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error422)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yManagedObjectCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -146,7 +137,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createManagedObject(body: C8yManagedObject) -> AnyPublisher<C8yManagedObject, Swift.Error> {
+	public func createManagedObject(body: C8yManagedObject) -> AnyPublisher<C8yManagedObject, Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.additionParents = nil
@@ -159,7 +150,12 @@ public class ManagedObjectsApi: AdaptableApi {
 		requestBody.assetParents = nil
 		requestBody.deviceParents = nil
 		requestBody.id = nil
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<C8yManagedObject, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects")
 			.set(httpMethod: "post")
@@ -170,19 +166,12 @@ public class ManagedObjectsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 422 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Unprocessable Entity – invalid payload.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yManagedObject.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -217,7 +206,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  Search for managed objects where any property value is equal to the given one. Only string values are supported.
 	/// 	- type 
 	///		  The type of managed object to search for.
-	public func getNumberOfManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, fragmentType: String? = nil, ids: [String]? = nil, owner: String? = nil, text: String? = nil, type: String? = nil) -> AnyPublisher<Int, Swift.Error> {
+	public func getNumberOfManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, fragmentType: String? = nil, ids: [String]? = nil, owner: String? = nil, text: String? = nil, type: String? = nil) -> AnyPublisher<Int, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = childAdditionId { queryItems.append(URLQueryItem(name: "childAdditionId", value: String(parameter))) }
 		if let parameter = childAssetId { queryItems.append(URLQueryItem(name: "childAssetId", value: String(parameter))) }
@@ -236,16 +225,12 @@ public class ManagedObjectsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: Int.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -276,7 +261,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain the total number of children in the respective objects (`childAdditions`, `childAssets` and `childDevices`).
 	/// 	- withParents 
 	///		  When set to `true`, the returned references of child parents will return the device's parents (if any). Otherwise, it will be an empty array.
-	public func getManagedObject(id: String, skipChildrenNames: Bool? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withParents: Bool? = nil) -> AnyPublisher<C8yManagedObject, Swift.Error> {
+	public func getManagedObject(id: String, skipChildrenNames: Bool? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withParents: Bool? = nil) -> AnyPublisher<C8yManagedObject, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = skipChildrenNames { queryItems.append(URLQueryItem(name: "skipChildrenNames", value: String(parameter))) }
 		if let parameter = withChildren { queryItems.append(URLQueryItem(name: "withChildren", value: String(parameter))) }
@@ -291,21 +276,12 @@ public class ManagedObjectsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yManagedObject.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -331,7 +307,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func updateManagedObject(body: C8yManagedObject, id: String) -> AnyPublisher<C8yManagedObject, Swift.Error> {
+	public func updateManagedObject(body: C8yManagedObject, id: String) -> AnyPublisher<C8yManagedObject, Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.additionParents = nil
@@ -344,7 +320,12 @@ public class ManagedObjectsApi: AdaptableApi {
 		requestBody.assetParents = nil
 		requestBody.deviceParents = nil
 		requestBody.id = nil
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<C8yManagedObject, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)")
 			.set(httpMethod: "put")
@@ -355,21 +336,12 @@ public class ManagedObjectsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yManagedObject.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -400,7 +372,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  When set to `true` all the hierarchy will be deleted without checking the type of managed object. It takes precedence over the parameter `cascade`.
 	/// 	- withDeviceUser 
 	///		  When set to `true` and the managed object is a device, it deletes the associated device user (credentials).
-	public func deleteManagedObject(id: String, cascade: Bool? = nil, forceCascade: Bool? = nil, withDeviceUser: Bool? = nil) -> AnyPublisher<Data, Swift.Error> {
+	public func deleteManagedObject(id: String, cascade: Bool? = nil, forceCascade: Bool? = nil, withDeviceUser: Bool? = nil) -> AnyPublisher<Data, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = cascade { queryItems.append(URLQueryItem(name: "cascade", value: String(parameter))) }
 		if let parameter = forceCascade { queryItems.append(URLQueryItem(name: "forceCascade", value: String(parameter))) }
@@ -414,21 +386,12 @@ public class ManagedObjectsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).eraseToAnyPublisher()
 	}
@@ -451,7 +414,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func getLatestAvailability(id: String) -> AnyPublisher<String, Swift.Error> {
+	public func getLatestAvailability(id: String) -> AnyPublisher<String, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/availability")
 			.set(httpMethod: "get")
@@ -460,21 +423,12 @@ public class ManagedObjectsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: String.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -497,7 +451,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func getSupportedMeasurements(id: String) -> AnyPublisher<C8ySupportedMeasurements, Swift.Error> {
+	public func getSupportedMeasurements(id: String) -> AnyPublisher<C8ySupportedMeasurements, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/supportedMeasurements")
 			.set(httpMethod: "get")
@@ -506,21 +460,12 @@ public class ManagedObjectsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8ySupportedMeasurements.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -543,7 +488,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func getSupportedSeries(id: String) -> AnyPublisher<C8ySupportedSeries, Swift.Error> {
+	public func getSupportedSeries(id: String) -> AnyPublisher<C8ySupportedSeries, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/supportedSeries")
 			.set(httpMethod: "get")
@@ -552,21 +497,12 @@ public class ManagedObjectsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8ySupportedSeries.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -589,7 +525,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func getManagedObjectUser(id: String) -> AnyPublisher<C8yManagedObjectUser, Swift.Error> {
+	public func getManagedObjectUser(id: String) -> AnyPublisher<C8yManagedObjectUser, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/user")
 			.set(httpMethod: "get")
@@ -598,21 +534,12 @@ public class ManagedObjectsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yManagedObjectUser.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -636,11 +563,16 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func updateManagedObjectUser(body: C8yManagedObjectUser, id: String) -> AnyPublisher<C8yManagedObjectUser, Swift.Error> {
+	public func updateManagedObjectUser(body: C8yManagedObjectUser, id: String) -> AnyPublisher<C8yManagedObjectUser, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.userName = nil
-		let encodedRequestBody = try? JSONEncoder().encode(requestBody)
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<C8yManagedObjectUser, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/user")
 			.set(httpMethod: "put")
@@ -651,21 +583,12 @@ public class ManagedObjectsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 404 else {
-				let decoder = JSONDecoder()
-				let error404 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error404)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yManagedObjectUser.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}

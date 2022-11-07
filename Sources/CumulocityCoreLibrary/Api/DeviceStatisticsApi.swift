@@ -74,7 +74,7 @@ public class DeviceStatisticsApi: AdaptableApi {
 	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getMonthlyDeviceStatistics(tenantId: String, date: Date, currentPage: Int? = nil, deviceId: String? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yDeviceStatisticsCollection, Swift.Error> {
+	public func getMonthlyDeviceStatistics(tenantId: String, date: Date, currentPage: Int? = nil, deviceId: String? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yDeviceStatisticsCollection, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
 		if let parameter = deviceId { queryItems.append(URLQueryItem(name: "deviceId", value: String(parameter))) }
@@ -89,19 +89,12 @@ public class DeviceStatisticsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 403 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Not authorized to perform this operation.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yDeviceStatisticsCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -134,7 +127,7 @@ public class DeviceStatisticsApi: AdaptableApi {
 	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getDailyDeviceStatistics(tenantId: String, date: Date, currentPage: Int? = nil, deviceId: String? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yDeviceStatisticsCollection, Swift.Error> {
+	public func getDailyDeviceStatistics(tenantId: String, date: Date, currentPage: Int? = nil, deviceId: String? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yDeviceStatisticsCollection, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
 		if let parameter = deviceId { queryItems.append(URLQueryItem(name: "deviceId", value: String(parameter))) }
@@ -149,19 +142,12 @@ public class DeviceStatisticsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try! decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			guard httpResponse.statusCode != 403 else {
-				throw Errors.badResponseError(response: httpResponse, reason: "Not authorized to perform this operation.")
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yDeviceStatisticsCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
