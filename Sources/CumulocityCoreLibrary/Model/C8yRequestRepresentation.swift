@@ -57,7 +57,16 @@ public struct C8yRequestRepresentation: Codable {
 	
 		/// It is possible to add an arbitrary number of headers as a list of key-value string pairs, for example, `"header": "value"`.
 		/// 
-		public var requestHeaders: [String: String]? = [:]
+		public var requestHeaders: [String: String] = [:]
+		
+		subscript(key: String) -> String? {
+		        get {
+		            return requestHeaders[key]
+		        }
+		        set(newValue) {
+		            requestHeaders[key] = newValue
+		        }
+		    }
 	
 		enum CodingKeys: String, CodingKey {
 			case requestHeaders
@@ -74,7 +83,16 @@ public struct C8yRequestRepresentation: Codable {
 	
 		/// It is possible to add an arbitrary number of parameters as a list of key-value string pairs, for example, `"parameter": "value"`.
 		/// 
-		public var requestParameters: [String: String]? = [:]
+		public var requestParameters: [String: String] = [:]
+		
+		subscript(key: String) -> String? {
+		        get {
+		            return requestParameters[key]
+		        }
+		        set(newValue) {
+		            requestParameters[key] = newValue
+		        }
+		    }
 	
 		enum CodingKeys: String, CodingKey {
 			case requestParameters

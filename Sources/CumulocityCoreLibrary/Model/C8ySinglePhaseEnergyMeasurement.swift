@@ -11,7 +11,16 @@ import Foundation
 /// Measurement of the single phase energy meter.
 public struct C8ySinglePhaseEnergyMeasurement: Codable {
 
-	public var additionalProperties: [String: C8yMeasurementValue]? = [:]
+	public var additionalProperties: [String: C8yMeasurementValue] = [:]
+	
+	subscript(key: String) -> C8yMeasurementValue? {
+	        get {
+	            return additionalProperties[key]
+	        }
+	        set(newValue) {
+	            additionalProperties[key] = newValue
+	        }
+	    }
 
 	enum CodingKeys: String, CodingKey {
 		case additionalProperties

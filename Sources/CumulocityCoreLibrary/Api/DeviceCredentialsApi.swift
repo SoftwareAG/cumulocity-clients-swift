@@ -36,32 +36,34 @@ public class DeviceCredentialsApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// - Parameters:
 	/// 	- body 
-	public func createDeviceCredentials(body: C8yDeviceCredentials) throws -> AnyPublisher<C8yDeviceCredentials, Swift.Error> {
+	public func createDeviceCredentials(body: C8yDeviceCredentials) -> AnyPublisher<C8yDeviceCredentials, Error> {
 		var requestBody = body
 		requestBody.password = nil
 		requestBody.tenantId = nil
 		requestBody.`self` = nil
 		requestBody.username = nil
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<C8yDeviceCredentials, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/deviceCredentials")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.devicecredentials+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.devicecredentials+json")
-			.set(httpBody: try JSONEncoder().encode(requestBody))
+			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yDeviceCredentials.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
@@ -141,9 +143,9 @@ public class DeviceCredentialsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- file 
 	///		  The CSV file to be uploaded.
-	public func createBulkDeviceCredentials(file: Data) throws -> AnyPublisher<C8yBulkNewDeviceRequest, Swift.Error> {
+	public func createBulkDeviceCredentials(file: Data) -> AnyPublisher<C8yBulkNewDeviceRequest, Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
-		try multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/csv");
+		try? multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/csv");
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/bulkNewDeviceRequests")
 			.set(httpMethod: "post")
@@ -155,16 +157,12 @@ public class DeviceCredentialsApi: AdaptableApi {
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
 			}
-			guard httpResponse.statusCode != 401 else {
-				let decoder = JSONDecoder()
-				let error401 = try decoder.decode(C8yError.self, from: element.data)
-				throw Errors.badResponseError(response: httpResponse, reason: error401)
-			}
-			// generic error fallback
 			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+				}
 				throw Errors.undescribedError(response: httpResponse)
 			}
-			
 			return element.data
 		}).decode(type: C8yBulkNewDeviceRequest.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}

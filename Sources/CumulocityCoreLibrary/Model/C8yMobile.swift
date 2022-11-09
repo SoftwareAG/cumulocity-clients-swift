@@ -22,7 +22,16 @@ public struct C8yMobile: Codable {
 
 	/// Other possible values are: `c8y_Mobile.imsi`, `c8y_Mobile.currentOperator`, `c8y_Mobile.currentBand`, `c8y_Mobile.connType`, `c8y_Mobile.rssi`, `c8y_Mobile.ecn0`, `c8y_Mobile.rcsp`, `c8y_Mobile.mnc`, `c8y_Mobile.lac` and `c8y_Mobile.msisdn`.
 	/// 
-	public var customFragments: [String: String]? = [:]
+	public var customFragments: [String: String] = [:]
+	
+	subscript(key: String) -> String? {
+	        get {
+	            return customFragments[key]
+	        }
+	        set(newValue) {
+	            customFragments[key] = newValue
+	        }
+	    }
 
 	enum CodingKeys: String, CodingKey {
 		case imei

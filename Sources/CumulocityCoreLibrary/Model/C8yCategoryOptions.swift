@@ -13,7 +13,7 @@ public struct C8yCategoryOptions: Codable {
 	public init(from decoder: Decoder) throws {
 		if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
 			for (typeName, decoder) in C8yCategoryOptions.decoders {
-				self.keyValuePairs?[typeName] = try? decoder(additionalContainer)
+				self.keyValuePairs[typeName] = try? decoder(additionalContainer)
 			}
 		}
 	}
@@ -21,14 +21,23 @@ public struct C8yCategoryOptions: Codable {
 	public func encode(to encoder: Encoder) throws {
 		var additionalContainer = encoder.container(keyedBy: JSONCodingKeys.self)
 		for (typeName, encoder) in C8yCategoryOptions.encoders {
-			if let property = self.keyValuePairs?[typeName] {
+			if let property = self.keyValuePairs[typeName] {
 				try encoder(property, &additionalContainer)
 			}
 		}
 	}
 
 	/// It is possible to specify an arbitrary number of existing options as a list of key-value pairs, for example, `"key1": "value1"`, `"key2": "value2"`.
-	public var keyValuePairs: [String: Any]? = [:]
+	public var keyValuePairs: [String: Any] = [:]
+	
+	subscript(key: String) -> Any? {
+	        get {
+	            return keyValuePairs[key]
+	        }
+	        set(newValue) {
+	            keyValuePairs[key] = newValue
+	        }
+	    }
 
 	enum CodingKeys: String, CodingKey {
 		case keyValuePairs

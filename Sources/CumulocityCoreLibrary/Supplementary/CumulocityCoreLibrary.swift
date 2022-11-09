@@ -193,7 +193,6 @@ extension Cumulocity {
 
 			private var factory: Core
 
-			public lazy var inventoryApi: InventoryApi = InventoryApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var managedObjectsApi: ManagedObjectsApi = ManagedObjectsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var binariesApi: BinariesApi = BinariesApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var childOperationsApi: ChildOperationsApi = ChildOperationsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)

@@ -30,7 +30,7 @@ public struct C8yManagedObject: Codable {
 		self.c8ySupportedOperations = try container.decodeIfPresent([String].self, forKey: .c8ySupportedOperations)
 		if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
 			for (typeName, decoder) in C8yManagedObject.decoders {
-				self.customFragments?[typeName] = try? decoder(additionalContainer)
+				self.customFragments[typeName] = try? decoder(additionalContainer)
 			}
 		}
 	}
@@ -55,7 +55,7 @@ public struct C8yManagedObject: Codable {
 		try container.encodeIfPresent(self.c8ySupportedOperations, forKey: .c8ySupportedOperations)
 		var additionalContainer = encoder.container(keyedBy: JSONCodingKeys.self)
 		for (typeName, encoder) in C8yManagedObject.encoders {
-			if let property = self.customFragments?[typeName] {
+			if let property = self.customFragments[typeName] {
 				try encoder(property, &additionalContainer)
 			}
 		}
@@ -113,7 +113,16 @@ public struct C8yManagedObject: Codable {
 	/// 
 	/// Review the [Naming conventions of fragments](https://cumulocity.com/guides/concepts/domain-model/#naming-conventions-of-fragments) as there are characters that can not be used when naming custom fragments.
 	/// 
-	public var customFragments: [String: Any]? = [:]
+	public var customFragments: [String: Any] = [:]
+	
+	subscript(key: String) -> Any? {
+	        get {
+	            return customFragments[key]
+	        }
+	        set(newValue) {
+	            customFragments[key] = newValue
+	        }
+	    }
 
 	enum CodingKeys: String, CodingKey {
 		case creationTime

@@ -16,7 +16,7 @@ public struct C8yCustomProperties: Codable {
 		self.language = try container.decodeIfPresent(String.self, forKey: .language)
 		if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
 			for (typeName, decoder) in C8yCustomProperties.decoders {
-				self.customProperties?[typeName] = try? decoder(additionalContainer)
+				self.customProperties[typeName] = try? decoder(additionalContainer)
 			}
 		}
 	}
@@ -26,7 +26,7 @@ public struct C8yCustomProperties: Codable {
 		try container.encodeIfPresent(self.language, forKey: .language)
 		var additionalContainer = encoder.container(keyedBy: JSONCodingKeys.self)
 		for (typeName, encoder) in C8yCustomProperties.encoders {
-			if let property = self.customProperties?[typeName] {
+			if let property = self.customProperties[typeName] {
 				try encoder(property, &additionalContainer)
 			}
 		}
@@ -37,7 +37,16 @@ public struct C8yCustomProperties: Codable {
 
 	/// It is possible to add an arbitrary number of custom properties as a list of key-value pairs, for example, `"property": "value"`.
 	/// 
-	public var customProperties: [String: Any]? = [:]
+	public var customProperties: [String: Any] = [:]
+	
+	subscript(key: String) -> Any? {
+	        get {
+	            return customProperties[key]
+	        }
+	        set(newValue) {
+	            customProperties[key] = newValue
+	        }
+	    }
 
 	enum CodingKeys: String, CodingKey {
 		case language
