@@ -30,7 +30,7 @@ public class BulkOperationsApiTest: XCTestCase {
 	public func testGetBulkOperations() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableBulkOperationsApi().getBulkOperations().sink(receiveCompletion: { completion in
+		TestableBulkOperationsApi().getBulkOperations().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
 			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in

@@ -30,7 +30,7 @@ public class AuditsApiTest: XCTestCase {
 	public func testGetAuditRecords() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableAuditsApi().getAuditRecords().sink(receiveCompletion: { completion in
+		TestableAuditsApi().getAuditRecords().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
 			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in

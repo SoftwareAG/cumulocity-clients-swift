@@ -30,7 +30,7 @@ public class SystemOptionsApiTest: XCTestCase {
 	public func testGetSystemOptions() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableSystemOptionsApi().getSystemOptions().sink(receiveCompletion: { completion in
+		TestableSystemOptionsApi().getSystemOptions().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
 			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in

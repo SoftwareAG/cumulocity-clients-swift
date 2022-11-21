@@ -75,13 +75,6 @@ public class AttachmentsApi: AdaptableApi {
 	/// 	- id 
 	///		  Unique identifier of the event.
 	public func replaceEventAttachment(body: Data, id: String) -> AnyPublisher<C8yEventBinary, Error> {
-		let requestBody = body
-		var encodedRequestBody: Data? = nil
-		do {
-			encodedRequestBody = try JSONEncoder().encode(requestBody)
-		} catch {
-			return Fail<C8yEventBinary, Error>(error: error).eraseToAnyPublisher()
-		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "put")
@@ -161,13 +154,6 @@ public class AttachmentsApi: AdaptableApi {
 	/// 	- id 
 	///		  Unique identifier of the event.
 	public func uploadEventAttachment(body: Data, id: String) -> AnyPublisher<C8yEventBinary, Error> {
-		let requestBody = body
-		var encodedRequestBody: Data? = nil
-		do {
-			encodedRequestBody = try JSONEncoder().encode(requestBody)
-		} catch {
-			return Fail<C8yEventBinary, Error>(error: error).eraseToAnyPublisher()
-		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "post")

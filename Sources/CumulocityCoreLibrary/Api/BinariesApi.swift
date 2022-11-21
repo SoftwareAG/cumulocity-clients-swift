@@ -183,13 +183,6 @@ public class BinariesApi: AdaptableApi {
 	/// 	- id 
 	///		  Unique identifier of the managed object.
 	public func replaceBinary(body: Data, id: String) -> AnyPublisher<C8yBinary, Error> {
-		let requestBody = body
-		var encodedRequestBody: Data? = nil
-		do {
-			encodedRequestBody = try JSONEncoder().encode(requestBody)
-		} catch {
-			return Fail<C8yBinary, Error>(error: error).eraseToAnyPublisher()
-		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/binaries/\(id)")
 			.set(httpMethod: "put")

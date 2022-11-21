@@ -30,7 +30,7 @@ public class RetentionRulesApiTest: XCTestCase {
 	public func testGetRetentionRules() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableRetentionRulesApi().getRetentionRules().sink(receiveCompletion: { completion in
+		TestableRetentionRulesApi().getRetentionRules().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
 			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in

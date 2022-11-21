@@ -30,7 +30,7 @@ public class CurrentApplicationApiTest: XCTestCase {
 	public func testGetCurrentApplication() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableCurrentApplicationApi().getCurrentApplication().sink(receiveCompletion: { completion in
+		TestableCurrentApplicationApi().getCurrentApplication().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
 			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
@@ -43,7 +43,7 @@ public class CurrentApplicationApiTest: XCTestCase {
 	public func testGetCurrentApplicationSettings() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableCurrentApplicationApi().getCurrentApplicationSettings().sink(receiveCompletion: { completion in
+		TestableCurrentApplicationApi().getCurrentApplicationSettings().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
 			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
@@ -56,7 +56,7 @@ public class CurrentApplicationApiTest: XCTestCase {
 	public func testGetSubscribedUsers() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableCurrentApplicationApi().getSubscribedUsers().sink(receiveCompletion: { completion in
+		TestableCurrentApplicationApi().getSubscribedUsers().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
 			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
