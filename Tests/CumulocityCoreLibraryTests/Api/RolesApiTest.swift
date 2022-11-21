@@ -32,7 +32,7 @@ public class RolesApiTest: XCTestCase {
 		var cancellables = Set<AnyCancellable>()
 		try? TestableRolesApi().getUserRoles().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)

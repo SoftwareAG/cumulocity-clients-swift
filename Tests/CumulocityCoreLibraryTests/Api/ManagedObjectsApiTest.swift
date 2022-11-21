@@ -32,7 +32,7 @@ public class ManagedObjectsApiTest: XCTestCase {
 		var cancellables = Set<AnyCancellable>()
 		try? TestableManagedObjectsApi().getManagedObjects().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)
@@ -45,7 +45,7 @@ public class ManagedObjectsApiTest: XCTestCase {
 		var cancellables = Set<AnyCancellable>()
 		try? TestableManagedObjectsApi().getNumberOfManagedObjects().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)

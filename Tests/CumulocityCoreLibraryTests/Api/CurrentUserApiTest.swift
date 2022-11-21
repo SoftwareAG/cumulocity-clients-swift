@@ -32,7 +32,7 @@ public class CurrentUserApiTest: XCTestCase {
 		var cancellables = Set<AnyCancellable>()
 		try? TestableCurrentUserApi().getCurrentUser().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)
@@ -45,7 +45,7 @@ public class CurrentUserApiTest: XCTestCase {
 		var cancellables = Set<AnyCancellable>()
 		try? TestableCurrentUserApi().getTfaState().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)

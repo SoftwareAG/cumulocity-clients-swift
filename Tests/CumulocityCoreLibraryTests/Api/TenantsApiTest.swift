@@ -32,7 +32,7 @@ public class TenantsApiTest: XCTestCase {
 		var cancellables = Set<AnyCancellable>()
 		try? TestableTenantsApi().getTenants().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)
@@ -45,7 +45,7 @@ public class TenantsApiTest: XCTestCase {
 		var cancellables = Set<AnyCancellable>()
 		try? TestableTenantsApi().getCurrentTenant().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)

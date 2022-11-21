@@ -51,9 +51,10 @@ public class InventoryRolesApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yInventoryRoleCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -98,9 +99,10 @@ public class InventoryRolesApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yInventoryRole.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -135,9 +137,14 @@ public class InventoryRolesApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					c8yError.httpResponse = httpResponse
+					throw c8yError
+				}
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yInventoryRole.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -186,9 +193,14 @@ public class InventoryRolesApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					c8yError.httpResponse = httpResponse
+					throw c8yError
+				}
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yInventoryRole.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -225,9 +237,14 @@ public class InventoryRolesApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					c8yError.httpResponse = httpResponse
+					throw c8yError
+				}
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).eraseToAnyPublisher()
@@ -266,9 +283,18 @@ public class InventoryRolesApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					c8yError.httpResponse = httpResponse
+					throw c8yError
+				}
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					c8yError.httpResponse = httpResponse
+					throw c8yError
+				}
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yInventoryAssignmentCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -321,9 +347,18 @@ public class InventoryRolesApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					c8yError.httpResponse = httpResponse
+					throw c8yError
+				}
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					c8yError.httpResponse = httpResponse
+					throw c8yError
+				}
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yInventoryAssignment.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -364,9 +399,18 @@ public class InventoryRolesApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					c8yError.httpResponse = httpResponse
+					throw c8yError
+				}
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					c8yError.httpResponse = httpResponse
+					throw c8yError
+				}
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yInventoryAssignment.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -419,9 +463,18 @@ public class InventoryRolesApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					c8yError.httpResponse = httpResponse
+					throw c8yError
+				}
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					c8yError.httpResponse = httpResponse
+					throw c8yError
+				}
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yInventoryAssignment.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -462,9 +515,14 @@ public class InventoryRolesApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					c8yError.httpResponse = httpResponse
+					throw c8yError
+				}
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).eraseToAnyPublisher()
