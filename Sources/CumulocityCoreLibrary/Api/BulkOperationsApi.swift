@@ -155,10 +155,6 @@ public class BulkOperationsApi: AdaptableApi {
 					c8yError.httpResponse = httpResponse
 					throw c8yError
 				}
-				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					c8yError.httpResponse = httpResponse
-					throw c8yError
-				}
 				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
@@ -213,10 +209,6 @@ public class BulkOperationsApi: AdaptableApi {
 					c8yError.httpResponse = httpResponse
 					throw c8yError
 				}
-				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					c8yError.httpResponse = httpResponse
-					throw c8yError
-				}
 				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
@@ -253,10 +245,6 @@ public class BulkOperationsApi: AdaptableApi {
 				throw URLError(.badServerResponse)
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
-				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					c8yError.httpResponse = httpResponse
-					throw c8yError
-				}
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
 					c8yError.httpResponse = httpResponse
 					throw c8yError
