@@ -146,7 +146,7 @@ public class DeviceCredentialsApi: AdaptableApi {
 	///		  The CSV file to be uploaded.
 	public func createBulkDeviceCredentials(file: Data) -> AnyPublisher<C8yBulkNewDeviceRequest, Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
-		try? multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/csv");
+		multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/csv");
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/bulkNewDeviceRequests")
 			.set(httpMethod: "post")

@@ -80,7 +80,7 @@ public class ApplicationBinariesApi: AdaptableApi {
 	///		  Unique identifier of the application.
 	public func uploadApplicationAttachment(file: Data, id: String) -> AnyPublisher<C8yApplication, Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
-		try? multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "application/zip");
+		multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "application/zip");
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/binaries")
 			.set(httpMethod: "post")

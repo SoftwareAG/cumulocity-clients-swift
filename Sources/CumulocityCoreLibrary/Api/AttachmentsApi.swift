@@ -224,8 +224,12 @@ public class AttachmentsApi: AdaptableApi {
 	///		  Unique identifier of the event.
 	public func uploadEventAttachment(`object`: C8yBinaryInfo, file: Data, id: String) -> AnyPublisher<C8yEventBinary, Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
-		try? multipartBuilder.addBodyPart(named: "object", data: `object`, mimeType: "application/json");
-		try? multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/plain");
+		do {
+			try multipartBuilder.addBodyPart(named: "object", codable: `object`, mimeType: "application/json");
+		} catch {
+			return Fail<C8yEventBinary, Error>(error: error).eraseToAnyPublisher()
+		}
+		multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/plain");
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "post")

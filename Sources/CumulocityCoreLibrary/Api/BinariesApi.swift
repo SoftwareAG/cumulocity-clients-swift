@@ -105,8 +105,12 @@ public class BinariesApi: AdaptableApi {
 	///		  Path of the file to be uploaded.
 	public func uploadBinary(`object`: C8yBinaryInfo, file: Data) -> AnyPublisher<C8yBinary, Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
-		try? multipartBuilder.addBodyPart(named: "object", data: `object`, mimeType: "application/json");
-		try? multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/plain");
+		do {
+			try multipartBuilder.addBodyPart(named: "object", codable: `object`, mimeType: "application/json");
+		} catch {
+			return Fail<C8yBinary, Error>(error: error).eraseToAnyPublisher()
+		}
+		multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/plain");
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/binaries")
 			.set(httpMethod: "post")

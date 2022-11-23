@@ -18,7 +18,7 @@ class MultipartFormDataBuilder {
         contentType = "multipart/form-data; boundary=\(boundary)"
     }
 
-    func addBodyPart(named name: String, data: Data, mimeType: String) throws {
+    func addBodyPart(named name: String, data: Data, mimeType: String) {
         let lineBreak = "\r\n"
         let boundaryPrefix = "--\(boundary)\(lineBreak)"
         httpBody.append(boundaryPrefix)
@@ -28,8 +28,8 @@ class MultipartFormDataBuilder {
         httpBody.append("\(lineBreak)")
     }
 
-	func addBodyPart<C: Codable>(named name: String, data: C, mimeType: String) throws {
-		try self.addBodyPart(named: name, data: try JSONEncoder().encode(data), mimeType: mimeType)
+	func addBodyPart<C: Codable>(named name: String, codable: C, mimeType: String) throws {
+		self.addBodyPart(named: name, data: try JSONEncoder().encode(codable), mimeType: mimeType)
 	}
 
     public func build() -> Data {
