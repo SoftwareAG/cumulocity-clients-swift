@@ -110,7 +110,9 @@ public class ApplicationsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createApplication(body: C8yApplication) -> AnyPublisher<C8yApplication, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createApplication(body: C8yApplication, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yApplication, Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.activeVersionId = nil
@@ -126,6 +128,7 @@ public class ApplicationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.application+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.application+json")
 			.set(httpBody: encodedRequestBody)
@@ -201,7 +204,9 @@ public class ApplicationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the application.
-	public func updateApplication(body: C8yApplication, id: String) -> AnyPublisher<C8yApplication, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func updateApplication(body: C8yApplication, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yApplication, Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.activeVersionId = nil
@@ -218,6 +223,7 @@ public class ApplicationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)")
 			.set(httpMethod: "put")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.application+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.application+json")
 			.set(httpBody: encodedRequestBody)
@@ -261,12 +267,15 @@ public class ApplicationsApi: AdaptableApi {
 	///		  Unique identifier of the application.
 	/// 	- force 
 	///		  Force deletion by unsubscribing all tenants from the application first and then deleting the application itself.
-	public func deleteApplication(id: String, force: Bool? = nil) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func deleteApplication(id: String, force: Bool? = nil, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = force { queryItems.append(URLQueryItem(name: "force", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 			.set(queryItems: queryItems)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -309,10 +318,13 @@ public class ApplicationsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the application.
-	public func copyApplication(id: String) -> AnyPublisher<C8yApplication, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func copyApplication(id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yApplication, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/clone")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.application+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

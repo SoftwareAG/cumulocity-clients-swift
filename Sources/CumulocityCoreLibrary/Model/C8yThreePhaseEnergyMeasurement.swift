@@ -13,7 +13,7 @@ public struct C8yThreePhaseEnergyMeasurement: Codable {
 
 	public var additionalProperties: [String: C8yMeasurementValue] = [:]
 	
-	subscript(key: String) -> C8yMeasurementValue? {
+	public subscript(key: String) -> C8yMeasurementValue? {
 	        get {
 	            return additionalProperties[key]
 	        }

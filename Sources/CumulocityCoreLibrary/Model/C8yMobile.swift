@@ -24,7 +24,7 @@ public struct C8yMobile: Codable {
 	/// 
 	public var customFragments: [String: String] = [:]
 	
-	subscript(key: String) -> String? {
+	public subscript(key: String) -> String? {
 	        get {
 	            return customFragments[key]
 	        }

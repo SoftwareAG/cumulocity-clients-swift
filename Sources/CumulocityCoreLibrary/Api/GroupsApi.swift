@@ -92,7 +92,9 @@ public class GroupsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func createUserGroup(body: C8yGroup, tenantId: String) -> AnyPublisher<C8yGroup, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createUserGroup(body: C8yGroup, tenantId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yGroup, Error> {
 		var requestBody = body
 		requestBody.roles = nil
 		requestBody.`self` = nil
@@ -109,6 +111,7 @@ public class GroupsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/groups")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.group+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.group+json")
 			.set(httpBody: encodedRequestBody)
@@ -194,7 +197,9 @@ public class GroupsApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- groupId 
 	///		  Unique identifier of the user group.
-	public func updateUserGroup(body: C8yGroup, tenantId: String, groupId: Int) -> AnyPublisher<C8yGroup, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func updateUserGroup(body: C8yGroup, tenantId: String, groupId: Int, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yGroup, Error> {
 		var requestBody = body
 		requestBody.roles = nil
 		requestBody.`self` = nil
@@ -211,6 +216,7 @@ public class GroupsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)")
 			.set(httpMethod: "put")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.group+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.group+json")
 			.set(httpBody: encodedRequestBody)
@@ -251,10 +257,13 @@ public class GroupsApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- groupId 
 	///		  Unique identifier of the user group.
-	public func deleteUserGroup(tenantId: String, groupId: Int) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func deleteUserGroup(tenantId: String, groupId: Int, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

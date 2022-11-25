@@ -75,7 +75,7 @@ public struct C8yEvent: Codable {
 	/// 
 	public var customFragments: [String: Any] = [:]
 	
-	subscript(key: String) -> Any? {
+	public subscript(key: String) -> Any? {
 	        get {
 	            return customFragments[key]
 	        }

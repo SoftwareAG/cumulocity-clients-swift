@@ -138,7 +138,9 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createManagedObject(body: C8yManagedObject) -> AnyPublisher<C8yManagedObject, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createManagedObject(body: C8yManagedObject, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yManagedObject, Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.additionParents = nil
@@ -160,6 +162,7 @@ public class ManagedObjectsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobject+json")
 			.set(httpBody: encodedRequestBody)
@@ -311,7 +314,9 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func updateManagedObject(body: C8yManagedObject, id: String) -> AnyPublisher<C8yManagedObject, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func updateManagedObject(body: C8yManagedObject, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yManagedObject, Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.additionParents = nil
@@ -333,6 +338,7 @@ public class ManagedObjectsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)")
 			.set(httpMethod: "put")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobject+json")
 			.set(httpBody: encodedRequestBody)
@@ -373,13 +379,15 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the managed object.
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	/// 	- cascade 
 	///		  When set to `true` and the managed object is a device or group, all the hierarchy will be deleted.
 	/// 	- forceCascade 
 	///		  When set to `true` all the hierarchy will be deleted without checking the type of managed object. It takes precedence over the parameter `cascade`.
 	/// 	- withDeviceUser 
 	///		  When set to `true` and the managed object is a device, it deletes the associated device user (credentials).
-	public func deleteManagedObject(id: String, cascade: Bool? = nil, forceCascade: Bool? = nil, withDeviceUser: Bool? = nil) -> AnyPublisher<Data, Error> {
+	public func deleteManagedObject(id: String, xCumulocityProcessingMode: String? = nil, cascade: Bool? = nil, forceCascade: Bool? = nil, withDeviceUser: Bool? = nil) -> AnyPublisher<Data, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = cascade { queryItems.append(URLQueryItem(name: "cascade", value: String(parameter))) }
 		if let parameter = forceCascade { queryItems.append(URLQueryItem(name: "forceCascade", value: String(parameter))) }
@@ -387,6 +395,7 @@ public class ManagedObjectsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 			.set(queryItems: queryItems)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -575,7 +584,9 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func updateManagedObjectUser(body: C8yManagedObjectUser, id: String) -> AnyPublisher<C8yManagedObjectUser, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func updateManagedObjectUser(body: C8yManagedObjectUser, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yManagedObjectUser, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.userName = nil
@@ -588,6 +599,7 @@ public class ManagedObjectsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/user")
 			.set(httpMethod: "put")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectuser+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.managedobjectuser+json, application/vnd.com.nsn.cumulocity.error+json")
 			.set(httpBody: encodedRequestBody)

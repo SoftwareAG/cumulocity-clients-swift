@@ -77,7 +77,9 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createInventoryRole(body: C8yInventoryRole) -> AnyPublisher<C8yInventoryRole, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createInventoryRole(body: C8yInventoryRole, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yInventoryRole, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -90,6 +92,7 @@ public class InventoryRolesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/inventoryroles")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.inventoryrole+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.inventoryrole+json, application/vnd.com.nsn.cumulocity.error+json")
 			.set(httpBody: encodedRequestBody)
@@ -167,7 +170,9 @@ public class InventoryRolesApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the inventory role.
-	public func updateInventoryRole(body: C8yInventoryRole, id: Int) -> AnyPublisher<C8yInventoryRole, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func updateInventoryRole(body: C8yInventoryRole, id: Int, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yInventoryRole, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -180,6 +185,7 @@ public class InventoryRolesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/inventoryroles/\(id)")
 			.set(httpMethod: "put")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.inventoryrole+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.inventoryrole+json, application/vnd.com.nsn.cumulocity.error+json")
 			.set(httpBody: encodedRequestBody)
@@ -218,10 +224,13 @@ public class InventoryRolesApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the inventory role.
-	public func deleteInventoryRole(id: Int) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func deleteInventoryRole(id: Int, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/inventoryroles/\(id)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -305,7 +314,9 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- userId 
 	///		  Unique identifier of the a user.
-	public func assignUserInventoryRole(body: C8yInventoryAssignment, tenantId: String, userId: String) -> AnyPublisher<C8yInventoryAssignment, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func assignUserInventoryRole(body: C8yInventoryAssignment, tenantId: String, userId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yInventoryAssignment, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -318,6 +329,7 @@ public class InventoryRolesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.inventoryassignment+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.inventoryassignment+json")
 			.set(httpBody: encodedRequestBody)
@@ -407,7 +419,9 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unique identifier of the a user.
 	/// 	- id 
 	///		  Unique identifier of the inventory assignment.
-	public func updateUserInventoryRole(body: C8yInventoryAssignmentReference, tenantId: String, userId: String, id: Int) -> AnyPublisher<C8yInventoryAssignment, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func updateUserInventoryRole(body: C8yInventoryAssignmentReference, tenantId: String, userId: String, id: Int, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yInventoryAssignment, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -418,6 +432,7 @@ public class InventoryRolesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory/\(id)")
 			.set(httpMethod: "put")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.inventoryassignment+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.inventoryassignment+json")
 			.set(httpBody: encodedRequestBody)
@@ -460,10 +475,13 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unique identifier of the a user.
 	/// 	- id 
 	///		  Unique identifier of the inventory assignment.
-	public func unassignUserInventoryRole(tenantId: String, userId: String, id: Int) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func unassignUserInventoryRole(tenantId: String, userId: String, id: Int, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory/\(id)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

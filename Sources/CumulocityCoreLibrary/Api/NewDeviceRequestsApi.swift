@@ -80,7 +80,9 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createNewDeviceRequest(body: C8yNewDeviceRequest) -> AnyPublisher<C8yNewDeviceRequest, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createNewDeviceRequest(body: C8yNewDeviceRequest, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yNewDeviceRequest, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.status = nil
@@ -93,6 +95,7 @@ public class NewDeviceRequestsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/newDeviceRequests")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.newdevicerequest+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.newdevicerequest+json, application/vnd.com.nsn.cumulocity.error+json")
 			.set(httpBody: encodedRequestBody)
@@ -169,7 +172,9 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- requestId 
 	///		  Unique identifier of the new device request.
-	public func updateNewDeviceRequest(body: C8yNewDeviceRequest, requestId: String) -> AnyPublisher<C8yNewDeviceRequest, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func updateNewDeviceRequest(body: C8yNewDeviceRequest, requestId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yNewDeviceRequest, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -182,6 +187,7 @@ public class NewDeviceRequestsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/newDeviceRequests/\(requestId)")
 			.set(httpMethod: "put")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.newdevicerequest+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.newdevicerequest+json, application/vnd.com.nsn.cumulocity.error+json")
 			.set(httpBody: encodedRequestBody)
@@ -220,10 +226,13 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- requestId 
 	///		  Unique identifier of the new device request.
-	public func deleteNewDeviceRequest(requestId: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func deleteNewDeviceRequest(requestId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/newDeviceRequests/\(requestId)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

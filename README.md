@@ -77,8 +77,6 @@ C8yAlarm.registerAdditionalProperty<C: Codable>(typeName: String, for type: C.Ty
 
 Each of the extensible objects contains a dictionary object holding instances of custom fragments. Use the custom fragment's key to access it's value.
 
-In addition, developers may create subclasses. The client implementation respects subclassing by using generic type arguments.
-
 ### Working with errors
 
 Use `sink(receiveCompletion:receiveValue:)` to observe values received by the publisher and process them using a closure you specify. HTTP error codes will be forwarded and can be accessed using a completion handler.

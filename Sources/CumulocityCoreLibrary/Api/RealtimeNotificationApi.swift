@@ -227,7 +227,9 @@ public class RealtimeNotificationApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// - Parameters:
 	/// 	- body 
-	public func createRealtimeNotification(body: C8yRealtimeNotification) -> AnyPublisher<C8yRealtimeNotification, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createRealtimeNotification(body: C8yRealtimeNotification, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yRealtimeNotification, Error> {
 		var requestBody = body
 		requestBody.clientId = nil
 		requestBody.data = nil
@@ -242,6 +244,7 @@ public class RealtimeNotificationApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification/realtime")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 			.set(httpBody: encodedRequestBody)

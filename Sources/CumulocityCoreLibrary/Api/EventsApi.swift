@@ -129,7 +129,9 @@ public class EventsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createEvent(body: C8yEvent) -> AnyPublisher<C8yEvent, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createEvent(body: C8yEvent, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yEvent, Error> {
 		var requestBody = body
 		requestBody.lastUpdated = nil
 		requestBody.creationTime = nil
@@ -145,6 +147,7 @@ public class EventsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.event+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.event+json")
 			.set(httpBody: encodedRequestBody)
@@ -183,6 +186,8 @@ public class EventsApi: AdaptableApi {
 	/// 	- 403
 	///		  Not authorized to perform this operation.
 	/// - Parameters:
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	/// 	- createdFrom 
 	///		  Start date or date and time of the event's creation (set by the platform during creation).
 	/// 	- createdTo 
@@ -197,7 +202,7 @@ public class EventsApi: AdaptableApi {
 	///		  The managed object ID to which the event is associated.
 	/// 	- type 
 	///		  The type of event to search for.
-	public func deleteEvents(createdFrom: String? = nil, createdTo: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, source: String? = nil, type: String? = nil) -> AnyPublisher<Data, Error> {
+	public func deleteEvents(xCumulocityProcessingMode: String? = nil, createdFrom: String? = nil, createdTo: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, source: String? = nil, type: String? = nil) -> AnyPublisher<Data, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = createdFrom { queryItems.append(URLQueryItem(name: "createdFrom", value: String(parameter))) }
 		if let parameter = createdTo { queryItems.append(URLQueryItem(name: "createdTo", value: String(parameter))) }
@@ -209,6 +214,7 @@ public class EventsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 			.set(queryItems: queryItems)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -285,7 +291,9 @@ public class EventsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the event.
-	public func updateEvent(body: C8yEvent, id: String) -> AnyPublisher<C8yEvent, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func updateEvent(body: C8yEvent, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yEvent, Error> {
 		var requestBody = body
 		requestBody.lastUpdated = nil
 		requestBody.creationTime = nil
@@ -303,6 +311,7 @@ public class EventsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)")
 			.set(httpMethod: "put")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.event+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.event+json")
 			.set(httpBody: encodedRequestBody)
@@ -341,10 +350,13 @@ public class EventsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the event.
-	public func deleteEvent(id: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func deleteEvent(id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events/\(id)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

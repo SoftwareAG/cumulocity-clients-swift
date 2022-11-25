@@ -109,7 +109,9 @@ public class OptionsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createOption(body: C8yOption) -> AnyPublisher<C8yOption, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createOption(body: C8yOption, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yOption, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		var encodedRequestBody: Data? = nil
@@ -121,6 +123,7 @@ public class OptionsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/options")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.option+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.option+json")
 			.set(httpBody: encodedRequestBody)
@@ -194,7 +197,9 @@ public class OptionsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- category 
 	///		  The category of the options.
-	public func updateOptionsByCategory(body: C8yCategoryOptions, category: String) -> AnyPublisher<C8yCategoryOptions, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func updateOptionsByCategory(body: C8yCategoryOptions, category: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yCategoryOptions, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -205,6 +210,7 @@ public class OptionsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/options/\(category)")
 			.set(httpMethod: "put")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.option+json")
 			.set(httpBody: encodedRequestBody)
@@ -286,7 +292,9 @@ public class OptionsApi: AdaptableApi {
 	///		  The category of the options.
 	/// 	- key 
 	///		  The key of an option.
-	public func updateOption(body: C8yCategoryKeyOption, category: String, key: String) -> AnyPublisher<C8yOption, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func updateOption(body: C8yCategoryKeyOption, category: String, key: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yOption, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -297,6 +305,7 @@ public class OptionsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/options/\(category)/\(key)")
 			.set(httpMethod: "put")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.option+json")
 			.set(httpBody: encodedRequestBody)
@@ -335,10 +344,13 @@ public class OptionsApi: AdaptableApi {
 	///		  The category of the options.
 	/// 	- key 
 	///		  The key of an option.
-	public func deleteOption(category: String, key: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func deleteOption(category: String, key: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/options/\(category)/\(key)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

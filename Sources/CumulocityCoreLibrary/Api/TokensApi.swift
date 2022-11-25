@@ -37,7 +37,9 @@ public class TokensApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createToken(body: C8yNotificationTokenClaims) -> AnyPublisher<C8yNotificationToken, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createToken(body: C8yNotificationTokenClaims, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yNotificationToken, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -48,6 +50,7 @@ public class TokensApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/token")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 			.set(httpBody: encodedRequestBody)

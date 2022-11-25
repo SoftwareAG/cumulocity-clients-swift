@@ -126,7 +126,9 @@ public class MeasurementsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createMeasurement(body: C8yMeasurement) -> AnyPublisher<C8yMeasurement, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createMeasurement(body: C8yMeasurement, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yMeasurement, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -140,6 +142,7 @@ public class MeasurementsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement/measurements")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.measurement+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.measurement+json, application/vnd.com.nsn.cumulocity.measurementcollection+json")
 			.set(httpBody: encodedRequestBody)
@@ -194,7 +197,9 @@ public class MeasurementsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createMeasurement(body: C8yMeasurementCollection) -> AnyPublisher<C8yMeasurementCollection, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createMeasurement(body: C8yMeasurementCollection, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yMeasurementCollection, Error> {
 		var requestBody = body
 		requestBody.next = nil
 		requestBody.prev = nil
@@ -209,6 +214,7 @@ public class MeasurementsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement/measurements")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.measurementcollection+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.measurement+json, application/vnd.com.nsn.cumulocity.measurementcollection+json")
 			.set(httpBody: encodedRequestBody)
@@ -247,6 +253,8 @@ public class MeasurementsApi: AdaptableApi {
 	/// 	- 403
 	///		  Not authorized to perform this operation.
 	/// - Parameters:
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	/// 	- dateFrom 
 	///		  Start date or date and time of the measurement.
 	/// 	- dateTo 
@@ -257,7 +265,7 @@ public class MeasurementsApi: AdaptableApi {
 	///		  The managed object ID to which the measurement is associated.
 	/// 	- type 
 	///		  The type of measurement to search for.
-	public func deleteMeasurements(dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, source: String? = nil, type: String? = nil) -> AnyPublisher<Data, Error> {
+	public func deleteMeasurements(xCumulocityProcessingMode: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, source: String? = nil, type: String? = nil) -> AnyPublisher<Data, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
 		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
@@ -267,6 +275,7 @@ public class MeasurementsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement/measurements")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 			.set(queryItems: queryItems)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -342,10 +351,13 @@ public class MeasurementsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the measurement.
-	public func deleteMeasurement(id: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func deleteMeasurement(id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement/measurements/\(id)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

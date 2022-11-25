@@ -72,7 +72,9 @@ public class LoginOptionsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createLoginOption(body: C8yAuthConfig) -> AnyPublisher<C8yAuthConfig, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createLoginOption(body: C8yAuthConfig, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yAuthConfig, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		var encodedRequestBody: Data? = nil
@@ -84,6 +86,7 @@ public class LoginOptionsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/loginOptions")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.authconfig+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.authconfig+json")
 			.set(httpBody: encodedRequestBody)

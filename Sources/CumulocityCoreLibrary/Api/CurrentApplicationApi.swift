@@ -68,8 +68,10 @@ public class CurrentApplicationApi: AdaptableApi {
 	///		  Not enough permissions/roles to perform this operation.
 	/// - Parameters:
 	/// 	- body 
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	@available(*, deprecated)
-	public func updateCurrentApplication(body: C8yApplication) -> AnyPublisher<C8yApplication, Error> {
+	public func updateCurrentApplication(body: C8yApplication, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yApplication, Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.activeVersionId = nil
@@ -85,6 +87,7 @@ public class CurrentApplicationApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/currentApplication")
 			.set(httpMethod: "put")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.application+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.application+json")
 			.set(httpBody: encodedRequestBody)
