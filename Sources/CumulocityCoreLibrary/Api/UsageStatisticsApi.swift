@@ -280,7 +280,9 @@ public class UsageStatisticsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func generateStatisticsFile(body: C8yRangeStatisticsFile) -> AnyPublisher<C8yStatisticsFile, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func generateStatisticsFile(body: C8yRangeStatisticsFile, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yStatisticsFile, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -291,6 +293,7 @@ public class UsageStatisticsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/statistics/files")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.tenantstatisticsdate+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenantstatisticsfile+json")
 			.set(httpBody: encodedRequestBody)

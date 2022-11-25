@@ -101,7 +101,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func assignAsChildAddition(body: C8yChildOperationsAddOne, id: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func assignAsChildAddition(body: C8yChildOperationsAddOne, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -112,6 +114,7 @@ public class ChildOperationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: encodedRequestBody)
@@ -153,7 +156,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func assignAsChildAddition(body: C8yChildOperationsAddMultiple, id: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func assignAsChildAddition(body: C8yChildOperationsAddMultiple, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -164,6 +169,7 @@ public class ChildOperationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: encodedRequestBody)
@@ -205,7 +211,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func assignAsChildAddition(body: C8yManagedObject, id: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func assignAsChildAddition(body: C8yManagedObject, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.additionParents = nil
@@ -227,6 +235,7 @@ public class ChildOperationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: encodedRequestBody)
@@ -266,7 +275,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func unassignChildAdditions(body: C8yChildOperationsAddMultiple, id: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func unassignChildAdditions(body: C8yChildOperationsAddMultiple, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -277,6 +288,7 @@ public class ChildOperationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: encodedRequestBody)
@@ -359,10 +371,13 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	/// 	- childId 
 	///		  Unique identifier of the child object.
-	public func unassignChildAddition(id: String, childId: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func unassignChildAddition(id: String, childId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions/\(childId)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -465,7 +480,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func assignAsChildAsset(body: C8yChildOperationsAddOne, id: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func assignAsChildAsset(body: C8yChildOperationsAddOne, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -476,6 +493,7 @@ public class ChildOperationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: encodedRequestBody)
@@ -517,7 +535,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func assignAsChildAsset(body: C8yChildOperationsAddMultiple, id: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func assignAsChildAsset(body: C8yChildOperationsAddMultiple, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -528,6 +548,7 @@ public class ChildOperationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: encodedRequestBody)
@@ -569,7 +590,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func assignAsChildAsset(body: C8yManagedObject, id: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func assignAsChildAsset(body: C8yManagedObject, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.additionParents = nil
@@ -591,6 +614,7 @@ public class ChildOperationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: encodedRequestBody)
@@ -630,7 +654,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func unassignChildAssets(body: C8yChildOperationsAddMultiple, id: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func unassignChildAssets(body: C8yChildOperationsAddMultiple, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -641,6 +667,7 @@ public class ChildOperationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: encodedRequestBody)
@@ -723,10 +750,13 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	/// 	- childId 
 	///		  Unique identifier of the child object.
-	public func unassignChildAsset(id: String, childId: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func unassignChildAsset(id: String, childId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets/\(childId)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -829,7 +859,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func assignAsChildDevice(body: C8yChildOperationsAddOne, id: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func assignAsChildDevice(body: C8yChildOperationsAddOne, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -840,6 +872,7 @@ public class ChildOperationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: encodedRequestBody)
@@ -881,7 +914,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func assignAsChildDevice(body: C8yChildOperationsAddMultiple, id: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func assignAsChildDevice(body: C8yChildOperationsAddMultiple, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -892,6 +927,7 @@ public class ChildOperationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: encodedRequestBody)
@@ -933,7 +969,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func assignAsChildDevice(body: C8yManagedObject, id: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func assignAsChildDevice(body: C8yManagedObject, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		var requestBody = body
 		requestBody.owner = nil
 		requestBody.additionParents = nil
@@ -955,6 +993,7 @@ public class ChildOperationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: encodedRequestBody)
@@ -994,7 +1033,9 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func unassignChildDevices(body: C8yChildOperationsAddMultiple, id: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func unassignChildDevices(body: C8yChildOperationsAddMultiple, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -1005,6 +1046,7 @@ public class ChildOperationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: encodedRequestBody)
@@ -1087,10 +1129,13 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	/// 	- childId 
 	///		  Unique identifier of the child object.
-	public func unassignChildDevice(id: String, childId: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func unassignChildDevice(id: String, childId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices/\(childId)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

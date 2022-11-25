@@ -112,7 +112,9 @@ public class OperationsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createOperation(body: C8yOperation) -> AnyPublisher<C8yOperation, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createOperation(body: C8yOperation, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yOperation, Error> {
 		var requestBody = body
 		requestBody.creationTime = nil
 		requestBody.deviceExternalIDs?.`self` = nil
@@ -130,6 +132,7 @@ public class OperationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/operations")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.operation+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.operation+json")
 			.set(httpBody: encodedRequestBody)
@@ -166,6 +169,8 @@ public class OperationsApi: AdaptableApi {
 	/// 	- 403
 	///		  Not authorized to perform this operation.
 	/// - Parameters:
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	/// 	- agentId 
 	///		  An agent ID that may be part of the operation.
 	/// 	- dateFrom 
@@ -176,7 +181,7 @@ public class OperationsApi: AdaptableApi {
 	///		  The ID of the device the operation is performed for.
 	/// 	- status 
 	///		  Status of the operation.
-	public func deleteOperations(agentId: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, deviceId: String? = nil, status: String? = nil) -> AnyPublisher<Data, Error> {
+	public func deleteOperations(xCumulocityProcessingMode: String? = nil, agentId: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, deviceId: String? = nil, status: String? = nil) -> AnyPublisher<Data, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = agentId { queryItems.append(URLQueryItem(name: "agentId", value: String(parameter))) }
 		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
@@ -186,6 +191,7 @@ public class OperationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/operations")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 			.set(queryItems: queryItems)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -263,7 +269,9 @@ public class OperationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the operation.
-	public func updateOperation(body: C8yOperation, id: String) -> AnyPublisher<C8yOperation, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func updateOperation(body: C8yOperation, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yOperation, Error> {
 		var requestBody = body
 		requestBody.creationTime = nil
 		requestBody.deviceExternalIDs?.`self` = nil
@@ -281,6 +289,7 @@ public class OperationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/operations/\(id)")
 			.set(httpMethod: "put")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.operation+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.operation+json")
 			.set(httpBody: encodedRequestBody)

@@ -36,7 +36,9 @@ public class DeviceCredentialsApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// - Parameters:
 	/// 	- body 
-	public func createDeviceCredentials(body: C8yDeviceCredentials) -> AnyPublisher<C8yDeviceCredentials, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createDeviceCredentials(body: C8yDeviceCredentials, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yDeviceCredentials, Error> {
 		var requestBody = body
 		requestBody.password = nil
 		requestBody.tenantId = nil
@@ -51,6 +53,7 @@ public class DeviceCredentialsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/deviceCredentials")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.devicecredentials+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.devicecredentials+json")
 			.set(httpBody: encodedRequestBody)
@@ -144,12 +147,15 @@ public class DeviceCredentialsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- file 
 	///		  The CSV file to be uploaded.
-	public func createBulkDeviceCredentials(file: Data) -> AnyPublisher<C8yBulkNewDeviceRequest, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createBulkDeviceCredentials(file: Data, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yBulkNewDeviceRequest, Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
 		multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/csv");
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/bulkNewDeviceRequests")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "multipart/form-data")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.bulknewdevicerequest+json")
 			.add(header: "Content-Type", value: multipartBuilder.contentType)

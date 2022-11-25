@@ -130,6 +130,8 @@ public class AlarmsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	/// 	- createdFrom 
 	///		  Start date or date and time of the alarm creation.
 	/// 	- createdTo 
@@ -150,7 +152,7 @@ public class AlarmsApi: AdaptableApi {
 	///		  When set to `true` also alarms for related source assets will be included in the request. When this parameter is provided a `source` must be specified.
 	/// 	- withSourceDevices 
 	///		  When set to `true` also alarms for related source devices will be included in the request. When this parameter is provided a `source` must be specified.
-	public func updateAlarms(body: C8yAlarm, createdFrom: String? = nil, createdTo: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, resolved: Bool? = nil, severity: String? = nil, source: String? = nil, status: String? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil) -> AnyPublisher<Data, Error> {
+	public func updateAlarms(body: C8yAlarm, xCumulocityProcessingMode: String? = nil, createdFrom: String? = nil, createdTo: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, resolved: Bool? = nil, severity: String? = nil, source: String? = nil, status: String? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil) -> AnyPublisher<Data, Error> {
 		var requestBody = body
 		requestBody.firstOccurrenceTime = nil
 		requestBody.severity = nil
@@ -183,6 +185,7 @@ public class AlarmsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/alarm/alarms")
 			.set(httpMethod: "put")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.alarm+json")
 			.add(header: "Accept", value: "application/json")
 			.set(queryItems: queryItems)
@@ -242,7 +245,9 @@ public class AlarmsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createAlarm(body: C8yAlarm) -> AnyPublisher<C8yAlarm, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createAlarm(body: C8yAlarm, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yAlarm, Error> {
 		var requestBody = body
 		requestBody.firstOccurrenceTime = nil
 		requestBody.lastUpdated = nil
@@ -260,6 +265,7 @@ public class AlarmsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/alarm/alarms")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.alarm+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.alarm+json")
 			.set(httpBody: encodedRequestBody)
@@ -297,6 +303,8 @@ public class AlarmsApi: AdaptableApi {
 	/// 	- 403
 	///		  Not authorized to perform this operation.
 	/// - Parameters:
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	/// 	- createdFrom 
 	///		  Start date or date and time of the alarm creation.
 	/// 	- createdTo 
@@ -319,7 +327,7 @@ public class AlarmsApi: AdaptableApi {
 	///		  When set to `true` also alarms for related source assets will be included in the request. When this parameter is provided a `source` must be specified.
 	/// 	- withSourceDevices 
 	///		  When set to `true` also alarms for related source devices will be included in the request. When this parameter is provided a `source` must be specified.
-	public func deleteAlarms(createdFrom: String? = nil, createdTo: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, resolved: Bool? = nil, severity: String? = nil, source: String? = nil, status: String? = nil, type: [String]? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil) -> AnyPublisher<Data, Error> {
+	public func deleteAlarms(xCumulocityProcessingMode: String? = nil, createdFrom: String? = nil, createdTo: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, resolved: Bool? = nil, severity: String? = nil, source: String? = nil, status: String? = nil, type: [String]? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil) -> AnyPublisher<Data, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = createdFrom { queryItems.append(URLQueryItem(name: "createdFrom", value: String(parameter))) }
 		if let parameter = createdTo { queryItems.append(URLQueryItem(name: "createdTo", value: String(parameter))) }
@@ -335,6 +343,7 @@ public class AlarmsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/alarm/alarms")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 			.set(queryItems: queryItems)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -418,7 +427,9 @@ public class AlarmsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the alarm.
-	public func updateAlarm(body: C8yAlarm, id: String) -> AnyPublisher<C8yAlarm, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func updateAlarm(body: C8yAlarm, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yAlarm, Error> {
 		var requestBody = body
 		requestBody.firstOccurrenceTime = nil
 		requestBody.lastUpdated = nil
@@ -438,6 +449,7 @@ public class AlarmsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/alarm/alarms/\(id)")
 			.set(httpMethod: "put")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.alarm+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.alarm+json")
 			.set(httpBody: encodedRequestBody)

@@ -70,7 +70,9 @@ public class ExternalIDsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	public func createExternalId(body: C8yExternalId, id: String) -> AnyPublisher<C8yExternalId, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createExternalId(body: C8yExternalId, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yExternalId, Error> {
 		var requestBody = body
 		requestBody.managedObject = nil
 		requestBody.`self` = nil
@@ -83,6 +85,7 @@ public class ExternalIDsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/identity/globalIds/\(id)/externalIds")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.externalid+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.externalid+json")
 			.set(httpBody: encodedRequestBody)
@@ -161,10 +164,13 @@ public class ExternalIDsApi: AdaptableApi {
 	///		  The identifier used in the external system that Cumulocity IoT interfaces with.
 	/// 	- externalId 
 	///		  The type of the external identifier.
-	public func deleteExternalId(type: String, externalId: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func deleteExternalId(type: String, externalId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/identity/externalIds/\(type)/\(externalId)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

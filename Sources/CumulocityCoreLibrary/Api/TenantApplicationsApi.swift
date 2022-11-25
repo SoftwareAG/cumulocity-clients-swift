@@ -89,7 +89,9 @@ public class TenantApplicationsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func subscribeApplication(body: C8ySubscribedApplicationReference, tenantId: String) -> AnyPublisher<C8yApplicationReference, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func subscribeApplication(body: C8ySubscribedApplicationReference, tenantId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yApplicationReference, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -100,6 +102,7 @@ public class TenantApplicationsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)/applications")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.applicationreference+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationreference+json")
 			.set(httpBody: encodedRequestBody)
@@ -138,10 +141,13 @@ public class TenantApplicationsApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- applicationId 
 	///		  Unique identifier of the application.
-	public func unsubscribeApplication(tenantId: String, applicationId: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func unsubscribeApplication(tenantId: String, applicationId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)/applications/\(applicationId)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

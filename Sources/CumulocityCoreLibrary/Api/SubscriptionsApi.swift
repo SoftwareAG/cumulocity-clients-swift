@@ -96,7 +96,9 @@ public class SubscriptionsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createSubscription(body: C8yNotificationSubscription) -> AnyPublisher<C8yNotificationSubscription, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createSubscription(body: C8yNotificationSubscription, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yNotificationSubscription, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -110,6 +112,7 @@ public class SubscriptionsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/subscriptions")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.subscription+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.subscription+json")
 			.set(httpBody: encodedRequestBody)
@@ -148,17 +151,20 @@ public class SubscriptionsApi: AdaptableApi {
 	/// 	- 422
 	///		  Unprocessable Entity – error in query parameters
 	/// - Parameters:
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	/// 	- context 
 	///		  The context to which the subscription is associated. > **&#9432; Info:** If the value is `mo`, then `source` must also be provided in the query. 
 	/// 	- source 
 	///		  The managed object ID to which the subscription is associated.
-	public func deleteSubscriptions(context: String? = nil, source: String? = nil) -> AnyPublisher<Data, Error> {
+	public func deleteSubscriptions(xCumulocityProcessingMode: String? = nil, context: String? = nil, source: String? = nil) -> AnyPublisher<Data, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = context { queryItems.append(URLQueryItem(name: "context", value: String(parameter))) }
 		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/subscriptions")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 			.set(queryItems: queryItems)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -236,10 +242,13 @@ public class SubscriptionsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the notification subscription.
-	public func deleteSubscription(id: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func deleteSubscription(id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/subscriptions/\(id)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

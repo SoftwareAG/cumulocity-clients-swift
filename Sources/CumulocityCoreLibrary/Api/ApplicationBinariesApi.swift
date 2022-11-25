@@ -78,12 +78,15 @@ public class ApplicationBinariesApi: AdaptableApi {
 	///		  The ZIP file to be uploaded.
 	/// 	- id 
 	///		  Unique identifier of the application.
-	public func uploadApplicationAttachment(file: Data, id: String) -> AnyPublisher<C8yApplication, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func uploadApplicationAttachment(file: Data, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yApplication, Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
 		multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "application/zip");
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/binaries")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "multipart/form-data")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.application+json")
 			.add(header: "Content-Type", value: multipartBuilder.contentType)
@@ -163,10 +166,13 @@ public class ApplicationBinariesApi: AdaptableApi {
 	///		  Unique identifier of the application.
 	/// 	- binaryId 
 	///		  Unique identifier of the binary.
-	public func deleteApplicationAttachment(id: String, binaryId: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func deleteApplicationAttachment(id: String, binaryId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/binaries/\(binaryId)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

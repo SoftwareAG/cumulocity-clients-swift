@@ -98,7 +98,7 @@ public struct C8yAuditRecord: Codable {
 	/// 
 	public var customProperties: [String: Any] = [:]
 	
-	subscript(key: String) -> Any? {
+	public subscript(key: String) -> Any? {
 	        get {
 	            return customProperties[key]
 	        }

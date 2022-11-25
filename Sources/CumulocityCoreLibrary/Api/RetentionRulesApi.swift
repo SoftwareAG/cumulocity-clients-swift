@@ -84,7 +84,9 @@ public class RetentionRulesApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	public func createRetentionRule(body: C8yRetentionRule) -> AnyPublisher<C8yRetentionRule, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createRetentionRule(body: C8yRetentionRule, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yRetentionRule, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -97,6 +99,7 @@ public class RetentionRulesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/retention/retentions")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.retentionrule+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.retentionrule+json")
 			.set(httpBody: encodedRequestBody)
@@ -178,7 +181,9 @@ public class RetentionRulesApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the retention rule.
-	public func updateRetentionRule(body: C8yRetentionRule, id: String) -> AnyPublisher<C8yRetentionRule, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func updateRetentionRule(body: C8yRetentionRule, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yRetentionRule, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -191,6 +196,7 @@ public class RetentionRulesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/retention/retentions/\(id)")
 			.set(httpMethod: "put")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.retentionrule+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.retentionrule+json")
 			.set(httpBody: encodedRequestBody)
@@ -229,10 +235,13 @@ public class RetentionRulesApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the retention rule.
-	public func deleteRetentionRule(id: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func deleteRetentionRule(id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/retention/retentions/\(id)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

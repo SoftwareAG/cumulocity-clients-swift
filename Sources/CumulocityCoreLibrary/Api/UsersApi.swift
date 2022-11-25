@@ -105,7 +105,9 @@ public class UsersApi: AdaptableApi {
 	/// 	- body 
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func createUser(body: C8yUser, tenantId: String) -> AnyPublisher<C8yUser, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func createUser(body: C8yUser, tenantId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yUser, Error> {
 		var requestBody = body
 		requestBody.passwordStrength = nil
 		requestBody.roles = nil
@@ -126,6 +128,7 @@ public class UsersApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.user+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.user+json")
 			.set(httpBody: encodedRequestBody)
@@ -219,7 +222,9 @@ public class UsersApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- userId 
 	///		  Unique identifier of the a user.
-	public func updateUser(body: C8yUser, tenantId: String, userId: String) -> AnyPublisher<C8yUser, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func updateUser(body: C8yUser, tenantId: String, userId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yUser, Error> {
 		var requestBody = body
 		requestBody.passwordStrength = nil
 		requestBody.roles = nil
@@ -241,6 +246,7 @@ public class UsersApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)")
 			.set(httpMethod: "put")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.user+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.user+json")
 			.set(httpBody: encodedRequestBody)
@@ -281,10 +287,13 @@ public class UsersApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- userId 
 	///		  Unique identifier of the a user.
-	public func deleteUser(tenantId: String, userId: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func deleteUser(tenantId: String, userId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -328,7 +337,9 @@ public class UsersApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- userId 
 	///		  Unique identifier of the a user.
-	public func updateUserPassword(body: C8yPasswordChange, tenantId: String, userId: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func updateUserPassword(body: C8yPasswordChange, tenantId: String, userId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -339,6 +350,7 @@ public class UsersApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/password")
 			.set(httpMethod: "put")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: encodedRequestBody)
@@ -519,7 +531,9 @@ public class UsersApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- groupId 
 	///		  Unique identifier of the user group.
-	public func assignUserToUserGroup(body: C8ySubscribedUser, tenantId: String, groupId: Int) -> AnyPublisher<C8yUserReference, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func assignUserToUserGroup(body: C8ySubscribedUser, tenantId: String, groupId: Int, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yUserReference, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -530,6 +544,7 @@ public class UsersApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)/users")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.userreference+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.userreference+json")
 			.set(httpBody: encodedRequestBody)
@@ -572,10 +587,13 @@ public class UsersApi: AdaptableApi {
 	///		  Unique identifier of the user group.
 	/// 	- userId 
 	///		  Unique identifier of the a user.
-	public func removeUserFromUserGroup(tenantId: String, groupId: Int, userId: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func removeUserFromUserGroup(tenantId: String, groupId: Int, userId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)/users/\(userId)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

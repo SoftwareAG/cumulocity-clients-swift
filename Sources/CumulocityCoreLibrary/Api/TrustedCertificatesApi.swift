@@ -94,7 +94,9 @@ public class TrustedCertificatesApi: AdaptableApi {
 	/// 	- body 
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func addTrustedCertificate(body: C8yTrustedCertificate, tenantId: String) -> AnyPublisher<C8yTrustedCertificate, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func addTrustedCertificate(body: C8yTrustedCertificate, tenantId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yTrustedCertificate, Error> {
 		var requestBody = body
 		requestBody.notAfter = nil
 		requestBody.serialNumber = nil
@@ -114,6 +116,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 			.set(httpBody: encodedRequestBody)
@@ -155,7 +158,9 @@ public class TrustedCertificatesApi: AdaptableApi {
 	/// 	- body 
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	public func addTrustedCertificates(body: C8yTrustedCertificateCollection, tenantId: String) -> AnyPublisher<C8yTrustedCertificateCollection, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func addTrustedCertificates(body: C8yTrustedCertificateCollection, tenantId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yTrustedCertificateCollection, Error> {
 		var requestBody = body
 		requestBody.next = nil
 		requestBody.prev = nil
@@ -170,6 +175,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates/bulk")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 			.set(httpBody: encodedRequestBody)
@@ -249,7 +255,9 @@ public class TrustedCertificatesApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- fingerprint 
 	///		  Unique identifier of a trusted certificate.
-	public func updateTrustedCertificate(body: C8yTrustedCertificate, tenantId: String, fingerprint: String) -> AnyPublisher<C8yTrustedCertificate, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func updateTrustedCertificate(body: C8yTrustedCertificate, tenantId: String, fingerprint: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yTrustedCertificate, Error> {
 		var requestBody = body
 		requestBody.notAfter = nil
 		requestBody.serialNumber = nil
@@ -270,6 +278,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates/\(fingerprint)")
 			.set(httpMethod: "put")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 			.set(httpBody: encodedRequestBody)
@@ -308,10 +317,13 @@ public class TrustedCertificatesApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- fingerprint 
 	///		  Unique identifier of a trusted certificate.
-	public func removeTrustedCertificate(tenantId: String, fingerprint: String) -> AnyPublisher<Data, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func removeTrustedCertificate(tenantId: String, fingerprint: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates/\(fingerprint)")
 			.set(httpMethod: "delete")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -353,7 +365,9 @@ public class TrustedCertificatesApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- fingerprint 
 	///		  Unique identifier of a trusted certificate.
-	public func proveCertificatePossession(body: C8yUploadedTrustedCertSignedVerificationCode, tenantId: String, fingerprint: String) -> AnyPublisher<C8yTrustedCertificate, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func proveCertificatePossession(body: C8yUploadedTrustedCertSignedVerificationCode, tenantId: String, fingerprint: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yTrustedCertificate, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -364,6 +378,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates-pop/\(fingerprint)/pop")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 			.set(httpBody: encodedRequestBody)
@@ -404,10 +419,13 @@ public class TrustedCertificatesApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- fingerprint 
 	///		  Unique identifier of a trusted certificate.
-	public func confirmCertificate(tenantId: String, fingerprint: String) -> AnyPublisher<C8yTrustedCertificate, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func confirmCertificate(tenantId: String, fingerprint: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yTrustedCertificate, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates-pop/\(fingerprint)/confirmed")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -444,10 +462,13 @@ public class TrustedCertificatesApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- fingerprint 
 	///		  Unique identifier of a trusted certificate.
-	public func generateVerificationCode(tenantId: String, fingerprint: String) -> AnyPublisher<C8yTrustedCertificate, Error> {
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	public func generateVerificationCode(tenantId: String, fingerprint: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yTrustedCertificate, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates-pop/\(fingerprint)/verification-code")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

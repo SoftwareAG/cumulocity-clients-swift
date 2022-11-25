@@ -59,7 +59,7 @@ public struct C8yRequestRepresentation: Codable {
 		/// 
 		public var requestHeaders: [String: String] = [:]
 		
-		subscript(key: String) -> String? {
+		public subscript(key: String) -> String? {
 		        get {
 		            return requestHeaders[key]
 		        }
@@ -85,7 +85,7 @@ public struct C8yRequestRepresentation: Codable {
 		/// 
 		public var requestParameters: [String: String] = [:]
 		
-		subscript(key: String) -> String? {
+		public subscript(key: String) -> String? {
 		        get {
 		            return requestParameters[key]
 		        }
