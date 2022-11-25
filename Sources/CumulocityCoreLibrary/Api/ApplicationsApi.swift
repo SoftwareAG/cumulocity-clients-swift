@@ -82,9 +82,10 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yApplicationCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -134,9 +135,10 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yApplication.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -171,9 +173,10 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yApplication.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -224,9 +227,10 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yApplication.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -271,9 +275,10 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).eraseToAnyPublisher()
@@ -315,9 +320,10 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yApplication.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -350,9 +356,10 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yApplicationCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -385,9 +392,10 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yApplicationCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -434,9 +442,10 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yApplicationCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -483,9 +492,10 @@ public class ApplicationsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yApplicationCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()

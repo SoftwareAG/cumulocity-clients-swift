@@ -30,9 +30,9 @@ public class InventoryRolesApiTest: XCTestCase {
 	public func testGetInventoryRoles() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableInventoryRolesApi().getInventoryRoles().sink(receiveCompletion: { completion in
+		TestableInventoryRolesApi().getInventoryRoles().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)

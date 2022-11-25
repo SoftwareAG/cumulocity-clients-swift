@@ -30,9 +30,9 @@ public class IdentityApiTest: XCTestCase {
 	public func testGetIdentityApiResource() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableIdentityApi().getIdentityApiResource().sink(receiveCompletion: { completion in
+		TestableIdentityApi().getIdentityApiResource().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)

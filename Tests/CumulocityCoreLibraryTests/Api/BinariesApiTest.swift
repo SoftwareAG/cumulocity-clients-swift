@@ -30,9 +30,9 @@ public class BinariesApiTest: XCTestCase {
 	public func testGetBinaries() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableBinariesApi().getBinaries().sink(receiveCompletion: { completion in
+		TestableBinariesApi().getBinaries().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)

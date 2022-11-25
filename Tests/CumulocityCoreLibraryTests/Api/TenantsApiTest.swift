@@ -30,9 +30,9 @@ public class TenantsApiTest: XCTestCase {
 	public func testGetTenants() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableTenantsApi().getTenants().sink(receiveCompletion: { completion in
+		TestableTenantsApi().getTenants().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)
@@ -43,9 +43,9 @@ public class TenantsApiTest: XCTestCase {
 	public func testGetCurrentTenant() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableTenantsApi().getCurrentTenant().sink(receiveCompletion: { completion in
+		TestableTenantsApi().getCurrentTenant().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)

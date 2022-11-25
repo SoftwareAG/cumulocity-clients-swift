@@ -30,9 +30,9 @@ public class LoginOptionsApiTest: XCTestCase {
 	public func testGetLoginOptions() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableLoginOptionsApi().getLoginOptions().sink(receiveCompletion: { completion in
+		TestableLoginOptionsApi().getLoginOptions().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)

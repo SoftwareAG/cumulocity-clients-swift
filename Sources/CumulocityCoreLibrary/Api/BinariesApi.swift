@@ -68,9 +68,10 @@ public class BinariesApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yBinaryCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -104,8 +105,12 @@ public class BinariesApi: AdaptableApi {
 	///		  Path of the file to be uploaded.
 	public func uploadBinary(`object`: C8yBinaryInfo, file: Data) -> AnyPublisher<C8yBinary, Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
-		try? multipartBuilder.addBodyPart(named: "object", data: `object`, mimeType: "application/json");
-		try? multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/plain");
+		do {
+			try multipartBuilder.addBodyPart(named: "object", codable: `object`, mimeType: "application/json");
+		} catch {
+			return Fail<C8yBinary, Error>(error: error).eraseToAnyPublisher()
+		}
+		multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/plain");
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/binaries")
 			.set(httpMethod: "post")
@@ -119,9 +124,10 @@ public class BinariesApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yBinary.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -154,9 +160,10 @@ public class BinariesApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).eraseToAnyPublisher()
@@ -180,13 +187,6 @@ public class BinariesApi: AdaptableApi {
 	/// 	- id 
 	///		  Unique identifier of the managed object.
 	public func replaceBinary(body: Data, id: String) -> AnyPublisher<C8yBinary, Error> {
-		let requestBody = body
-		var encodedRequestBody: Data? = nil
-		do {
-			encodedRequestBody = try JSONEncoder().encode(requestBody)
-		} catch {
-			return Fail<C8yBinary, Error>(error: error).eraseToAnyPublisher()
-		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/binaries/\(id)")
 			.set(httpMethod: "put")
@@ -199,9 +199,10 @@ public class BinariesApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yBinary.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -234,9 +235,10 @@ public class BinariesApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).eraseToAnyPublisher()

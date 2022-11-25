@@ -30,9 +30,9 @@ public class UsageStatisticsApiTest: XCTestCase {
 	public func testGetTenantUsageStatisticsCollectionResource() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableUsageStatisticsApi().getTenantUsageStatisticsCollectionResource().sink(receiveCompletion: { completion in
+		TestableUsageStatisticsApi().getTenantUsageStatisticsCollectionResource().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)
@@ -43,9 +43,9 @@ public class UsageStatisticsApiTest: XCTestCase {
 	public func testGetTenantUsageStatistics() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableUsageStatisticsApi().getTenantUsageStatistics().sink(receiveCompletion: { completion in
+		TestableUsageStatisticsApi().getTenantUsageStatistics().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)
@@ -56,9 +56,9 @@ public class UsageStatisticsApiTest: XCTestCase {
 	public func testGetTenantsUsageStatistics() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableUsageStatisticsApi().getTenantsUsageStatistics().sink(receiveCompletion: { completion in
+		TestableUsageStatisticsApi().getTenantsUsageStatistics().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)
@@ -69,9 +69,9 @@ public class UsageStatisticsApiTest: XCTestCase {
 	public func testGetMetadata() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableUsageStatisticsApi().getMetadata().sink(receiveCompletion: { completion in
+		TestableUsageStatisticsApi().getMetadata().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)

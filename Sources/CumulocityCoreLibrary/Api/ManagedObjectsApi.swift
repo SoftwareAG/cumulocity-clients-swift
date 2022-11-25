@@ -100,9 +100,10 @@ public class ManagedObjectsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yManagedObjectCollection.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -168,9 +169,10 @@ public class ManagedObjectsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yManagedObject.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -227,9 +229,10 @@ public class ManagedObjectsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: Int.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -278,9 +281,10 @@ public class ManagedObjectsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yManagedObject.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -338,9 +342,10 @@ public class ManagedObjectsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yManagedObject.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -363,6 +368,8 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// 	- 404
 	///		  Managed object not found.
+	/// 	- 409
+	///		  Conflict – The managed object is associated to other objects, for example child devices.
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the managed object.
@@ -388,9 +395,10 @@ public class ManagedObjectsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).eraseToAnyPublisher()
@@ -425,9 +433,10 @@ public class ManagedObjectsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: String.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -462,9 +471,10 @@ public class ManagedObjectsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8ySupportedMeasurements.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -499,9 +509,10 @@ public class ManagedObjectsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8ySupportedSeries.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -536,9 +547,10 @@ public class ManagedObjectsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yManagedObjectUser.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -585,9 +597,10 @@ public class ManagedObjectsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yManagedObjectUser.self, decoder: JSONDecoder()).eraseToAnyPublisher()

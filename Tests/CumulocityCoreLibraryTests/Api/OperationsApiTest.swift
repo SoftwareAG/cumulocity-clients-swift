@@ -30,9 +30,9 @@ public class OperationsApiTest: XCTestCase {
 	public func testGetOperations() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableOperationsApi().getOperations().sink(receiveCompletion: { completion in
+		TestableOperationsApi().getOperations().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)

@@ -78,18 +78,10 @@ C8yAlarm.registerAdditionalProperty<C: Codable>(typeName: String, for type: C.Ty
 Each of the extensible objects contains a dictionary object holding instances of custom fragments. Use the custom fragment's key to access it's value.
 
 In addition, developers may create subclasses. The client implementation respects subclassing by using generic type arguments.
+
 ### Working with errors
 
-Use `sink(receiveCompletion:receiveValue:)` to observe values received by the publisher and process them using a closure you specify. HTTP error codes will be forwarded and can be accessed using a completion handler. The client describes two error types:
-
-```swift
-enum Errors: Error {
-	case undescribedError(statusCode: Int, response: HTTPURLResponse)
-	case badResponseError(statusCode: Int, reason: Codable)
-}
-```
-
-The type `badResponseError` is used when there is dedicated error message sent by the server. The `reason` may be a `string` or any other `Codable` instance. When there is no dedicated error message, `undescribedError` will be used.
+Use `sink(receiveCompletion:receiveValue:)` to observe values received by the publisher and process them using a closure you specify. HTTP error codes will be forwarded and can be accessed using a completion handler.
 
 ```swift
 sink(receiveCompletion: { completion in
@@ -97,28 +89,22 @@ sink(receiveCompletion: { completion in
 	case .finished:
 		// handle completion
 	case .failure(let error):
-    	switch(error) {
-    	case Errors.undescribedError(let statusCode, let response):
-    		print(statusCode)
-        case Errors.badResponseError(let statusCode, let reason):
-     		print(statusCode)
-       	default:
-        	/// handleError(error)
-      	}
+    	// handle error
 	}
 }, receiveValue: { data in
 })
 ```
 
-Error handling can be simplified by calling one of the following extension methods:
+Error handling can be simplified by calling the following extension method:
 
 ```swift
 sink(receiveCompletion: { completion in
 	/// access the error message
 	let error = completion.error()
-	/// error?.response(): HTTPURLResponse for advanced error processing
-	/// error?.statusCode(): HTTP status code
-	/// error?.reason(): Codable reason sent by the server
+	/// access HTTP response 
+	error?.httpResponse
+	/// access HTTP status code via the HttpResponse
+	error?.httpResponse?.statusCode
 })
 ```
 

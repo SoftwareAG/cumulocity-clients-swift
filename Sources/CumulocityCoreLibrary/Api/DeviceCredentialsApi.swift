@@ -60,9 +60,10 @@ public class DeviceCredentialsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yDeviceCredentials.self, decoder: JSONDecoder()).eraseToAnyPublisher()
@@ -145,7 +146,7 @@ public class DeviceCredentialsApi: AdaptableApi {
 	///		  The CSV file to be uploaded.
 	public func createBulkDeviceCredentials(file: Data) -> AnyPublisher<C8yBulkNewDeviceRequest, Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
-		try? multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/csv");
+		multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/csv");
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/bulkNewDeviceRequests")
 			.set(httpMethod: "post")
@@ -159,9 +160,10 @@ public class DeviceCredentialsApi: AdaptableApi {
 			}
 			guard (200..<300) ~= httpResponse.statusCode else {
 				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					throw Errors.badResponseError(response: httpResponse, reason: c8yError)
+					c8yError.httpResponse = httpResponse
+					throw c8yError
 				}
-				throw Errors.undescribedError(response: httpResponse)
+				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
 		}).decode(type: C8yBulkNewDeviceRequest.self, decoder: JSONDecoder()).eraseToAnyPublisher()

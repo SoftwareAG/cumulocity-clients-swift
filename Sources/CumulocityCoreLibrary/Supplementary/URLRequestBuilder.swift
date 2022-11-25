@@ -112,12 +112,12 @@ extension URLRequestBuilder {
 		}
 		if (self.httpBody == nil) {
 			if let httpBody = builder.httpBody {
-				self.set(httpBody: httpBody)
+				_ = self.set(httpBody: httpBody)
 			}
 		}
 		if (self.httpMethod == nil) {
 			if let httpMethod = builder.httpMethod {
-				self.set(httpMethod: httpMethod)
+				_ = self.set(httpMethod: httpMethod)
 			}
 		}
 		return self

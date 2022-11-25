@@ -30,9 +30,9 @@ public class AlarmsApiTest: XCTestCase {
 	public func testGetAlarms() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableAlarmsApi().getAlarms().sink(receiveCompletion: { completion in
+		TestableAlarmsApi().getAlarms().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)
@@ -43,9 +43,9 @@ public class AlarmsApiTest: XCTestCase {
 	public func testGetNumberOfAlarms() {
 		let expectation = XCTestExpectation(description: "ok")
 		var cancellables = Set<AnyCancellable>()
-		try? TestableAlarmsApi().getNumberOfAlarms().sink(receiveCompletion: { completion in
+		TestableAlarmsApi().getNumberOfAlarms().sink(receiveCompletion: { completion in
 			let message = try? completion.error()
-			print(message?.statusCode ?? "Successfully")
+			print(message?.httpResponse?.statusCode ?? "Successfully")
 		}, receiveValue: { data in
 			expectation.fulfill()
 			print(data)
