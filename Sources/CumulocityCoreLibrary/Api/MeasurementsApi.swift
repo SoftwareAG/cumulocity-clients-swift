@@ -142,7 +142,7 @@ public class MeasurementsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement/measurements")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.measurement+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.measurement+json, application/vnd.com.nsn.cumulocity.measurementcollection+json")
 			.set(httpBody: encodedRequestBody)
@@ -214,7 +214,7 @@ public class MeasurementsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement/measurements")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.measurementcollection+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.measurement+json, application/vnd.com.nsn.cumulocity.measurementcollection+json")
 			.set(httpBody: encodedRequestBody)
@@ -275,7 +275,7 @@ public class MeasurementsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement/measurements")
 			.set(httpMethod: "delete")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
 			.set(queryItems: queryItems)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -357,7 +357,7 @@ public class MeasurementsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement/measurements/\(id)")
 			.set(httpMethod: "delete")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

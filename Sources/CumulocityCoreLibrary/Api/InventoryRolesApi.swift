@@ -92,7 +92,7 @@ public class InventoryRolesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/inventoryroles")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.inventoryrole+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.inventoryrole+json, application/vnd.com.nsn.cumulocity.error+json")
 			.set(httpBody: encodedRequestBody)
@@ -185,7 +185,7 @@ public class InventoryRolesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/inventoryroles/\(id)")
 			.set(httpMethod: "put")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.inventoryrole+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.inventoryrole+json, application/vnd.com.nsn.cumulocity.error+json")
 			.set(httpBody: encodedRequestBody)
@@ -230,7 +230,7 @@ public class InventoryRolesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/inventoryroles/\(id)")
 			.set(httpMethod: "delete")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -329,7 +329,7 @@ public class InventoryRolesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.inventoryassignment+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.inventoryassignment+json")
 			.set(httpBody: encodedRequestBody)
@@ -432,7 +432,7 @@ public class InventoryRolesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory/\(id)")
 			.set(httpMethod: "put")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.inventoryassignment+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.inventoryassignment+json")
 			.set(httpBody: encodedRequestBody)
@@ -481,7 +481,7 @@ public class InventoryRolesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory/\(id)")
 			.set(httpMethod: "delete")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
