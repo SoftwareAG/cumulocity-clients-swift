@@ -47,13 +47,16 @@ public class URLRequestBuilder {
 		return self
 	}
 
-	public func add(header: String, value: String) -> URLRequestBuilder {
-		guard !value.isEmpty else {
-			return self
-		}
-		self.requestHeaders[header] = value
-		return self
-	}
+	public func add<Subject>(header: String, value: Subject?) -> URLRequestBuilder {
+        if let v = value {
+            let valueAsString = String(describing: v)
+            guard !valueAsString.isEmpty else {
+                return self
+            }
+            self.requestHeaders[header] = valueAsString
+        }
+        return self
+    }
 
 	public func set(authorization userName: String, password: String) -> URLRequestBuilder {
 		let credentials = "\(userName):\(password)"

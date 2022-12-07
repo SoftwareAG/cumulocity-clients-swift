@@ -128,7 +128,7 @@ public class UsersApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.user+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.user+json")
 			.set(httpBody: encodedRequestBody)
@@ -246,7 +246,7 @@ public class UsersApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)")
 			.set(httpMethod: "put")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.user+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.user+json")
 			.set(httpBody: encodedRequestBody)
@@ -293,7 +293,7 @@ public class UsersApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)")
 			.set(httpMethod: "delete")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -350,7 +350,7 @@ public class UsersApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/password")
 			.set(httpMethod: "put")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: encodedRequestBody)
@@ -544,7 +544,7 @@ public class UsersApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)/users")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.userreference+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.userreference+json")
 			.set(httpBody: encodedRequestBody)
@@ -593,7 +593,7 @@ public class UsersApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)/users/\(userId)")
 			.set(httpMethod: "delete")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -630,8 +630,8 @@ public class UsersApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/logout")
 			.set(httpMethod: "post")
-			.add(header: "Cookie", value: String(describing: cookie))
-			.add(header: "X-XSRF-TOKEN", value: String(describing: xXSRFTOKEN))
+			.add(header: "Cookie", value: cookie)
+			.add(header: "X-XSRF-TOKEN", value: xXSRFTOKEN)
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

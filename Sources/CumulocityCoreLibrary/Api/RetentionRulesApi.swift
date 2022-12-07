@@ -99,7 +99,7 @@ public class RetentionRulesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/retention/retentions")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.retentionrule+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.retentionrule+json")
 			.set(httpBody: encodedRequestBody)
@@ -196,7 +196,7 @@ public class RetentionRulesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/retention/retentions/\(id)")
 			.set(httpMethod: "put")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.retentionrule+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.retentionrule+json")
 			.set(httpBody: encodedRequestBody)
@@ -241,7 +241,7 @@ public class RetentionRulesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/retention/retentions/\(id)")
 			.set(httpMethod: "delete")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

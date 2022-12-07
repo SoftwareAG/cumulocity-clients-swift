@@ -50,7 +50,7 @@ public class TokensApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/token")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 			.set(httpBody: encodedRequestBody)

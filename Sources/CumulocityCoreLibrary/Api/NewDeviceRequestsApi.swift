@@ -95,7 +95,7 @@ public class NewDeviceRequestsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/newDeviceRequests")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.newdevicerequest+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.newdevicerequest+json, application/vnd.com.nsn.cumulocity.error+json")
 			.set(httpBody: encodedRequestBody)
@@ -187,7 +187,7 @@ public class NewDeviceRequestsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/newDeviceRequests/\(requestId)")
 			.set(httpMethod: "put")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.newdevicerequest+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.newdevicerequest+json, application/vnd.com.nsn.cumulocity.error+json")
 			.set(httpBody: encodedRequestBody)
@@ -232,7 +232,7 @@ public class NewDeviceRequestsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/newDeviceRequests/\(requestId)")
 			.set(httpMethod: "delete")
-			.add(header: "X-Cumulocity-Processing-Mode", value: String(describing: xCumulocityProcessingMode))
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
