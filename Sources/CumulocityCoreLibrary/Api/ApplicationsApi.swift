@@ -51,14 +51,16 @@ public class ApplicationsApi: AdaptableApi {
 	/// 	- tenant 
 	///		  The ID of a tenant that either owns the application or is subscribed to the applications.
 	/// 	- type 
-	///		  The type of the application.
+	///		  The type of the application. It is possible to use multiple values separated by a comma. For example, `EXTERNAL,HOSTED` will return only applications with type `EXTERNAL` or `HOSTED`.
 	/// 	- user 
 	///		  The ID of a user that has access to the applications.
 	/// 	- withTotalElements 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getApplications(currentPage: Int? = nil, name: String? = nil, owner: String? = nil, pageSize: Int? = nil, providedFor: String? = nil, subscriber: String? = nil, tenant: String? = nil, type: String? = nil, user: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yApplicationCollection, Error> {
+	/// 	- hasVersions 
+	///		  When set to `true`, the returned result contains applications with an `applicationVersions` field that is not empty. When set to `false`, the result will contain applications with an empty `applicationVersions` field.
+	public func getApplications(currentPage: Int? = nil, name: String? = nil, owner: String? = nil, pageSize: Int? = nil, providedFor: String? = nil, subscriber: String? = nil, tenant: String? = nil, type: String? = nil, user: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil, hasVersions: Bool? = nil) -> AnyPublisher<C8yApplicationCollection, Error> {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
 		if let parameter = name { queryItems.append(URLQueryItem(name: "name", value: String(parameter))) }
@@ -71,6 +73,7 @@ public class ApplicationsApi: AdaptableApi {
 		if let parameter = user { queryItems.append(URLQueryItem(name: "user", value: String(parameter))) }
 		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
+		if let parameter = hasVersions { queryItems.append(URLQueryItem(name: "hasVersions", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications")
 			.set(httpMethod: "get")
@@ -167,7 +170,7 @@ public class ApplicationsApi: AdaptableApi {
 	///		  Unique identifier of the application.
 	public func getApplication(id: String) -> AnyPublisher<C8yApplication, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applications/\(id)")
+			.set(resourcePath: "/application/applications\\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.application+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -221,7 +224,7 @@ public class ApplicationsApi: AdaptableApi {
 			return Fail<C8yApplication, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applications/\(id)")
+			.set(resourcePath: "/application/applications\\(id)")
 			.set(httpMethod: "put")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.application+json")
@@ -273,7 +276,7 @@ public class ApplicationsApi: AdaptableApi {
 		var queryItems: [URLQueryItem] = []
 		if let parameter = force { queryItems.append(URLQueryItem(name: "force", value: String(parameter))) }
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applications/\(id)")
+			.set(resourcePath: "/application/applications\\(id)")
 			.set(httpMethod: "delete")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
@@ -322,7 +325,7 @@ public class ApplicationsApi: AdaptableApi {
 	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func copyApplication(id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yApplication, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applications/\(id)/clone")
+			.set(resourcePath: "/application/applications\\(id)/clone")
 			.set(httpMethod: "post")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.application+json")
@@ -359,7 +362,7 @@ public class ApplicationsApi: AdaptableApi {
 	///		  The name of the application.
 	public func getApplicationsByName(name: String) -> AnyPublisher<C8yApplicationCollection, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applicationsByName/\(name)")
+			.set(resourcePath: "/application/applicationsByName\\(name)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationcollection+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -395,7 +398,7 @@ public class ApplicationsApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	public func getApplicationsByTenant(tenantId: String) -> AnyPublisher<C8yApplicationCollection, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applicationsByTenant/\(tenantId)")
+			.set(resourcePath: "/application/applicationsByTenant\\(tenantId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationcollection+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -444,7 +447,7 @@ public class ApplicationsApi: AdaptableApi {
 		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applicationsByOwner/\(tenantId)")
+			.set(resourcePath: "/application/applicationsByOwner\\(tenantId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationcollection+json")
 			.set(queryItems: queryItems)
@@ -494,7 +497,7 @@ public class ApplicationsApi: AdaptableApi {
 		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applicationsByUser/\(username)")
+			.set(resourcePath: "/application/applicationsByUser\\(username)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationcollection+json")
 			.set(queryItems: queryItems)

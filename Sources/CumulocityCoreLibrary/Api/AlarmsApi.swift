@@ -209,10 +209,10 @@ public class AlarmsApi: AdaptableApi {
 	/// An alarm must be associated with a source (managed object) identified by ID.<br>
 	/// In general, each alarm may consist of:
 	/// 
-	/// *  A status showing whether the alarm is ACTIVE, ACKNOWLEDGED or CLEARED.
-	/// *  A time stamp to indicate when the alarm was last updated.
-	/// *  The severity of the alarm: CRITICAL, MAJOR, MINOR or WARNING.
-	/// *  A history of changes to the event in form of audit logs.
+	/// *   A status showing whether the alarm is ACTIVE, ACKNOWLEDGED or CLEARED.
+	/// *   A time stamp to indicate when the alarm was last updated.
+	/// *   The severity of the alarm: CRITICAL, MAJOR, MINOR or WARNING.
+	/// *   A history of changes to the event in form of audit logs.
 	/// 
 	/// ### Alarm suppression
 	/// 
@@ -383,7 +383,7 @@ public class AlarmsApi: AdaptableApi {
 	///		  Unique identifier of the alarm.
 	public func getAlarm(id: String) -> AnyPublisher<C8yAlarm, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/alarm/alarms/\(id)")
+			.set(resourcePath: "/alarm/alarms\\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.alarm+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -447,7 +447,7 @@ public class AlarmsApi: AdaptableApi {
 			return Fail<C8yAlarm, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/alarm/alarms/\(id)")
+			.set(resourcePath: "/alarm/alarms\\(id)")
 			.set(httpMethod: "put")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.alarm+json")

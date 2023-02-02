@@ -22,7 +22,7 @@ public class MeasurementsApi: AdaptableApi {
 	/// 
 	/// For large measurement collections, querying older records without filters can be slow as the server needs to scan from the beginning of the input results set before beginning to return the results. For cases when older measurements should be retrieved, it is recommended to narrow the scope by using range queries based on the time stamp reported by a device. The scope of query can also be reduced significantly when a source device is provided.
 	/// 
-	/// Review [Measurements Specifics](#tag/Measurements-Specifics) for details about data streaming and response formats.
+	/// Review [Measurements Specifics](#tag/Measurements-specifics) for details about data streaming and response formats.
 	/// 
 	/// <section><h5>Required roles</h5>
 	/// ROLE_MEASUREMENT_READ
@@ -95,7 +95,7 @@ public class MeasurementsApi: AdaptableApi {
 	/// 
 	/// Each measurement fragment is an object (for example, `c8y_Steam`) containing the actual measurements as properties. The property name represents the name of the measurement (for example, `Temperature`) and it contains two properties:
 	/// 
-	/// *   `value` - The value of the individual measurement. The maximum precision for floating point numbers is 64-bit IEEE 754. For integers it's a 64-bit two's complement integer.
+	/// *   `value` - The value of the individual measurement. The maximum precision for floating point numbers is 64-bit IEEE 754. For integers it's a 64-bit two's complement integer. The `value` is mandatory for a fragment.
 	/// *   `unit` - The unit of the measurements.
 	/// 
 	/// Review the [System of units](#section/System-of-units) section for details about the conversions of units. Also review the [Naming conventions of fragments](https://cumulocity.com/guides/concepts/domain-model/#naming-conventions-of-fragments) in the Concepts guide.
@@ -166,7 +166,7 @@ public class MeasurementsApi: AdaptableApi {
 	/// 
 	/// Each measurement fragment is an object (for example, `c8y_Steam`) containing the actual measurements as properties. The property name represents the name of the measurement (for example, `Temperature`) and it contains two properties:
 	/// 
-	/// *   `value` - The value of the individual measurement. The maximum precision for floating point numbers is 64-bit IEEE 754. For integers it's a 64-bit two's complement integer.
+	/// *   `value` - The value of the individual measurement. The maximum precision for floating point numbers is 64-bit IEEE 754. For integers it's a 64-bit two's complement integer. The `value` is mandatory for a fragment.
 	/// *   `unit` - The unit of the measurements.
 	/// 
 	/// Review the [System of units](#section/System-of-units) section for details about the conversions of units. Also review the [Naming conventions of fragments](https://cumulocity.com/guides/concepts/domain-model/#naming-conventions-of-fragments) in the Concepts guide.
@@ -313,7 +313,7 @@ public class MeasurementsApi: AdaptableApi {
 	///		  Unique identifier of the measurement.
 	public func getMeasurement(id: String) -> AnyPublisher<C8yMeasurement, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/measurement/measurements/\(id)")
+			.set(resourcePath: "/measurement/measurements\\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.measurement+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -355,7 +355,7 @@ public class MeasurementsApi: AdaptableApi {
 	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func deleteMeasurement(id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/measurement/measurements/\(id)")
+			.set(resourcePath: "/measurement/measurements\\(id)")
 			.set(httpMethod: "delete")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")

@@ -49,7 +49,7 @@ public class TenantApplicationsApi: AdaptableApi {
 		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants/\(tenantId)/applications")
+			.set(resourcePath: "/tenant/tenants\\(tenantId)/applications")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationreferencecollection+json")
 			.set(queryItems: queryItems)
@@ -72,7 +72,12 @@ public class TenantApplicationsApi: AdaptableApi {
 	/// Subscribe a tenant (by a given ID) to an application.
 	/// 
 	/// <section><h5>Required roles</h5>
-	/// (ROLE_APPLICATION_MANAGEMENT_ADMIN <b>AND</b> is the application owner <b>AND</b> is the current tenant) <b>OR</b> ((ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_MANAGEMENT_UPDATE) <b>AND</b> (the current tenant is its parent <b>OR</b> is the management tenant))
+	/// 1. the current tenant is application owner and has the role ROLE_APPLICATION_MANAGEMENT_ADMIN <b>OR</b><br>
+	/// 2. for applications that are not microservices, the current tenant is the management tenant or the parent of the application owner tenant, and the user has one of the follwoing roles: ROLE_TENANT_MANAGEMENT_ADMIN, ROLE_TENANT_MANAGEMENT_UPDATE <b>OR</b><br>
+	/// 3. for microservices, the current tenant is the management tenant or the parent of the application owner tenant, and the user has the role ROLE_TENANT_MANAGEMENT_ADMIN OR ROLE_TENANT_MANAGEMENT_UPDATE and one of following conditions is met:<br>
+	/// * the microservice has no manifest<br>
+	/// * the microservice version is supported<br>
+	/// * the current tenant is subscribed to 'feature-privileged-microservice-hosting'
 	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
@@ -85,13 +90,13 @@ public class TenantApplicationsApi: AdaptableApi {
 	///		  Application not found.
 	/// 	- 409
 	///		  The application is already assigned to the tenant.
+	/// 	- 422
+	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func subscribeApplication(body: C8ySubscribedApplicationReference, tenantId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yApplicationReference, Error> {
+	public func subscribeApplication(body: C8ySubscribedApplicationReference, tenantId: String) -> AnyPublisher<C8yApplicationReference, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -100,9 +105,8 @@ public class TenantApplicationsApi: AdaptableApi {
 			return Fail<C8yApplicationReference, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants/\(tenantId)/applications")
+			.set(resourcePath: "/tenant/tenants\\(tenantId)/applications")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.applicationreference+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationreference+json")
 			.set(httpBody: encodedRequestBody)
@@ -125,7 +129,8 @@ public class TenantApplicationsApi: AdaptableApi {
 	/// Unsubscribe a tenant (by a given tenant ID) from an application (by a given application ID).
 	/// 
 	/// <section><h5>Required roles</h5>
-	/// (ROLE_APPLICATION_MANAGEMENT_ADMIN <b>AND</b> is the application owner <b>AND</b> is the current tenant) <b>OR</b> ((ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_MANAGEMENT_UPDATE) <b>AND</b> (the current tenant is its parent <b>OR</b> is the management tenant))
+	/// (ROLE_APPLICATION_MANAGEMENT_ADMIN <b>AND</b> is the application owner <b>AND</b> is the current tenant) <b>OR</b><br>
+	/// ((ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_MANAGEMENT_UPDATE) <b>AND</b> (the current tenant is its parent <b>OR</b> is the management tenant))
 	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
@@ -141,13 +146,10 @@ public class TenantApplicationsApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- applicationId 
 	///		  Unique identifier of the application.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func unsubscribeApplication(tenantId: String, applicationId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
+	public func unsubscribeApplication(tenantId: String, applicationId: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants/\(tenantId)/applications/\(applicationId)")
+			.set(resourcePath: "/tenant/tenants\\(tenantId)/applications\\(applicationId)")
 			.set(httpMethod: "delete")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

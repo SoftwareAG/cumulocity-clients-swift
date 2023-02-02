@@ -43,6 +43,9 @@ public struct C8yUser: Codable {
 	/// Indicates whether the user is subscribed to the newsletter or not.
 	public var newsletter: Bool?
 
+	/// Identifier of the parent user. If present, indicates that a user belongs to a user hierarchy by pointing to its direct ancestor. Can only be set by users with role USER_MANAGEMENT_ADMIN during user creation. Otherwise it's assigned automatically.
+	public var owner: String?
+
 	/// The user's password. Only Latin1 characters are allowed.
 	/// 
 	/// If you do not specify a password when creating a new user with a POST request, it must contain the property `sendPasswordResetEmail` with a value of `true`.
@@ -92,6 +95,7 @@ public struct C8yUser: Codable {
 		case lastName
 		case lastPasswordChange
 		case newsletter
+		case owner
 		case password
 		case passwordStrength
 		case phone

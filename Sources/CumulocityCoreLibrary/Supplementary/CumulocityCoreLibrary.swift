@@ -41,6 +41,7 @@ extension Cumulocity {
 			private var factory: Core
 
 			public lazy var applicationsApi: ApplicationsApi = ApplicationsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var applicationVersionsApi: ApplicationVersionsApi = ApplicationVersionsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var applicationBinariesApi: ApplicationBinariesApi = ApplicationBinariesApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var bootstrapUserApi: BootstrapUserApi = BootstrapUserApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var currentApplicationApi: CurrentApplicationApi = CurrentApplicationApi(requestBuilder: factory.requestBuilder, withSession: factory.session)

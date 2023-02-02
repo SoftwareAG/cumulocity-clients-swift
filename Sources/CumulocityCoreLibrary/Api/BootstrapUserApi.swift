@@ -34,7 +34,7 @@ public class BootstrapUserApi: AdaptableApi {
 	///		  Unique identifier of the application.
 	public func getBootstrapUser(id: String) -> AnyPublisher<C8yBootstrapUser, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applications/\(id)/bootstrapUser")
+			.set(resourcePath: "/application/applications\\(id)/bootstrapUser")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.user+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

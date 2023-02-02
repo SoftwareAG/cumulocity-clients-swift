@@ -81,7 +81,7 @@ public class DeviceStatisticsApi: AdaptableApi {
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/statistics/device/\(tenantId)/monthly/\(date)")
+			.set(resourcePath: "/tenant/statistics/device\\(tenantId)/monthly\\(date)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 			.set(queryItems: queryItems)
@@ -135,7 +135,7 @@ public class DeviceStatisticsApi: AdaptableApi {
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/statistics/device/\(tenantId)/daily/\(date)")
+			.set(resourcePath: "/tenant/statistics/device\\(tenantId)/daily\\(date)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 			.set(queryItems: queryItems)

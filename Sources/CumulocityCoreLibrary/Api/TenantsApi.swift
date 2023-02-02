@@ -109,9 +109,7 @@ public class TenantsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func createTenant(body: C8yTenant, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yTenant, Error> {
+	public func createTenant(body: C8yTenant) -> AnyPublisher<C8yTenant, Error> {
 		var requestBody = body
 		requestBody.allowCreateTenants = nil
 		requestBody.parent = nil
@@ -130,7 +128,6 @@ public class TenantsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.tenant+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenant+json")
 			.set(httpBody: encodedRequestBody)
@@ -162,11 +159,17 @@ public class TenantsApi: AdaptableApi {
 	///		  The request has succeeded and the information is sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
-	public func getCurrentTenant() -> AnyPublisher<C8yCurrentTenant, Error> {
+	/// - Parameters:
+	/// 	- withParent 
+	///		  When set to `true`, the returned result will contain the parent of the current tenant.
+	public func getCurrentTenant(withParent: Bool? = nil) -> AnyPublisher<C8yCurrentTenant, Error> {
+		var queryItems: [URLQueryItem] = []
+		if let parameter = withParent { queryItems.append(URLQueryItem(name: "withParent", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/currentTenant")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.currenttenant+json")
+			.set(queryItems: queryItems)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -204,7 +207,7 @@ public class TenantsApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	public func getTenant(tenantId: String) -> AnyPublisher<C8yTenant, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants/\(tenantId)")
+			.set(resourcePath: "/tenant/tenants\\(tenantId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenant+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -231,7 +234,7 @@ public class TenantsApi: AdaptableApi {
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
-	/// 	- 201
+	/// 	- 200
 	///		  A tenant was updated.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
@@ -245,9 +248,7 @@ public class TenantsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func updateTenant(body: C8yTenant, tenantId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yTenant, Error> {
+	public func updateTenant(body: C8yTenant, tenantId: String) -> AnyPublisher<C8yTenant, Error> {
 		var requestBody = body
 		requestBody.adminName = nil
 		requestBody.allowCreateTenants = nil
@@ -265,9 +266,8 @@ public class TenantsApi: AdaptableApi {
 			return Fail<C8yTenant, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants/\(tenantId)")
+			.set(resourcePath: "/tenant/tenants\\(tenantId)")
 			.set(httpMethod: "put")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.tenant+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenant+json")
 			.set(httpBody: encodedRequestBody)
@@ -310,13 +310,10 @@ public class TenantsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func deleteTenant(tenantId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
+	public func deleteTenant(tenantId: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants/\(tenantId)")
+			.set(resourcePath: "/tenant/tenants\\(tenantId)")
 			.set(httpMethod: "delete")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -353,7 +350,7 @@ public class TenantsApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	public func getTenantTfaSettings(tenantId: String) -> AnyPublisher<C8yTenantTfaData, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants/\(tenantId)/tfa")
+			.set(resourcePath: "/tenant/tenants\\(tenantId)/tfa")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

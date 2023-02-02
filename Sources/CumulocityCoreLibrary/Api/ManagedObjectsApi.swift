@@ -274,7 +274,7 @@ public class ManagedObjectsApi: AdaptableApi {
 		if let parameter = withChildrenCount { queryItems.append(URLQueryItem(name: "withChildrenCount", value: String(parameter))) }
 		if let parameter = withParents { queryItems.append(URLQueryItem(name: "withParents", value: String(parameter))) }
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)")
+			.set(resourcePath: "/inventory/managedObjects\\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobject+json")
 			.set(queryItems: queryItems)
@@ -297,6 +297,11 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// Update a specific managed object (for example, device) by a given ID.
 	/// 
 	/// For example, if you want to specify that your managed object is a device, you must add the fragment `c8y_IsDevice`.
+	/// 
+	/// 
+	/// The endpoint can also be used as a device availability heartbeat. 
+	/// If you only specifiy the `id`, it updates the date when the last message was received and no other property. 
+	/// The response then only contains the `id` instead of the full managed object.
 	/// 
 	/// <section><h5>Required roles</h5>
 	/// ROLE_INVENTORY_ADMIN <b>OR</b> owner of the source <b>OR</b> MANAGE_OBJECT_ADMIN permission on the source
@@ -336,7 +341,7 @@ public class ManagedObjectsApi: AdaptableApi {
 			return Fail<C8yManagedObject, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)")
+			.set(resourcePath: "/inventory/managedObjects\\(id)")
 			.set(httpMethod: "put")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
@@ -393,7 +398,7 @@ public class ManagedObjectsApi: AdaptableApi {
 		if let parameter = forceCascade { queryItems.append(URLQueryItem(name: "forceCascade", value: String(parameter))) }
 		if let parameter = withDeviceUser { queryItems.append(URLQueryItem(name: "withDeviceUser", value: String(parameter))) }
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)")
+			.set(resourcePath: "/inventory/managedObjects\\(id)")
 			.set(httpMethod: "delete")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
@@ -433,7 +438,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	public func getLatestAvailability(id: String) -> AnyPublisher<String, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/availability")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/availability")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, text/plain, application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -471,7 +476,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	public func getSupportedMeasurements(id: String) -> AnyPublisher<C8ySupportedMeasurements, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/supportedMeasurements")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/supportedMeasurements")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -509,7 +514,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	public func getSupportedSeries(id: String) -> AnyPublisher<C8ySupportedSeries, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/supportedSeries")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/supportedSeries")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -547,7 +552,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	public func getManagedObjectUser(id: String) -> AnyPublisher<C8yManagedObjectUser, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/user")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/user")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.managedobjectuser+json, application/vnd.com.nsn.cumulocity.error+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -597,7 +602,7 @@ public class ManagedObjectsApi: AdaptableApi {
 			return Fail<C8yManagedObjectUser, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/user")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/user")
 			.set(httpMethod: "put")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectuser+json")

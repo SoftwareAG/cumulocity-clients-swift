@@ -67,7 +67,7 @@ public class RolesApi: AdaptableApi {
 	/// Retrieve a user role by name.
 	/// 
 	/// <section><h5>Required roles</h5>
-	/// ROLE_USER_MANAGEMENT_READ <b>OR</b> ROLE_USER_MANAGEMENT_CREATE <b>AND</b> current user has acces to the role with this name
+	/// ROLE_USER_MANAGEMENT_READ <b>OR</b> ROLE_USER_MANAGEMENT_CREATE <b>AND</b> current user has access to the role with this name
 	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
@@ -83,7 +83,7 @@ public class RolesApi: AdaptableApi {
 	///		  The name of the user role.
 	public func getUserRole(name: String) -> AnyPublisher<C8yRole, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/roles/\(name)")
+			.set(resourcePath: "/user/roles\\(name)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.role+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -132,7 +132,7 @@ public class RolesApi: AdaptableApi {
 		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
 		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)/roles")
+			.set(resourcePath: "/user\\(tenantId)/groups\\(groupId)/roles")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.rolereferencecollection+json")
 			.set(queryItems: queryItems)
@@ -160,7 +160,7 @@ public class RolesApi: AdaptableApi {
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
-	/// 	- 200
+	/// 	- 201
 	///		  A user role was assigned to a user group.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
@@ -178,9 +178,7 @@ public class RolesApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- groupId 
 	///		  Unique identifier of the user group.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func assignGroupRole(body: C8ySubscribedRole, tenantId: String, groupId: Int, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yRoleReference, Error> {
+	public func assignGroupRole(body: C8ySubscribedRole, tenantId: String, groupId: Int) -> AnyPublisher<C8yRoleReference, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -189,9 +187,8 @@ public class RolesApi: AdaptableApi {
 			return Fail<C8yRoleReference, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)/roles")
+			.set(resourcePath: "/user\\(tenantId)/groups\\(groupId)/roles")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.rolereference+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.rolereference+json")
 			.set(httpBody: encodedRequestBody)
@@ -234,13 +231,10 @@ public class RolesApi: AdaptableApi {
 	///		  Unique identifier of the user group.
 	/// 	- roleId 
 	///		  Unique identifier of the user role.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func unassignGroupRole(tenantId: String, groupId: Int, roleId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
+	public func unassignGroupRole(tenantId: String, groupId: Int, roleId: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)/roles/\(roleId)")
+			.set(resourcePath: "/user\\(tenantId)/groups\\(groupId)/roles\\(roleId)")
 			.set(httpMethod: "delete")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -263,12 +257,14 @@ public class RolesApi: AdaptableApi {
 	/// When a role is assigned to a user, a corresponding audit record is created with type "User" and activity "User updated".
 	/// 
 	/// <section><h5>Required roles</h5>
-	/// ROLE_USER_MANAGEMENT_READ <b>OR</b> ROLE_USER_MANAGEMENT_CREATE <b>AND</b> is parent of the user
+	/// ROLE_USER_MANAGEMENT_ADMIN to assign any role to root users in a user hierarchy <b>OR</b> users that are not in any hierarchy<br/>
+	/// ROLE_USER_MANAGEMENT_ADMIN to assign roles accessible by the parent of assigned user to non-root users in a user hierarchy<br/>
+	/// ROLE_USER_MANAGEMENT_CREATE to assign roles accessible by the current user <b>AND</b> accessible by the parent of the assigned user to the descendants of the current user in a user hierarchy
 	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
-	/// 	- 200
+	/// 	- 201
 	///		  A user role was assigned to a user.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
@@ -284,9 +280,7 @@ public class RolesApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- userId 
 	///		  Unique identifier of the a user.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func assignUserRole(body: C8ySubscribedRole, tenantId: String, userId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yRoleReference, Error> {
+	public func assignUserRole(body: C8ySubscribedRole, tenantId: String, userId: String) -> AnyPublisher<C8yRoleReference, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -295,9 +289,8 @@ public class RolesApi: AdaptableApi {
 			return Fail<C8yRoleReference, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles")
+			.set(resourcePath: "/user\\(tenantId)/users\\(userId)/roles")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.rolereference+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.rolereference+json")
 			.set(httpBody: encodedRequestBody)
@@ -340,13 +333,10 @@ public class RolesApi: AdaptableApi {
 	///		  Unique identifier of the a user.
 	/// 	- roleId 
 	///		  Unique identifier of the user role.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func unassignUserRole(tenantId: String, userId: String, roleId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
+	public func unassignUserRole(tenantId: String, userId: String, roleId: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/\(roleId)")
+			.set(resourcePath: "/user\\(tenantId)/users\\(userId)/roles\\(roleId)")
 			.set(httpMethod: "delete")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

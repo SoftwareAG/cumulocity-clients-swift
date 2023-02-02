@@ -25,6 +25,9 @@ public struct C8yCurrentTenant: Codable {
 	/// Unique identifier of a Cumulocity IoT tenant.
 	public var name: String?
 
+	/// ID of the parent tenant.
+	public var parent: String?
+
 	/// A URL linking to this resource.
 	public var `self`: String?
 
@@ -34,6 +37,7 @@ public struct C8yCurrentTenant: Codable {
 		case customProperties
 		case domainName
 		case name
+		case parent
 		case `self` = "self"
 	}
 

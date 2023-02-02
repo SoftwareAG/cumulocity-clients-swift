@@ -17,13 +17,13 @@ public struct C8yCellTower: Codable {
 	/// The Mobile Country Code (MCC).
 	public var mobileCountryCode: Double?
 
-	/// The Mobile Noetwork Code (MNC) for GSM, WCDMA and LTE. The SystemID (sid) for CDMA.
+	/// The Mobile Network Code (MNC) for GSM, WCDMA and LTE. The SystemID (sid) for CDMA.
 	public var mobileNetworkCode: Double?
 
 	/// The Location Area Code (LAC) for GSM, WCDMA and LTE. The Network ID for CDMA.
 	public var locationAreaCode: Double?
 
-	/// The Cell ID (CID) for GSM, WCDMA and LTE. The Basestation ID for CDMA.
+	/// The Cell ID (CID) for GSM, WCDMA and LTE. The base station ID for CDMA.
 	public var cellId: Double?
 
 	/// The timing advance value for this cell tower when available.

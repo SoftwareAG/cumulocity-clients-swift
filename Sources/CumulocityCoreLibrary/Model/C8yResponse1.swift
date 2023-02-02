@@ -1,5 +1,5 @@
 //
-// C8yInventoryAssignmentCollection.swift
+// C8yResponse1.swift
 // CumulocityCoreLibrary
 //
 // Copyright (c) 2014-2022 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
@@ -8,19 +8,22 @@
 
 import Foundation
 
-public struct C8yInventoryAssignmentCollection: Codable {
+public struct C8yResponse1: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
-
-	/// An array of inventory assignments.
-	public var inventoryAssignments: [C8yInventoryAssignment]?
+	/// The status of the notification subscription deletion.
+	public var result: C8yResult?
 
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
-		case inventoryAssignments
+		case result
 	}
 
 	public init() {
 	}
+
+	/// The status of the notification subscription deletion.
+	public enum C8yResult: String, Codable {
+		case done = "DONE"
+		case scheduled = "SCHEDULED"
+	}
+
 }

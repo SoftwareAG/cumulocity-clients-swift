@@ -14,7 +14,7 @@ public struct C8yCellInfo: Codable {
 	/// The radio type of this cell tower.
 	public var radioType: String?
 
-	/// Detailed information about the neighbouring cell towers.
+	/// Detailed information about the neighboring cell towers.
 	public var cellTowers: [C8yCellTower]?
 
 	enum CodingKeys: String, CodingKey {

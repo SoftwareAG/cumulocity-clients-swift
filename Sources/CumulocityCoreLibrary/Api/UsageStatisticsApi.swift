@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-/// Days are counted according to server timezone, so be aware that the tenant usage statistics displaying/filtering may not work correctly when the client is not in the same timezone as the server. However, it is possible to send a request with a time range (using the query parameters `dateFrom` and `dateTo`) in zoned format (for example, `2020-10-26T03:00:00%2B01:00`).
+/// Days are counted according to server timezone, so be aware that the tenant usage statistics displaying/filtering may not work correctly when the client is not in the same timezone as the server. However, it is possible to send a request with a time range (using the query parameters `dateFrom` and `dateTo`) in zoned format (for example, `2020-10-26T03:00:00%2B01:00`). Statistics from past days are stored with daily aggregations, which means that for a specific day you get either the statistics for the whole day or none at all.
 /// 
 /// ### Request counting in SmartREST and MQTT
 /// 
@@ -52,7 +52,7 @@ import Combine
 /// |Creation of an **alarm** in one request|One alarm creation is counted.|One alarm creation is counted via REST.|
 /// |Update of an **alarm** (for example, status change)|One alarm update is counted.|One alarm update is counted via REST.|
 /// |Creation of **multiple alarms** in one request|Each alarm creation in a single MQTT request will be counted.|Not supported by C8Y (REST does not support creating multiple alarms in one call).|
-/// |Update of **multiple alarms** (for example, status change) in one request|Each alarm creation in a single MQTT request will be counted.|Not supported by C8Y (REST does not support updating multiple alarms in one call).|
+/// |Update of **multiple alarms** (for example, status change) in one request|Each alarm update in a single MQTT request will be counted.|Each alarm that matches the filter is counted as an alarm update (causing multiple updates).|
 /// |Creation of an **event** in one request|One event creation is counted.|One event creation is counted.|
 /// |Update of an **event** (for example, text change)|One event update is counted.|One event update is counted.|
 /// |Creation of **multiple events** in one request|Each event creation in a single MQTT request will be counted.|Not supported by C8Y (REST does not support creating multiple events in one call).|
@@ -280,9 +280,7 @@ public class UsageStatisticsApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func generateStatisticsFile(body: C8yRangeStatisticsFile, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yStatisticsFile, Error> {
+	public func generateStatisticsFile(body: C8yRangeStatisticsFile) -> AnyPublisher<C8yStatisticsFile, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -293,7 +291,6 @@ public class UsageStatisticsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/statistics/files")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.tenantstatisticsdate+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenantstatisticsfile+json")
 			.set(httpBody: encodedRequestBody)
@@ -332,7 +329,7 @@ public class UsageStatisticsApi: AdaptableApi {
 	///		  Unique identifier of the statistics file.
 	public func getStatisticsFile(id: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/statistics/files/\(id)")
+			.set(resourcePath: "/tenant/statistics/files\\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/octet-stream")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -372,7 +369,7 @@ public class UsageStatisticsApi: AdaptableApi {
 	///		  Date (format YYYY-MM-dd) specifying the month for which the statistics file will be downloaded (the day value is ignored).
 	public func getLatestStatisticsFile(month: Date) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/statistics/files/latest/\(month)")
+			.set(resourcePath: "/tenant/statistics/files/latest\\(month)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/octet-stream")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

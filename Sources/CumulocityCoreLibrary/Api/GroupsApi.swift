@@ -50,7 +50,7 @@ public class GroupsApi: AdaptableApi {
 		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/\(tenantId)/groups")
+			.set(resourcePath: "/user\\(tenantId)/groups")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.groupcollection+json")
 			.set(queryItems: queryItems)
@@ -78,7 +78,7 @@ public class GroupsApi: AdaptableApi {
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
-	/// 	- 200
+	/// 	- 201
 	///		  A user group was created.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
@@ -92,9 +92,7 @@ public class GroupsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func createUserGroup(body: C8yGroup, tenantId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yGroup, Error> {
+	public func createUserGroup(body: C8yGroup, tenantId: String) -> AnyPublisher<C8yGroup, Error> {
 		var requestBody = body
 		requestBody.roles = nil
 		requestBody.`self` = nil
@@ -109,9 +107,8 @@ public class GroupsApi: AdaptableApi {
 			return Fail<C8yGroup, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/\(tenantId)/groups")
+			.set(resourcePath: "/user\\(tenantId)/groups")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.group+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.group+json")
 			.set(httpBody: encodedRequestBody)
@@ -154,7 +151,7 @@ public class GroupsApi: AdaptableApi {
 	///		  Unique identifier of the user group.
 	public func getUserGroup(tenantId: String, groupId: Int) -> AnyPublisher<C8yGroup, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)")
+			.set(resourcePath: "/user\\(tenantId)/groups\\(groupId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.group+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -197,9 +194,7 @@ public class GroupsApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- groupId 
 	///		  Unique identifier of the user group.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func updateUserGroup(body: C8yGroup, tenantId: String, groupId: Int, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yGroup, Error> {
+	public func updateUserGroup(body: C8yGroup, tenantId: String, groupId: Int) -> AnyPublisher<C8yGroup, Error> {
 		var requestBody = body
 		requestBody.roles = nil
 		requestBody.`self` = nil
@@ -214,9 +209,8 @@ public class GroupsApi: AdaptableApi {
 			return Fail<C8yGroup, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)")
+			.set(resourcePath: "/user\\(tenantId)/groups\\(groupId)")
 			.set(httpMethod: "put")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.group+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.group+json")
 			.set(httpBody: encodedRequestBody)
@@ -257,13 +251,10 @@ public class GroupsApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- groupId 
 	///		  Unique identifier of the user group.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func deleteUserGroup(tenantId: String, groupId: Int, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
+	public func deleteUserGroup(tenantId: String, groupId: Int) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)")
+			.set(resourcePath: "/user\\(tenantId)/groups\\(groupId)")
 			.set(httpMethod: "delete")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -304,7 +295,7 @@ public class GroupsApi: AdaptableApi {
 	///		  The name of the user group.
 	public func getUserGroupByName(tenantId: String, groupName: String) -> AnyPublisher<C8yGroup, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/\(tenantId)/groupByName/\(groupName)")
+			.set(resourcePath: "/user\\(tenantId)/groupByName\\(groupName)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.group+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -359,7 +350,7 @@ public class GroupsApi: AdaptableApi {
 		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/groups")
+			.set(resourcePath: "/user\\(tenantId)/users\\(userId)/groups")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.groupreferencecollection+json")
 			.set(queryItems: queryItems)
