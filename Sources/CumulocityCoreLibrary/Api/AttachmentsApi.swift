@@ -32,7 +32,7 @@ public class AttachmentsApi: AdaptableApi {
 	///		  Unique identifier of the event.
 	public func getEventAttachment(id: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/event/events/\(id)/binaries")
+			.set(resourcePath: "/event/events\\(id)/binaries")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/octet-stream")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -70,13 +70,10 @@ public class AttachmentsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the event.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func replaceEventAttachment(body: Data, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yEventBinary, Error> {
+	public func replaceEventAttachment(body: Data, id: String) -> AnyPublisher<C8yEventBinary, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/event/events/\(id)/binaries")
+			.set(resourcePath: "/event/events\\(id)/binaries")
 			.set(httpMethod: "put")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "text/plain")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.event+json")
 			.set(httpBody: body)
@@ -148,13 +145,10 @@ public class AttachmentsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the event.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func uploadEventAttachment(body: Data, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yEventBinary, Error> {
+	public func uploadEventAttachment(body: Data, id: String) -> AnyPublisher<C8yEventBinary, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/event/events/\(id)/binaries")
+			.set(resourcePath: "/event/events\\(id)/binaries")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "text/plain")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.event+json")
 			.set(httpBody: body)
@@ -228,20 +222,21 @@ public class AttachmentsApi: AdaptableApi {
 	///		  Path of the file to be uploaded.
 	/// 	- id 
 	///		  Unique identifier of the event.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func uploadEventAttachment(`object`: C8yBinaryInfo, file: Data, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yEventBinary, Error> {
+	public func uploadEventAttachment(`object`: C8yBinaryInfo, file: Data, id: String) -> AnyPublisher<C8yEventBinary, Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
 		do {
 			try multipartBuilder.addBodyPart(named: "object", codable: `object`, mimeType: "application/json");
 		} catch {
 			return Fail<C8yEventBinary, Error>(error: error).eraseToAnyPublisher()
 		}
-		multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/plain");
+		do {
+			try multipartBuilder.addBodyPart(named: "file", codable: file, mimeType: "text/plain");
+		} catch {
+			return Fail<C8yEventBinary, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/event/events/\(id)/binaries")
+			.set(resourcePath: "/event/events\\(id)/binaries")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "multipart/form-data")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.event+json")
 			.add(header: "Content-Type", value: multipartBuilder.contentType)
@@ -279,13 +274,10 @@ public class AttachmentsApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the event.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func deleteEventAttachment(id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
+	public func deleteEventAttachment(id: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/event/events/\(id)/binaries")
+			.set(resourcePath: "/event/events\\(id)/binaries")
 			.set(httpMethod: "delete")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

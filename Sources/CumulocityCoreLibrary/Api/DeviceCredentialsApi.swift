@@ -82,7 +82,7 @@ public class DeviceCredentialsApi: AdaptableApi {
 	/// |Name|Mandatory|Description|
 	/// |--- |--- |--- |
 	/// |ID|Yes|The external ID of a device.|
-	/// |CREDENTIALS|Yes|Password for the device's user.|
+	/// |CREDENTIALS|Yes*|Password for the device's user. Mandatory, unless AUTH_TYPE is "CERTIFICATES", then CREDENTIALS can be skipped.|
 	/// |AUTH_TYPE|No|Required authentication type for the device's user. If the device uses credentials, this can be skipped or filled with "BASIC". Devices that use certificates must set "CERTIFICATES".|
 	/// |TENANT|No|The ID of the tenant for which the registration is executed (only allowed for the management tenant).|
 	/// |TYPE|No|The type of the device representation.|
@@ -95,6 +95,8 @@ public class DeviceCredentialsApi: AdaptableApi {
 	/// Section two is the rest of the CSV file. Section two contains the device information. The order and quantity of the values must be the same as of the headers.
 	/// 
 	/// A separator is automatically obtained from the CSV file. Valid separator values are: `\t` (tabulation mark), `;` (semicolon) and `,` (comma).
+	/// 
+	/// > **⚠️ Important:** The CSV file needs the "com_cumulocity_model_Agent.active" header with a value of "true" to be added to the request.
 	/// 
 	/// > **&#9432; Info:** A bulk registration creates an elementary representation of the device. Then, the device needs to update it to a full representation with its own status. The device is ready to use only after it is updated to the full representation. Also see [credentials upload](https://cumulocity.com/guides/users-guide/device-management/#creds-upload) and [device integration](https://cumulocity.com/guides/device-sdk/rest/#device-integration).
 	/// 
@@ -140,7 +142,7 @@ public class DeviceCredentialsApi: AdaptableApi {
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
-	/// 	- 200
+	/// 	- 201
 	///		  A bulk of new device requests was created.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.

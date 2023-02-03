@@ -103,20 +103,21 @@ public class BinariesApi: AdaptableApi {
 	/// 	- `object` 
 	/// 	- file 
 	///		  Path of the file to be uploaded.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func uploadBinary(`object`: C8yBinaryInfo, file: Data, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yBinary, Error> {
+	public func uploadBinary(`object`: C8yBinaryInfo, file: Data) -> AnyPublisher<C8yBinary, Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
 		do {
 			try multipartBuilder.addBodyPart(named: "object", codable: `object`, mimeType: "application/json");
 		} catch {
 			return Fail<C8yBinary, Error>(error: error).eraseToAnyPublisher()
 		}
-		multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/plain");
+		do {
+			try multipartBuilder.addBodyPart(named: "file", codable: file, mimeType: "text/plain");
+		} catch {
+			return Fail<C8yBinary, Error>(error: error).eraseToAnyPublisher()
+		}
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/binaries")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "multipart/form-data")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobject+json")
 			.add(header: "Content-Type", value: multipartBuilder.contentType)
@@ -154,7 +155,7 @@ public class BinariesApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	public func getBinary(id: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/binaries/\(id)")
+			.set(resourcePath: "/inventory/binaries\\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/octet-stream")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -189,13 +190,10 @@ public class BinariesApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func replaceBinary(body: Data, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yBinary, Error> {
+	public func replaceBinary(body: Data, id: String) -> AnyPublisher<C8yBinary, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/binaries/\(id)")
+			.set(resourcePath: "/inventory/binaries\\(id)")
 			.set(httpMethod: "put")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "text/plain")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobject+json")
 			.set(httpBody: body)
@@ -230,13 +228,10 @@ public class BinariesApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func removeBinary(id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
+	public func removeBinary(id: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/binaries/\(id)")
+			.set(resourcePath: "/inventory/binaries\\(id)")
 			.set(httpMethod: "delete")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

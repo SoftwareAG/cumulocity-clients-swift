@@ -33,7 +33,7 @@ public class ExternalIDsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	public func getExternalIds(id: String) -> AnyPublisher<C8yExternalIds, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/identity/globalIds/\(id)/externalIds")
+			.set(resourcePath: "/identity/globalIds\\(id)/externalIds")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.externalidcollection+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -70,9 +70,7 @@ public class ExternalIDsApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the managed object.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func createExternalId(body: C8yExternalId, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yExternalId, Error> {
+	public func createExternalId(body: C8yExternalId, id: String) -> AnyPublisher<C8yExternalId, Error> {
 		var requestBody = body
 		requestBody.managedObject = nil
 		requestBody.`self` = nil
@@ -83,9 +81,8 @@ public class ExternalIDsApi: AdaptableApi {
 			return Fail<C8yExternalId, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/identity/globalIds/\(id)/externalIds")
+			.set(resourcePath: "/identity/globalIds\\(id)/externalIds")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.externalid+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.externalid+json")
 			.set(httpBody: encodedRequestBody)
@@ -126,7 +123,7 @@ public class ExternalIDsApi: AdaptableApi {
 	///		  The type of the external identifier.
 	public func getExternalId(type: String, externalId: String) -> AnyPublisher<C8yExternalId, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/identity/externalIds/\(type)/\(externalId)")
+			.set(resourcePath: "/identity/externalIds\\(type)\\(externalId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.externalid+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -164,13 +161,10 @@ public class ExternalIDsApi: AdaptableApi {
 	///		  The identifier used in the external system that Cumulocity IoT interfaces with.
 	/// 	- externalId 
 	///		  The type of the external identifier.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func deleteExternalId(type: String, externalId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
+	public func deleteExternalId(type: String, externalId: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/identity/externalIds/\(type)/\(externalId)")
+			.set(resourcePath: "/identity/externalIds\\(type)\\(externalId)")
 			.set(httpMethod: "delete")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

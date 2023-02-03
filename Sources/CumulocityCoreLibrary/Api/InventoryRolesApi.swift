@@ -69,17 +69,17 @@ public class InventoryRolesApi: AdaptableApi {
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
-	/// 	- 200
+	/// 	- 201
 	///		  An inventory role was created.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 409
+	///		  Duplicate – The inventory role already exists.
 	/// 	- 422
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func createInventoryRole(body: C8yInventoryRole, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yInventoryRole, Error> {
+	public func createInventoryRole(body: C8yInventoryRole) -> AnyPublisher<C8yInventoryRole, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -92,7 +92,6 @@ public class InventoryRolesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/inventoryroles")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.inventoryrole+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.inventoryrole+json, application/vnd.com.nsn.cumulocity.error+json")
 			.set(httpBody: encodedRequestBody)
@@ -131,7 +130,7 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unique identifier of the inventory role.
 	public func getInventoryRole(id: Int) -> AnyPublisher<C8yInventoryRole, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/inventoryroles/\(id)")
+			.set(resourcePath: "/user/inventoryroles\\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.inventoryrole+json, application/vnd.com.nsn.cumulocity.error+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -170,9 +169,7 @@ public class InventoryRolesApi: AdaptableApi {
 	/// 	- body 
 	/// 	- id 
 	///		  Unique identifier of the inventory role.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func updateInventoryRole(body: C8yInventoryRole, id: Int, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yInventoryRole, Error> {
+	public func updateInventoryRole(body: C8yInventoryRole, id: Int) -> AnyPublisher<C8yInventoryRole, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -183,9 +180,8 @@ public class InventoryRolesApi: AdaptableApi {
 			return Fail<C8yInventoryRole, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/inventoryroles/\(id)")
+			.set(resourcePath: "/user/inventoryroles\\(id)")
 			.set(httpMethod: "put")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.inventoryrole+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.inventoryrole+json, application/vnd.com.nsn.cumulocity.error+json")
 			.set(httpBody: encodedRequestBody)
@@ -224,13 +220,10 @@ public class InventoryRolesApi: AdaptableApi {
 	/// - Parameters:
 	/// 	- id 
 	///		  Unique identifier of the inventory role.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func deleteInventoryRole(id: Int, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
+	public func deleteInventoryRole(id: Int) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/inventoryroles/\(id)")
+			.set(resourcePath: "/user/inventoryroles\\(id)")
 			.set(httpMethod: "delete")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -271,7 +264,7 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unique identifier of the a user.
 	public func getUserInventoryRoles(tenantId: String, userId: String) -> AnyPublisher<C8yInventoryAssignmentCollection, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory")
+			.set(resourcePath: "/user\\(tenantId)/users\\(userId)/roles/inventory")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.inventoryassignmentcollection+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -293,12 +286,14 @@ public class InventoryRolesApi: AdaptableApi {
 	/// Assign an existing inventory role to a specific user (by a given user ID) in a specific tenant (by a given tenant ID).
 	/// 
 	/// <section><h5>Required roles</h5>
-	/// ROLE_USER_MANAGEMENT_ADMIN <b>AND</b> (is not in user hierarchy <b>OR</b> is root in the user hierarchy) <b>OR</b> ROLE_USER_MANAGEMENT_ADMIN <b>AND</b> is in user hiararchy <b>AND</b> has parent access to inventory assignments <b>OR</b> ROLE_USER_MANAGEMENT_CREATE <b>AND</b> is parent of the user <b>AND</b> is not the current user <b>AND</b> has current user access to inventory assignments <b>AND</b> has parent access to inventory assignments
+	/// ROLE_USER_MANAGEMENT_ADMIN to assign any inventory role to root users in a user hierarchy <b>OR</b> users that are not in any hierarchy<br/>
+	/// ROLE_USER_MANAGEMENT_ADMIN to assign inventory roles accessible by the parent of the assigned user to non-root users in a user hierarchy<br/>
+	/// ROLE_USER_MANAGEMENT_CREATE to assign inventory roles accessible by the current user <b>AND</b> accessible by the parent of the assigned user to the descendants of the current user in a user hierarchy
 	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
-	/// 	- 201
+	/// 	- 200
 	///		  An inventory role was assigned to a user.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
@@ -314,9 +309,7 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	/// 	- userId 
 	///		  Unique identifier of the a user.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func assignUserInventoryRole(body: C8yInventoryAssignment, tenantId: String, userId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yInventoryAssignment, Error> {
+	public func assignUserInventoryRole(body: C8yInventoryAssignment, tenantId: String, userId: String) -> AnyPublisher<C8yInventoryAssignment, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.id = nil
@@ -327,9 +320,8 @@ public class InventoryRolesApi: AdaptableApi {
 			return Fail<C8yInventoryAssignment, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory")
+			.set(resourcePath: "/user\\(tenantId)/users\\(userId)/roles/inventory")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.inventoryassignment+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.inventoryassignment+json")
 			.set(httpBody: encodedRequestBody)
@@ -374,7 +366,7 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unique identifier of the inventory assignment.
 	public func getUserInventoryRole(tenantId: String, userId: String, id: Int) -> AnyPublisher<C8yInventoryAssignment, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory/\(id)")
+			.set(resourcePath: "/user\\(tenantId)/users\\(userId)/roles/inventory\\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.inventoryassignment+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -396,7 +388,9 @@ public class InventoryRolesApi: AdaptableApi {
 	/// Update a specific inventory role (by a given ID) assigned to a specific user (by a given user ID) in a specific tenant (by a given tenant ID).
 	/// 
 	/// <section><h5>Required roles</h5>
-	/// ROLE_USER_MANAGEMENT_ADMIN
+	/// ROLE_USER_MANAGEMENT_ADMIN to update the assignment of any inventory roles to root users in a user hierarchy <b>OR</b> users that are not in any hierarchy<br/>
+	/// ROLE_USER_MANAGEMENT_ADMIN to update the assignment of inventory roles accessible by the assigned user parent, to non-root users in a user hierarchy<br/>
+	/// ROLE_USER_MANAGEMENT_CREATE to update the assignment of inventory roles accessible by the current user <b>AND</b> the parent of the assigned user to the descendants of the current user in the user hierarchy
 	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
@@ -419,9 +413,7 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unique identifier of the a user.
 	/// 	- id 
 	///		  Unique identifier of the inventory assignment.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func updateUserInventoryRole(body: C8yInventoryAssignmentReference, tenantId: String, userId: String, id: Int, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yInventoryAssignment, Error> {
+	public func updateUserInventoryRole(body: C8yInventoryAssignmentReference, tenantId: String, userId: String, id: Int) -> AnyPublisher<C8yInventoryAssignment, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -430,9 +422,8 @@ public class InventoryRolesApi: AdaptableApi {
 			return Fail<C8yInventoryAssignment, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory/\(id)")
+			.set(resourcePath: "/user\\(tenantId)/users\\(userId)/roles/inventory\\(id)")
 			.set(httpMethod: "put")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.inventoryassignment+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.inventoryassignment+json")
 			.set(httpBody: encodedRequestBody)
@@ -475,13 +466,10 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unique identifier of the a user.
 	/// 	- id 
 	///		  Unique identifier of the inventory assignment.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func unassignUserInventoryRole(tenantId: String, userId: String, id: Int, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
+	public func unassignUserInventoryRole(tenantId: String, userId: String, id: Int) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory/\(id)")
+			.set(resourcePath: "/user\\(tenantId)/users\\(userId)/roles/inventory\\(id)")
 			.set(httpMethod: "delete")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

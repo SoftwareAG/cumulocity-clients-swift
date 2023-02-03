@@ -1,5 +1,5 @@
 //
-// C8yInventoryAssignmentCollection.swift
+// C8yApplicationVersionCollection.swift
 // CumulocityCoreLibrary
 //
 // Copyright (c) 2014-2022 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
@@ -8,17 +8,13 @@
 
 import Foundation
 
-public struct C8yInventoryAssignmentCollection: Codable {
+public struct C8yApplicationVersionCollection: Codable {
 
-	/// A URL linking to this resource.
-	public var `self`: String?
-
-	/// An array of inventory assignments.
-	public var inventoryAssignments: [C8yInventoryAssignment]?
+	/// An array of application versions.
+	public var versions: [C8yApplicationVersion]?
 
 	enum CodingKeys: String, CodingKey {
-		case `self` = "self"
-		case inventoryAssignments
+		case versions
 	}
 
 	public init() {

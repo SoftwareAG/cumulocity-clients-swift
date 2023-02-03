@@ -68,4 +68,45 @@ public class TokensApi: AdaptableApi {
 			return element.data
 		}).decode(type: C8yNotificationToken.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
+	
+	/// Unsubscribe a subscriber
+	/// Unsubscribe a notification subscriber using the notification token.
+	/// 
+	/// Once a subscription is made, notifications will be kept until they are consumed by all subscribers who have previously connected to the subscription. For non-volatile subscriptions, this can result in notifications remaining in storage if never consumed by the application.
+	/// They will be deleted if a tenant is deleted. It can take up considerable space in permanent storage for high-frequency notification sources. Therefore, we recommend you to unsubscribe a subscriber that will never run again.
+	/// 
+	/// The following table gives an overview of the possible response codes and their meanings.
+	/// - Returns:
+	/// 	- 200
+	///		  The notification subscription was deleted or is scheduled for deletion.
+	/// 	- 401
+	///		  Authentication information is missing or invalid.
+	/// - Parameters:
+	/// 	- xCumulocityProcessingMode 
+	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	/// 	- token 
+	///		  Subscriptions associated with this token will be removed.
+	public func unsubscribeSubscriber(xCumulocityProcessingMode: String? = nil, token: String) -> AnyPublisher<C8yResponse1, Error> {
+		var queryItems: [URLQueryItem] = []
+		queryItems.append(URLQueryItem(name: "token", value: String(token)))
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/notification2/unsubscribe")
+			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
+			.set(queryItems: queryItems)
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					c8yError.httpResponse = httpResponse
+					throw c8yError
+				}
+				throw BadResponseError(with: httpResponse)
+			}
+			return element.data
+		}).decode(type: C8yResponse1.self, decoder: JSONDecoder()).eraseToAnyPublisher()
+	}
 }

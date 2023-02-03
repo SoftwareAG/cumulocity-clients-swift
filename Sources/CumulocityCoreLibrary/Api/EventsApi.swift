@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-/// Events are used to pass real-time information through Cumulocity IoT and they come in three types: base events  when something in the sensor network happens, alarms requiring manual actions, and audit logs to store events that are security-relevant.
+/// Events are used to pass real-time information through Cumulocity IoT.
 /// 
 /// > **&#9432; Info:** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 /// 
@@ -252,7 +252,7 @@ public class EventsApi: AdaptableApi {
 	///		  Unique identifier of the event.
 	public func getEvent(id: String) -> AnyPublisher<C8yEvent, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/event/events/\(id)")
+			.set(resourcePath: "/event/events\\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.event+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -309,7 +309,7 @@ public class EventsApi: AdaptableApi {
 			return Fail<C8yEvent, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/event/events/\(id)")
+			.set(resourcePath: "/event/events\\(id)")
 			.set(httpMethod: "put")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.event+json")
@@ -354,7 +354,7 @@ public class EventsApi: AdaptableApi {
 	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func deleteEvent(id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/event/events/\(id)")
+			.set(resourcePath: "/event/events\\(id)")
 			.set(httpMethod: "delete")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")

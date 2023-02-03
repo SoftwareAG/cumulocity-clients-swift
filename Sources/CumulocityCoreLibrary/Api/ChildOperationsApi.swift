@@ -59,7 +59,7 @@ public class ChildOperationsApi: AdaptableApi {
 		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childAdditions")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.set(queryItems: queryItems)
@@ -112,7 +112,7 @@ public class ChildOperationsApi: AdaptableApi {
 			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childAdditions")
 			.set(httpMethod: "post")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json")
@@ -167,7 +167,7 @@ public class ChildOperationsApi: AdaptableApi {
 			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childAdditions")
 			.set(httpMethod: "post")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
@@ -233,7 +233,7 @@ public class ChildOperationsApi: AdaptableApi {
 			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childAdditions")
 			.set(httpMethod: "post")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
@@ -286,7 +286,7 @@ public class ChildOperationsApi: AdaptableApi {
 			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childAdditions")
 			.set(httpMethod: "delete")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
@@ -331,7 +331,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Unique identifier of the child object.
 	public func getChildAddition(id: String, childId: String) -> AnyPublisher<C8yManagedObjectReference, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions/\(childId)")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childAdditions\\(childId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json, application/vnd.com.nsn.cumulocity.error+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -375,7 +375,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func unassignChildAddition(id: String, childId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childAdditions/\(childId)")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childAdditions\\(childId)")
 			.set(httpMethod: "delete")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
@@ -438,7 +438,7 @@ public class ChildOperationsApi: AdaptableApi {
 		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childAssets")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.set(queryItems: queryItems)
@@ -491,7 +491,7 @@ public class ChildOperationsApi: AdaptableApi {
 			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childAssets")
 			.set(httpMethod: "post")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json")
@@ -546,7 +546,7 @@ public class ChildOperationsApi: AdaptableApi {
 			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childAssets")
 			.set(httpMethod: "post")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
@@ -612,7 +612,7 @@ public class ChildOperationsApi: AdaptableApi {
 			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childAssets")
 			.set(httpMethod: "post")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
@@ -665,7 +665,7 @@ public class ChildOperationsApi: AdaptableApi {
 			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childAssets")
 			.set(httpMethod: "delete")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
@@ -710,7 +710,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Unique identifier of the child object.
 	public func getChildAsset(id: String, childId: String) -> AnyPublisher<C8yManagedObjectReference, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets/\(childId)")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childAssets\\(childId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json, application/vnd.com.nsn.cumulocity.error+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -754,7 +754,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func unassignChildAsset(id: String, childId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childAssets/\(childId)")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childAssets\\(childId)")
 			.set(httpMethod: "delete")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
@@ -817,7 +817,7 @@ public class ChildOperationsApi: AdaptableApi {
 		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
 		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childDevices")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
 			.set(queryItems: queryItems)
@@ -870,7 +870,7 @@ public class ChildOperationsApi: AdaptableApi {
 			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childDevices")
 			.set(httpMethod: "post")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json")
@@ -925,7 +925,7 @@ public class ChildOperationsApi: AdaptableApi {
 			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childDevices")
 			.set(httpMethod: "post")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
@@ -991,7 +991,7 @@ public class ChildOperationsApi: AdaptableApi {
 			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childDevices")
 			.set(httpMethod: "post")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobject+json")
@@ -1044,7 +1044,7 @@ public class ChildOperationsApi: AdaptableApi {
 			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childDevices")
 			.set(httpMethod: "delete")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
@@ -1089,7 +1089,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Unique identifier of the child object.
 	public func getChildDevice(id: String, childId: String) -> AnyPublisher<C8yManagedObjectReference, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices/\(childId)")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childDevices\\(childId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.managedobjectreference+json, application/vnd.com.nsn.cumulocity.error+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -1133,7 +1133,7 @@ public class ChildOperationsApi: AdaptableApi {
 	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func unassignChildDevice(id: String, childId: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/\(id)/childDevices/\(childId)")
+			.set(resourcePath: "/inventory/managedObjects\\(id)/childDevices\\(childId)")
 			.set(httpMethod: "delete")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")

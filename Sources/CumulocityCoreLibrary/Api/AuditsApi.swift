@@ -99,9 +99,7 @@ public class AuditsApi: AdaptableApi {
 	///		  Authentication information is missing or invalid.
 	/// - Parameters:
 	/// 	- body 
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func createAuditRecord(body: C8yAuditRecord, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yAuditRecord, Error> {
+	public func createAuditRecord(body: C8yAuditRecord) -> AnyPublisher<C8yAuditRecord, Error> {
 		var requestBody = body
 		requestBody.severity = nil
 		requestBody.application = nil
@@ -120,7 +118,6 @@ public class AuditsApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/audit/auditRecords")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.auditrecord+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.auditrecord+json")
 			.set(httpBody: encodedRequestBody)
@@ -157,7 +154,7 @@ public class AuditsApi: AdaptableApi {
 	///		  Unique identifier of the audit record.
 	public func getAuditRecord(id: String) -> AnyPublisher<C8yAuditRecord, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/audit/auditRecords/\(id)")
+			.set(resourcePath: "/audit/auditRecords\\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.auditrecord+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

@@ -39,6 +39,9 @@ public struct C8yAuthConfig: Codable {
 
 	public var logoutRequest: C8yRequestRepresentation?
 
+	/// Indicates whether the configuration is only accessible to the management tenant.
+	public var onlyManagementTenantAccess: Bool?
+
 	/// SSO specific. Describes the process of internal user creation during login with the external authorization server.
 	public var onNewUser: C8yOnNewUser?
 
@@ -87,6 +90,7 @@ public struct C8yAuthConfig: Codable {
 		case id
 		case issuer
 		case logoutRequest
+		case onlyManagementTenantAccess
 		case onNewUser
 		case providerName
 		case redirectToPlatform

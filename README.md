@@ -65,7 +65,7 @@ let api = ApplicationsApi(session: session)
 
 ### Use your own domain model
 
-The CumulocityCoreLibrary allows custom data models. The following classes are designed to be extendible:
+The CumulocityCoreLibrary allows custom data models. The following classes are designed to be extensible:
 
 - `C8yAlarm`, `C8yAuditRecord`, `C8yCategoryOptions`, `C8yCustomProperties`, `C8yEvent`, `C8yManagedObject`, `C8yMeasurement`, `C8yOperation`
 

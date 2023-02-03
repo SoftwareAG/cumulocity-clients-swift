@@ -52,7 +52,7 @@ public class CurrentUserApi: AdaptableApi {
 	/// Update the current user.
 	/// 
 	/// <section><h5>Required roles</h5>
-	/// ROLE_USER_MANAGEMENT_ADMIN
+	/// ROLE_USER_MANAGEMENT_OWN_ADMIN
 	/// </section>
 	/// 
 	/// The following table gives an overview of the possible response codes and their meanings.
@@ -65,9 +65,7 @@ public class CurrentUserApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func updateCurrentUser(body: C8yCurrentUser, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yCurrentUser, Error> {
+	public func updateCurrentUser(body: C8yCurrentUser) -> AnyPublisher<C8yCurrentUser, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
 		requestBody.effectiveRoles = nil
@@ -85,7 +83,6 @@ public class CurrentUserApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser")
 			.set(httpMethod: "put")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.currentuser+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.currentuser+json")
 			.set(httpBody: encodedRequestBody)
@@ -123,9 +120,7 @@ public class CurrentUserApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func updateCurrentUserPassword(body: C8yPasswordChange, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
+	public func updateCurrentUserPassword(body: C8yPasswordChange) -> AnyPublisher<Data, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -136,7 +131,6 @@ public class CurrentUserApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser/password")
 			.set(httpMethod: "put")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: encodedRequestBody)
@@ -170,14 +164,10 @@ public class CurrentUserApi: AdaptableApi {
 	///		  The request has succeeded and the secret is sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
-	/// - Parameters:
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func generateTfaSecret(xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yCurrentUserTotpSecret, Error> {
+	public func generateTfaSecret() -> AnyPublisher<C8yCurrentUserTotpSecret, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser/totpSecret")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -250,9 +240,7 @@ public class CurrentUserApi: AdaptableApi {
 	///		  User not found.
 	/// - Parameters:
 	/// 	- body 
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func setTfaState(body: C8yCurrentUserTotpSecretActivity, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
+	public func setTfaState(body: C8yCurrentUserTotpSecretActivity) -> AnyPublisher<Data, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -263,7 +251,6 @@ public class CurrentUserApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser/totpSecret/activity")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: encodedRequestBody)
@@ -303,9 +290,7 @@ public class CurrentUserApi: AdaptableApi {
 	///		  Unprocessable Entity – invalid payload.
 	/// - Parameters:
 	/// 	- body 
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func verifyTfaCode(body: C8yCurrentUserTotpCode, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
+	public func verifyTfaCode(body: C8yCurrentUserTotpCode) -> AnyPublisher<Data, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
@@ -316,7 +301,6 @@ public class CurrentUserApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser/totpSecret/verify")
 			.set(httpMethod: "post")
-			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/json")
 			.set(httpBody: encodedRequestBody)
