@@ -68,29 +68,27 @@ public class AlarmsApi: AdaptableApi {
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getAlarms(createdFrom: String? = nil, createdTo: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, lastUpdatedFrom: String? = nil, lastUpdatedTo: String? = nil, pageSize: Int? = nil, resolved: Bool? = nil, severity: [String]? = nil, source: String? = nil, status: [String]? = nil, type: [String]? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yAlarmCollection, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = createdFrom { queryItems.append(URLQueryItem(name: "createdFrom", value: String(parameter))) }
-		if let parameter = createdTo { queryItems.append(URLQueryItem(name: "createdTo", value: String(parameter))) }
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
-		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
-		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
-		if let parameter = lastUpdatedFrom { queryItems.append(URLQueryItem(name: "lastUpdatedFrom", value: String(parameter))) }
-		if let parameter = lastUpdatedTo { queryItems.append(URLQueryItem(name: "lastUpdatedTo", value: String(parameter))) }
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
-		if let parameter = resolved { queryItems.append(URLQueryItem(name: "resolved", value: String(parameter))) }
-		if let parameter = severity { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "severity", value: p)) } }
-		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
-		if let parameter = status { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "status", value: p)) } }
-		if let parameter = type { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "type", value: p)) } }
-		if let parameter = withSourceAssets { queryItems.append(URLQueryItem(name: "withSourceAssets", value: String(parameter))) }
-		if let parameter = withSourceDevices { queryItems.append(URLQueryItem(name: "withSourceDevices", value: String(parameter))) }
-		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/alarm/alarms")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.alarmcollection+json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "createdFrom", value: createdFrom)
+			.add(queryItem: "createdTo", value: createdTo)
+			.add(queryItem: "currentPage", value: currentPage)
+			.add(queryItem: "dateFrom", value: dateFrom)
+			.add(queryItem: "dateTo", value: dateTo)
+			.add(queryItem: "lastUpdatedFrom", value: lastUpdatedFrom)
+			.add(queryItem: "lastUpdatedTo", value: lastUpdatedTo)
+			.add(queryItem: "pageSize", value: pageSize)
+			.add(queryItem: "resolved", value: resolved)
+			.add(queryItem: "severity", value: severity, explode: .comma_separated)
+			.add(queryItem: "source", value: source)
+			.add(queryItem: "status", value: status, explode: .comma_separated)
+			.add(queryItem: "type", value: type, explode: .comma_separated)
+			.add(queryItem: "withSourceAssets", value: withSourceAssets)
+			.add(queryItem: "withSourceDevices", value: withSourceDevices)
+			.add(queryItem: "withTotalElements", value: withTotalElements)
+			.add(queryItem: "withTotalPages", value: withTotalPages)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -165,17 +163,6 @@ public class AlarmsApi: AdaptableApi {
 		requestBody.text = nil
 		requestBody.time = nil
 		requestBody.type = nil
-		var queryItems: [URLQueryItem] = []
-		if let parameter = createdFrom { queryItems.append(URLQueryItem(name: "createdFrom", value: String(parameter))) }
-		if let parameter = createdTo { queryItems.append(URLQueryItem(name: "createdTo", value: String(parameter))) }
-		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
-		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
-		if let parameter = resolved { queryItems.append(URLQueryItem(name: "resolved", value: String(parameter))) }
-		if let parameter = severity { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "severity", value: p)) } }
-		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
-		if let parameter = status { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "status", value: p)) } }
-		if let parameter = withSourceAssets { queryItems.append(URLQueryItem(name: "withSourceAssets", value: String(parameter))) }
-		if let parameter = withSourceDevices { queryItems.append(URLQueryItem(name: "withSourceDevices", value: String(parameter))) }
 		var encodedRequestBody: Data? = nil
 		do {
 			encodedRequestBody = try JSONEncoder().encode(requestBody)
@@ -188,7 +175,16 @@ public class AlarmsApi: AdaptableApi {
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.alarm+json")
 			.add(header: "Accept", value: "application/json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "createdFrom", value: createdFrom)
+			.add(queryItem: "createdTo", value: createdTo)
+			.add(queryItem: "dateFrom", value: dateFrom)
+			.add(queryItem: "dateTo", value: dateTo)
+			.add(queryItem: "resolved", value: resolved)
+			.add(queryItem: "severity", value: severity, explode: .comma_separated)
+			.add(queryItem: "source", value: source)
+			.add(queryItem: "status", value: status, explode: .comma_separated)
+			.add(queryItem: "withSourceAssets", value: withSourceAssets)
+			.add(queryItem: "withSourceDevices", value: withSourceDevices)
 			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -328,24 +324,22 @@ public class AlarmsApi: AdaptableApi {
 	/// 	- withSourceDevices 
 	///		  When set to `true` also alarms for related source devices will be included in the request. When this parameter is provided a `source` must be specified.
 	public func deleteAlarms(xCumulocityProcessingMode: String? = nil, createdFrom: String? = nil, createdTo: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, resolved: Bool? = nil, severity: [String]? = nil, source: String? = nil, status: [String]? = nil, type: [String]? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil) -> AnyPublisher<Data, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = createdFrom { queryItems.append(URLQueryItem(name: "createdFrom", value: String(parameter))) }
-		if let parameter = createdTo { queryItems.append(URLQueryItem(name: "createdTo", value: String(parameter))) }
-		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
-		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
-		if let parameter = resolved { queryItems.append(URLQueryItem(name: "resolved", value: String(parameter))) }
-		if let parameter = severity { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "severity", value: p)) } }
-		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
-		if let parameter = status { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "status", value: p)) } }
-		if let parameter = type { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "type", value: p)) } }
-		if let parameter = withSourceAssets { queryItems.append(URLQueryItem(name: "withSourceAssets", value: String(parameter))) }
-		if let parameter = withSourceDevices { queryItems.append(URLQueryItem(name: "withSourceDevices", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/alarm/alarms")
 			.set(httpMethod: "delete")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "createdFrom", value: createdFrom)
+			.add(queryItem: "createdTo", value: createdTo)
+			.add(queryItem: "dateFrom", value: dateFrom)
+			.add(queryItem: "dateTo", value: dateTo)
+			.add(queryItem: "resolved", value: resolved)
+			.add(queryItem: "severity", value: severity, explode: .comma_separated)
+			.add(queryItem: "source", value: source)
+			.add(queryItem: "status", value: status, explode: .comma_separated)
+			.add(queryItem: "type", value: type, explode: .comma_separated)
+			.add(queryItem: "withSourceAssets", value: withSourceAssets)
+			.add(queryItem: "withSourceDevices", value: withSourceDevices)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -501,21 +495,19 @@ public class AlarmsApi: AdaptableApi {
 	/// 	- withSourceDevices 
 	///		  When set to `true` also alarms for related source devices will be included in the request. When this parameter is provided a `source` must be specified.
 	public func getNumberOfAlarms(dateFrom: String? = nil, dateTo: String? = nil, resolved: Bool? = nil, severity: [String]? = nil, source: String? = nil, status: [String]? = nil, type: [String]? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil) -> AnyPublisher<Int, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
-		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
-		if let parameter = resolved { queryItems.append(URLQueryItem(name: "resolved", value: String(parameter))) }
-		if let parameter = severity { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "severity", value: p)) } }
-		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
-		if let parameter = status { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "status", value: p)) } }
-		if let parameter = type { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "type", value: p)) } }
-		if let parameter = withSourceAssets { queryItems.append(URLQueryItem(name: "withSourceAssets", value: String(parameter))) }
-		if let parameter = withSourceDevices { queryItems.append(URLQueryItem(name: "withSourceDevices", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/alarm/alarms/count")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, text/plain, application/json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "dateFrom", value: dateFrom)
+			.add(queryItem: "dateTo", value: dateTo)
+			.add(queryItem: "resolved", value: resolved)
+			.add(queryItem: "severity", value: severity, explode: .comma_separated)
+			.add(queryItem: "source", value: source)
+			.add(queryItem: "status", value: status, explode: .comma_separated)
+			.add(queryItem: "type", value: type, explode: .comma_separated)
+			.add(queryItem: "withSourceAssets", value: withSourceAssets)
+			.add(queryItem: "withSourceDevices", value: withSourceDevices)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)

@@ -66,29 +66,27 @@ public class EventsApi: AdaptableApi {
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getEvents(createdFrom: String? = nil, createdTo: String? = nil, currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, fragmentValue: String? = nil, lastUpdatedFrom: String? = nil, lastUpdatedTo: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, source: String? = nil, type: String? = nil, withSourceAssets: Bool? = nil, withSourceDevices: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yEventCollection, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = createdFrom { queryItems.append(URLQueryItem(name: "createdFrom", value: String(parameter))) }
-		if let parameter = createdTo { queryItems.append(URLQueryItem(name: "createdTo", value: String(parameter))) }
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
-		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
-		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
-		if let parameter = fragmentType { queryItems.append(URLQueryItem(name: "fragmentType", value: String(parameter))) }
-		if let parameter = fragmentValue { queryItems.append(URLQueryItem(name: "fragmentValue", value: String(parameter))) }
-		if let parameter = lastUpdatedFrom { queryItems.append(URLQueryItem(name: "lastUpdatedFrom", value: String(parameter))) }
-		if let parameter = lastUpdatedTo { queryItems.append(URLQueryItem(name: "lastUpdatedTo", value: String(parameter))) }
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
-		if let parameter = revert { queryItems.append(URLQueryItem(name: "revert", value: String(parameter))) }
-		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
-		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter))) }
-		if let parameter = withSourceAssets { queryItems.append(URLQueryItem(name: "withSourceAssets", value: String(parameter))) }
-		if let parameter = withSourceDevices { queryItems.append(URLQueryItem(name: "withSourceDevices", value: String(parameter))) }
-		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.eventcollection+json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "createdFrom", value: createdFrom)
+			.add(queryItem: "createdTo", value: createdTo)
+			.add(queryItem: "currentPage", value: currentPage)
+			.add(queryItem: "dateFrom", value: dateFrom)
+			.add(queryItem: "dateTo", value: dateTo)
+			.add(queryItem: "fragmentType", value: fragmentType)
+			.add(queryItem: "fragmentValue", value: fragmentValue)
+			.add(queryItem: "lastUpdatedFrom", value: lastUpdatedFrom)
+			.add(queryItem: "lastUpdatedTo", value: lastUpdatedTo)
+			.add(queryItem: "pageSize", value: pageSize)
+			.add(queryItem: "revert", value: revert)
+			.add(queryItem: "source", value: source)
+			.add(queryItem: "type", value: type)
+			.add(queryItem: "withSourceAssets", value: withSourceAssets)
+			.add(queryItem: "withSourceDevices", value: withSourceDevices)
+			.add(queryItem: "withTotalElements", value: withTotalElements)
+			.add(queryItem: "withTotalPages", value: withTotalPages)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -203,20 +201,18 @@ public class EventsApi: AdaptableApi {
 	/// 	- type 
 	///		  The type of event to search for.
 	public func deleteEvents(xCumulocityProcessingMode: String? = nil, createdFrom: String? = nil, createdTo: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, source: String? = nil, type: String? = nil) -> AnyPublisher<Data, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = createdFrom { queryItems.append(URLQueryItem(name: "createdFrom", value: String(parameter))) }
-		if let parameter = createdTo { queryItems.append(URLQueryItem(name: "createdTo", value: String(parameter))) }
-		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
-		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
-		if let parameter = fragmentType { queryItems.append(URLQueryItem(name: "fragmentType", value: String(parameter))) }
-		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
-		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/event/events")
 			.set(httpMethod: "delete")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "createdFrom", value: createdFrom)
+			.add(queryItem: "createdTo", value: createdTo)
+			.add(queryItem: "dateFrom", value: dateFrom)
+			.add(queryItem: "dateTo", value: dateTo)
+			.add(queryItem: "fragmentType", value: fragmentType)
+			.add(queryItem: "source", value: source)
+			.add(queryItem: "type", value: type)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)

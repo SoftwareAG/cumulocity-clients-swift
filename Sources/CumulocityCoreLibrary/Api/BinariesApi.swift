@@ -46,22 +46,20 @@ public class BinariesApi: AdaptableApi {
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getBinaries(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, ids: [String]? = nil, owner: String? = nil, pageSize: Int? = nil, text: String? = nil, type: String? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yBinaryCollection, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = childAdditionId { queryItems.append(URLQueryItem(name: "childAdditionId", value: String(parameter))) }
-		if let parameter = childAssetId { queryItems.append(URLQueryItem(name: "childAssetId", value: String(parameter))) }
-		if let parameter = childDeviceId { queryItems.append(URLQueryItem(name: "childDeviceId", value: String(parameter))) }
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
-		if let parameter = ids { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "ids", value: p)) } }
-		if let parameter = owner { queryItems.append(URLQueryItem(name: "owner", value: String(parameter))) }
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
-		if let parameter = text { queryItems.append(URLQueryItem(name: "text", value: String(parameter))) }
-		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter))) }
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/binaries")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobjectcollection+json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "childAdditionId", value: childAdditionId)
+			.add(queryItem: "childAssetId", value: childAssetId)
+			.add(queryItem: "childDeviceId", value: childDeviceId)
+			.add(queryItem: "currentPage", value: currentPage)
+			.add(queryItem: "ids", value: ids, explode: .comma_separated)
+			.add(queryItem: "owner", value: owner)
+			.add(queryItem: "pageSize", value: pageSize)
+			.add(queryItem: "text", value: text)
+			.add(queryItem: "type", value: type)
+			.add(queryItem: "withTotalPages", value: withTotalPages)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)

@@ -58,23 +58,21 @@ public class MeasurementsApi: AdaptableApi {
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getMeasurements(currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, revert: Bool? = nil, source: String? = nil, type: String? = nil, valueFragmentSeries: String? = nil, valueFragmentType: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yMeasurementCollection, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
-		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
-		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
-		if let parameter = revert { queryItems.append(URLQueryItem(name: "revert", value: String(parameter))) }
-		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
-		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter))) }
-		if let parameter = valueFragmentSeries { queryItems.append(URLQueryItem(name: "valueFragmentSeries", value: String(parameter))) }
-		if let parameter = valueFragmentType { queryItems.append(URLQueryItem(name: "valueFragmentType", value: String(parameter))) }
-		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement/measurements")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.measurementcollection+json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "currentPage", value: currentPage)
+			.add(queryItem: "dateFrom", value: dateFrom)
+			.add(queryItem: "dateTo", value: dateTo)
+			.add(queryItem: "pageSize", value: pageSize)
+			.add(queryItem: "revert", value: revert)
+			.add(queryItem: "source", value: source)
+			.add(queryItem: "type", value: type)
+			.add(queryItem: "valueFragmentSeries", value: valueFragmentSeries)
+			.add(queryItem: "valueFragmentType", value: valueFragmentType)
+			.add(queryItem: "withTotalElements", value: withTotalElements)
+			.add(queryItem: "withTotalPages", value: withTotalPages)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -266,18 +264,16 @@ public class MeasurementsApi: AdaptableApi {
 	/// 	- type 
 	///		  The type of measurement to search for.
 	public func deleteMeasurements(xCumulocityProcessingMode: String? = nil, dateFrom: String? = nil, dateTo: String? = nil, fragmentType: String? = nil, source: String? = nil, type: String? = nil) -> AnyPublisher<Data, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
-		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
-		if let parameter = fragmentType { queryItems.append(URLQueryItem(name: "fragmentType", value: String(parameter))) }
-		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
-		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement/measurements")
 			.set(httpMethod: "delete")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "dateFrom", value: dateFrom)
+			.add(queryItem: "dateTo", value: dateTo)
+			.add(queryItem: "fragmentType", value: fragmentType)
+			.add(queryItem: "source", value: source)
+			.add(queryItem: "type", value: type)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -406,18 +402,16 @@ public class MeasurementsApi: AdaptableApi {
 	/// 	- source 
 	///		  The managed object ID to which the measurement is associated.
 	public func getMeasurementSeries(aggregationType: String? = nil, dateFrom: String, dateTo: String, revert: Bool? = nil, series: [String]? = nil, source: String) -> AnyPublisher<C8yMeasurementSeries, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = aggregationType { queryItems.append(URLQueryItem(name: "aggregationType", value: String(parameter))) }
-		queryItems.append(URLQueryItem(name: "dateFrom", value: String(dateFrom)))
-		queryItems.append(URLQueryItem(name: "dateTo", value: String(dateTo)))
-		if let parameter = revert { queryItems.append(URLQueryItem(name: "revert", value: String(parameter))) }
-		if let parameter = series { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "series", value: p)) } }
-		queryItems.append(URLQueryItem(name: "source", value: String(source)))
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/measurement/measurements/series")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "aggregationType", value: aggregationType)
+			.add(queryItem: "dateFrom", value: dateFrom)
+			.add(queryItem: "dateTo", value: dateTo)
+			.add(queryItem: "revert", value: revert)
+			.add(queryItem: "series", value: series, explode: .exploded)
+			.add(queryItem: "source", value: source)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
