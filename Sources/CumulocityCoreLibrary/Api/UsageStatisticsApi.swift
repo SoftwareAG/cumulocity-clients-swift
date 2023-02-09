@@ -129,12 +129,17 @@ public class UsageStatisticsApi: AdaptableApi {
 	
 	/// Retrieve a usage statistics summary
 	/// Retrieve a usage statistics summary of a tenant.
+	/// <section><h5>Required roles</h5> ROLE_TENANT_STATISTICS_READ <b>OR</b> ROLE_INVENTORY_READ <br/> If the `tenant` request parameter is specified, then the current tenant must be the management tenant <b>OR</b> the parent of the requested `tenant`. </section>
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
 	/// 	- 200
 	///		  The request has succeeded and the usage statistics summary is sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 403
+	///		  Not authorized to perform this operation.
+	/// 	- 404
+	///		  Tenant not found.
 	/// - Parameters:
 	/// 	- dateFrom 
 	///		  Start date or date and time of the statistics.
