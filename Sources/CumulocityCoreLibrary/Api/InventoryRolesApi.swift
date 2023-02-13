@@ -128,7 +128,7 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unique identifier of the inventory role.
 	public func getInventoryRole(id: Int) -> AnyPublisher<C8yInventoryRole, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/inventoryroles\\(id)")
+			.set(resourcePath: "/user/inventoryroles/\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.inventoryrole+json, application/vnd.com.nsn.cumulocity.error+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -178,7 +178,7 @@ public class InventoryRolesApi: AdaptableApi {
 			return Fail<C8yInventoryRole, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/inventoryroles\\(id)")
+			.set(resourcePath: "/user/inventoryroles/\(id)")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.inventoryrole+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.inventoryrole+json, application/vnd.com.nsn.cumulocity.error+json")
@@ -220,7 +220,7 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unique identifier of the inventory role.
 	public func deleteInventoryRole(id: Int) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/inventoryroles\\(id)")
+			.set(resourcePath: "/user/inventoryroles/\(id)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -262,7 +262,7 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unique identifier of the a user.
 	public func getUserInventoryRoles(tenantId: String, userId: String) -> AnyPublisher<C8yInventoryAssignmentCollection, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/users\\(userId)/roles/inventory")
+			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.inventoryassignmentcollection+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -318,7 +318,7 @@ public class InventoryRolesApi: AdaptableApi {
 			return Fail<C8yInventoryAssignment, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/users\\(userId)/roles/inventory")
+			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.inventoryassignment+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.inventoryassignment+json")
@@ -364,7 +364,7 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unique identifier of the inventory assignment.
 	public func getUserInventoryRole(tenantId: String, userId: String, id: Int) -> AnyPublisher<C8yInventoryAssignment, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/users\\(userId)/roles/inventory\\(id)")
+			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory/\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.inventoryassignment+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -420,7 +420,7 @@ public class InventoryRolesApi: AdaptableApi {
 			return Fail<C8yInventoryAssignment, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/users\\(userId)/roles/inventory\\(id)")
+			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory/\(id)")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.inventoryassignment+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.inventoryassignment+json")
@@ -466,7 +466,7 @@ public class InventoryRolesApi: AdaptableApi {
 	///		  Unique identifier of the inventory assignment.
 	public func unassignUserInventoryRole(tenantId: String, userId: String, id: Int) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/users\\(userId)/roles/inventory\\(id)")
+			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/inventory/\(id)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

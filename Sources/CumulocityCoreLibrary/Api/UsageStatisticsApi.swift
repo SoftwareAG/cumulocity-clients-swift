@@ -326,7 +326,7 @@ public class UsageStatisticsApi: AdaptableApi {
 	///		  Unique identifier of the statistics file.
 	public func getStatisticsFile(id: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/statistics/files\\(id)")
+			.set(resourcePath: "/tenant/statistics/files/\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/octet-stream")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -366,7 +366,7 @@ public class UsageStatisticsApi: AdaptableApi {
 	///		  Date (format YYYY-MM-dd) specifying the month for which the statistics file will be downloaded (the day value is ignored).
 	public func getLatestStatisticsFile(month: Date) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/statistics/files/latest\\(month)")
+			.set(resourcePath: "/tenant/statistics/files/latest/\(month)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/octet-stream")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

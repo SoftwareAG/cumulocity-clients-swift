@@ -152,7 +152,7 @@ public class AuditsApi: AdaptableApi {
 	///		  Unique identifier of the audit record.
 	public func getAuditRecord(id: String) -> AnyPublisher<C8yAuditRecord, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/audit/auditRecords\\(id)")
+			.set(resourcePath: "/audit/auditRecords/\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.auditrecord+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

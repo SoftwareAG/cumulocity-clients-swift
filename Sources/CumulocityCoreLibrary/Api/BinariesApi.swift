@@ -153,7 +153,7 @@ public class BinariesApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	public func getBinary(id: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/binaries\\(id)")
+			.set(resourcePath: "/inventory/binaries/\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/octet-stream")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -190,7 +190,7 @@ public class BinariesApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	public func replaceBinary(body: Data, id: String) -> AnyPublisher<C8yBinary, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/binaries\\(id)")
+			.set(resourcePath: "/inventory/binaries/\(id)")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "text/plain")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobject+json")
@@ -228,7 +228,7 @@ public class BinariesApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	public func removeBinary(id: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/binaries\\(id)")
+			.set(resourcePath: "/inventory/binaries/\(id)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

@@ -309,7 +309,7 @@ public class MeasurementsApi: AdaptableApi {
 	///		  Unique identifier of the measurement.
 	public func getMeasurement(id: String) -> AnyPublisher<C8yMeasurement, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/measurement/measurements\\(id)")
+			.set(resourcePath: "/measurement/measurements/\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.measurement+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -351,7 +351,7 @@ public class MeasurementsApi: AdaptableApi {
 	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func deleteMeasurement(id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/measurement/measurements\\(id)")
+			.set(resourcePath: "/measurement/measurements/\(id)")
 			.set(httpMethod: "delete")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")

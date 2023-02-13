@@ -53,7 +53,7 @@ public class UsersApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getUsers(tenantId: String, currentPage: Int? = nil, groups: [String]? = nil, onlyDevices: Bool? = nil, owner: String? = nil, pageSize: Int? = nil, username: String? = nil, withSubusersCount: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yUserCollection, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/users")
+			.set(resourcePath: "/user/\(tenantId)/users")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.usercollection+json")
 			.add(queryItem: "currentPage", value: currentPage)
@@ -123,7 +123,7 @@ public class UsersApi: AdaptableApi {
 			return Fail<C8yUser, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/users")
+			.set(resourcePath: "/user/\(tenantId)/users")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.user+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.user+json")
@@ -171,7 +171,7 @@ public class UsersApi: AdaptableApi {
 	///		  Unique identifier of the a user.
 	public func getUser(tenantId: String, userId: String) -> AnyPublisher<C8yUser, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/users\\(userId)")
+			.set(resourcePath: "/user/\(tenantId)/users/\(userId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.user+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -241,7 +241,7 @@ public class UsersApi: AdaptableApi {
 			return Fail<C8yUser, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/users\\(userId)")
+			.set(resourcePath: "/user/\(tenantId)/users/\(userId)")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.user+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.user+json")
@@ -285,7 +285,7 @@ public class UsersApi: AdaptableApi {
 	///		  Unique identifier of the a user.
 	public func deleteUser(tenantId: String, userId: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/users\\(userId)")
+			.set(resourcePath: "/user/\(tenantId)/users/\(userId)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -341,7 +341,7 @@ public class UsersApi: AdaptableApi {
 			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/users\\(userId)/password")
+			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/password")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/json")
@@ -385,7 +385,7 @@ public class UsersApi: AdaptableApi {
 	///		  Unique identifier of the a user.
 	public func getUserTfaSettings(tenantId: String, userId: String) -> AnyPublisher<C8yUserTfaData, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/users\\(userId)/tfa")
+			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/tfa")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -427,7 +427,7 @@ public class UsersApi: AdaptableApi {
 	///		  The username of the a user.
 	public func getUserByUsername(tenantId: String, username: String) -> AnyPublisher<C8yUser, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/userByName\\(username)")
+			.set(resourcePath: "/user/\(tenantId)/userByName/\(username)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.user+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -475,7 +475,7 @@ public class UsersApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getUsersFromUserGroup(tenantId: String, groupId: Int, currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil) -> AnyPublisher<C8yUserReferenceCollection, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/groups\\(groupId)/users")
+			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)/users")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.userreferencecollection+json")
 			.add(queryItem: "currentPage", value: currentPage)
@@ -532,7 +532,7 @@ public class UsersApi: AdaptableApi {
 			return Fail<C8yUserReference, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/groups\\(groupId)/users")
+			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)/users")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.userreference+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.userreference+json")
@@ -578,7 +578,7 @@ public class UsersApi: AdaptableApi {
 	///		  Unique identifier of the a user.
 	public func removeUserFromUserGroup(tenantId: String, groupId: Int, userId: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/groups\\(groupId)/users\\(userId)")
+			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)/users/\(userId)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

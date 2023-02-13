@@ -130,7 +130,7 @@ public class LoginOptionsApi: AdaptableApi {
 			return Fail<C8yAuthConfig, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/loginOptions\\(typeOrId)/restrict")
+			.set(resourcePath: "/tenant/loginOptions/\(typeOrId)/restrict")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.authconfig+json")

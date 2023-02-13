@@ -225,7 +225,7 @@ public class OperationsApi: AdaptableApi {
 	///		  Unique identifier of the operation.
 	public func getOperation(id: String) -> AnyPublisher<C8yOperation, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/devicecontrol/operations\\(id)")
+			.set(resourcePath: "/devicecontrol/operations/\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.operation+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -283,7 +283,7 @@ public class OperationsApi: AdaptableApi {
 			return Fail<C8yOperation, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/devicecontrol/operations\\(id)")
+			.set(resourcePath: "/devicecontrol/operations/\(id)")
 			.set(httpMethod: "put")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.operation+json")

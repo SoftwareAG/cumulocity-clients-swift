@@ -76,7 +76,7 @@ public class DeviceStatisticsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getMonthlyDeviceStatistics(tenantId: String, date: Date, currentPage: Int? = nil, deviceId: String? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yDeviceStatisticsCollection, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/statistics/device\\(tenantId)/monthly\\(date)")
+			.set(resourcePath: "/tenant/statistics/device/\(tenantId)/monthly/\(date)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 			.add(queryItem: "currentPage", value: currentPage)
@@ -128,7 +128,7 @@ public class DeviceStatisticsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getDailyDeviceStatistics(tenantId: String, date: Date, currentPage: Int? = nil, deviceId: String? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yDeviceStatisticsCollection, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/statistics/device\\(tenantId)/daily\\(date)")
+			.set(resourcePath: "/tenant/statistics/device/\(tenantId)/daily/\(date)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 			.add(queryItem: "currentPage", value: currentPage)

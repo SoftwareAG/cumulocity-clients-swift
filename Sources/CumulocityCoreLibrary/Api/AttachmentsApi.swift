@@ -32,7 +32,7 @@ public class AttachmentsApi: AdaptableApi {
 	///		  Unique identifier of the event.
 	public func getEventAttachment(id: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/event/events\\(id)/binaries")
+			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/octet-stream")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -72,7 +72,7 @@ public class AttachmentsApi: AdaptableApi {
 	///		  Unique identifier of the event.
 	public func replaceEventAttachment(body: Data, id: String) -> AnyPublisher<C8yEventBinary, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/event/events\\(id)/binaries")
+			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "text/plain")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.event+json")
@@ -147,7 +147,7 @@ public class AttachmentsApi: AdaptableApi {
 	///		  Unique identifier of the event.
 	public func uploadEventAttachment(body: Data, id: String) -> AnyPublisher<C8yEventBinary, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/event/events\\(id)/binaries")
+			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "text/plain")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.event+json")
@@ -235,7 +235,7 @@ public class AttachmentsApi: AdaptableApi {
 			return Fail<C8yEventBinary, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/event/events\\(id)/binaries")
+			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "multipart/form-data")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.event+json")
@@ -276,7 +276,7 @@ public class AttachmentsApi: AdaptableApi {
 	///		  Unique identifier of the event.
 	public func deleteEventAttachment(id: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/event/events\\(id)/binaries")
+			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

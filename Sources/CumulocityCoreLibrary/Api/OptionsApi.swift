@@ -155,7 +155,7 @@ public class OptionsApi: AdaptableApi {
 	///		  The category of the options.
 	public func getOptionsByCategory(category: String) -> AnyPublisher<C8yCategoryOptions, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/options\\(category)")
+			.set(resourcePath: "/tenant/options/\(category)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.option+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -201,7 +201,7 @@ public class OptionsApi: AdaptableApi {
 			return Fail<C8yCategoryOptions, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/options\\(category)")
+			.set(resourcePath: "/tenant/options/\(category)")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.option+json")
@@ -243,7 +243,7 @@ public class OptionsApi: AdaptableApi {
 	///		  The key of an option.
 	public func getOption(category: String, key: String) -> AnyPublisher<C8yOption, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/options\\(category)\\(key)")
+			.set(resourcePath: "/tenant/options/\(category)/\(key)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.option+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -293,7 +293,7 @@ public class OptionsApi: AdaptableApi {
 			return Fail<C8yOption, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/options\\(category)\\(key)")
+			.set(resourcePath: "/tenant/options/\(category)/\(key)")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.option+json")
@@ -335,7 +335,7 @@ public class OptionsApi: AdaptableApi {
 	///		  The key of an option.
 	public func deleteOption(category: String, key: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/options\\(category)\\(key)")
+			.set(resourcePath: "/tenant/options/\(category)/\(key)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
