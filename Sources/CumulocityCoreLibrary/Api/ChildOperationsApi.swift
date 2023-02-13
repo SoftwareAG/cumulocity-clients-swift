@@ -50,19 +50,17 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getChildAdditions(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yManagedObjectReferenceCollection, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
-		if let parameter = query { queryItems.append(URLQueryItem(name: "query", value: String(parameter))) }
-		if let parameter = withChildren { queryItems.append(URLQueryItem(name: "withChildren", value: String(parameter))) }
-		if let parameter = withChildrenCount { queryItems.append(URLQueryItem(name: "withChildrenCount", value: String(parameter))) }
-		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects\\(id)/childAdditions")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "currentPage", value: currentPage)
+			.add(queryItem: "pageSize", value: pageSize)
+			.add(queryItem: "query", value: query)
+			.add(queryItem: "withChildren", value: withChildren)
+			.add(queryItem: "withChildrenCount", value: withChildrenCount)
+			.add(queryItem: "withTotalElements", value: withTotalElements)
+			.add(queryItem: "withTotalPages", value: withTotalPages)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -429,19 +427,17 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getChildAssets(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yManagedObjectReferenceCollection, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
-		if let parameter = query { queryItems.append(URLQueryItem(name: "query", value: String(parameter))) }
-		if let parameter = withChildren { queryItems.append(URLQueryItem(name: "withChildren", value: String(parameter))) }
-		if let parameter = withChildrenCount { queryItems.append(URLQueryItem(name: "withChildrenCount", value: String(parameter))) }
-		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects\\(id)/childAssets")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "currentPage", value: currentPage)
+			.add(queryItem: "pageSize", value: pageSize)
+			.add(queryItem: "query", value: query)
+			.add(queryItem: "withChildren", value: withChildren)
+			.add(queryItem: "withChildrenCount", value: withChildrenCount)
+			.add(queryItem: "withTotalElements", value: withTotalElements)
+			.add(queryItem: "withTotalPages", value: withTotalPages)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -808,19 +804,17 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getChildDevices(id: String, currentPage: Int? = nil, pageSize: Int? = nil, query: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yManagedObjectReferenceCollection, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
-		if let parameter = query { queryItems.append(URLQueryItem(name: "query", value: String(parameter))) }
-		if let parameter = withChildren { queryItems.append(URLQueryItem(name: "withChildren", value: String(parameter))) }
-		if let parameter = withChildrenCount { queryItems.append(URLQueryItem(name: "withChildrenCount", value: String(parameter))) }
-		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects\\(id)/childDevices")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobjectreferencecollection+json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "currentPage", value: currentPage)
+			.add(queryItem: "pageSize", value: pageSize)
+			.add(queryItem: "query", value: query)
+			.add(queryItem: "withChildren", value: withChildren)
+			.add(queryItem: "withChildrenCount", value: withChildrenCount)
+			.add(queryItem: "withTotalElements", value: withTotalElements)
+			.add(queryItem: "withTotalPages", value: withTotalPages)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)

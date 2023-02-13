@@ -39,17 +39,15 @@ public class SubscriptionsApi: AdaptableApi {
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getSubscriptions(context: String? = nil, currentPage: Int? = nil, pageSize: Int? = nil, source: String? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yNotificationSubscriptionCollection, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = context { queryItems.append(URLQueryItem(name: "context", value: String(parameter))) }
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
-		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/subscriptions")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.subscriptioncollection+json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "context", value: context)
+			.add(queryItem: "currentPage", value: currentPage)
+			.add(queryItem: "pageSize", value: pageSize)
+			.add(queryItem: "source", value: source)
+			.add(queryItem: "withTotalPages", value: withTotalPages)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -158,15 +156,13 @@ public class SubscriptionsApi: AdaptableApi {
 	/// 	- source 
 	///		  The managed object ID to which the subscription is associated.
 	public func deleteSubscriptions(xCumulocityProcessingMode: String? = nil, context: String? = nil, source: String? = nil) -> AnyPublisher<Data, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = context { queryItems.append(URLQueryItem(name: "context", value: String(parameter))) }
-		if let parameter = source { queryItems.append(URLQueryItem(name: "source", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/subscriptions")
 			.set(httpMethod: "delete")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "context", value: context)
+			.add(queryItem: "source", value: source)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)

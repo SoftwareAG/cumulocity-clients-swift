@@ -33,14 +33,12 @@ public class ApplicationVersionsApi: AdaptableApi {
 	/// 	- tag 
 	///		  The tag of the application version.
 	public func getApplicationVersion(id: String, version: String? = nil, tag: String? = nil) -> AnyPublisher<C8yApplicationVersion, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = version { queryItems.append(URLQueryItem(name: "version", value: String(parameter))) }
-		if let parameter = tag { queryItems.append(URLQueryItem(name: "tag", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications\\(id)/versions?version=1.0")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationVersion+json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "version", value: version)
+			.add(queryItem: "tag", value: tag)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -181,14 +179,12 @@ public class ApplicationVersionsApi: AdaptableApi {
 	/// 	- tag 
 	///		  The tag of the application version.
 	public func deleteApplicationVersion(id: String, version: String? = nil, tag: String? = nil) -> AnyPublisher<Data, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = version { queryItems.append(URLQueryItem(name: "version", value: String(parameter))) }
-		if let parameter = tag { queryItems.append(URLQueryItem(name: "tag", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications\\(id)/versions")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "version", value: version)
+			.add(queryItem: "tag", value: tag)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)

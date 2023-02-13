@@ -10,10 +10,16 @@ import Foundation
 
 public class URLRequestBuilder {
 
+	public enum ParameterSerializationType {
+		case comma_separated
+		case exploded
+	}
+
     var components: URLComponents
     private var httpMethod: String?
     private var requestHeaders: [String: String] = [:]
     private var httpBody: Data?
+    private var queryItems: [URLQueryItem] = []
 
     public init() {
 		self.components = URLComponents()
@@ -25,6 +31,7 @@ public class URLRequestBuilder {
 		self.httpMethod = with.httpMethod
 		self.requestHeaders = with.requestHeaders
 		self.httpBody = with.httpBody
+		self.queryItems = with.queryItems
 	}
 
     public func set(scheme: String) -> URLRequestBuilder {
@@ -66,10 +73,37 @@ public class URLRequestBuilder {
 		return self
 	}
 
-	public func set(queryItems: [URLQueryItem]) -> URLRequestBuilder {
-		self.components.queryItems = queryItems
-		return self
-	}
+	/// Appends a ``URLQueryItem`` based on the passed ``key``/``value`` pair if ``value`` is not nil.
+    ///
+    /// The parameter will be serialized as `?key=value`.
+	public func add<Subject>(queryItem key: String, value: Subject?) -> URLRequestBuilder {
+        if let v = value {
+            let valueAsString = String(describing: v)
+            guard !valueAsString.isEmpty else {
+                return self
+            }
+            self.queryItems.append(URLQueryItem(name: key, value: valueAsString))
+        }
+        return self
+    }
+
+    /// Appends a ``URLQueryItem`` based on the passed ``key``/``value`` pair if ``value`` is not nil.
+    ///
+    /// The parameter `explode` defines the serialisation method:
+    /// - If `true`, parameter will be serialized as `?key=1&key=2&key=3`.
+    /// - If `false`, parameter will be serialized as `?key=1,2,3`.
+    public func add<Subject>(queryItem key: String, value: [Subject]?, explode: ParameterSerializationType = .exploded) -> URLRequestBuilder {
+        if let v = value {
+            if explode == .exploded {
+                v.forEach { e in
+                    _ = self.add(queryItem: key, value: e)
+                }
+            } else {
+                _ = self.add(queryItem: key, value: v.map{String(describing: $0)}.joined(separator: ","))
+            }
+        }
+        return self
+    }
 
 	public func set(httpBody: Data?) -> URLRequestBuilder {
         self.httpBody = httpBody
@@ -77,6 +111,7 @@ public class URLRequestBuilder {
     }
 
 	public func build() -> URLRequest {
+		self.components.queryItems = queryItems
 		var urlRequest = URLRequest(url: self.components.url!)
 		urlRequest.httpMethod = self.httpMethod
 		for (name, value) in self.requestHeaders {
@@ -104,15 +139,7 @@ extension URLRequestBuilder {
 		for (k, v) in builder.requestHeaders {
 			_ = self.add(header: k, value: v)
 		}
-        if let queryItems = builder.components.queryItems {
-			if (self.components.queryItems == nil) {
-				self.components.queryItems = queryItems
-			} else {
-				for q in queryItems {
-					self.components.queryItems?.append(q)
-				}
-			}
-		}
+        self.queryItems.append(contentsOf: builder.queryItems)
 		if (self.httpBody == nil) {
 			if let httpBody = builder.httpBody {
 				_ = self.set(httpBody: httpBody)

@@ -87,14 +87,12 @@ public class TokensApi: AdaptableApi {
 	/// 	- token 
 	///		  Subscriptions associated with this token will be removed.
 	public func unsubscribeSubscriber(xCumulocityProcessingMode: String? = nil, token: String) -> AnyPublisher<C8yResponse1, Error> {
-		var queryItems: [URLQueryItem] = []
-		queryItems.append(URLQueryItem(name: "token", value: String(token)))
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/unsubscribe")
 			.set(httpMethod: "post")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "token", value: token)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)

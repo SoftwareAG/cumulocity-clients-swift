@@ -30,14 +30,12 @@ public class LoginOptionsApi: AdaptableApi {
 	/// 	- tenantId 
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	public func getLoginOptions(management: Bool? = nil, tenantId: String? = nil) -> AnyPublisher<C8yLoginOptionCollection, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = management { queryItems.append(URLQueryItem(name: "management", value: String(parameter))) }
-		if let parameter = tenantId { queryItems.append(URLQueryItem(name: "tenantId", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/loginOptions")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.loginoptioncollection+json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "management", value: management)
+			.add(queryItem: "tenantId", value: tenantId)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -125,8 +123,6 @@ public class LoginOptionsApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	public func updateLoginOption(body: C8yAuthConfigAccess, typeOrId: String, targetTenant: String) -> AnyPublisher<C8yAuthConfig, Error> {
 		let requestBody = body
-		var queryItems: [URLQueryItem] = []
-		queryItems.append(URLQueryItem(name: "targetTenant", value: String(targetTenant)))
 		var encodedRequestBody: Data? = nil
 		do {
 			encodedRequestBody = try JSONEncoder().encode(requestBody)
@@ -138,7 +134,7 @@ public class LoginOptionsApi: AdaptableApi {
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.authconfig+json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "targetTenant", value: targetTenant)
 			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

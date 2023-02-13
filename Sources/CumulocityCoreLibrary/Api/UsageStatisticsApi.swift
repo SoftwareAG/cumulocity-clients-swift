@@ -100,18 +100,16 @@ public class UsageStatisticsApi: AdaptableApi {
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getTenantUsageStatisticsCollectionResource(currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yTenantUsageStatisticsCollection, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
-		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
-		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
-		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/statistics")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenantusagestatisticscollection+json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "currentPage", value: currentPage)
+			.add(queryItem: "dateFrom", value: dateFrom)
+			.add(queryItem: "dateTo", value: dateTo)
+			.add(queryItem: "pageSize", value: pageSize)
+			.add(queryItem: "withTotalElements", value: withTotalElements)
+			.add(queryItem: "withTotalPages", value: withTotalPages)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -129,12 +127,17 @@ public class UsageStatisticsApi: AdaptableApi {
 	
 	/// Retrieve a usage statistics summary
 	/// Retrieve a usage statistics summary of a tenant.
+	/// <section><h5>Required roles</h5> ROLE_TENANT_STATISTICS_READ <b>OR</b> ROLE_INVENTORY_READ <br/> If the `tenant` request parameter is specified, then the current tenant must be the management tenant <b>OR</b> the parent of the requested `tenant`. </section>
 	/// The following table gives an overview of the possible response codes and their meanings.
 	/// - Returns:
 	/// 	- 200
 	///		  The request has succeeded and the usage statistics summary is sent in the response.
 	/// 	- 401
 	///		  Authentication information is missing or invalid.
+	/// 	- 403
+	///		  Not authorized to perform this operation.
+	/// 	- 404
+	///		  Tenant not found.
 	/// - Parameters:
 	/// 	- dateFrom 
 	///		  Start date or date and time of the statistics.
@@ -143,15 +146,13 @@ public class UsageStatisticsApi: AdaptableApi {
 	/// 	- tenant 
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	public func getTenantUsageStatistics(dateFrom: String? = nil, dateTo: String? = nil, tenant: String? = nil) -> AnyPublisher<C8ySummaryTenantUsageStatistics, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
-		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
-		if let parameter = tenant { queryItems.append(URLQueryItem(name: "tenant", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/statistics/summary")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenantusagestatisticssummary+json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "dateFrom", value: dateFrom)
+			.add(queryItem: "dateTo", value: dateTo)
+			.add(queryItem: "tenant", value: tenant)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -186,14 +187,12 @@ public class UsageStatisticsApi: AdaptableApi {
 	/// 	- dateTo 
 	///		  End date or date and time of the statistics.
 	public func getTenantsUsageStatistics(dateFrom: String? = nil, dateTo: String? = nil) -> AnyPublisher<[C8ySummaryAllTenantsUsageStatistics], Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
-		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/statistics/allTenantsSummary")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "dateFrom", value: dateFrom)
+			.add(queryItem: "dateTo", value: dateTo)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -234,17 +233,15 @@ public class UsageStatisticsApi: AdaptableApi {
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getMetadata(currentPage: Int? = nil, dateFrom: String? = nil, dateTo: String? = nil, pageSize: Int? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yTenantUsageStatisticsFileCollection, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
-		if let parameter = dateFrom { queryItems.append(URLQueryItem(name: "dateFrom", value: String(parameter))) }
-		if let parameter = dateTo { queryItems.append(URLQueryItem(name: "dateTo", value: String(parameter))) }
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/statistics/files")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenantStatisticsfilecollection+json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "currentPage", value: currentPage)
+			.add(queryItem: "dateFrom", value: dateFrom)
+			.add(queryItem: "dateTo", value: dateTo)
+			.add(queryItem: "pageSize", value: pageSize)
+			.add(queryItem: "withTotalPages", value: withTotalPages)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)

@@ -68,32 +68,30 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 	- withTotalPages 
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, fragmentType: String? = nil, ids: [String]? = nil, onlyRoots: Bool? = nil, owner: String? = nil, pageSize: Int? = nil, q: String? = nil, query: String? = nil, skipChildrenNames: Bool? = nil, text: String? = nil, type: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withGroups: Bool? = nil, withParents: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yManagedObjectCollection, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = childAdditionId { queryItems.append(URLQueryItem(name: "childAdditionId", value: String(parameter))) }
-		if let parameter = childAssetId { queryItems.append(URLQueryItem(name: "childAssetId", value: String(parameter))) }
-		if let parameter = childDeviceId { queryItems.append(URLQueryItem(name: "childDeviceId", value: String(parameter))) }
-		if let parameter = currentPage { queryItems.append(URLQueryItem(name: "currentPage", value: String(parameter))) }
-		if let parameter = fragmentType { queryItems.append(URLQueryItem(name: "fragmentType", value: String(parameter))) }
-		if let parameter = ids { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "ids", value: p)) } }
-		if let parameter = onlyRoots { queryItems.append(URLQueryItem(name: "onlyRoots", value: String(parameter))) }
-		if let parameter = owner { queryItems.append(URLQueryItem(name: "owner", value: String(parameter))) }
-		if let parameter = pageSize { queryItems.append(URLQueryItem(name: "pageSize", value: String(parameter))) }
-		if let parameter = q { queryItems.append(URLQueryItem(name: "q", value: String(parameter))) }
-		if let parameter = query { queryItems.append(URLQueryItem(name: "query", value: String(parameter))) }
-		if let parameter = skipChildrenNames { queryItems.append(URLQueryItem(name: "skipChildrenNames", value: String(parameter))) }
-		if let parameter = text { queryItems.append(URLQueryItem(name: "text", value: String(parameter))) }
-		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter))) }
-		if let parameter = withChildren { queryItems.append(URLQueryItem(name: "withChildren", value: String(parameter))) }
-		if let parameter = withChildrenCount { queryItems.append(URLQueryItem(name: "withChildrenCount", value: String(parameter))) }
-		if let parameter = withGroups { queryItems.append(URLQueryItem(name: "withGroups", value: String(parameter))) }
-		if let parameter = withParents { queryItems.append(URLQueryItem(name: "withParents", value: String(parameter))) }
-		if let parameter = withTotalElements { queryItems.append(URLQueryItem(name: "withTotalElements", value: String(parameter))) }
-		if let parameter = withTotalPages { queryItems.append(URLQueryItem(name: "withTotalPages", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobjectcollection+json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "childAdditionId", value: childAdditionId)
+			.add(queryItem: "childAssetId", value: childAssetId)
+			.add(queryItem: "childDeviceId", value: childDeviceId)
+			.add(queryItem: "currentPage", value: currentPage)
+			.add(queryItem: "fragmentType", value: fragmentType)
+			.add(queryItem: "ids", value: ids, explode: .comma_separated)
+			.add(queryItem: "onlyRoots", value: onlyRoots)
+			.add(queryItem: "owner", value: owner)
+			.add(queryItem: "pageSize", value: pageSize)
+			.add(queryItem: "q", value: q)
+			.add(queryItem: "query", value: query)
+			.add(queryItem: "skipChildrenNames", value: skipChildrenNames)
+			.add(queryItem: "text", value: text)
+			.add(queryItem: "type", value: type)
+			.add(queryItem: "withChildren", value: withChildren)
+			.add(queryItem: "withChildrenCount", value: withChildrenCount)
+			.add(queryItem: "withGroups", value: withGroups)
+			.add(queryItem: "withParents", value: withParents)
+			.add(queryItem: "withTotalElements", value: withTotalElements)
+			.add(queryItem: "withTotalPages", value: withTotalPages)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -212,20 +210,18 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 	- type 
 	///		  The type of managed object to search for.
 	public func getNumberOfManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, fragmentType: String? = nil, ids: [String]? = nil, owner: String? = nil, text: String? = nil, type: String? = nil) -> AnyPublisher<Int, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = childAdditionId { queryItems.append(URLQueryItem(name: "childAdditionId", value: String(parameter))) }
-		if let parameter = childAssetId { queryItems.append(URLQueryItem(name: "childAssetId", value: String(parameter))) }
-		if let parameter = childDeviceId { queryItems.append(URLQueryItem(name: "childDeviceId", value: String(parameter))) }
-		if let parameter = fragmentType { queryItems.append(URLQueryItem(name: "fragmentType", value: String(parameter))) }
-		if let parameter = ids { parameter.forEach{ p in queryItems.append(URLQueryItem(name: "ids", value: p)) } }
-		if let parameter = owner { queryItems.append(URLQueryItem(name: "owner", value: String(parameter))) }
-		if let parameter = text { queryItems.append(URLQueryItem(name: "text", value: String(parameter))) }
-		if let parameter = type { queryItems.append(URLQueryItem(name: "type", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/count")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, text/plain,application/json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "childAdditionId", value: childAdditionId)
+			.add(queryItem: "childAssetId", value: childAssetId)
+			.add(queryItem: "childDeviceId", value: childDeviceId)
+			.add(queryItem: "fragmentType", value: fragmentType)
+			.add(queryItem: "ids", value: ids, explode: .comma_separated)
+			.add(queryItem: "owner", value: owner)
+			.add(queryItem: "text", value: text)
+			.add(queryItem: "type", value: type)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -268,16 +264,14 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 	- withParents 
 	///		  When set to `true`, the returned references of child parents will return the device's parents (if any). Otherwise, it will be an empty array.
 	public func getManagedObject(id: String, skipChildrenNames: Bool? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withParents: Bool? = nil) -> AnyPublisher<C8yManagedObject, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = skipChildrenNames { queryItems.append(URLQueryItem(name: "skipChildrenNames", value: String(parameter))) }
-		if let parameter = withChildren { queryItems.append(URLQueryItem(name: "withChildren", value: String(parameter))) }
-		if let parameter = withChildrenCount { queryItems.append(URLQueryItem(name: "withChildrenCount", value: String(parameter))) }
-		if let parameter = withParents { queryItems.append(URLQueryItem(name: "withParents", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects\\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.managedobject+json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "skipChildrenNames", value: skipChildrenNames)
+			.add(queryItem: "withChildren", value: withChildren)
+			.add(queryItem: "withChildrenCount", value: withChildrenCount)
+			.add(queryItem: "withParents", value: withParents)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -393,16 +387,14 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 	- withDeviceUser 
 	///		  When set to `true` and the managed object is a device, it deletes the associated device user (credentials).
 	public func deleteManagedObject(id: String, xCumulocityProcessingMode: String? = nil, cascade: Bool? = nil, forceCascade: Bool? = nil, withDeviceUser: Bool? = nil) -> AnyPublisher<Data, Error> {
-		var queryItems: [URLQueryItem] = []
-		if let parameter = cascade { queryItems.append(URLQueryItem(name: "cascade", value: String(parameter))) }
-		if let parameter = forceCascade { queryItems.append(URLQueryItem(name: "forceCascade", value: String(parameter))) }
-		if let parameter = withDeviceUser { queryItems.append(URLQueryItem(name: "withDeviceUser", value: String(parameter))) }
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects\\(id)")
 			.set(httpMethod: "delete")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
-			.set(queryItems: queryItems)
+			.add(queryItem: "cascade", value: cascade)
+			.add(queryItem: "forceCascade", value: forceCascade)
+			.add(queryItem: "withDeviceUser", value: withDeviceUser)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
