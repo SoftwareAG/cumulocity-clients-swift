@@ -81,7 +81,7 @@ public class RolesApi: AdaptableApi {
 	///		  The name of the user role.
 	public func getUserRole(name: String) -> AnyPublisher<C8yRole, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/roles\\(name)")
+			.set(resourcePath: "/user/roles/\(name)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.role+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -127,7 +127,7 @@ public class RolesApi: AdaptableApi {
 	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
 	public func getGroupRoles(tenantId: String, groupId: Int, currentPage: Int? = nil, pageSize: Int? = nil) -> AnyPublisher<C8yRoleReferenceCollection, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/groups\\(groupId)/roles")
+			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)/roles")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.rolereferencecollection+json")
 			.add(queryItem: "currentPage", value: currentPage)
@@ -183,7 +183,7 @@ public class RolesApi: AdaptableApi {
 			return Fail<C8yRoleReference, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/groups\\(groupId)/roles")
+			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)/roles")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.rolereference+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.rolereference+json")
@@ -229,7 +229,7 @@ public class RolesApi: AdaptableApi {
 	///		  Unique identifier of the user role.
 	public func unassignGroupRole(tenantId: String, groupId: Int, roleId: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/groups\\(groupId)/roles\\(roleId)")
+			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)/roles/\(roleId)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -285,7 +285,7 @@ public class RolesApi: AdaptableApi {
 			return Fail<C8yRoleReference, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/users\\(userId)/roles")
+			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.rolereference+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.rolereference+json")
@@ -331,7 +331,7 @@ public class RolesApi: AdaptableApi {
 	///		  Unique identifier of the user role.
 	public func unassignUserRole(tenantId: String, userId: String, roleId: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/users\\(userId)/roles\\(roleId)")
+			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/roles/\(roleId)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

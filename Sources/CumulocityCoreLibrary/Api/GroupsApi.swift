@@ -45,7 +45,7 @@ public class GroupsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getTenantUserGroups(tenantId: String, currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yUserGroupCollection, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/groups")
+			.set(resourcePath: "/user/\(tenantId)/groups")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.groupcollection+json")
 			.add(queryItem: "currentPage", value: currentPage)
@@ -105,7 +105,7 @@ public class GroupsApi: AdaptableApi {
 			return Fail<C8yGroup, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/groups")
+			.set(resourcePath: "/user/\(tenantId)/groups")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.group+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.group+json")
@@ -149,7 +149,7 @@ public class GroupsApi: AdaptableApi {
 	///		  Unique identifier of the user group.
 	public func getUserGroup(tenantId: String, groupId: Int) -> AnyPublisher<C8yGroup, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/groups\\(groupId)")
+			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.group+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -207,7 +207,7 @@ public class GroupsApi: AdaptableApi {
 			return Fail<C8yGroup, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/groups\\(groupId)")
+			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.group+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.group+json")
@@ -251,7 +251,7 @@ public class GroupsApi: AdaptableApi {
 	///		  Unique identifier of the user group.
 	public func deleteUserGroup(tenantId: String, groupId: Int) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/groups\\(groupId)")
+			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -293,7 +293,7 @@ public class GroupsApi: AdaptableApi {
 	///		  The name of the user group.
 	public func getUserGroupByName(tenantId: String, groupName: String) -> AnyPublisher<C8yGroup, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/groupByName\\(groupName)")
+			.set(resourcePath: "/user/\(tenantId)/groupByName/\(groupName)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.group+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -343,7 +343,7 @@ public class GroupsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getUserGroups(tenantId: String, userId: String, currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yGroupReferenceCollection, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user\\(tenantId)/users\\(userId)/groups")
+			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/groups")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.groupreferencecollection+json")
 			.add(queryItem: "currentPage", value: currentPage)

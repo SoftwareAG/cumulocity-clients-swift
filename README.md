@@ -98,7 +98,7 @@ Error handling can be simplified by calling the following extension method:
 ```swift
 sink(receiveCompletion: { completion in
 	/// access the error message
-	let error = completion.error()
+	let error = try? completion.error()
 	/// access HTTP response 
 	error?.httpResponse
 	/// access HTTP status code via the HttpResponse

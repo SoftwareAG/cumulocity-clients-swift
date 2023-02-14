@@ -135,7 +135,7 @@ public class RetentionRulesApi: AdaptableApi {
 	///		  Unique identifier of the retention rule.
 	public func getRetentionRule(id: String) -> AnyPublisher<C8yRetentionRule, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/retention/retentions\\(id)")
+			.set(resourcePath: "/retention/retentions/\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.retentionrule+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -187,7 +187,7 @@ public class RetentionRulesApi: AdaptableApi {
 			return Fail<C8yRetentionRule, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/retention/retentions\\(id)")
+			.set(resourcePath: "/retention/retentions/\(id)")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.retentionrule+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.retentionrule+json")
@@ -229,7 +229,7 @@ public class RetentionRulesApi: AdaptableApi {
 	///		  Unique identifier of the retention rule.
 	public func deleteRetentionRule(id: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/retention/retentions\\(id)")
+			.set(resourcePath: "/retention/retentions/\(id)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

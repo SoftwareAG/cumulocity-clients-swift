@@ -168,7 +168,7 @@ public class ApplicationsApi: AdaptableApi {
 	///		  Unique identifier of the application.
 	public func getApplication(id: String) -> AnyPublisher<C8yApplication, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applications\\(id)")
+			.set(resourcePath: "/application/applications/\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.application+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -222,7 +222,7 @@ public class ApplicationsApi: AdaptableApi {
 			return Fail<C8yApplication, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applications\\(id)")
+			.set(resourcePath: "/application/applications/\(id)")
 			.set(httpMethod: "put")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.application+json")
@@ -272,7 +272,7 @@ public class ApplicationsApi: AdaptableApi {
 	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func deleteApplication(id: String, force: Bool? = nil, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applications\\(id)")
+			.set(resourcePath: "/application/applications/\(id)")
 			.set(httpMethod: "delete")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")
@@ -321,7 +321,7 @@ public class ApplicationsApi: AdaptableApi {
 	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func copyApplication(id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yApplication, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applications\\(id)/clone")
+			.set(resourcePath: "/application/applications/\(id)/clone")
 			.set(httpMethod: "post")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.application+json")
@@ -358,7 +358,7 @@ public class ApplicationsApi: AdaptableApi {
 	///		  The name of the application.
 	public func getApplicationsByName(name: String) -> AnyPublisher<C8yApplicationCollection, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applicationsByName\\(name)")
+			.set(resourcePath: "/application/applicationsByName/\(name)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationcollection+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -394,7 +394,7 @@ public class ApplicationsApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	public func getApplicationsByTenant(tenantId: String) -> AnyPublisher<C8yApplicationCollection, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applicationsByTenant\\(tenantId)")
+			.set(resourcePath: "/application/applicationsByTenant/\(tenantId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationcollection+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -438,7 +438,7 @@ public class ApplicationsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getApplicationsByOwner(tenantId: String, currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yApplicationCollection, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applicationsByOwner\\(tenantId)")
+			.set(resourcePath: "/application/applicationsByOwner/\(tenantId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationcollection+json")
 			.add(queryItem: "currentPage", value: currentPage)
@@ -486,7 +486,7 @@ public class ApplicationsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getApplicationsByUser(username: String, currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yApplicationCollection, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applicationsByUser\\(username)")
+			.set(resourcePath: "/application/applicationsByUser/\(username)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationcollection+json")
 			.add(queryItem: "currentPage", value: currentPage)

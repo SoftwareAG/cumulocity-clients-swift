@@ -33,7 +33,7 @@ public class ExternalIDsApi: AdaptableApi {
 	///		  Unique identifier of the managed object.
 	public func getExternalIds(id: String) -> AnyPublisher<C8yExternalIds, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/identity/globalIds\\(id)/externalIds")
+			.set(resourcePath: "/identity/globalIds/\(id)/externalIds")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.externalidcollection+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -81,7 +81,7 @@ public class ExternalIDsApi: AdaptableApi {
 			return Fail<C8yExternalId, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/identity/globalIds\\(id)/externalIds")
+			.set(resourcePath: "/identity/globalIds/\(id)/externalIds")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.externalid+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.externalid+json")
@@ -123,7 +123,7 @@ public class ExternalIDsApi: AdaptableApi {
 	///		  The type of the external identifier.
 	public func getExternalId(type: String, externalId: String) -> AnyPublisher<C8yExternalId, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/identity/externalIds\\(type)\\(externalId)")
+			.set(resourcePath: "/identity/externalIds/\(type)/\(externalId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.externalid+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -163,7 +163,7 @@ public class ExternalIDsApi: AdaptableApi {
 	///		  The type of the external identifier.
 	public func deleteExternalId(type: String, externalId: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/identity/externalIds\\(type)\\(externalId)")
+			.set(resourcePath: "/identity/externalIds/\(type)/\(externalId)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

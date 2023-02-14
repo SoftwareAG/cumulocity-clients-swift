@@ -377,7 +377,7 @@ public class AlarmsApi: AdaptableApi {
 	///		  Unique identifier of the alarm.
 	public func getAlarm(id: String) -> AnyPublisher<C8yAlarm, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/alarm/alarms\\(id)")
+			.set(resourcePath: "/alarm/alarms/\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.alarm+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -441,7 +441,7 @@ public class AlarmsApi: AdaptableApi {
 			return Fail<C8yAlarm, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/alarm/alarms\\(id)")
+			.set(resourcePath: "/alarm/alarms/\(id)")
 			.set(httpMethod: "put")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.alarm+json")

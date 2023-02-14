@@ -200,7 +200,7 @@ public class SubscriptionsApi: AdaptableApi {
 	///		  Unique identifier of the notification subscription.
 	public func getSubscription(id: String) -> AnyPublisher<C8yNotificationSubscription, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/notification2/subscriptions\\(id)")
+			.set(resourcePath: "/notification2/subscriptions/\(id)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.subscription+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -242,7 +242,7 @@ public class SubscriptionsApi: AdaptableApi {
 	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func deleteSubscription(id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/notification2/subscriptions\\(id)")
+			.set(resourcePath: "/notification2/subscriptions/\(id)")
 			.set(httpMethod: "delete")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/json")

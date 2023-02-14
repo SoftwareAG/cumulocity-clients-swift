@@ -107,7 +107,7 @@ public class SystemOptionsApi: AdaptableApi {
 	///		  The key of a system option.
 	public func getSystemOption(category: String, key: String) -> AnyPublisher<C8ySystemOption, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/system/options\\(category)\\(key)")
+			.set(resourcePath: "/tenant/system/options/\(category)/\(key)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.option+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

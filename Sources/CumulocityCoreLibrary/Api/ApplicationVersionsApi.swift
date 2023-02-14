@@ -34,7 +34,7 @@ public class ApplicationVersionsApi: AdaptableApi {
 	///		  The tag of the application version.
 	public func getApplicationVersion(id: String, version: String? = nil, tag: String? = nil) -> AnyPublisher<C8yApplicationVersion, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applications\\(id)/versions?version=1.0")
+			.set(resourcePath: "/application/applications/\(id)/versions?version=1.0")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationVersion+json")
 			.add(queryItem: "version", value: version)
@@ -76,7 +76,7 @@ public class ApplicationVersionsApi: AdaptableApi {
 	///		  Unique identifier of the application.
 	public func getApplicationVersions(id: String) -> AnyPublisher<C8yApplicationVersionCollection, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applications\\(id)/versions")
+			.set(resourcePath: "/application/applications/\(id)/versions")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationVersionCollection+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -131,7 +131,7 @@ public class ApplicationVersionsApi: AdaptableApi {
 			return Fail<C8yApplicationVersion, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applications\\(id)/versions")
+			.set(resourcePath: "/application/applications/\(id)/versions")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "multipart/form-data")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationVersion+json")
@@ -180,7 +180,7 @@ public class ApplicationVersionsApi: AdaptableApi {
 	///		  The tag of the application version.
 	public func deleteApplicationVersion(id: String, version: String? = nil, tag: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applications\\(id)/versions")
+			.set(resourcePath: "/application/applications/\(id)/versions")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
 			.add(queryItem: "version", value: version)
@@ -234,7 +234,7 @@ public class ApplicationVersionsApi: AdaptableApi {
 			return Fail<C8yApplicationVersion, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/application/applications\\(id)/versions\\(version)")
+			.set(resourcePath: "/application/applications/\(id)/versions/\(version)")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationVersion+json")

@@ -203,7 +203,7 @@ public class TenantsApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	public func getTenant(tenantId: String) -> AnyPublisher<C8yTenant, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants\\(tenantId)")
+			.set(resourcePath: "/tenant/tenants/\(tenantId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenant+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -262,7 +262,7 @@ public class TenantsApi: AdaptableApi {
 			return Fail<C8yTenant, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants\\(tenantId)")
+			.set(resourcePath: "/tenant/tenants/\(tenantId)")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.tenant+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.tenant+json")
@@ -308,7 +308,7 @@ public class TenantsApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	public func deleteTenant(tenantId: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants\\(tenantId)")
+			.set(resourcePath: "/tenant/tenants/\(tenantId)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -346,7 +346,7 @@ public class TenantsApi: AdaptableApi {
 	///		  Unique identifier of a Cumulocity IoT tenant.
 	public func getTenantTfaSettings(tenantId: String) -> AnyPublisher<C8yTenantTfaData, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants\\(tenantId)/tfa")
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/tfa")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

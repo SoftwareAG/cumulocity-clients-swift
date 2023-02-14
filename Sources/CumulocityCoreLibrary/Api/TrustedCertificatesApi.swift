@@ -47,7 +47,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getTrustedCertificates(tenantId: String, currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yTrustedCertificateCollection, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants\\(tenantId)/trusted-certificates")
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 			.add(queryItem: "currentPage", value: currentPage)
@@ -110,7 +110,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 			return Fail<C8yTrustedCertificate, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants\\(tenantId)/trusted-certificates")
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
@@ -166,7 +166,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 			return Fail<C8yTrustedCertificateCollection, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants\\(tenantId)/trusted-certificates/bulk")
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates/bulk")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
@@ -206,7 +206,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 	///		  Unique identifier of a trusted certificate.
 	public func getTrustedCertificate(tenantId: String, fingerprint: String) -> AnyPublisher<C8yTrustedCertificate, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants\\(tenantId)/trusted-certificates\\(fingerprint)")
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates/\(fingerprint)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -266,7 +266,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 			return Fail<C8yTrustedCertificate, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants\\(tenantId)/trusted-certificates\\(fingerprint)")
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates/\(fingerprint)")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
@@ -308,7 +308,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 	///		  Unique identifier of a trusted certificate.
 	public func removeTrustedCertificate(tenantId: String, fingerprint: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants\\(tenantId)/trusted-certificates\\(fingerprint)")
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates/\(fingerprint)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -360,7 +360,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 			return Fail<C8yTrustedCertificate, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants\\(tenantId)/trusted-certificates-pop\\(fingerprint)/pop")
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates-pop/\(fingerprint)/pop")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
@@ -404,7 +404,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 	///		  Unique identifier of a trusted certificate.
 	public func confirmCertificate(tenantId: String, fingerprint: String) -> AnyPublisher<C8yTrustedCertificate, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants\\(tenantId)/trusted-certificates-pop\\(fingerprint)/confirmed")
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates-pop/\(fingerprint)/confirmed")
 			.set(httpMethod: "post")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -444,7 +444,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 	///		  Unique identifier of a trusted certificate.
 	public func generateVerificationCode(tenantId: String, fingerprint: String) -> AnyPublisher<C8yTrustedCertificate, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants\\(tenantId)/trusted-certificates-pop\\(fingerprint)/verification-code")
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates-pop/\(fingerprint)/verification-code")
 			.set(httpMethod: "post")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

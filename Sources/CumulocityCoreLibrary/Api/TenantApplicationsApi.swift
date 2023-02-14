@@ -44,7 +44,7 @@ public class TenantApplicationsApi: AdaptableApi {
 	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getSubscribedApplications(tenantId: String, currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yApplicationReferenceCollection, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants\\(tenantId)/applications")
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/applications")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationreferencecollection+json")
 			.add(queryItem: "currentPage", value: currentPage)
@@ -103,7 +103,7 @@ public class TenantApplicationsApi: AdaptableApi {
 			return Fail<C8yApplicationReference, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants\\(tenantId)/applications")
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/applications")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.applicationreference+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.applicationreference+json")
@@ -146,7 +146,7 @@ public class TenantApplicationsApi: AdaptableApi {
 	///		  Unique identifier of the application.
 	public func unsubscribeApplication(tenantId: String, applicationId: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/tenant/tenants\\(tenantId)/applications\\(applicationId)")
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/applications/\(applicationId)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

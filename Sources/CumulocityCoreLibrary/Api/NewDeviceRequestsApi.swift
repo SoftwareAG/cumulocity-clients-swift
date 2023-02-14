@@ -132,7 +132,7 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	///		  Unique identifier of the new device request.
 	public func getNewDeviceRequest(requestId: String) -> AnyPublisher<C8yNewDeviceRequest, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/devicecontrol/newDeviceRequests\\(requestId)")
+			.set(resourcePath: "/devicecontrol/newDeviceRequests/\(requestId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.newdevicerequest+json, application/vnd.com.nsn.cumulocity.error+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
@@ -181,7 +181,7 @@ public class NewDeviceRequestsApi: AdaptableApi {
 			return Fail<C8yNewDeviceRequest, Error>(error: error).eraseToAnyPublisher()
 		}
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/devicecontrol/newDeviceRequests\\(requestId)")
+			.set(resourcePath: "/devicecontrol/newDeviceRequests/\(requestId)")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.newdevicerequest+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.newdevicerequest+json, application/vnd.com.nsn.cumulocity.error+json")
@@ -223,7 +223,7 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	///		  Unique identifier of the new device request.
 	public func deleteNewDeviceRequest(requestId: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
-			.set(resourcePath: "/devicecontrol/newDeviceRequests\\(requestId)")
+			.set(resourcePath: "/devicecontrol/newDeviceRequests/\(requestId)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
