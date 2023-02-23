@@ -38,7 +38,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 	- fragmentType 
 	///		  A characteristic which identifies a managed object or event, for example, geolocation, electricity sensor, relay state.
 	/// 	- ids 
-	///		  The managed object IDs to search for (comma separated).
+	///		  The managed object IDs to search for. >**&#9432; Info:** If you query for multiple IDs at once, comma-separate the values. 
 	/// 	- onlyRoots 
 	///		  When set to `true` it returns managed objects which don't have any parent. If the current user doesn't have access to the parent, this is also root for the user.
 	/// 	- owner 
@@ -202,7 +202,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 	- fragmentType 
 	///		  A characteristic which identifies a managed object or event, for example, geolocation, electricity sensor, relay state.
 	/// 	- ids 
-	///		  The managed object IDs to search for (comma separated).
+	///		  The managed object IDs to search for. >**&#9432; Info:** If you query for multiple IDs at once, comma-separate the values. 
 	/// 	- owner 
 	///		  Username of the owner of the managed objects.
 	/// 	- text 

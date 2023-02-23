@@ -86,7 +86,7 @@ public class TokensApi: AdaptableApi {
 	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	/// 	- token 
 	///		  Subscriptions associated with this token will be removed.
-	public func unsubscribeSubscriber(xCumulocityProcessingMode: String? = nil, token: String) -> AnyPublisher<C8yResponse1, Error> {
+	public func unsubscribeSubscriber(xCumulocityProcessingMode: String? = nil, token: String) -> AnyPublisher<C8yNotificationSubscriptionResult, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/unsubscribe")
 			.set(httpMethod: "post")
@@ -105,6 +105,6 @@ public class TokensApi: AdaptableApi {
 				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
-		}).decode(type: C8yResponse1.self, decoder: JSONDecoder()).eraseToAnyPublisher()
+		}).decode(type: C8yNotificationSubscriptionResult.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 }

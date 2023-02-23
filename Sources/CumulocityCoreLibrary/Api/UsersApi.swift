@@ -36,7 +36,7 @@ public class UsersApi: AdaptableApi {
 	/// 	- currentPage 
 	///		  The current page of the paginated results.
 	/// 	- groups 
-	///		  Numeric group identifiers separated by commas. The response will contain only users which belong to at least one of the specified groups.
+	///		  Numeric group identifiers. The response will contain only users which belong to at least one of the specified groups. >**&#9432; Info:** If you query for multiple user groups at once, comma-separate the values. 
 	/// 	- onlyDevices 
 	///		  If set to `true`, the response will only contain users created during bootstrap process (starting with “device_”). If the flag is absent or `false` the result will not contain “device_” users. 
 	/// 	- owner 

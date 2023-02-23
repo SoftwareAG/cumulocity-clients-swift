@@ -34,7 +34,7 @@ public class BinariesApi: AdaptableApi {
 	/// 	- currentPage 
 	///		  The current page of the paginated results.
 	/// 	- ids 
-	///		  The managed object IDs to search for (comma separated).
+	///		  The managed object IDs to search for. >**&#9432; Info:** If you query for multiple IDs at once, comma-separate the values. 
 	/// 	- owner 
 	///		  Username of the owner of the managed objects.
 	/// 	- pageSize 

@@ -398,7 +398,7 @@ public class MeasurementsApi: AdaptableApi {
 	/// 	- revert 
 	///		  If you are using a range query (that is, at least one of the `dateFrom` or `dateTo` parameters is included in the request), then setting `revert=true` will sort the results by the newest measurements first. By default, the results are sorted by the oldest measurements first. 
 	/// 	- series 
-	///		  The specific series to search for.
+	///		  The specific series to search for. >**&#9432; Info:** If you query for multiple series at once, comma-separate the values. 
 	/// 	- source 
 	///		  The managed object ID to which the measurement is associated.
 	public func getMeasurementSeries(aggregationType: String? = nil, dateFrom: String, dateTo: String, revert: Bool? = nil, series: [String]? = nil, source: String) -> AnyPublisher<C8yMeasurementSeries, Error> {
@@ -410,7 +410,7 @@ public class MeasurementsApi: AdaptableApi {
 			.add(queryItem: "dateFrom", value: dateFrom)
 			.add(queryItem: "dateTo", value: dateTo)
 			.add(queryItem: "revert", value: revert)
-			.add(queryItem: "series", value: series, explode: .exploded)
+			.add(queryItem: "series", value: series, explode: .comma_separated)
 			.add(queryItem: "source", value: source)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
