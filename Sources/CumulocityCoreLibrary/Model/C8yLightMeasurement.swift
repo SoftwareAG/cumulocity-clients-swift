@@ -11,7 +11,6 @@ import Foundation
 /// Light is measured with two main alternative sets of units.
 /// 
 /// Radiometry consists of measurements of light power at all wavelengths, while photometry measures light with wavelength weighted with respect to a standardized model of human brightness perception. Photometry is useful, for example, to quantify illumination (lighting) intended for human use.
-/// 
 public struct C8yLightMeasurement: Codable {
 
 	/// A measurement is a value with a unit.

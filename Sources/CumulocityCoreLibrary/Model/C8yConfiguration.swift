@@ -11,7 +11,6 @@ import Foundation
 /// Text configuration fragment that allows you to configure parameters and initial settings of your device.
 /// 
 /// In the inventory, `c8y_Configuration` represents the currently active configuration on the device. As part of an operation, `c8y_Configuration` requests the device to switch the transmitted configuration to the currently active one. To enable configuration through the user interface, add `c8y_Configuration` to the list of supported operations.
-/// 
 public struct C8yConfiguration: Codable {
 
 	/// A text in a device-specific format, representing the configuration of the device.

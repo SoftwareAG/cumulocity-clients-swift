@@ -9,11 +9,7 @@
 import Foundation
 import Combine
 
-/// The bulk operations API allows to schedule an operation on a group of devices to be executed at a specified time.
-/// It is required to specify the delay between the creation of subsequent operations.
-/// When the bulk operation is created, it has the status ACTIVE.
-/// When all operations are created, the bulk operation has the status COMPLETED.
-/// It is also possible to cancel an already created bulk operation by deleting it.
+/// The bulk operations API allows to schedule an operation on a group of devices to be executed at a specified time.It is required to specify the delay between the creation of subsequent operations.When the bulk operation is created, it has the status ACTIVE.When all operations are created, the bulk operation has the status COMPLETED.It is also possible to cancel an already created bulk operation by deleting it.
 /// 
 /// When you create a bulk operation, you can run it in two modes:
 /// 
@@ -22,32 +18,31 @@ import Combine
 /// 
 /// Note that passing both `groupId` and `failedParentId` will not work, and a bulk operation works with groups of type `static` and `dynamic`.
 /// 
-/// > **&#9432; Info:** The bulk operations API requires different roles than the rest of the device control API: `BULK_OPERATION_READ` and `BULK_OPERATION_ADMIN`.
-/// >
-/// > The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
-/// 
+/// > **ⓘ Note** The bulk operations API requires different roles than the rest of the device control API: `BULK_OPERATION_READ` and `BULK_OPERATION_ADMIN`.
+/// The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 public class BulkOperationsApi: AdaptableApi {
 
 	/// Retrieve a list of bulk operations
+	/// 
 	/// Retrieve a list of bulk operations.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_BULK_OPERATION_READ
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the list of bulk operations sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
+	/// > Tip: Required roles
+	///  ROLE_BULK_OPERATION_READ 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the list of bulk operations sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// 
 	/// - Parameters:
-	/// 	- currentPage 
-	///		  The current page of the paginated results.
-	/// 	- pageSize 
-	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
-	/// 	- withTotalElements 
-	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	///   - currentPage:
+	///     The current page of the paginated results.
+	///   - pageSize:
+	///     Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+	///   - withTotalElements:
+	///     When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getBulkOperations(currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil) -> AnyPublisher<C8yBulkOperationCollection, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/bulkoperations")
@@ -72,22 +67,24 @@ public class BulkOperationsApi: AdaptableApi {
 	}
 	
 	/// Create a bulk operation
+	/// 
 	/// Create a bulk operation.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_BULK_OPERATION_ADMIN
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 201
-	///		  A bulk operation was created.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
+	/// > Tip: Required roles
+	///  ROLE_BULK_OPERATION_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 201 A bulk operation was created.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// 
 	/// - Parameters:
-	/// 	- body 
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	///   - body:
+	///     
+	///   - xCumulocityProcessingMode:
+	///     Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func createBulkOperation(body: C8yBulkOperation, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yBulkOperation, Error> {
 		var requestBody = body
 		requestBody.generalStatus = nil
@@ -124,23 +121,23 @@ public class BulkOperationsApi: AdaptableApi {
 	}
 	
 	/// Retrieve a specific bulk operation
+	/// 
 	/// Retrieve a specific bulk operation (by a given ID).
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_BULK_OPERATION_READ
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the bulk operation is sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  Bulk operation not found.
+	/// > Tip: Required roles
+	///  ROLE_BULK_OPERATION_READ 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the bulk operation is sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Bulk operation not found.
+	/// 
 	/// - Parameters:
-	/// 	- id 
-	///		  Unique identifier of the bulk operation.
+	///   - id:
+	///     Unique identifier of the bulk operation.
 	public func getBulkOperation(id: String) -> AnyPublisher<C8yBulkOperation, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/bulkoperations/\(id)")
@@ -162,26 +159,27 @@ public class BulkOperationsApi: AdaptableApi {
 	}
 	
 	/// Update a specific bulk operation
+	/// 
 	/// Update a specific bulk operation (by a given ID).
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_BULK_OPERATION_ADMIN
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  A bulk operation was updated.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  Bulk operation not found.
+	/// > Tip: Required roles
+	///  ROLE_BULK_OPERATION_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 A bulk operation was updated.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Bulk operation not found.
+	/// 
 	/// - Parameters:
-	/// 	- body 
-	/// 	- id 
-	///		  Unique identifier of the bulk operation.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	///   - body:
+	///     
+	///   - id:
+	///     Unique identifier of the bulk operation.
+	///   - xCumulocityProcessingMode:
+	///     Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func updateBulkOperation(body: C8yBulkOperation, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yBulkOperation, Error> {
 		var requestBody = body
 		requestBody.generalStatus = nil
@@ -218,27 +216,26 @@ public class BulkOperationsApi: AdaptableApi {
 	}
 	
 	/// Delete a specific bulk operation
+	/// 
 	/// Delete a specific bulk operation (by a given ID).
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_BULK_OPERATION_ADMIN
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 204
-	///		  A bulk operation was removed.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 403
-	///		  Not authorized to perform this operation.
-	/// 	- 404
-	///		  Bulk operation not found.
+	/// > Tip: Required roles
+	///  ROLE_BULK_OPERATION_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 204 A bulk operation was removed.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 403 Not authorized to perform this operation.
+	/// * HTTP 404 Bulk operation not found.
+	/// 
 	/// - Parameters:
-	/// 	- id 
-	///		  Unique identifier of the bulk operation.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	///   - id:
+	///     Unique identifier of the bulk operation.
+	///   - xCumulocityProcessingMode:
+	///     Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func deleteBulkOperation(id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/bulkoperations/\(id)")

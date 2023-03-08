@@ -62,7 +62,6 @@ public struct C8yMeasurement: Codable {
 	/// It is possible to add an arbitrary number of additional properties as a list of key-value pairs, for example, `"property1": {}`, `"property2": "value"`. These properties are known as custom fragments and can be of any type, for example, object or string. Each custom fragment is identified by a unique name.
 	/// 
 	/// Review the [Naming conventions of fragments](https://cumulocity.com/guides/concepts/domain-model/#naming-conventions-of-fragments) as there are characters that can not be used when naming custom fragments.
-	/// 
 	public var customFragments: [String: Any] = [:]
 	
 	public subscript(key: String) -> Any? {

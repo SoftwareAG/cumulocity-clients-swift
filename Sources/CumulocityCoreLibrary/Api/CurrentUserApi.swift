@@ -11,23 +11,22 @@ import Combine
 
 /// The current user is the user that is currently authenticated with Cumulocity IoT for the API calls.
 /// 
-/// > **&#9432; Info:** The Accept header should be provided in all PUT requests, otherwise an empty response body will be returned.
-/// 
+/// > **ⓘ Note** The Accept header should be provided in all PUT requests, otherwise an empty response body will be returned.
 public class CurrentUserApi: AdaptableApi {
 
 	/// Retrieve the current user
+	/// 
 	/// Retrieve the user reference of the current user.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_USER_MANAGEMENT_OWN_READ <b>OR</b> ROLE_SYSTEM
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the current user is sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
+	/// > Tip: Required roles
+	///  ROLE_USER_MANAGEMENT_OWN_READ *OR* ROLE_SYSTEM 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the current user is sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
 	public func getCurrentUser() -> AnyPublisher<C8yCurrentUser, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser")
@@ -49,22 +48,23 @@ public class CurrentUserApi: AdaptableApi {
 	}
 	
 	/// Update the current user
+	/// 
 	/// Update the current user.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_USER_MANAGEMENT_OWN_ADMIN
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The current user was updated.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 422
-	///		  Unprocessable Entity – invalid payload.
+	/// > Tip: Required roles
+	///  ROLE_USER_MANAGEMENT_OWN_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The current user was updated.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// 
 	/// - Parameters:
-	/// 	- body 
+	///   - body:
+	///     
 	public func updateCurrentUser(body: C8yCurrentUser) -> AnyPublisher<C8yCurrentUser, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
@@ -102,24 +102,24 @@ public class CurrentUserApi: AdaptableApi {
 	}
 	
 	/// Update the current user's password
+	/// 
 	/// Update the current user's  password.
 	/// 
 	/// > **⚠️ Important:** If the tenant uses OAI-Secure authentication, the current user will not be logged out. Instead, a new cookie will be set with a new token, and the previous token will expire within a minute.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_USER_MANAGEMENT_OWN_ADMIN
-	/// </section>
+	/// > Tip: Required roles
+	///  ROLE_USER_MANAGEMENT_OWN_ADMIN 
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The current user password was updated.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 422
-	///		  Unprocessable Entity – invalid payload.
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The current user password was updated.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// 
 	/// - Parameters:
-	/// 	- body 
+	///   - body:
+	///     
 	public func updateCurrentUserPassword(body: C8yPasswordChange) -> AnyPublisher<Data, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
@@ -150,20 +150,20 @@ public class CurrentUserApi: AdaptableApi {
 	}
 	
 	/// Generate secret to set up TFA
+	/// 
 	/// Generate a secret code to create a QR code to set up the two-factor authentication functionality using a TFA app/service.
 	/// 
 	/// For more information about the feature, see [User Guide > Administration > Two-factor authentication](https://cumulocity.com/guides/users-guide/administration/#tfa) in the *Cumulocity IoT documentation*.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_USER_MANAGEMENT_OWN_READ <b>OR</b> ROLE_SYSTEM
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the secret is sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
+	/// > Tip: Required roles
+	///  ROLE_USER_MANAGEMENT_OWN_READ *OR* ROLE_SYSTEM 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the secret is sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
 	public func generateTfaSecret() -> AnyPublisher<C8yCurrentUserTotpSecret, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser/totpSecret")
@@ -185,20 +185,19 @@ public class CurrentUserApi: AdaptableApi {
 	}
 	
 	/// Returns the activation state of the two-factor authentication feature.
+	/// 
 	/// Returns the activation state of the two-factor authentication feature for the current user.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_USER_MANAGEMENT_OWN_READ <b>OR</b> ROLE_SYSTEM
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  Returns the activation state.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  User not found.
+	/// > Tip: Required roles
+	///  ROLE_USER_MANAGEMENT_OWN_READ *OR* ROLE_SYSTEM 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 Returns the activation state.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 User not found.
 	public func getTfaState() -> AnyPublisher<C8yCurrentUserTotpSecretActivity, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser/totpSecret/activity")
@@ -220,26 +219,26 @@ public class CurrentUserApi: AdaptableApi {
 	}
 	
 	/// Activates or deactivates the two-factor authentication feature
+	/// 
 	/// Activates or deactivates the two-factor authentication feature for the current user.
 	/// 
 	/// For more information about the feature, see [User Guide > Administration > Two-factor authentication](https://cumulocity.com/guides/users-guide/administration/#tfa) in the *Cumulocity IoT documentation*.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_USER_MANAGEMENT_OWN_READ <b>OR</b> ROLE_SYSTEM
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 204
-	///		  The two-factor authentication was activated or deactivated.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 403
-	///		  Cannot deactivate TOTP setup.
-	/// 	- 404
-	///		  User not found.
+	/// > Tip: Required roles
+	///  ROLE_USER_MANAGEMENT_OWN_READ *OR* ROLE_SYSTEM 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 204 The two-factor authentication was activated or deactivated.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 403 Cannot deactivate TOTP setup.
+	/// * HTTP 404 User not found.
+	/// 
 	/// - Parameters:
-	/// 	- body 
+	///   - body:
+	///     
 	public func setTfaState(body: C8yCurrentUserTotpSecretActivity) -> AnyPublisher<Data, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
@@ -270,26 +269,25 @@ public class CurrentUserApi: AdaptableApi {
 	}
 	
 	/// Verify TFA code
+	/// 
 	/// Verifies the authentication code that the current user received from a TFA app/service and uploaded to the platform to gain access or enable the two-factor authentication feature.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_USER_MANAGEMENT_OWN_READ <b>OR</b> ROLE_SYSTEM
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 204
-	///		  The sent code was correct and the access can be granted.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 403
-	///		  Invalid verification code.
-	/// 	- 404
-	///		  Cannot validate TFA TOTP code - user's TFA TOTP secret does not exist.
-	/// 	- 422
-	///		  Unprocessable Entity – invalid payload.
+	/// > Tip: Required roles
+	///  ROLE_USER_MANAGEMENT_OWN_READ *OR* ROLE_SYSTEM 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 204 The sent code was correct and the access can be granted.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 403 Invalid verification code.
+	/// * HTTP 404 Cannot validate TFA TOTP code - user's TFA TOTP secret does not exist.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// 
 	/// - Parameters:
-	/// 	- body 
+	///   - body:
+	///     
 	public func verifyTfaCode(body: C8yCurrentUserTotpCode) -> AnyPublisher<Data, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil

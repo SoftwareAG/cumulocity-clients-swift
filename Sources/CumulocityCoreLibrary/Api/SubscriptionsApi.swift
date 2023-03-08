@@ -13,31 +13,31 @@ import Combine
 public class SubscriptionsApi: AdaptableApi {
 
 	/// Retrieve all subscriptions
+	/// 
 	/// Retrieve all subscriptions on your tenant, or a specific subset based on queries.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_NOTIFICATION_2_ADMIN
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and all subscriptions are sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 403
-	///		  Not enough permissions/roles to perform this operation.
+	/// > Tip: Required roles
+	///  ROLE_NOTIFICATION_2_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and all subscriptions are sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 403 Not enough permissions/roles to perform this operation.
+	/// 
 	/// - Parameters:
-	/// 	- context 
-	///		  The context to which the subscription is associated.
-	/// 	- currentPage 
-	///		  The current page of the paginated results.
-	/// 	- pageSize 
-	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
-	/// 	- source 
-	///		  The managed object ID to which the subscription is associated.
-	/// 	- withTotalPages 
-	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	///   - context:
+	///     The context to which the subscription is associated.
+	///   - currentPage:
+	///     The current page of the paginated results.
+	///   - pageSize:
+	///     Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+	///   - source:
+	///     The managed object ID to which the subscription is associated.
+	///   - withTotalPages:
+	///     When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getSubscriptions(context: String? = nil, currentPage: Int? = nil, pageSize: Int? = nil, source: String? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yNotificationSubscriptionCollection, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/subscriptions")
@@ -64,38 +64,36 @@ public class SubscriptionsApi: AdaptableApi {
 	}
 	
 	/// Create a subscription
+	/// 
 	/// Create a new subscription, for example, a subscription that forwards measurements and events of a specific type for a given device.
 	/// 
 	/// In general, each subscription may consist of:
 	/// 
-	/// *  The managed object to which the subscription is associated.
-	/// *  The context under which the subscription is to be processed.
-	/// *  The name of the subscription.
-	/// *  The applicable filter criteria.
-	/// *  The option to only include specific custom fragments in the forwarded data.
+	/// * The managed object to which the subscription is associated.
+	/// * The context under which the subscription is to be processed.
+	/// * The name of the subscription.
+	/// * The applicable filter criteria.
+	/// * The option to only include specific custom fragments in the forwarded data.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_NOTIFICATION_2_ADMIN
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 201
-	///		  A notification subscription was created.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 403
-	///		  Not enough permissions/roles to perform this operation.
-	/// 	- 404
-	///		  Managed object not found.
-	/// 	- 409
-	///		  Duplicated subscription.
-	/// 	- 422
-	///		  Unprocessable Entity – invalid payload.
+	/// > Tip: Required roles
+	///  ROLE_NOTIFICATION_2_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 201 A notification subscription was created.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 403 Not enough permissions/roles to perform this operation.
+	/// * HTTP 404 Managed object not found.
+	/// * HTTP 409 Duplicated subscription.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// 
 	/// - Parameters:
-	/// 	- body 
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	///   - body:
+	///     
+	///   - xCumulocityProcessingMode:
+	///     Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func createSubscription(body: C8yNotificationSubscription, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yNotificationSubscription, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
@@ -130,31 +128,31 @@ public class SubscriptionsApi: AdaptableApi {
 	}
 	
 	/// Remove subscriptions by source
+	/// 
 	/// Remove subscriptions by source and context.
 	/// 
-	/// >**&#9432; Info:** The request will result in an error if there are no query parameters. The `source` parameter is optional only if the `context` parameter equals `tenant`.
+	/// > **ⓘ Note** The request will result in an error if there are no query parameters. The `source` parameter is optional only if the `context` parameter equals `tenant`.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_NOTIFICATION_2_ADMIN
-	/// </section>
+	/// > Tip: Required roles
+	///  ROLE_NOTIFICATION_2_ADMIN 
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 204
-	///		  A collection of subscriptions was removed.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 403
-	///		  Not enough permissions/roles to perform this operation.
-	/// 	- 422
-	///		  Unprocessable Entity – error in query parameters
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 204 A collection of subscriptions was removed.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 403 Not enough permissions/roles to perform this operation.
+	/// * HTTP 422 Unprocessable Entity – error in query parameters
+	/// 
 	/// - Parameters:
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	/// 	- context 
-	///		  The context to which the subscription is associated. > **&#9432; Info:** If the value is `mo`, then `source` must also be provided in the query. 
-	/// 	- source 
-	///		  The managed object ID to which the subscription is associated.
+	///   - xCumulocityProcessingMode:
+	///     Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	///   - context:
+	///     The context to which the subscription is associated.
+	///     
+	///     **ⓘ Note** If the value is `mo`, then `source` must also be provided in the query.
+	///   - source:
+	///     The managed object ID to which the subscription is associated.
 	public func deleteSubscriptions(xCumulocityProcessingMode: String? = nil, context: String? = nil, source: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/subscriptions")
@@ -179,25 +177,24 @@ public class SubscriptionsApi: AdaptableApi {
 	}
 	
 	/// Retrieve a specific subscription
+	/// 
 	/// Retrieve a specific subscription by a given ID.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_NOTIFICATION_2_ADMIN
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the subscription is sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 403
-	///		  Not enough permissions/roles to perform this operation.
-	/// 	- 404
-	///		  Subscription not found.
+	/// > Tip: Required roles
+	///  ROLE_NOTIFICATION_2_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the subscription is sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 403 Not enough permissions/roles to perform this operation.
+	/// * HTTP 404 Subscription not found.
+	/// 
 	/// - Parameters:
-	/// 	- id 
-	///		  Unique identifier of the notification subscription.
+	///   - id:
+	///     Unique identifier of the notification subscription.
 	public func getSubscription(id: String) -> AnyPublisher<C8yNotificationSubscription, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/subscriptions/\(id)")
@@ -219,27 +216,26 @@ public class SubscriptionsApi: AdaptableApi {
 	}
 	
 	/// Remove a specific subscription
+	/// 
 	/// Remove a specific subscription by a given ID.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_NOTIFICATION_2_ADMIN
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 204
-	///		  A subscription was removed.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 403
-	///		  Not enough permissions/roles to perform this operation.
-	/// 	- 404
-	///		  Subscription not found.
+	/// > Tip: Required roles
+	///  ROLE_NOTIFICATION_2_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 204 A subscription was removed.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 403 Not enough permissions/roles to perform this operation.
+	/// * HTTP 404 Subscription not found.
+	/// 
 	/// - Parameters:
-	/// 	- id 
-	///		  Unique identifier of the notification subscription.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	///   - id:
+	///     Unique identifier of the notification subscription.
+	///   - xCumulocityProcessingMode:
+	///     Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func deleteSubscription(id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/subscriptions/\(id)")

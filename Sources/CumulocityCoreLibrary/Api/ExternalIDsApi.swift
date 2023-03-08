@@ -11,26 +11,26 @@ import Combine
 
 /// The external ID resource represents an individual external ID that can be queried and deleted.
 /// 
-/// > **&#9432; Info:** The Accept header should be provided in all POST requests, otherwise an empty response body will be returned.
-/// 
+/// > **ⓘ Note** The Accept header should be provided in all POST requests, otherwise an empty response body will be returned.
 public class ExternalIDsApi: AdaptableApi {
 
 	/// Retrieve all external IDs of a specific managed object
+	/// 
 	/// Retrieve all external IDs of a existing managed object (identified by ID).
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_IDENTITY_READ <b>OR</b> owner of the resource <b>OR</b> MANAGED_OBJECT_READ permission on the resource
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and all the external IDs are sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
+	/// > Tip: Required roles
+	///  ROLE_IDENTITY_READ *OR* owner of the resource *OR* MANAGED_OBJECT_READ permission on the resource 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and all the external IDs are sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// 
 	/// - Parameters:
-	/// 	- id 
-	///		  Unique identifier of the managed object.
+	///   - id:
+	///     Unique identifier of the managed object.
 	public func getExternalIds(id: String) -> AnyPublisher<C8yExternalIds, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/identity/globalIds/\(id)/externalIds")
@@ -52,24 +52,25 @@ public class ExternalIDsApi: AdaptableApi {
 	}
 	
 	/// Create an external ID
+	/// 
 	/// Create an external ID for an existing managed object (identified by ID).
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_IDENTITY_ADMIN <b>OR</b> owner of the resource <b>OR</b> MANAGED_OBJECT_ADMIN permission on the resource
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 201
-	///		  An external ID was created.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 409
-	///		  Duplicate – Identity already bound to a different Global ID.
+	/// > Tip: Required roles
+	///  ROLE_IDENTITY_ADMIN *OR* owner of the resource *OR* MANAGED_OBJECT_ADMIN permission on the resource 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 201 An external ID was created.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 409 Duplicate – Identity already bound to a different Global ID.
+	/// 
 	/// - Parameters:
-	/// 	- body 
-	/// 	- id 
-	///		  Unique identifier of the managed object.
+	///   - body:
+	///     
+	///   - id:
+	///     Unique identifier of the managed object.
 	public func createExternalId(body: C8yExternalId, id: String) -> AnyPublisher<C8yExternalId, Error> {
 		var requestBody = body
 		requestBody.managedObject = nil
@@ -102,25 +103,25 @@ public class ExternalIDsApi: AdaptableApi {
 	}
 	
 	/// Retrieve a specific external ID
+	/// 
 	/// Retrieve a specific external ID of a particular type.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_IDENTITY_READ <b>OR</b> owner of the resource <b>OR</b> MANAGED_OBJECT_READ permission on the resource
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the external ID is sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  External ID not found.
+	/// > Tip: Required roles
+	///  ROLE_IDENTITY_READ *OR* owner of the resource *OR* MANAGED_OBJECT_READ permission on the resource 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the external ID is sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 External ID not found.
+	/// 
 	/// - Parameters:
-	/// 	- type 
-	///		  The identifier used in the external system that Cumulocity IoT interfaces with.
-	/// 	- externalId 
-	///		  The type of the external identifier.
+	///   - type:
+	///     The identifier used in the external system that Cumulocity IoT interfaces with.
+	///   - externalId:
+	///     The type of the external identifier.
 	public func getExternalId(type: String, externalId: String) -> AnyPublisher<C8yExternalId, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/identity/externalIds/\(type)/\(externalId)")
@@ -142,25 +143,25 @@ public class ExternalIDsApi: AdaptableApi {
 	}
 	
 	/// Remove a specific external ID
+	/// 
 	/// Remove a specific external ID of a particular type.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_IDENTITY_ADMIN <b>OR</b> owner of the resource <b>OR</b> MANAGED_OBJECT_ADMIN permission on the resource
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 204
-	///		  An external ID was deleted.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  External ID not found.
+	/// > Tip: Required roles
+	///  ROLE_IDENTITY_ADMIN *OR* owner of the resource *OR* MANAGED_OBJECT_ADMIN permission on the resource 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 204 An external ID was deleted.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 External ID not found.
+	/// 
 	/// - Parameters:
-	/// 	- type 
-	///		  The identifier used in the external system that Cumulocity IoT interfaces with.
-	/// 	- externalId 
-	///		  The type of the external identifier.
+	///   - type:
+	///     The identifier used in the external system that Cumulocity IoT interfaces with.
+	///   - externalId:
+	///     The type of the external identifier.
 	public func deleteExternalId(type: String, externalId: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/identity/externalIds/\(type)/\(externalId)")

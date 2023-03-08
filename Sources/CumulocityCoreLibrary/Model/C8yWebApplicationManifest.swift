@@ -11,9 +11,7 @@ import Foundation
 /// The manifest of the web application.
 public struct C8yWebApplicationManifest: Codable {
 
-	/// A legacy flag that identified a certain type of web application that would control the behavior of plugin tab in the application details view.
-	/// It is no longer used.
-	/// 
+	/// A legacy flag that identified a certain type of web application that would control the behavior of plugin tab in the application details view.It is no longer used.
 	@available(*, deprecated)
 	public var pWebpaas: Bool?
 

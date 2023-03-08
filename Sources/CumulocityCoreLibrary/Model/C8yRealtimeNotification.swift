@@ -47,7 +47,6 @@ public struct C8yRealtimeNotification: Codable {
 	public var supportedConnectionTypes: [String]?
 
 	/// [Bayeux protocol](https://docs.cometd.org/current/reference/#_concepts_bayeux_protocol) version used by the client (in a request) or server (in a response).
-	/// 
 	public var version: String?
 
 	enum CodingKeys: String, CodingKey {

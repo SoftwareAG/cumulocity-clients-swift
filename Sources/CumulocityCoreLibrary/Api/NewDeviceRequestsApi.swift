@@ -11,32 +11,32 @@ import Combine
 
 /// API methods to create, retrieve, update and delete new device requests in Cumulocity IoT.
 /// 
-/// > **&#9432; Info:** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
-/// 
+/// > **ⓘ Note** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 public class NewDeviceRequestsApi: AdaptableApi {
 
 	/// Retrieve a list of new device requests
+	/// 
 	/// Retrieve a list of new device requests.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_DEVICE_CONTROL_READ
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the list of new device requests sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
+	/// > Tip: Required roles
+	///  ROLE_DEVICE_CONTROL_READ 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the list of new device requests sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// 
 	/// - Parameters:
-	/// 	- currentPage 
-	///		  The current page of the paginated results.
-	/// 	- pageSize 
-	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
-	/// 	- withTotalElements 
-	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	/// 	- withTotalPages 
-	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	///   - currentPage:
+	///     The current page of the paginated results.
+	///   - pageSize:
+	///     Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+	///   - withTotalElements:
+	///     When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	///   - withTotalPages:
+	///     When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getNewDeviceRequests(currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yNewDeviceRequestCollection, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/newDeviceRequests")
@@ -62,24 +62,25 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	}
 	
 	/// Create a new device request
+	/// 
 	/// Create a new device request.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_DEVICE_CONTROL_ADMIN
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 201
-	///		  A new device request was created.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 422
-	///		  Unprocessable Entity – invalid payload.
+	/// > Tip: Required roles
+	///  ROLE_DEVICE_CONTROL_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 201 A new device request was created.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// 
 	/// - Parameters:
-	/// 	- body 
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	///   - body:
+	///     
+	///   - xCumulocityProcessingMode:
+	///     Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func createNewDeviceRequest(body: C8yNewDeviceRequest, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yNewDeviceRequest, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
@@ -113,23 +114,23 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	}
 	
 	/// Retrieve a specific new device request
+	/// 
 	/// Retrieve a specific new device request (by a given ID).
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_DEVICE_CONTROL_READ
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the new device request is sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  New device request not found.
+	/// > Tip: Required roles
+	///  ROLE_DEVICE_CONTROL_READ 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the new device request is sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 New device request not found.
+	/// 
 	/// - Parameters:
-	/// 	- requestId 
-	///		  Unique identifier of the new device request.
+	///   - requestId:
+	///     Unique identifier of the new device request.
 	public func getNewDeviceRequest(requestId: String) -> AnyPublisher<C8yNewDeviceRequest, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/newDeviceRequests/\(requestId)")
@@ -151,25 +152,25 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	}
 	
 	/// Update a specific new device request status
-	/// Update a specific new device request (by a given ID).
-	/// You can only update its status.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_DEVICE_CONTROL_ADMIN
-	/// </section>
+	/// Update a specific new device request (by a given ID).You can only update its status.
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  A new device request was updated.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  New device request not found.
+	/// 
+	/// > Tip: Required roles
+	///  ROLE_DEVICE_CONTROL_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 A new device request was updated.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 New device request not found.
+	/// 
 	/// - Parameters:
-	/// 	- body 
-	/// 	- requestId 
-	///		  Unique identifier of the new device request.
+	///   - body:
+	///     
+	///   - requestId:
+	///     Unique identifier of the new device request.
 	public func updateNewDeviceRequest(body: C8yNewDeviceRequest, requestId: String) -> AnyPublisher<C8yNewDeviceRequest, Error> {
 		var requestBody = body
 		requestBody.`self` = nil
@@ -202,25 +203,24 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	}
 	
 	/// Delete a specific new device request
+	/// 
 	/// Delete a specific new device request (by a given ID).
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_USER_MANAGEMENT_ADMIN
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 204
-	///		  A new device request was removed.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 403
-	///		  Not authorized to perform this operation.
-	/// 	- 404
-	///		  New device request not found.
+	/// > Tip: Required roles
+	///  ROLE_USER_MANAGEMENT_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 204 A new device request was removed.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 403 Not authorized to perform this operation.
+	/// * HTTP 404 New device request not found.
+	/// 
 	/// - Parameters:
-	/// 	- requestId 
-	///		  Unique identifier of the new device request.
+	///   - requestId:
+	///     Unique identifier of the new device request.
 	public func deleteNewDeviceRequest(requestId: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/newDeviceRequests/\(requestId)")

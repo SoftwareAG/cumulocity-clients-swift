@@ -13,25 +13,25 @@ import Combine
 public class BootstrapUserApi: AdaptableApi {
 
 	/// Retrieve the bootstrap user for a specific application
+	/// 
 	/// Retrieve the bootstrap user for a specific application (by a given ID).
 	/// 
 	/// This only works for microservice applications.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_APPLICATION_MANAGEMENT_ADMIN
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the bootstrap user of the application is sent in the response.
-	/// 	- 400
-	///		  Bad request.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
+	/// > Tip: Required roles
+	///  ROLE_APPLICATION_MANAGEMENT_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the bootstrap user of the application is sent in the response.
+	/// * HTTP 400 Bad request.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// 
 	/// - Parameters:
-	/// 	- id 
-	///		  Unique identifier of the application.
+	///   - id:
+	///     Unique identifier of the application.
 	public func getBootstrapUser(id: String) -> AnyPublisher<C8yBootstrapUser, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/bootstrapUser")

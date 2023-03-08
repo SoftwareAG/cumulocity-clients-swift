@@ -22,8 +22,7 @@ public struct C8yPageStatistics: Codable {
 
 	/// The total number of paginated results (pages).
 	/// 
-	/// > **&#9432; Info:** This property is returned by default except when an operation retrieves all records where values are between an upper and lower boundary, for example, querying ranges using `dateFrom`–`dateTo`. In such cases, the query parameter `withTotalPages=true` should be used to include the total number of pages (at the expense of slightly slower performance).
-	/// 
+	/// > **ⓘ Note** This property is returned by default except when an operation retrieves all records where values are between an upper and lower boundary, for example, querying ranges using `dateFrom`–`dateTo`. In such cases, the query parameter `withTotalPages=true` should be used to include the total number of pages (at the expense of slightly slower performance).
 	public var totalPages: Int?
 
 	enum CodingKeys: String, CodingKey {

@@ -14,8 +14,8 @@ public struct C8yTenant: Codable {
 	public var adminEmail: String?
 
 	/// Username of the tenant's administrator.
-	/// > **&#9432; Info:** When it is provided in the request body, also `adminEmail` and `adminPass` must be provided.
 	/// 
+	/// > **ⓘ Note** When it is provided in the request body, also `adminEmail` and `adminPass` must be provided.
 	public var adminName: String?
 
 	/// Password of the tenant's administrator.

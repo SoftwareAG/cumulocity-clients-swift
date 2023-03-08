@@ -13,53 +13,52 @@ import Combine
 /// 
 /// ### Application names
 /// 
-/// For each tenant, Cumulocity IoT manages the subscribed applications and provides a number of applications of various types.
-/// In case you want to subscribe a tenant to an application using an API, you must use the application name in the argument (as name).
+/// For each tenant, Cumulocity IoT manages the subscribed applications and provides a number of applications of various types.In case you want to subscribe a tenant to an application using an API, you must use the application name in the argument (as name).
 /// 
 /// Refer to the tables in [Administration > Managing applications](https://cumulocity.com/guides/10.7.0/users-guide/administration#managing-applications) in the User guide for the respective application name to be used.
 /// 
-/// > **&#9432; Info:** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
-/// 
+/// > **ⓘ Note** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 public class ApplicationsApi: AdaptableApi {
 
 	/// Retrieve all applications
+	/// 
 	/// Retrieve all applications on your tenant.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_APPLICATION_MANAGEMENT_READ
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the list of applications is sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
+	/// > Tip: Required roles
+	///  ROLE_APPLICATION_MANAGEMENT_READ 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the list of applications is sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// 
 	/// - Parameters:
-	/// 	- currentPage 
-	///		  The current page of the paginated results.
-	/// 	- name 
-	///		  The name of the application.
-	/// 	- owner 
-	///		  The ID of the tenant that owns the applications.
-	/// 	- pageSize 
-	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
-	/// 	- providedFor 
-	///		  The ID of a tenant that is subscribed to the applications but doesn't own them.
-	/// 	- subscriber 
-	///		  The ID of a tenant that is subscribed to the applications.
-	/// 	- tenant 
-	///		  The ID of a tenant that either owns the application or is subscribed to the applications.
-	/// 	- type 
-	///		  The type of the application. It is possible to use multiple values separated by a comma. For example, `EXTERNAL,HOSTED` will return only applications with type `EXTERNAL` or `HOSTED`.
-	/// 	- user 
-	///		  The ID of a user that has access to the applications.
-	/// 	- withTotalElements 
-	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	/// 	- withTotalPages 
-	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	/// 	- hasVersions 
-	///		  When set to `true`, the returned result contains applications with an `applicationVersions` field that is not empty. When set to `false`, the result will contain applications with an empty `applicationVersions` field.
+	///   - currentPage:
+	///     The current page of the paginated results.
+	///   - name:
+	///     The name of the application.
+	///   - owner:
+	///     The ID of the tenant that owns the applications.
+	///   - pageSize:
+	///     Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+	///   - providedFor:
+	///     The ID of a tenant that is subscribed to the applications but doesn't own them.
+	///   - subscriber:
+	///     The ID of a tenant that is subscribed to the applications.
+	///   - tenant:
+	///     The ID of a tenant that either owns the application or is subscribed to the applications.
+	///   - type:
+	///     The type of the application. It is possible to use multiple values separated by a comma. For example, `EXTERNAL,HOSTED` will return only applications with type `EXTERNAL` or `HOSTED`.
+	///   - user:
+	///     The ID of a user that has access to the applications.
+	///   - withTotalElements:
+	///     When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	///   - withTotalPages:
+	///     When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	///   - hasVersions:
+	///     When set to `true`, the returned result contains applications with an `applicationVersions` field that is not empty. When set to `false`, the result will contain applications with an empty `applicationVersions` field.
 	public func getApplications(currentPage: Int? = nil, name: String? = nil, owner: String? = nil, pageSize: Int? = nil, providedFor: String? = nil, subscriber: String? = nil, tenant: String? = nil, type: String? = nil, user: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil, hasVersions: Bool? = nil) -> AnyPublisher<C8yApplicationCollection, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications")
@@ -93,26 +92,26 @@ public class ApplicationsApi: AdaptableApi {
 	}
 	
 	/// Create an application
+	/// 
 	/// Create an application on your tenant.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_APPLICATION_MANAGEMENT_ADMIN
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 201
-	///		  An application was created.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 409
-	///		  Duplicate key/name.
-	/// 	- 422
-	///		  Unprocessable Entity – invalid payload.
+	/// > Tip: Required roles
+	///  ROLE_APPLICATION_MANAGEMENT_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 201 An application was created.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 409 Duplicate key/name.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// 
 	/// - Parameters:
-	/// 	- body 
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	///   - body:
+	///     
+	///   - xCumulocityProcessingMode:
+	///     Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func createApplication(body: C8yApplication, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yApplication, Error> {
 		var requestBody = body
 		requestBody.owner = nil
@@ -149,23 +148,23 @@ public class ApplicationsApi: AdaptableApi {
 	}
 	
 	/// Retrieve a specific application
+	/// 
 	/// Retrieve a specific application (by a given ID).
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_APPLICATION_MANAGEMENT_READ <b>OR</b> current user has explicit access to the application
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the application is sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  Application not found.
+	/// > Tip: Required roles
+	///  ROLE_APPLICATION_MANAGEMENT_READ *OR* current user has explicit access to the application 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the application is sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Application not found.
+	/// 
 	/// - Parameters:
-	/// 	- id 
-	///		  Unique identifier of the application.
+	///   - id:
+	///     Unique identifier of the application.
 	public func getApplication(id: String) -> AnyPublisher<C8yApplication, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)")
@@ -187,26 +186,27 @@ public class ApplicationsApi: AdaptableApi {
 	}
 	
 	/// Update a specific application
+	/// 
 	/// Update a specific application (by a given ID).
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_USER_MANAGEMENT_ADMIN
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  An application was updated.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  Application not found.
+	/// > Tip: Required roles
+	///  ROLE_USER_MANAGEMENT_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 An application was updated.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Application not found.
+	/// 
 	/// - Parameters:
-	/// 	- body 
-	/// 	- id 
-	///		  Unique identifier of the application.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	///   - body:
+	///     
+	///   - id:
+	///     Unique identifier of the application.
+	///   - xCumulocityProcessingMode:
+	///     Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func updateApplication(body: C8yApplication, id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yApplication, Error> {
 		var requestBody = body
 		requestBody.owner = nil
@@ -244,32 +244,29 @@ public class ApplicationsApi: AdaptableApi {
 	}
 	
 	/// Delete an application
-	/// Delete an application (by a given ID).
-	/// This method is not supported by microservice applications.
 	/// 
-	/// > **&#9432; Info:** With regards to a hosted application, there is a caching mechanism in place that keeps the information about the placement of application files (html, javascript, css, fonts, etc.). Removing a hosted application, in normal circumstances, will cause the subsequent requests for application files to fail with an HTTP 404 error because the application is removed synchronously, its files are immediately removed on the node serving the request and at the same time the information is propagated to other nodes – but in rare cases there might be a delay with this propagation. In such situations, the files of the removed application can be served from those nodes up until the aforementioned cache expires. For the same reason, the cache can also cause HTTP 404 errors when the application is updated as it will keep the path to the files of the old version of the application. The cache is filled on demand, so there should not be issues if application files were not accessed prior to the delete request. The expiration delay of the cache can differ, but should not take more than one minute.
+	/// Delete an application (by a given ID).This method is not supported by microservice applications.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_APPLICATION_MANAGEMENT_ADMIN <b>AND</b> tenant is the owner of the application
-	/// </section>
+	/// > **ⓘ Note** With regards to a hosted application, there is a caching mechanism in place that keeps the information about the placement of application files (html, javascript, css, fonts, etc.). Removing a hosted application, in normal circumstances, will cause the subsequent requests for application files to fail with an HTTP 404 error because the application is removed synchronously, its files are immediately removed on the node serving the request and at the same time the information is propagated to other nodes – but in rare cases there might be a delay with this propagation. In such situations, the files of the removed application can be served from those nodes up until the aforementioned cache expires. For the same reason, the cache can also cause HTTP 404 errors when the application is updated as it will keep the path to the files of the old version of the application. The cache is filled on demand, so there should not be issues if application files were not accessed prior to the delete request. The expiration delay of the cache can differ, but should not take more than one minute.
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 204
-	///		  An application was removed.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 403
-	///		  Not authorized to perform this operation.
-	/// 	- 404
-	///		  Application not found.
+	/// > Tip: Required roles
+	///  ROLE_APPLICATION_MANAGEMENT_ADMIN *AND* tenant is the owner of the application 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 204 An application was removed.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 403 Not authorized to perform this operation.
+	/// * HTTP 404 Application not found.
+	/// 
 	/// - Parameters:
-	/// 	- id 
-	///		  Unique identifier of the application.
-	/// 	- force 
-	///		  Force deletion by unsubscribing all tenants from the application first and then deleting the application itself.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	///   - id:
+	///     Unique identifier of the application.
+	///   - force:
+	///     Force deletion by unsubscribing all tenants from the application first and then deleting the application itself.
+	///   - xCumulocityProcessingMode:
+	///     Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func deleteApplication(id: String, force: Bool? = nil, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)")
@@ -293,6 +290,7 @@ public class ApplicationsApi: AdaptableApi {
 	}
 	
 	/// Copy an application
+	/// 
 	/// Copy an application (by a given ID).
 	/// 
 	/// This method is not supported by microservice applications.
@@ -302,23 +300,23 @@ public class ApplicationsApi: AdaptableApi {
 	/// The properties are copied to the newly created application and the prefix "clone" is added to the properties `name`, `key` and `contextPath` in order to be unique.
 	/// 
 	/// If the target application is hosted and has an active version, the new application will have the active version with the same content.
-	/// <section><h5>Required roles</h5>
-	/// ROLE_APPLICATION_MANAGEMENT_ADMIN
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 201
-	///		  An application was copied.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 422
-	///		  Unprocessable Entity – method not supported
+	/// 
+	/// > Tip: Required roles
+	///  ROLE_APPLICATION_MANAGEMENT_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 201 An application was copied.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 422 Unprocessable Entity – method not supported
+	/// 
 	/// - Parameters:
-	/// 	- id 
-	///		  Unique identifier of the application.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	///   - id:
+	///     Unique identifier of the application.
+	///   - xCumulocityProcessingMode:
+	///     Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func copyApplication(id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yApplication, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/clone")
@@ -341,21 +339,22 @@ public class ApplicationsApi: AdaptableApi {
 	}
 	
 	/// Retrieve applications by name
+	/// 
 	/// Retrieve applications by name.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_APPLICATION_MANAGEMENT_READ
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the applications are sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
+	/// > Tip: Required roles
+	///  ROLE_APPLICATION_MANAGEMENT_READ 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the applications are sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// 
 	/// - Parameters:
-	/// 	- name 
-	///		  The name of the application.
+	///   - name:
+	///     The name of the application.
 	public func getApplicationsByName(name: String) -> AnyPublisher<C8yApplicationCollection, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applicationsByName/\(name)")
@@ -377,21 +376,22 @@ public class ApplicationsApi: AdaptableApi {
 	}
 	
 	/// Retrieve applications by tenant
+	/// 
 	/// Retrieve applications subscribed or owned by a particular tenant (by a given tenant ID).
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_APPLICATION_MANAGEMENT_READ
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the applications are sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
+	/// > Tip: Required roles
+	///  ROLE_APPLICATION_MANAGEMENT_READ 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the applications are sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// 
 	/// - Parameters:
-	/// 	- tenantId 
-	///		  Unique identifier of a Cumulocity IoT tenant.
+	///   - tenantId:
+	///     Unique identifier of a Cumulocity IoT tenant.
 	public func getApplicationsByTenant(tenantId: String) -> AnyPublisher<C8yApplicationCollection, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applicationsByTenant/\(tenantId)")
@@ -413,29 +413,30 @@ public class ApplicationsApi: AdaptableApi {
 	}
 	
 	/// Retrieve applications by owner
+	/// 
 	/// Retrieve all applications owned by a particular tenant (by a given tenant ID).
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_APPLICATION_MANAGEMENT_READ
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the applications are sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
+	/// > Tip: Required roles
+	///  ROLE_APPLICATION_MANAGEMENT_READ 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the applications are sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// 
 	/// - Parameters:
-	/// 	- tenantId 
-	///		  Unique identifier of a Cumulocity IoT tenant.
-	/// 	- currentPage 
-	///		  The current page of the paginated results.
-	/// 	- pageSize 
-	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
-	/// 	- withTotalElements 
-	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	/// 	- withTotalPages 
-	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	///   - tenantId:
+	///     Unique identifier of a Cumulocity IoT tenant.
+	///   - currentPage:
+	///     The current page of the paginated results.
+	///   - pageSize:
+	///     Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+	///   - withTotalElements:
+	///     When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	///   - withTotalPages:
+	///     When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getApplicationsByOwner(tenantId: String, currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yApplicationCollection, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applicationsByOwner/\(tenantId)")
@@ -461,29 +462,30 @@ public class ApplicationsApi: AdaptableApi {
 	}
 	
 	/// Retrieve applications by user
+	/// 
 	/// Retrieve all applications for a particular user (by a given username).
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// (ROLE_USER_MANAGEMENT_OWN_READ <b>AND</b> is the current user) <b>OR</b> (ROLE_USER_MANAGEMENT_READ <b>AND</b> ROLE_APPLICATION_MANAGEMENT_READ)
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the applications are sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
+	/// > Tip: Required roles
+	///  (ROLE_USER_MANAGEMENT_OWN_READ *AND* is the current user) *OR* (ROLE_USER_MANAGEMENT_READ *AND* ROLE_APPLICATION_MANAGEMENT_READ) 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the applications are sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// 
 	/// - Parameters:
-	/// 	- username 
-	///		  The username of the a user.
-	/// 	- currentPage 
-	///		  The current page of the paginated results.
-	/// 	- pageSize 
-	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
-	/// 	- withTotalElements 
-	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	/// 	- withTotalPages 
-	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	///   - username:
+	///     The username of the a user.
+	///   - currentPage:
+	///     The current page of the paginated results.
+	///   - pageSize:
+	///     Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+	///   - withTotalElements:
+	///     When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	///   - withTotalPages:
+	///     When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getApplicationsByUser(username: String, currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yApplicationCollection, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applicationsByUser/\(username)")

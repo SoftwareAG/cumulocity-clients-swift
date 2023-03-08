@@ -29,7 +29,6 @@ public struct C8ySummaryAllTenantsUsageStatistics: Codable {
 	/// 
 	/// * Requests made to <kbd>/user</kbd>, <kbd>/tenant</kbd> and <kbd>/application</kbd> APIs
 	/// * Application related requests (with `X-Cumulocity-Application-Key` header)
-	/// 
 	public var deviceRequestCount: Int?
 
 	/// Number of devices with children. Updated only three times a day starting at 8:57, 16:57 and 23:57.
@@ -52,8 +51,7 @@ public struct C8ySummaryAllTenantsUsageStatistics: Codable {
 
 	/// Number of created measurements.
 	/// 
-	/// > **&#9432; Info:** Bulk creation of measurements is handled in a way that each measurement is counted individually.
-	/// 
+	/// > **ⓘ Note** Bulk creation of measurements is handled in a way that each measurement is counted individually.
 	public var measurementsCreatedCount: Int?
 
 	/// ID of the parent tenant.
@@ -70,12 +68,11 @@ public struct C8ySummaryAllTenantsUsageStatistics: Codable {
 
 	/// Number of requests that were made against the tenant. Updated every 5 minutes. The following requests are not included:
 	/// 
-	/// *  Internal SmartREST requests used to resolve templates
-	/// *  Internal SLA monitoring requests
-	/// *  Calls to any <kbd>/health</kbd> endpoint
-	/// *  Device bootstrap process requests related to configuring and retrieving device credentials
-	/// *  Microservice SDK internal calls for applications and subscriptions
-	/// 
+	/// * Internal SmartREST requests used to resolve templates
+	/// * Internal SLA monitoring requests
+	/// * Calls to any <kbd>/health</kbd> endpoint
+	/// * Device bootstrap process requests related to configuring and retrieving device credentials
+	/// * Microservice SDK internal calls for applications and subscriptions
 	public var requestCount: Int?
 
 	/// Resources usage for each subscribed microservice application.
