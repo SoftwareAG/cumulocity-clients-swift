@@ -2,7 +2,7 @@
 // C8yUser.swift
 // CumulocityCoreLibrary
 //
-// Copyright (c) 2014-2022 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+// Copyright (c) 2014-2023 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
 // Use, reproduction, transfer, publication or disclosure is prohibited except as specifically provided for in your License Agreement with Software AG.
 //
 
@@ -49,7 +49,6 @@ public struct C8yUser: Codable {
 	/// The user's password. Only Latin1 characters are allowed.
 	/// 
 	/// If you do not specify a password when creating a new user with a POST request, it must contain the property `sendPasswordResetEmail` with a value of `true`.
-	/// 
 	public var password: String?
 
 	/// Indicates the password strength. The value can be GREEN, YELLOW or RED for decreasing password strengths.
@@ -67,7 +66,6 @@ public struct C8yUser: Codable {
 	/// When set to `true`, this field will cause Cumulocity IoT to send a password reset email to the email address specified.
 	/// 
 	/// If there is no password specified when creating a new user with a POST request, this must be specified and it must be set to `true`.
-	/// 
 	public var sendPasswordResetEmail: Bool?
 
 	/// Indicates if the user should reset the password on the next login.

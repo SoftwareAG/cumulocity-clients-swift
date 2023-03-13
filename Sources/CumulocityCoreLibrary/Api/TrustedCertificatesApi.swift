@@ -2,7 +2,7 @@
 // TrustedCertificatesApi.swift
 // CumulocityCoreLibrary
 //
-// Copyright (c) 2014-2022 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+// Copyright (c) 2014-2023 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
 // Use, reproduction, transfer, publication or disclosure is prohibited except as specifically provided for in your License Agreement with Software AG.
 //
 
@@ -13,38 +13,36 @@ import Combine
 /// 
 /// More detailed information about trusted certificates and their role can be found in [Device management > Managing device data](https://cumulocity.com/guides/users-guide/device-management/#managing-device-data) in the *User guide*.
 /// 
-/// > **&#9432; Info:** The Accept header must be provided in all POST/PUT requests, otherwise an empty response body will be returned.
-/// 
+/// > **ⓘ Note** The Accept header must be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 public class TrustedCertificatesApi: AdaptableApi {
 
 	/// Retrieve all stored certificates
+	/// 
 	/// Retrieve all the trusted certificates of a specific tenant (by a given ID).
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// (ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_ADMIN) <b>AND</b> (is the current tenant)
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the trusted certificates are sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 403
-	///		  Not authorized to perform this operation.
-	/// 	- 404
-	///		  Tenant not found.
+	/// > Tip: Required roles
+	///  (ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_ADMIN) *AND* (is the current tenant) 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the trusted certificates are sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 403 Not authorized to perform this operation.
+	/// * HTTP 404 Tenant not found.
+	/// 
 	/// - Parameters:
-	/// 	- tenantId 
-	///		  Unique identifier of a Cumulocity IoT tenant.
-	/// 	- currentPage 
-	///		  The current page of the paginated results.
-	/// 	- pageSize 
-	///		  Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
-	/// 	- withTotalElements 
-	///		  When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	/// 	- withTotalPages 
-	///		  When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	///   - tenantId:
+	///     Unique identifier of a Cumulocity IoT tenant.
+	///   - currentPage:
+	///     The current page of the paginated results.
+	///   - pageSize:
+	///     Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
+	///   - withTotalElements:
+	///     When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
+	///   - withTotalPages:
+	///     When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	public func getTrustedCertificates(tenantId: String, currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yTrustedCertificateCollection, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates")
@@ -70,28 +68,27 @@ public class TrustedCertificatesApi: AdaptableApi {
 	}
 	
 	/// Add a new certificate
+	/// 
 	/// Add a new trusted certificate to a specific tenant (by a given ID) which can be further used by the devices to establish connections with the Cumulocity IoT platform.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// (ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_ADMIN) <b>AND</b> (is the current tenant)
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 201
-	///		  The certificate was added to the tenant.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  Tenant not found.
-	/// 	- 409
-	///		  Duplicate – A certificate with the same fingerprint already exists.
-	/// 	- 422
-	///		  Unprocessable Entity – Invalid certificate data.
+	/// > Tip: Required roles
+	///  (ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_ADMIN) *AND* (is the current tenant) 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 201 The certificate was added to the tenant.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Tenant not found.
+	/// * HTTP 409 Duplicate – A certificate with the same fingerprint already exists.
+	/// * HTTP 422 Unprocessable Entity – Invalid certificate data.
+	/// 
 	/// - Parameters:
-	/// 	- body 
-	/// 	- tenantId 
-	///		  Unique identifier of a Cumulocity IoT tenant.
+	///   - body:
+	///     
+	///   - tenantId:
+	///     Unique identifier of a Cumulocity IoT tenant.
 	public func addTrustedCertificate(body: C8yTrustedCertificate, tenantId: String) -> AnyPublisher<C8yTrustedCertificate, Error> {
 		var requestBody = body
 		requestBody.notAfter = nil
@@ -131,28 +128,27 @@ public class TrustedCertificatesApi: AdaptableApi {
 	}
 	
 	/// Add multiple certificates
+	/// 
 	/// Add multiple trusted certificates to a specific tenant (by a given ID) which can be further used by the devices to establish connections with the Cumulocity IoT platform.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// (ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_ADMIN) <b>AND</b> (is the current tenant)
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 201
-	///		  The certificates were added to the tenant.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  Tenant not found.
-	/// 	- 409
-	///		  Duplicate – A certificate with the same fingerprint already exists.
-	/// 	- 422
-	///		  Unprocessable Entity – Invalid certificates data.
+	/// > Tip: Required roles
+	///  (ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_ADMIN) *AND* (is the current tenant) 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 201 The certificates were added to the tenant.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Tenant not found.
+	/// * HTTP 409 Duplicate – A certificate with the same fingerprint already exists.
+	/// * HTTP 422 Unprocessable Entity – Invalid certificates data.
+	/// 
 	/// - Parameters:
-	/// 	- body 
-	/// 	- tenantId 
-	///		  Unique identifier of a Cumulocity IoT tenant.
+	///   - body:
+	///     
+	///   - tenantId:
+	///     Unique identifier of a Cumulocity IoT tenant.
 	public func addTrustedCertificates(body: C8yTrustedCertificateCollection, tenantId: String) -> AnyPublisher<C8yTrustedCertificateCollection, Error> {
 		var requestBody = body
 		requestBody.next = nil
@@ -187,23 +183,24 @@ public class TrustedCertificatesApi: AdaptableApi {
 	}
 	
 	/// Retrieve a stored certificate
+	/// 
 	/// Retrieve the data of a stored trusted certificate (by a given fingerprint) of a specific tenant (by a given ID).
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// (ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_ADMIN) <b>AND</b> (is the current tenant <b>OR</b> is the management tenant)
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the trusted certificate is sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
+	/// > Tip: Required roles
+	///  (ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_ADMIN) *AND* (is the current tenant *OR* is the management tenant) 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the trusted certificate is sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// 
 	/// - Parameters:
-	/// 	- tenantId 
-	///		  Unique identifier of a Cumulocity IoT tenant.
-	/// 	- fingerprint 
-	///		  Unique identifier of a trusted certificate.
+	///   - tenantId:
+	///     Unique identifier of a Cumulocity IoT tenant.
+	///   - fingerprint:
+	///     Unique identifier of a trusted certificate.
 	public func getTrustedCertificate(tenantId: String, fingerprint: String) -> AnyPublisher<C8yTrustedCertificate, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates/\(fingerprint)")
@@ -225,28 +222,28 @@ public class TrustedCertificatesApi: AdaptableApi {
 	}
 	
 	/// Update a stored certificate
+	/// 
 	/// Update the data of a stored trusted certificate (by a given fingerprint) of a specific tenant (by a given ID).
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// (ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_ADMIN) <b>AND</b> (is the current tenant <b>OR</b> is the management tenant)
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The certificate was updated on the tenant.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  Certificate not found.
-	/// 	- 422
-	///		  Unprocessable Entity – invalid payload.
+	/// > Tip: Required roles
+	///  (ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_ADMIN) *AND* (is the current tenant *OR* is the management tenant) 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The certificate was updated on the tenant.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Certificate not found.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// 
 	/// - Parameters:
-	/// 	- body 
-	/// 	- tenantId 
-	///		  Unique identifier of a Cumulocity IoT tenant.
-	/// 	- fingerprint 
-	///		  Unique identifier of a trusted certificate.
+	///   - body:
+	///     
+	///   - tenantId:
+	///     Unique identifier of a Cumulocity IoT tenant.
+	///   - fingerprint:
+	///     Unique identifier of a trusted certificate.
 	public func updateTrustedCertificate(body: C8yTrustedCertificate, tenantId: String, fingerprint: String) -> AnyPublisher<C8yTrustedCertificate, Error> {
 		var requestBody = body
 		requestBody.notAfter = nil
@@ -287,25 +284,25 @@ public class TrustedCertificatesApi: AdaptableApi {
 	}
 	
 	/// Remove a stored certificate
+	/// 
 	/// Remove a stored trusted certificate (by a given fingerprint) from a specific tenant (by a given ID).
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// (ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_ADMIN) <b>AND</b> (is the current tenant <b>OR</b> is the management tenant)
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 204
-	///		  The trusted certificate was removed.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  Certificate not found.
+	/// > Tip: Required roles
+	///  (ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_ADMIN) *AND* (is the current tenant *OR* is the management tenant) 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 204 The trusted certificate was removed.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Certificate not found.
+	/// 
 	/// - Parameters:
-	/// 	- tenantId 
-	///		  Unique identifier of a Cumulocity IoT tenant.
-	/// 	- fingerprint 
-	///		  Unique identifier of a trusted certificate.
+	///   - tenantId:
+	///     Unique identifier of a Cumulocity IoT tenant.
+	///   - fingerprint:
+	///     Unique identifier of a trusted certificate.
 	public func removeTrustedCertificate(tenantId: String, fingerprint: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates/\(fingerprint)")
@@ -327,30 +324,29 @@ public class TrustedCertificatesApi: AdaptableApi {
 	}
 	
 	/// Provide the proof of possession for an already uploaded certificate
+	/// 
 	/// Provide the proof of possession for a specific uploaded certificate (by a given fingerprint) for a specific tenant (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
-	/// (ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_ADMIN) <b>AND</b> is the current tenant
-	/// </div></div>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The provided signed verification code check was successful.
-	/// 	- 400
-	///		  The provided signed verification code is not correct.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  Trusted certificate not found.
-	/// 	- 422
-	///		  Proof of possession for the certificate was not confirmed.
+	/// > Tip: 
+	///  (ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_ADMIN) *AND* is the current tenant 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The provided signed verification code check was successful.
+	/// * HTTP 400 The provided signed verification code is not correct.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Trusted certificate not found.
+	/// * HTTP 422 Proof of possession for the certificate was not confirmed.
+	/// 
 	/// - Parameters:
-	/// 	- body 
-	/// 	- tenantId 
-	///		  Unique identifier of a Cumulocity IoT tenant.
-	/// 	- fingerprint 
-	///		  Unique identifier of a trusted certificate.
+	///   - body:
+	///     
+	///   - tenantId:
+	///     Unique identifier of a Cumulocity IoT tenant.
+	///   - fingerprint:
+	///     Unique identifier of a trusted certificate.
 	public func proveCertificatePossession(body: C8yUploadedTrustedCertSignedVerificationCode, tenantId: String, fingerprint: String) -> AnyPublisher<C8yTrustedCertificate, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
@@ -381,27 +377,26 @@ public class TrustedCertificatesApi: AdaptableApi {
 	}
 	
 	/// Confirm an already uploaded certificate
+	/// 
 	/// Confirm an already uploaded certificate (by a given fingerprint) for a specific tenant (by a given ID).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
-	/// (ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_ADMIN) <b>AND</b> is the management tenant
-	/// </div></div>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The certificate is confirmed.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  Trusted certificate not found.
-	/// 	- 422
-	///		  The verification was not successful. Certificate not confirmed.
+	/// > Tip: 
+	///  (ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_ADMIN) *AND* is the management tenant 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The certificate is confirmed.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Trusted certificate not found.
+	/// * HTTP 422 The verification was not successful. Certificate not confirmed.
+	/// 
 	/// - Parameters:
-	/// 	- tenantId 
-	///		  Unique identifier of a Cumulocity IoT tenant.
-	/// 	- fingerprint 
-	///		  Unique identifier of a trusted certificate.
+	///   - tenantId:
+	///     Unique identifier of a Cumulocity IoT tenant.
+	///   - fingerprint:
+	///     Unique identifier of a trusted certificate.
 	public func confirmCertificate(tenantId: String, fingerprint: String) -> AnyPublisher<C8yTrustedCertificate, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates-pop/\(fingerprint)/confirmed")
@@ -423,25 +418,25 @@ public class TrustedCertificatesApi: AdaptableApi {
 	}
 	
 	/// Generate a verification code for the proof of possession operation for the given certificate
+	/// 
 	/// Generate a verification code for the proof of possession operation for the certificate (by a given fingerprint).
 	/// 
-	/// <div class="reqRoles"><div><h5></h5></div><div>
-	/// (ROLE_TENANT_MANAGEMENT_ADMIN <b>OR</b> ROLE_TENANT_ADMIN) <b>AND</b> is the current tenant
-	/// </div></div>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The verification code was generated.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  Trusted certificate not found.
+	/// > Tip: 
+	///  (ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_ADMIN) *AND* is the current tenant 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The verification code was generated.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Trusted certificate not found.
+	/// 
 	/// - Parameters:
-	/// 	- tenantId 
-	///		  Unique identifier of a Cumulocity IoT tenant.
-	/// 	- fingerprint 
-	///		  Unique identifier of a trusted certificate.
+	///   - tenantId:
+	///     Unique identifier of a Cumulocity IoT tenant.
+	///   - fingerprint:
+	///     Unique identifier of a trusted certificate.
 	public func generateVerificationCode(tenantId: String, fingerprint: String) -> AnyPublisher<C8yTrustedCertificate, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates-pop/\(fingerprint)/verification-code")

@@ -2,7 +2,7 @@
 // ApplicationVersionsApi.swift
 // CumulocityCoreLibrary
 //
-// Copyright (c) 2014-2022 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+// Copyright (c) 2014-2023 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
 // Use, reproduction, transfer, publication or disclosure is prohibited except as specifically provided for in your License Agreement with Software AG.
 //
 
@@ -13,25 +13,28 @@ import Combine
 public class ApplicationVersionsApi: AdaptableApi {
 
 	/// Retrieve a specific version of an application
+	/// 
 	/// Retrieve the selected version of an application in your tenant. To select the version, use only the version or only the tag query parameter.
-	/// <section><h5>Required roles</h5> ROLE_APPLICATION_MANAGEMENT_READ </section>
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the application version is sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  Application not found.
-	/// 	- 422
-	///		  both parameters (version and tag) are present.
+	/// 
+	/// 
+	/// > Tip: Required roles
+	///  ROLE_APPLICATION_MANAGEMENT_READ 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the application version is sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Application not found.
+	/// * HTTP 422 both parameters (version and tag) are present.
+	/// 
 	/// - Parameters:
-	/// 	- id 
-	///		  Unique identifier of the application.
-	/// 	- version 
-	///		  The version field of the application version.
-	/// 	- tag 
-	///		  The tag of the application version.
+	///   - id:
+	///     Unique identifier of the application.
+	///   - version:
+	///     The version field of the application version.
+	///   - tag:
+	///     The tag of the application version.
 	public func getApplicationVersion(id: String, version: String? = nil, tag: String? = nil) -> AnyPublisher<C8yApplicationVersion, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/versions?version=1.0")
@@ -55,25 +58,24 @@ public class ApplicationVersionsApi: AdaptableApi {
 	}
 	
 	/// Retrieve all versions of an application
+	/// 
 	/// Retrieve all versions of an application in your tenant.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_APPLICATION_MANAGEMENT_READ
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the list of application versions is sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  Application version not found.
-	/// 	- 422
-	///		  This application doesn't support versioning.
+	/// > Tip: Required roles
+	///  ROLE_APPLICATION_MANAGEMENT_READ 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the list of application versions is sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Application version not found.
+	/// * HTTP 422 This application doesn't support versioning.
+	/// 
 	/// - Parameters:
-	/// 	- id 
-	///		  Unique identifier of the application.
+	///   - id:
+	///     Unique identifier of the application.
 	public func getApplicationVersions(id: String) -> AnyPublisher<C8yApplicationVersionCollection, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/versions")
@@ -95,33 +97,31 @@ public class ApplicationVersionsApi: AdaptableApi {
 	}
 	
 	/// Create an application version
+	/// 
 	/// Create an application version in your tenant.
 	/// 
-	/// Uploaded version and tags can only contain upper and lower case letters, integers and `.`,` + `,` -`. Other characters are prohibited.
+	/// Uploaded version and tags can only contain upper and lower case letters, integers and `.`,`+`,` -`. Other characters are prohibited.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_APPLICATION_MANAGEMENT_ADMIN
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 201
-	///		  An application version was created.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  Application version not found.
-	/// 	- 409
-	///		  Duplicate version/tag or versions limit exceeded.
-	/// 	- 422
-	///		  tag or version contains unacceptable characters.
+	/// > Tip: Required roles
+	///  ROLE_APPLICATION_MANAGEMENT_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 201 An application version was created.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Application version not found.
+	/// * HTTP 409 Duplicate version/tag or versions limit exceeded.
+	/// * HTTP 422 tag or version contains unacceptable characters.
+	/// 
 	/// - Parameters:
-	/// 	- applicationBinary 
-	///		  The ZIP file to be uploaded.
-	/// 	- applicationVersion 
-	///		  The JSON file with version information.
-	/// 	- id 
-	///		  Unique identifier of the application.
+	///   - applicationBinary:
+	///     The ZIP file to be uploaded.
+	///   - applicationVersion:
+	///     The JSON file with version information.
+	///   - id:
+	///     Unique identifier of the application.
 	public func createApplicationVersion(applicationBinary: Data, applicationVersion: String, id: String) -> AnyPublisher<C8yApplicationVersion, Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
 		multipartBuilder.addBodyPart(named: "applicationBinary", data: applicationBinary, mimeType: "application/zip");
@@ -153,31 +153,29 @@ public class ApplicationVersionsApi: AdaptableApi {
 	}
 	
 	/// Delete a specific version of an application
+	/// 
 	/// Delete a specific version of an application in your tenant, by a given tag or version.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_APPLICATION_MANAGEMENT_READ
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 204
-	///		  A version was removed.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  Application version not found.
-	/// 	- 409
-	///		  Version with tag latest cannot be removed.
-	/// 	- 422
-	///		  both parameters (version and tag) are present.
+	/// > Tip: Required roles
+	///  ROLE_APPLICATION_MANAGEMENT_READ 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 204 A version was removed.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Application version not found.
+	/// * HTTP 409 Version with tag latest cannot be removed.
+	/// * HTTP 422 both parameters (version and tag) are present.
+	/// 
 	/// - Parameters:
-	/// 	- id 
-	///		  Unique identifier of the application.
-	/// 	- version 
-	///		  The version field of the application version.
-	/// 	- tag 
-	///		  The tag of the application version.
+	///   - id:
+	///     Unique identifier of the application.
+	///   - version:
+	///     The version field of the application version.
+	///   - tag:
+	///     The tag of the application version.
 	public func deleteApplicationVersion(id: String, version: String? = nil, tag: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/versions")
@@ -201,30 +199,29 @@ public class ApplicationVersionsApi: AdaptableApi {
 	}
 	
 	/// Replace an application version's tags
+	/// 
 	/// Replaces the tags of a given application version in your tenant.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_APPLICATION_MANAGEMENT_ADMIN
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 201
-	///		  An application version was updated.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  Application version not found.
-	/// 	- 409
-	///		  Duplicate version/tag or versions limit exceeded.
-	/// 	- 422
-	///		  tag contains unacceptable characters.
+	/// > Tip: Required roles
+	///  ROLE_APPLICATION_MANAGEMENT_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 201 An application version was updated.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Application version not found.
+	/// * HTTP 409 Duplicate version/tag or versions limit exceeded.
+	/// * HTTP 422 tag contains unacceptable characters.
+	/// 
 	/// - Parameters:
-	/// 	- body 
-	/// 	- id 
-	///		  Unique identifier of the application.
-	/// 	- version 
-	///		  Version of the application.
+	///   - body:
+	///     
+	///   - id:
+	///     Unique identifier of the application.
+	///   - version:
+	///     Version of the application.
 	public func updateApplicationVersion(body: C8yApplicationVersionTag, id: String, version: String) -> AnyPublisher<C8yApplicationVersion, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil

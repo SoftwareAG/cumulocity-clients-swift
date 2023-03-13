@@ -2,7 +2,7 @@
 // C8yPosition.swift
 // CumulocityCoreLibrary
 //
-// Copyright (c) 2014-2022 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+// Copyright (c) 2014-2023 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
 // Use, reproduction, transfer, publication or disclosure is prohibited except as specifically provided for in your License Agreement with Software AG.
 //
 
@@ -11,7 +11,6 @@ import Foundation
 /// Reports the geographical location of an asset in terms of latitude, longitude and altitude.
 /// 
 /// Altitude is given in meters. To report the current location of an asset or a device, `c8y_Position` is added to the managed object representing the asset or device. To trace the position of an asset or a device, `c8y_Position` is sent as part of an event of type `c8y_LocationUpdate`.
-/// 
 public struct C8yPosition: Codable {
 
 	/// In meters.

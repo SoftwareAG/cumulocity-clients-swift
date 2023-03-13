@@ -2,7 +2,7 @@
 // C8yRequestRepresentation.swift
 // CumulocityCoreLibrary
 //
-// Copyright (c) 2014-2022 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+// Copyright (c) 2014-2023 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
 // Use, reproduction, transfer, publication or disclosure is prohibited except as specifically provided for in your License Agreement with Software AG.
 //
 
@@ -56,7 +56,6 @@ public struct C8yRequestRepresentation: Codable {
 	public struct C8yHeaders: Codable {
 	
 		/// It is possible to add an arbitrary number of headers as a list of key-value string pairs, for example, `"header": "value"`.
-		/// 
 		public var requestHeaders: [String: String] = [:]
 		
 		public subscript(key: String) -> String? {
@@ -82,7 +81,6 @@ public struct C8yRequestRepresentation: Codable {
 	public struct C8yRequestParams: Codable {
 	
 		/// It is possible to add an arbitrary number of parameters as a list of key-value string pairs, for example, `"parameter": "value"`.
-		/// 
 		public var requestParameters: [String: String] = [:]
 		
 		public subscript(key: String) -> String? {

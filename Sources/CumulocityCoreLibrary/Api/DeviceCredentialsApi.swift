@@ -2,7 +2,7 @@
 // DeviceCredentialsApi.swift
 // CumulocityCoreLibrary
 //
-// Copyright (c) 2014-2022 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+// Copyright (c) 2014-2023 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
 // Use, reproduction, transfer, publication or disclosure is prohibited except as specifically provided for in your License Agreement with Software AG.
 //
 
@@ -11,33 +11,31 @@ import Combine
 
 /// API methods to create device credentials in Cumulocity IoT.
 /// 
-/// Device credentials can be enquired by devices that do not have credentials for accessing a tenant yet.
-/// Since the device does not have credentials yet, a set of fixed credentials is used for this API.
-/// The credentials can be obtained by [contacting support](https://cumulocity.com/guides/about-doc/contacting-support/).
+/// Device credentials can be enquired by devices that do not have credentials for accessing a tenant yet.Since the device does not have credentials yet, a set of fixed credentials is used for this API.The credentials can be obtained by [contacting support](https://cumulocity.com/guides/about-doc/contacting-support/).
 /// 
 /// > **⚠️ Important:** Do not use your tenant credentials with this API.
-/// 
-/// > **&#9432; Info:** The Accept header should be provided in all POST requests, otherwise an empty response body will be returned.
-/// 
+/// > **ⓘ Note** The Accept header should be provided in all POST requests, otherwise an empty response body will be returned.
 public class DeviceCredentialsApi: AdaptableApi {
 
 	/// Create device credentials
+	/// 
 	/// Create device credentials.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_DEVICE_BOOTSTRAP
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  Device credentials were created.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
+	/// > Tip: Required roles
+	///  ROLE_DEVICE_BOOTSTRAP 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 Device credentials were created.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// 
 	/// - Parameters:
-	/// 	- body 
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	///   - body:
+	///     
+	///   - xCumulocityProcessingMode:
+	///     Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func createDeviceCredentials(body: C8yDeviceCredentials, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yDeviceCredentials, Error> {
 		var requestBody = body
 		requestBody.password = nil
@@ -73,33 +71,21 @@ public class DeviceCredentialsApi: AdaptableApi {
 	}
 	
 	/// Create a bulk device credentials request
+	/// 
 	/// Create a bulk device credentials request.
 	/// 
 	/// Device credentials and basic device representation can be provided within a CSV file which must be UTF-8 or ANSI encoded. The CSV file must have two sections.
 	/// 
 	/// The first section is the first line of the CSV file. This line contains column names (headers):
 	/// 
-	/// |Name|Mandatory|Description|
-	/// |--- |--- |--- |
-	/// |ID|Yes|The external ID of a device.|
-	/// |CREDENTIALS|Yes*|Password for the device's user. Mandatory, unless AUTH_TYPE is "CERTIFICATES", then CREDENTIALS can be skipped.|
-	/// |AUTH_TYPE|No|Required authentication type for the device's user. If the device uses credentials, this can be skipped or filled with "BASIC". Devices that use certificates must set "CERTIFICATES".|
-	/// |TENANT|No|The ID of the tenant for which the registration is executed (only allowed for the management tenant).|
-	/// |TYPE|No|The type of the device representation.|
-	/// |NAME|No|The name of the device representation.|
-	/// |ICCID|No|The ICCID of the device (SIM card number). If the ICCID appears in file, the import adds a fragment `c8y_Mobile.iccid`. The ICCID value is not mandatory for each row, see the example for an HTTP request below.|
-	/// |IDTYPE|No|The type of the external ID. If IDTYPE doesn't appear in the file, the default value is used. The default value is `c8y_Serial`. The IDTYPE value is not mandatory for each row, see the example for an HTTP request below.|
-	/// |PATH|No|The path in the groups hierarchy where the device is added. PATH contains the name of each group separated by `/`, that is: `main_group/sub_group/.../last_sub_group`. If a group does not exist, the import creates the group.|
-	/// |SHELL|No|If this column contains a value of 1, the import adds the SHELL feature to the device (specifically the `c8y_SupportedOperations` fragment). The SHELL value is not mandatory for each row, see the example for an HTTP request below.|
+	/// |Name|Mandatory|Description||--- |--- |--- ||ID|Yes|The external ID of a device.||CREDENTIALS|Yes*|Password for the device's user. Mandatory, unless AUTH_TYPE is "CERTIFICATES", then CREDENTIALS can be skipped.||AUTH_TYPE|No|Required authentication type for the device's user. If the device uses credentials, this can be skipped or filled with "BASIC". Devices that use certificates must set "CERTIFICATES".||TENANT|No|The ID of the tenant for which the registration is executed (only allowed for the management tenant).||TYPE|No|The type of the device representation.||NAME|No|The name of the device representation.||ICCID|No|The ICCID of the device (SIM card number). If the ICCID appears in file, the import adds a fragment `c8y_Mobile.iccid`. The ICCID value is not mandatory for each row, see the example for an HTTP request below.||IDTYPE|No|The type of the external ID. If IDTYPE doesn't appear in the file, the default value is used. The default value is `c8y_Serial`. The IDTYPE value is not mandatory for each row, see the example for an HTTP request below.||PATH|No|The path in the groups hierarchy where the device is added. PATH contains the name of each group separated by `/`, that is: `main_group/sub_group/.../last_sub_group`. If a group does not exist, the import creates the group.||SHELL|No|If this column contains a value of 1, the import adds the SHELL feature to the device (specifically the `c8y_SupportedOperations` fragment). The SHELL value is not mandatory for each row, see the example for an HTTP request below.|
 	/// 
 	/// Section two is the rest of the CSV file. Section two contains the device information. The order and quantity of the values must be the same as of the headers.
 	/// 
 	/// A separator is automatically obtained from the CSV file. Valid separator values are: `\t` (tabulation mark), `;` (semicolon) and `,` (comma).
 	/// 
 	/// > **⚠️ Important:** The CSV file needs the "com_cumulocity_model_Agent.active" header with a value of "true" to be added to the request.
-	/// 
-	/// > **&#9432; Info:** A bulk registration creates an elementary representation of the device. Then, the device needs to update it to a full representation with its own status. The device is ready to use only after it is updated to the full representation. Also see [credentials upload](https://cumulocity.com/guides/users-guide/device-management/#creds-upload) and [device integration](https://cumulocity.com/guides/device-sdk/rest/#device-integration).
-	/// 
+	/// > **ⓘ Note** A bulk registration creates an elementary representation of the device. Then, the device needs to update it to a full representation with its own status. The device is ready to use only after it is updated to the full representation. Also see [credentials upload](https://cumulocity.com/guides/users-guide/device-management/#creds-upload) and [device integration](https://cumulocity.com/guides/device-sdk/rest/#device-integration).
 	/// A CSV file can appear in many forms (with regard to the optional tenant column and the occurrence of device information):
 	/// 
 	/// * If a user is logged in as the management tenant, then the columns ID, CREDENTIALS and TENANT are mandatory, and the device credentials will be created for the tenant mentioned in the TENANT column.
@@ -132,25 +118,23 @@ public class DeviceCredentialsApi: AdaptableApi {
 	/// id_122;abcd1234;type_of_device;Device 122;;;csv device1/subgroup2;
 	/// id_131;abcd1234;type_of_device;Device 131;;;csv device1/subgroup3;
 	/// ```
+	/// There is also a simple registration method that creates all registration requests at once, then each one needs to go through regular acceptance.This simple registration only makes use of the ID and PATH fields from the list above.
 	/// 
-	/// There is also a simple registration method that creates all registration requests at once, then each one needs to go through regular acceptance.
-	/// This simple registration only makes use of the ID and PATH fields from the list above.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_DEVICE_CONTROL_ADMIN
-	/// </section>
+	/// > Tip: Required roles
+	///  ROLE_DEVICE_CONTROL_ADMIN 
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 201
-	///		  A bulk of new device requests was created.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 201 A bulk of new device requests was created.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// 
 	/// - Parameters:
-	/// 	- file 
-	///		  The CSV file to be uploaded.
-	/// 	- xCumulocityProcessingMode 
-	///		  Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	///   - file:
+	///     The CSV file to be uploaded.
+	///   - xCumulocityProcessingMode:
+	///     Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func createBulkDeviceCredentials(file: Data, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yBulkNewDeviceRequest, Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
 		multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "text/csv");

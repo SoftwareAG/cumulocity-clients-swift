@@ -2,7 +2,7 @@
 // ApplicationBinariesApi.swift
 // CumulocityCoreLibrary
 //
-// Copyright (c) 2014-2022 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+// Copyright (c) 2014-2023 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
 // Use, reproduction, transfer, publication or disclosure is prohibited except as specifically provided for in your License Agreement with Software AG.
 //
 
@@ -13,24 +13,23 @@ import Combine
 public class ApplicationBinariesApi: AdaptableApi {
 
 	/// Retrieve all application attachments
-	/// Retrieve all application attachments.
-	/// This method is not supported by microservice applications.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_APPLICATION_MANAGEMENT_ADMIN
-	/// </section>
+	/// Retrieve all application attachments.This method is not supported by microservice applications.
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the application attachments are sent in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 404
-	///		  Application not found.
+	/// 
+	/// > Tip: Required roles
+	///  ROLE_APPLICATION_MANAGEMENT_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the application attachments are sent in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Application not found.
+	/// 
 	/// - Parameters:
-	/// 	- id 
-	///		  Unique identifier of the application.
+	///   - id:
+	///     Unique identifier of the application.
 	public func getApplicationAttachments(id: String) -> AnyPublisher<C8yApplicationBinaries, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/binaries")
@@ -52,6 +51,7 @@ public class ApplicationBinariesApi: AdaptableApi {
 	}
 	
 	/// Upload an application attachment
+	/// 
 	/// Upload an application attachment (by a given application ID).
 	/// 
 	/// For the applications of type “microservice” and “web application” to be available for Cumulocity IoT platform users, an attachment ZIP file must be uploaded.
@@ -63,21 +63,21 @@ public class ApplicationBinariesApi: AdaptableApi {
 	/// 
 	/// For a web application, the ZIP file must include an index.html file in the root directory.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_APPLICATION_MANAGEMENT_ADMIN <b>AND</b> tenant is the owner of the application
-	/// </section>
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 201
-	///		  The application attachments have been uploaded.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
+	/// > Tip: Required roles
+	///  ROLE_APPLICATION_MANAGEMENT_ADMIN *AND* tenant is the owner of the application 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 201 The application attachments have been uploaded.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// 
 	/// - Parameters:
-	/// 	- file 
-	///		  The ZIP file to be uploaded.
-	/// 	- id 
-	///		  Unique identifier of the application.
+	///   - file:
+	///     The ZIP file to be uploaded.
+	///   - id:
+	///     Unique identifier of the application.
 	public func uploadApplicationAttachment(file: Data, id: String) -> AnyPublisher<C8yApplication, Error> {
 		let multipartBuilder = MultipartFormDataBuilder()
 		multipartBuilder.addBodyPart(named: "file", data: file, mimeType: "application/zip");
@@ -104,24 +104,24 @@ public class ApplicationBinariesApi: AdaptableApi {
 	}
 	
 	/// Retrieve a specific application attachment
-	/// Retrieve a specific application attachment (by a given application ID and a given binary ID).
-	/// This method is not supported by microservice applications.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_APPLICATION_MANAGEMENT_ADMIN
-	/// </section>
+	/// Retrieve a specific application attachment (by a given application ID and a given binary ID).This method is not supported by microservice applications.
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 200
-	///		  The request has succeeded and the application attachment is sent as a ZIP file in the response.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
+	/// 
+	/// > Tip: Required roles
+	///  ROLE_APPLICATION_MANAGEMENT_ADMIN 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the application attachment is sent as a ZIP file in the response.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// 
 	/// - Parameters:
-	/// 	- id 
-	///		  Unique identifier of the application.
-	/// 	- binaryId 
-	///		  Unique identifier of the binary.
+	///   - id:
+	///     Unique identifier of the application.
+	///   - binaryId:
+	///     Unique identifier of the binary.
 	public func getApplicationAttachment(id: String, binaryId: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/binaries/\(binaryId)")
@@ -143,26 +143,25 @@ public class ApplicationBinariesApi: AdaptableApi {
 	}
 	
 	/// Delete a specific application attachment
-	/// Delete  a specific application attachment (by a given application ID and a given binary ID).
-	/// This method is not supported by microservice applications.
 	/// 
-	/// <section><h5>Required roles</h5>
-	/// ROLE_APPLICATION_MANAGEMENT_ADMIN <b>AND</b> tenant is the owner of the application
-	/// </section>
+	/// Delete  a specific application attachment (by a given application ID and a given binary ID).This method is not supported by microservice applications.
 	/// 
-	/// The following table gives an overview of the possible response codes and their meanings.
-	/// - Returns:
-	/// 	- 204
-	///		  An application binary was removed.
-	/// 	- 401
-	///		  Authentication information is missing or invalid.
-	/// 	- 403
-	///		  Not authorized to perform this operation.
+	/// 
+	/// > Tip: Required roles
+	///  ROLE_APPLICATION_MANAGEMENT_ADMIN *AND* tenant is the owner of the application 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 204 An application binary was removed.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 403 Not authorized to perform this operation.
+	/// 
 	/// - Parameters:
-	/// 	- id 
-	///		  Unique identifier of the application.
-	/// 	- binaryId 
-	///		  Unique identifier of the binary.
+	///   - id:
+	///     Unique identifier of the application.
+	///   - binaryId:
+	///     Unique identifier of the binary.
 	public func deleteApplicationAttachment(id: String, binaryId: String) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/binaries/\(binaryId)")

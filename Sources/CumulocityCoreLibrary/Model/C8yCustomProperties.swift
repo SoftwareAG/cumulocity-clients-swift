@@ -2,7 +2,7 @@
 // C8yCustomProperties.swift
 // CumulocityCoreLibrary
 //
-// Copyright (c) 2014-2022 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
+// Copyright (c) 2014-2023 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
 // Use, reproduction, transfer, publication or disclosure is prohibited except as specifically provided for in your License Agreement with Software AG.
 //
 
@@ -36,7 +36,6 @@ public struct C8yCustomProperties: Codable {
 	public var language: String?
 
 	/// It is possible to add an arbitrary number of custom properties as a list of key-value pairs, for example, `"property": "value"`.
-	/// 
 	public var customProperties: [String: Any] = [:]
 	
 	public subscript(key: String) -> Any? {
