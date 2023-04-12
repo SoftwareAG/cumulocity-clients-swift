@@ -26,7 +26,7 @@ public class URLRequestBuilder {
 	}
 
     public convenience init(with: URLRequestBuilder) {
-        self.init()
+    	self.init()
 		self.components = with.components
 		self.httpMethod = with.httpMethod
 		self.requestHeaders = with.requestHeaders
