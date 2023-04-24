@@ -8,8 +8,17 @@
 
 import Foundation
 
-/// An object with a list of the user's device permissions.
+/// A list of device permissions.
 public struct C8yDevicePermissions: Codable {
+
+	public var users: [C8yUser]?
+
+	public var groups: [C8yGroup]?
+
+	enum CodingKeys: String, CodingKey {
+		case users
+		case groups
+	}
 
 	public init() {
 	}

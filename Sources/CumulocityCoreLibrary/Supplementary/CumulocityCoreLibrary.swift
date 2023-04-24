@@ -101,6 +101,7 @@ extension Cumulocity {
 			public lazy var groupsApi: GroupsApi = GroupsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var rolesApi: RolesApi = RolesApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var inventoryRolesApi: InventoryRolesApi = InventoryRolesApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var devicePermissionsApi: DevicePermissionsApi = DevicePermissionsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 
 			fileprivate init(with factory: Core) {
 				self.factory = factory
