@@ -75,7 +75,7 @@ Those classes allow to add an arbitrary number of additional properties as a lis
 C8yAlarm.registerAdditionalProperty<C: Codable>(typeName: String, for type: C.Type)
 ```
 
-Each of the extensible objects contains a dictionary object holding instances of custom fragments. Use the custom fragment's key to access it's value.
+Each of the extensible objects contains a dictionary object holding instances of custom fragments. Use the custom fragment's key to access its value.
 
 ### Working with errors
 
