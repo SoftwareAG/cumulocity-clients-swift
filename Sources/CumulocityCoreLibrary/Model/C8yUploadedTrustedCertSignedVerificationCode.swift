@@ -18,6 +18,7 @@ public struct C8yUploadedTrustedCertSignedVerificationCode: Codable {
 		case proofOfPossessionSignedVerificationCode
 	}
 
-	public init() {
+	public init(proofOfPossessionSignedVerificationCode: String) {
+		self.proofOfPossessionSignedVerificationCode = proofOfPossessionSignedVerificationCode
 	}
 }

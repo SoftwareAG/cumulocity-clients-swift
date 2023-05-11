@@ -26,6 +26,7 @@ public struct C8yManagedObject: Codable {
 		self.assetParents = try container.decodeIfPresent(C8yObjectAssetParents.self, forKey: .assetParents)
 		self.deviceParents = try container.decodeIfPresent(C8yObjectDeviceParents.self, forKey: .deviceParents)
 		self.c8yIsDevice = try container.decodeIfPresent(C8yIsDevice.self, forKey: .c8yIsDevice)
+		self.c8yIsDeviceGroup = try container.decodeIfPresent(C8yIsDeviceGroup.self, forKey: .c8yIsDeviceGroup)
 		self.c8yDeviceTypes = try container.decodeIfPresent([String].self, forKey: .c8yDeviceTypes)
 		self.c8ySupportedOperations = try container.decodeIfPresent([String].self, forKey: .c8ySupportedOperations)
 		if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
@@ -51,6 +52,7 @@ public struct C8yManagedObject: Codable {
 		try container.encodeIfPresent(self.assetParents, forKey: .assetParents)
 		try container.encodeIfPresent(self.deviceParents, forKey: .deviceParents)
 		try container.encodeIfPresent(self.c8yIsDevice, forKey: .c8yIsDevice)
+		try container.encodeIfPresent(self.c8yIsDeviceGroup, forKey: .c8yIsDeviceGroup)
 		try container.encodeIfPresent(self.c8yDeviceTypes, forKey: .c8yDeviceTypes)
 		try container.encodeIfPresent(self.c8ySupportedOperations, forKey: .c8ySupportedOperations)
 		var additionalContainer = encoder.container(keyedBy: JSONCodingKeys.self)
@@ -103,6 +105,9 @@ public struct C8yManagedObject: Codable {
 	/// A fragment which identifies this managed object as a device.
 	public var c8yIsDevice: C8yIsDevice?
 
+	/// A fragment which identifies this managed object as a device group.
+	public var c8yIsDeviceGroup: C8yIsDeviceGroup?
+
 	/// This fragment must be added in order to publish sample commands for a subset of devices sharing the same device type. If the fragment is present, the list of sample commands for a device type will be extended with the sample commands for the `c8y_DeviceTypes`. New sample commands created from the user interface will be created in the context of the `c8y_DeviceTypes`.
 	public var c8yDeviceTypes: [String]?
 
@@ -138,6 +143,7 @@ public struct C8yManagedObject: Codable {
 		case assetParents
 		case deviceParents
 		case c8yIsDevice = "c8y_IsDevice"
+		case c8yIsDeviceGroup = "c8y_IsDeviceGroup"
 		case c8yDeviceTypes = "c8y_DeviceTypes"
 		case c8ySupportedOperations = "c8y_SupportedOperations"
 		case customFragments
@@ -148,6 +154,13 @@ public struct C8yManagedObject: Codable {
 
 	/// A fragment which identifies this managed object as a device.
 	public struct C8yIsDevice: Codable {
+	
+		public init() {
+		}
+	}
+
+	/// A fragment which identifies this managed object as a device group.
+	public struct C8yIsDeviceGroup: Codable {
 	
 		public init() {
 		}

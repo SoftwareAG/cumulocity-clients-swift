@@ -33,6 +33,9 @@ public struct C8yNotificationSubscription: Codable {
 	/// Applicable filters to the subscription.
 	public var subscriptionFilter: C8ySubscriptionFilter?
 
+	/// Indicates whether the messages for this subscription are persistent or non-persistent, meaning they can be lost if consumer is not connected.
+	public var nonPersistent: Bool?
+
 	enum CodingKeys: String, CodingKey {
 		case context
 		case fragmentsToCopy
@@ -41,6 +44,7 @@ public struct C8yNotificationSubscription: Codable {
 		case source
 		case subscription
 		case subscriptionFilter
+		case nonPersistent
 	}
 
 	public init(context: C8yContext, subscription: String) {
@@ -82,12 +86,16 @@ public struct C8yNotificationSubscription: Codable {
 	/// Applicable filters to the subscription.
 	public struct C8ySubscriptionFilter: Codable {
 	
-		/// The Notifications are available for Alarms, Alarms with children, Device control, Events, Events with children, Inventory and Measurements for the `mo` context and for Alarms and Inventory for the `tenant` context. Alternatively, the wildcard `*` can be used to match all the permissible APIs within the bound context.
+		/// The Notifications are available for Alarms, Alarms with children, Device control, Events, Events with children, Inventory and Measurements for the `mo` context and for Alarms, Events and Inventory for the `tenant` context. Alternatively, the wildcard `*` can be used to match all the permissible APIs within the bound context.
 		/// 
-		/// > **ⓘ Note** the wildcard `*` cannot be used in conjunction with other values.
+		/// > **ⓘ Note** The wildcard `*` cannot be used in conjunction with other values.
+		/// > **ⓘ Note** When filtering Events in the `tenant` context it is required to also specify the `typeFilter`.
 		public var apis: [String]?
 	
-		/// The data needs to have the specified value in its `type` property to meet the filter criteria.
+		/// Used to match the `type` property of the data. An OData expression must be provided.
+		/// 
+		/// > **ⓘ Note** The use of a `type` attribute is assumed, for example when using only a string literal `'c8y_Temperature'` it is equivalent to a `type eq 'c8y_Temperature'` OData expression.
+		/// > **ⓘ Note** Currently only the `or` operator is allowed in the expression mode. Example usage is `'c8y_Temperature' or 'c8y_Pressure'` which will match all the data with types `c8y_Temperature` or `c8y_Pressure`.
 		public var typeFilter: String?
 	
 		enum CodingKeys: String, CodingKey {

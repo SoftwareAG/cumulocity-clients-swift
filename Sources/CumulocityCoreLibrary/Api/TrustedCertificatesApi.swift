@@ -89,17 +89,14 @@ public class TrustedCertificatesApi: AdaptableApi {
 	///     
 	///   - tenantId:
 	///     Unique identifier of a Cumulocity IoT tenant.
-	public func addTrustedCertificate(body: C8yTrustedCertificate, tenantId: String) -> AnyPublisher<C8yTrustedCertificate, Error> {
-		var requestBody = body
-		requestBody.notAfter = nil
-		requestBody.serialNumber = nil
-		requestBody.subject = nil
-		requestBody.fingerprint = nil
-		requestBody.`self` = nil
-		requestBody.algorithmName = nil
-		requestBody.version = nil
-		requestBody.issuer = nil
-		requestBody.notBefore = nil
+	///   - xCumulocityProcessingMode:
+	///     Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	///   - addToTrustStore:
+	///     If set to `true` the certificate is added to the truststore.
+	///     
+	///     The truststore contains all trusted certificates. A connection to a device is only established if it connects to Cumulocity IoT with a certificate in the truststore.
+	public func addTrustedCertificate(body: C8yUploadedTrustedCertificate, tenantId: String, xCumulocityProcessingMode: String? = nil, addToTrustStore: Bool? = nil) -> AnyPublisher<C8yTrustedCertificate, Error> {
+		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {
 			encodedRequestBody = try JSONEncoder().encode(requestBody)
@@ -109,8 +106,10 @@ public class TrustedCertificatesApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants/\(tenantId)/trusted-certificates")
 			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
+			.add(queryItem: "addToTrustStore", value: addToTrustStore)
 			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -149,7 +148,11 @@ public class TrustedCertificatesApi: AdaptableApi {
 	///     
 	///   - tenantId:
 	///     Unique identifier of a Cumulocity IoT tenant.
-	public func addTrustedCertificates(body: C8yTrustedCertificateCollection, tenantId: String) -> AnyPublisher<C8yTrustedCertificateCollection, Error> {
+	///   - addToTrustStore:
+	///     If set to `true` the certificate is added to the truststore.
+	///     
+	///     The truststore contains all trusted certificates. A connection to a device is only established if it connects to Cumulocity IoT with a certificate in the truststore.
+	public func addTrustedCertificates(body: C8yUploadedTrustedCertificateCollection, tenantId: String, addToTrustStore: Bool? = nil) -> AnyPublisher<C8yTrustedCertificateCollection, Error> {
 		var requestBody = body
 		requestBody.next = nil
 		requestBody.prev = nil
@@ -166,6 +169,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "application/json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
+			.add(queryItem: "addToTrustStore", value: addToTrustStore)
 			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -246,16 +250,19 @@ public class TrustedCertificatesApi: AdaptableApi {
 	///     Unique identifier of a trusted certificate.
 	public func updateTrustedCertificate(body: C8yTrustedCertificate, tenantId: String, fingerprint: String) -> AnyPublisher<C8yTrustedCertificate, Error> {
 		var requestBody = body
+		requestBody.proofOfPossessionValid = nil
 		requestBody.notAfter = nil
 		requestBody.serialNumber = nil
+		requestBody.proofOfPossessionVerificationCodeUsableUntil = nil
 		requestBody.subject = nil
-		requestBody.fingerprint = nil
-		requestBody.`self` = nil
-		requestBody.certInPemFormat = nil
 		requestBody.algorithmName = nil
 		requestBody.version = nil
 		requestBody.issuer = nil
 		requestBody.notBefore = nil
+		requestBody.proofOfPossessionUnsignedVerificationCode = nil
+		requestBody.fingerprint = nil
+		requestBody.`self` = nil
+		requestBody.certInPemFormat = nil
 		var encodedRequestBody: Data? = nil
 		do {
 			encodedRequestBody = try JSONEncoder().encode(requestBody)

@@ -263,10 +263,10 @@ public class ApplicationsApi: AdaptableApi {
 	/// - Parameters:
 	///   - id:
 	///     Unique identifier of the application.
-	///   - force:
-	///     Force deletion by unsubscribing all tenants from the application first and then deleting the application itself.
 	///   - xCumulocityProcessingMode:
 	///     Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
+	///   - force:
+	///     Force deletion by unsubscribing all tenants from the application first and then deleting the application itself.
 	public func deleteApplication(id: String, force: Bool? = nil, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)")

@@ -25,12 +25,12 @@ extension Cumulocity {
 	    public lazy var tenants: TenantsFactory = TenantsFactory(with: self)
 	    public lazy var users: UsersFactory = UsersFactory(with: self)
 	    public lazy var audits: AuditsFactory = AuditsFactory(with: self)
-	    public lazy var realtimeNotifications: RealtimenotificationsFactory = RealtimenotificationsFactory(with: self)
+	    public lazy var realtimeNotifications: RealtimeNotificationsFactory = RealtimeNotificationsFactory(with: self)
 	    public lazy var events: EventsFactory = EventsFactory(with: self)
 	    public lazy var notifications20: Notifications20Factory = Notifications20Factory(with: self)
 	    public lazy var retentions: RetentionsFactory = RetentionsFactory(with: self)
 	    public lazy var identity: IdentityFactory = IdentityFactory(with: self)
-	    public lazy var deviceControl: DevicecontrolFactory = DevicecontrolFactory(with: self)
+	    public lazy var deviceControl: DeviceControlFactory = DeviceControlFactory(with: self)
 	    public lazy var inventory: InventoryFactory = InventoryFactory(with: self)
 
 	    private init() {
@@ -119,7 +119,7 @@ extension Cumulocity {
 			}
 		}
 
-		public class RealtimenotificationsFactory {
+		public class RealtimeNotificationsFactory {
 
 			private var factory: Core
 
@@ -177,7 +177,7 @@ extension Cumulocity {
 			}
 		}
 
-		public class DevicecontrolFactory {
+		public class DeviceControlFactory {
 
 			private var factory: Core
 

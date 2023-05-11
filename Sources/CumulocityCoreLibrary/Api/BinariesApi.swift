@@ -14,9 +14,9 @@ import Combine
 /// > **ⓘ Note** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 public class BinariesApi: AdaptableApi {
 
-	/// Retrieve the stored files
+	/// Search for stored files
 	/// 
-	/// Retrieve the stored files as a collections of managed objects.
+	/// Retrieve metadata information about stored files. Search for files by query parameters. This will not download the files.
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:

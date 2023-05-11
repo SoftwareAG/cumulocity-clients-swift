@@ -58,7 +58,13 @@ public class TenantsApi: AdaptableApi {
 	///     When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	///   - withTotalPages:
 	///     When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getTenants(currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yTenantCollection, Error> {
+	///   - company:
+	///     Company name associated with the Cumulocity IoT tenant.
+	///   - domain:
+	///     Domain name of the Cumulocity IoT tenant.
+	///   - parent:
+	///     Identifier of the Cumulocity IoT tenant's parent.
+	public func getTenants(currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil, company: String? = nil, domain: String? = nil, parent: String? = nil) -> AnyPublisher<C8yTenantCollection, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants")
 			.set(httpMethod: "get")
@@ -67,6 +73,9 @@ public class TenantsApi: AdaptableApi {
 			.add(queryItem: "pageSize", value: pageSize)
 			.add(queryItem: "withTotalElements", value: withTotalElements)
 			.add(queryItem: "withTotalPages", value: withTotalPages)
+			.add(queryItem: "company", value: company)
+			.add(queryItem: "domain", value: domain)
+			.add(queryItem: "parent", value: parent)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -183,7 +192,7 @@ public class TenantsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_TENANT_MANAGEMENT_READ *AND* the current tenant is its parent *OR* is the management tenant 
+	///  ROLE_TENANT_MANAGEMENT_READ *AND* (the current tenant is its parent *OR* is the management tenant) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -222,7 +231,8 @@ public class TenantsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  (ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_MANAGEMENT_UPDATE) *AND* (the current tenant is its parent *AND* the current tenant is allowed to create subtenants) *OR* is the management tenant 
+	///  (ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_MANAGEMENT_UPDATE) *AND*
+	///  ((the current tenant is its parent *AND* the current tenant is allowed to create subtenants) *OR* is the management tenant) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
