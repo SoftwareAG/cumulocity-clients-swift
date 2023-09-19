@@ -11,7 +11,7 @@ import Combine
 
 /// Managed objects can perform operations to store, retrieve and delete binaries. One binary can store only one file. Together with the binary, a managed object is created which acts as a metadata information for the binary.
 /// 
-/// > **ⓘ Note** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
+/// > **ⓘ Note** Supports only HTTP 1.1 clients.**ⓘ Note** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 public class BinariesApi: AdaptableApi {
 
 	/// Search for stored files
@@ -139,7 +139,7 @@ public class BinariesApi: AdaptableApi {
 	
 	/// Retrieve a stored file
 	/// 
-	/// Retrieve a stored file (managed object) by a given ID.
+	/// Retrieve a stored file (managed object) by a given ID.Supports chunk download and resuming an interrupted download using the [`Range` header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Range).
 	/// 
 	/// 
 	/// > Tip: Required roles

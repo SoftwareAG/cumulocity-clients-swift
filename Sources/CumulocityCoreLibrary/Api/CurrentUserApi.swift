@@ -73,7 +73,6 @@ public class CurrentUserApi: AdaptableApi {
 		requestBody.id = nil
 		requestBody.lastPasswordChange = nil
 		requestBody.twoFactorAuthenticationEnabled = nil
-		requestBody.devicePermissions = nil
 		var encodedRequestBody: Data? = nil
 		do {
 			encodedRequestBody = try JSONEncoder().encode(requestBody)

@@ -15,7 +15,7 @@ import Combine
 /// 
 /// For each tenant, Cumulocity IoT manages the subscribed applications and provides a number of applications of various types.In case you want to subscribe a tenant to an application using an API, you must use the application name in the argument (as name).
 /// 
-/// Refer to the tables in [Administration > Managing applications](https://cumulocity.com/guides/10.7.0/users-guide/administration#managing-applications) in the User guide for the respective application name to be used.
+/// Refer to the tables in [Administration > Managing applications](https://cumulocity.com/guides/users-guide/administration#managing-applications) in the *User guide* for the respective application name to be used.
 /// 
 /// > **ⓘ Note** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 public class ApplicationsApi: AdaptableApi {
@@ -301,6 +301,8 @@ public class ApplicationsApi: AdaptableApi {
 	/// 
 	/// If the target application is hosted and has an active version, the new application will have the active version with the same content.
 	/// 
+	/// If the original application is hosted with versions, then only one binary version is cloned. By default it is a version with the "latest" tag. You can also specify a target version directly by using exactly one of the query parameters `version` or `tag`.
+	/// 
 	/// 
 	/// > Tip: Required roles
 	///  ROLE_APPLICATION_MANAGEMENT_ADMIN 
@@ -317,12 +319,18 @@ public class ApplicationsApi: AdaptableApi {
 	///     Unique identifier of the application.
 	///   - xCumulocityProcessingMode:
 	///     Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
-	public func copyApplication(id: String, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yApplication, Error> {
+	///   - version:
+	///     The version field of the application version.
+	///   - tag:
+	///     The tag of the application version.
+	public func copyApplication(id: String, version: String? = nil, tag: String? = nil, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yApplication, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/application/applications/\(id)/clone")
 			.set(httpMethod: "post")
 			.add(header: "X-Cumulocity-Processing-Mode", value: xCumulocityProcessingMode)
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.application+json")
+			.add(queryItem: "version", value: version)
+			.add(queryItem: "tag", value: tag)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)

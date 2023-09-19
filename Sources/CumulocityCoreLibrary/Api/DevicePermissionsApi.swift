@@ -47,7 +47,7 @@ public class DevicePermissionsApi: AdaptableApi {
 	/// - Parameters:
 	///   - id:
 	///     Unique identifier of the managed object.
-	public func getDevicePermissionAssignments(id: String) -> AnyPublisher<C8yDevicePermissions, Error> {
+	public func getDevicePermissionAssignments(id: String) -> AnyPublisher<C8yDevicePermissionOwners, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/devicePermissions/\(id)")
 			.set(httpMethod: "get")
@@ -64,7 +64,7 @@ public class DevicePermissionsApi: AdaptableApi {
 				throw BadResponseError(with: httpResponse)
 			}
 			return element.data
-		}).decode(type: C8yDevicePermissions.self, decoder: JSONDecoder()).eraseToAnyPublisher()
+		}).decode(type: C8yDevicePermissionOwners.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
 	/// Updates the device permissions assignments
@@ -87,7 +87,7 @@ public class DevicePermissionsApi: AdaptableApi {
 	///     
 	///   - id:
 	///     Unique identifier of the managed object.
-	public func updateDevicePermissionAssignments(body: C8yDevicePermissions, id: String) -> AnyPublisher<Data, Error> {
+	public func updateDevicePermissionAssignments(body: C8yUpdatedDevicePermissions, id: String) -> AnyPublisher<Data, Error> {
 		let requestBody = body
 		var encodedRequestBody: Data? = nil
 		do {

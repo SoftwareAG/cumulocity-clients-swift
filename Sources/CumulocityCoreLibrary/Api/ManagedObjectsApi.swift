@@ -180,67 +180,6 @@ public class ManagedObjectsApi: AdaptableApi {
 		}).decode(type: C8yManagedObject.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
 	
-	/// Retrieve the total number of managed objects
-	/// 
-	/// Retrieve the total number of managed objects (for example, devices, assets, etc.) registered in your tenant, or a subset based on queries.
-	/// 
-	/// 
-	/// > Tip: Required roles
-	///  ROLE_INVENTORY_READ is not required, but if the current user doesn't have this role, the response will contain the number of inventory objects accessible for the user. 
-	/// 
-	/// > Tip: Response Codes
-	/// The following table gives an overview of the possible response codes and their meanings:
-	/// 
-	/// * HTTP 200 The request has succeeded and the number of managed objects is sent in the response.
-	/// * HTTP 401 Authentication information is missing or invalid.
-	/// 
-	/// - Parameters:
-	///   - childAdditionId:
-	///     Search for a specific child addition and list all the groups to which it belongs.
-	///   - childAssetId:
-	///     Search for a specific child asset and list all the groups to which it belongs.
-	///   - childDeviceId:
-	///     Search for a specific child device and list all the groups to which it belongs.
-	///   - fragmentType:
-	///     A characteristic which identifies a managed object or event, for example, geolocation, electricity sensor, relay state.
-	///   - ids:
-	///     The managed object IDs to search for.
-	///     
-	///     **ⓘ Note** If you query for multiple IDs at once, comma-separate the values.
-	///   - owner:
-	///     Username of the owner of the managed objects.
-	///   - text:
-	///     Search for managed objects where any property value is equal to the given one. Only string values are supported.
-	///   - type:
-	///     The type of managed object to search for.
-	public func getNumberOfManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, fragmentType: String? = nil, ids: [String]? = nil, owner: String? = nil, text: String? = nil, type: String? = nil) -> AnyPublisher<Int, Error> {
-		let builder = URLRequestBuilder()
-			.set(resourcePath: "/inventory/managedObjects/count")
-			.set(httpMethod: "get")
-			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, text/plain,application/json")
-			.add(queryItem: "childAdditionId", value: childAdditionId)
-			.add(queryItem: "childAssetId", value: childAssetId)
-			.add(queryItem: "childDeviceId", value: childDeviceId)
-			.add(queryItem: "fragmentType", value: fragmentType)
-			.add(queryItem: "ids", value: ids, explode: .comma_separated)
-			.add(queryItem: "owner", value: owner)
-			.add(queryItem: "text", value: text)
-			.add(queryItem: "type", value: type)
-		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
-			guard let httpResponse = element.response as? HTTPURLResponse else {
-				throw URLError(.badServerResponse)
-			}
-			guard (200..<300) ~= httpResponse.statusCode else {
-				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					c8yError.httpResponse = httpResponse
-					throw c8yError
-				}
-				throw BadResponseError(with: httpResponse)
-			}
-			return element.data
-		}).decode(type: Int.self, decoder: JSONDecoder()).eraseToAnyPublisher()
-	}
-	
 	/// Retrieve a specific managed object
 	/// 
 	/// Retrieve a specific managed object (for example, device, group, template) by a given ID.
@@ -363,6 +302,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// Remove a specific managed object (for example, device) by a given ID.
 	/// 
 	/// > **ⓘ Note** Inventory DELETE requests are not synchronous. The response could be returned before the delete request has been completed. This may happen especially when the deleted managed object has a lot of associated data. After sending the request, the platform starts deleting the associated data in an asynchronous way. Finally, the requested managed object is deleted after all associated data has been deleted.
+	/// > **ⓘ Note** By default, the delete operation is always propagated to the subgroups, but only if the deleted object is a group.
 	/// 
 	/// > Tip: Required roles
 	///  ROLE_INVENTORY_ADMIN *OR* owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source 

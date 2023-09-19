@@ -1,5 +1,5 @@
 //
-// C8yDevicePermissions.swift
+// C8yDevicePermissionOwners.swift
 // CumulocityCoreLibrary
 //
 // Copyright (c) 2014-2023 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
@@ -8,22 +8,16 @@
 
 import Foundation
 
-/// An object with a list of the user's device permissions.
-public struct C8yDevicePermissions: Codable {
+/// A list of device permissions.
+public struct C8yDevicePermissionOwners: Codable {
 
-	public var additionalProperties: [String: [String]] = [:]
-	
-	public subscript(key: String) -> [String]? {
-	        get {
-	            return additionalProperties[key]
-	        }
-	        set(newValue) {
-	            additionalProperties[key] = newValue
-	        }
-	    }
+	public var users: [C8yUser]?
+
+	public var groups: [C8yGroup]?
 
 	enum CodingKeys: String, CodingKey {
-		case additionalProperties
+		case users
+		case groups
 	}
 
 	public init() {

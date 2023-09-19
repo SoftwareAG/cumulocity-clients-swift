@@ -39,17 +39,4 @@ public class ManagedObjectsApiTest: XCTestCase {
 		}).store(in: &cancellables)
 		wait(for: [expectation], timeout: 10)
 	}
-	
-	public func testGetNumberOfManagedObjects() {
-		let expectation = XCTestExpectation(description: "ok")
-		var cancellables = Set<AnyCancellable>()
-		TestableManagedObjectsApi().getNumberOfManagedObjects().sink(receiveCompletion: { completion in
-			let message = try? completion.error()
-			print(message?.httpResponse?.statusCode ?? "Successfully")
-		}, receiveValue: { data in
-			expectation.fulfill()
-			print(data)
-		}).store(in: &cancellables)
-		wait(for: [expectation], timeout: 10)
-	}
 }

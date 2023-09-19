@@ -623,4 +623,44 @@ public class UsersApi: AdaptableApi {
 			return element.data
 		}).eraseToAnyPublisher()
 	}
+	
+	/// Terminate all tenant users' sessions and invalidate tokens
+	/// 
+	/// The user with the role ROLE_USER_MANAGEMENT_ADMIN is authorized to log out all tenant users with a toked based access.
+	/// 
+	/// The request is responsible for terminating all tenant users' toked based sessions and invalidating internal platform access tokens.
+	/// 
+	/// 
+	/// > Tip: Required roles
+	///  ROLE_USER_MANAGEMENT_ADMIN *AND* is the current tenant 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the users (with a token based access) are logged out.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 403 Not enough permissions/roles to perform this operation.
+	/// 
+	/// - Parameters:
+	///   - tenantId:
+	///     Unique identifier of a Cumulocity IoT tenant.
+	public func logoutAllUsers(tenantId: String) -> AnyPublisher<Data, Error> {
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/user/logout/\(tenantId)/allUsers")
+			.set(httpMethod: "post")
+			.add(header: "Accept", value: "application/json")
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					c8yError.httpResponse = httpResponse
+					throw c8yError
+				}
+				throw BadResponseError(with: httpResponse)
+			}
+			return element.data
+		}).eraseToAnyPublisher()
+	}
 }
