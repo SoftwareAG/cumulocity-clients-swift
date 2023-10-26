@@ -40,7 +40,6 @@ public struct C8yLoginForm: Codable {
 	public enum C8yGrantType: String, Codable {
 		case password = "PASSWORD"
 		case authorizationcode = "AUTHORIZATION_CODE"
-		case refreshtoken = "REFRESH_TOKEN"
 	}
 
 }
