@@ -272,7 +272,6 @@ public class OperationsApi: AdaptableApi {
 		requestBody.creationTime = nil
 		requestBody.deviceExternalIDs?.`self` = nil
 		requestBody.bulkOperationId = nil
-		requestBody.failureReason = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
 		requestBody.deviceId = nil
