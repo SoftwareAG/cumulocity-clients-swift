@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// Represents a predicate for verification. It acts as a condition which is necessary to assign a user to the given groups and permit access to the specified applications.
+/// Represents a predicate for verification. It acts as a condition which is necessary to assign a user to the given groups, permit access to the specified applications or to assign specific inventory roles to device groups.
 public struct C8yJSONPredicateRepresentation: Codable {
 
 	/// Nested predicates.

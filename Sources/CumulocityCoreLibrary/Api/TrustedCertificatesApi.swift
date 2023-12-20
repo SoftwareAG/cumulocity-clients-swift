@@ -463,4 +463,102 @@ public class TrustedCertificatesApi: AdaptableApi {
 			return element.data
 		}).decode(type: C8yTrustedCertificate.self, decoder: JSONDecoder()).eraseToAnyPublisher()
 	}
+	
+	/// Verify a certificate chain via file upload
+	/// 
+	/// Verify a device certificate chain against a specific tenant. Max chain length support is <b>10</b>.The tenant ID is `optional` and this api will be further enhanced to resolve the tenant from the chain in future release.
+	/// 
+	/// 
+	/// > Tip: Required roles
+	///  (ROLE_TENANT_MANAGEMENT_ADMIN) *AND* (is the current tenant *OR* is current management tenant) 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the validation result is sent in the response.
+	/// * HTTP 400 Unable to parse certificate chain.
+	/// * HTTP 403 Not enough permissions/roles to perform this operation.
+	/// * HTTP 404 The tenant ID does not exist.
+	/// 
+	/// - Parameters:
+	///   - tenantId:
+	///     
+	///   - file:
+	///     File to be uploaded.
+	public func validateChainByFileUpload(tenantId: String, file: Data) -> AnyPublisher<C8yVerifyCertificateChain, Error> {
+		let multipartBuilder = MultipartFormDataBuilder()
+		do {
+			try multipartBuilder.addBodyPart(named: "tenantId", codable: tenantId, mimeType: "text/plain");
+		} catch {
+			return Fail<C8yVerifyCertificateChain, Error>(error: error).eraseToAnyPublisher()
+		}
+		do {
+			try multipartBuilder.addBodyPart(named: "file", codable: file, mimeType: "text/plain");
+		} catch {
+			return Fail<C8yVerifyCertificateChain, Error>(error: error).eraseToAnyPublisher()
+		}
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/tenant/tenants/verify-cert-chain/fileUpload")
+			.set(httpMethod: "post")
+			.add(header: "Content-Type", value: "multipart/form-data")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
+			.add(header: "Content-Type", value: multipartBuilder.contentType)
+			.set(httpBody: multipartBuilder.build())
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					c8yError.httpResponse = httpResponse
+					throw c8yError
+				}
+				throw BadResponseError(with: httpResponse)
+			}
+			return element.data
+		}).decode(type: C8yVerifyCertificateChain.self, decoder: JSONDecoder()).eraseToAnyPublisher()
+	}
+	
+	/// Verify a certificate chain via HTTP header
+	/// 
+	/// Verify a device certificate chain against a specific tenant. Max chain length support is <b>6</b>.The tenant ID is `optional` and this api will be further enhanced to resolve the tenant from the chain in future release.
+	/// 
+	/// 
+	/// > Tip: Required roles
+	///  (ROLE_TENANT_MANAGEMENT_ADMIN) *AND* (is the current tenant *OR* is current management tenant) 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 200 The request has succeeded and the validation result is sent in the response.
+	/// * HTTP 400 Unable to parse certificate chain.
+	/// * HTTP 403 Not enough permissions/roles to perform this operation.
+	/// * HTTP 404 The tenant ID does not exist.
+	/// 
+	/// - Parameters:
+	///   - xCumulocityTenantId:
+	///     Used to send a tenant ID.
+	///   - xCumulocityClientCertChain:
+	///     Used to send a certificate chain in the header. Separate the chain with `,` and also each 64 bit block with ` ` (a space character).
+	public func validateChainByHeader(xCumulocityTenantId: String? = nil, xCumulocityClientCertChain: String) -> AnyPublisher<C8yVerifyCertificateChain, Error> {
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/tenant/tenants/verify-cert-chain")
+			.set(httpMethod: "post")
+			.add(header: "X-Cumulocity-TenantId", value: xCumulocityTenantId)
+			.add(header: "X-Cumulocity-Client-Cert-Chain", value: xCumulocityClientCertChain)
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					c8yError.httpResponse = httpResponse
+					throw c8yError
+				}
+				throw BadResponseError(with: httpResponse)
+			}
+			return element.data
+		}).decode(type: C8yVerifyCertificateChain.self, decoder: JSONDecoder()).eraseToAnyPublisher()
+	}
 }

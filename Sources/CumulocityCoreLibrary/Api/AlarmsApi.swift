@@ -49,7 +49,7 @@ public class AlarmsApi: AdaptableApi {
 	///   - pageSize:
 	///     Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
 	///   - resolved:
-	///     When set to `true` only alarms with status CLEARED will be fetched, whereas `false` will fetch all alarms with status ACTIVE or ACKNOWLEDGED.
+	///     When set to `true` only alarms with status CLEARED will be fetched, whereas `false` will fetch all alarms with status ACTIVE or ACKNOWLEDGED. Takes precedence over the `status` parameter.
 	///   - severity:
 	///     The severity of the alarm to search for.
 	///     
@@ -57,7 +57,7 @@ public class AlarmsApi: AdaptableApi {
 	///   - source:
 	///     The managed object ID to which the alarm is associated.
 	///   - status:
-	///     The status of the alarm to search for.
+	///     The status of the alarm to search for. Should not be used when `resolved` parameter is provided.
 	///     
 	///     **ⓘ Note** If you query for multiple alarm statuses at once, comma-separate the values.
 	///   - type:
@@ -142,7 +142,7 @@ public class AlarmsApi: AdaptableApi {
 	///   - dateTo:
 	///     End date or date and time of the alarm occurrence.
 	///   - resolved:
-	///     When set to `true` only alarms with status CLEARED will be fetched, whereas `false` will fetch all alarms with status ACTIVE or ACKNOWLEDGED.
+	///     When set to `true` only alarms with status CLEARED will be fetched, whereas `false` will fetch all alarms with status ACTIVE or ACKNOWLEDGED. Takes precedence over the `status` parameter.
 	///   - severity:
 	///     The severity of the alarm to search for.
 	///     
@@ -150,7 +150,7 @@ public class AlarmsApi: AdaptableApi {
 	///   - source:
 	///     The managed object ID to which the alarm is associated.
 	///   - status:
-	///     The status of the alarm to search for.
+	///     The status of the alarm to search for. Should not be used when `resolved` parameter is provided.
 	///     
 	///     **ⓘ Note** If you query for multiple alarm statuses at once, comma-separate the values.
 	///   - withSourceAssets:
@@ -309,7 +309,7 @@ public class AlarmsApi: AdaptableApi {
 	///   - dateTo:
 	///     End date or date and time of the alarm occurrence.
 	///   - resolved:
-	///     When set to `true` only alarms with status CLEARED will be fetched, whereas `false` will fetch all alarms with status ACTIVE or ACKNOWLEDGED.
+	///     When set to `true` only alarms with status CLEARED will be fetched, whereas `false` will fetch all alarms with status ACTIVE or ACKNOWLEDGED. Takes precedence over the `status` parameter.
 	///   - severity:
 	///     The severity of the alarm to search for.
 	///     
@@ -317,7 +317,7 @@ public class AlarmsApi: AdaptableApi {
 	///   - source:
 	///     The managed object ID to which the alarm is associated.
 	///   - status:
-	///     The status of the alarm to search for.
+	///     The status of the alarm to search for. Should not be used when `resolved` parameter is provided.
 	///     
 	///     **ⓘ Note** If you query for multiple alarm statuses at once, comma-separate the values.
 	///   - type:
@@ -483,7 +483,7 @@ public class AlarmsApi: AdaptableApi {
 	///   - dateTo:
 	///     End date or date and time of the alarm occurrence.
 	///   - resolved:
-	///     When set to `true` only alarms with status CLEARED will be fetched, whereas `false` will fetch all alarms with status ACTIVE or ACKNOWLEDGED.
+	///     When set to `true` only alarms with status CLEARED will be fetched, whereas `false` will fetch all alarms with status ACTIVE or ACKNOWLEDGED. Takes precedence over the `status` parameter.
 	///   - severity:
 	///     The severity of the alarm to search for.
 	///     
@@ -491,7 +491,7 @@ public class AlarmsApi: AdaptableApi {
 	///   - source:
 	///     The managed object ID to which the alarm is associated.
 	///   - status:
-	///     The status of the alarm to search for.
+	///     The status of the alarm to search for. Should not be used when `resolved` parameter is provided.
 	///     
 	///     **ⓘ Note** If you query for multiple alarm statuses at once, comma-separate the values.
 	///   - type:

@@ -20,7 +20,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_READ *OR* owner of the source *OR* MANAGE_OBJECT_READ permission on the source 
+	///  ROLE_INVENTORY_READ *OR* ROLE_MANAGED_OBJECT_READ *OR* owner of the source *OR* MANAGE_OBJECT_READ permission on the source 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -84,7 +84,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* ((owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source) *AND* (owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the child)) 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* ((owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source) *AND* (owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the child)) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -140,7 +140,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* ((owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source) *AND* (owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the child)) 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* ((owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source) *AND* (owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the child)) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -196,7 +196,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* ((owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source) *AND* (owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the child)) 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* ((owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source) *AND* (owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the child)) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -259,7 +259,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* owner of the source (parent) *OR* owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the source (parent) 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* owner of the source (parent) *OR* owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the source (parent) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -312,7 +312,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_READ *OR* MANAGE_OBJECT_READ permission on the source (parent) 
+	///  ROLE_INVENTORY_READ *OR* ROLE_MANAGED_OBJECT_READ *OR* MANAGE_OBJECT_READ permission on the source (parent) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -353,7 +353,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* owner of the source (parent) *OR* owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the source (parent) 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* owner of the source (parent) *OR* owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the source (parent) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -397,7 +397,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_READ *OR* owner of the source *OR* MANAGE_OBJECT_READ permission on the source 
+	///  ROLE_INVENTORY_READ *OR* ROLE_MANAGED_OBJECT_READ *OR* owner of the source *OR* MANAGE_OBJECT_READ permission on the source 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -461,7 +461,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* ((owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source) *AND* (owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the child)) 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* ((owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source) *AND* (owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the child)) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -517,7 +517,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* ((owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source) *AND* (owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the child)) 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* ((owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source) *AND* (owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the child)) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -573,7 +573,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* ((owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source) *AND* (owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the child)) 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* ((owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source) *AND* (owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the child)) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -636,7 +636,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* owner of the source (parent) *OR* owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the source (parent) 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* owner of the source (parent) *OR* owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the source (parent) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -689,7 +689,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_READ *OR* MANAGE_OBJECT_READ permission on the source (parent) 
+	///  ROLE_INVENTORY_READ *OR* ROLE_MANAGED_OBJECT_READ *OR* MANAGE_OBJECT_READ permission on the source (parent) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -730,7 +730,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* owner of the source (parent) *OR* owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the source (parent) 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* owner of the source (parent) *OR* owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the source (parent) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -774,7 +774,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_READ *OR* owner of the source *OR* MANAGE_OBJECT_READ permission on the source 
+	///  ROLE_INVENTORY_READ *OR* ROLE_MANAGED_OBJECT_READ *OR* owner of the source *OR* MANAGE_OBJECT_READ permission on the source 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -838,7 +838,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* ((owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source) *AND* (owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the child)) 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* ((owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source) *AND* (owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the child)) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -894,7 +894,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* ((owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source) *AND* (owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the child)) 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* ((owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source) *AND* (owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the child)) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -950,7 +950,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* ((owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source) *AND* (owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the child)) 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* ((owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source) *AND* (owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the child)) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -1013,7 +1013,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* owner of the source (parent) *OR* owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the source (parent) 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* owner of the source (parent) *OR* owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the source (parent) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -1066,7 +1066,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_READ *OR* MANAGE_OBJECT_READ permission on the source (parent) 
+	///  ROLE_INVENTORY_READ *OR* ROLE_MANAGED_OBJECT_READ *OR* MANAGE_OBJECT_READ permission on the source (parent) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -1107,7 +1107,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* owner of the source (parent) *OR* owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the source (parent) 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* owner of the source (parent) *OR* owner of the child *OR* MANAGE_OBJECT_ADMIN permission on the source (parent) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:

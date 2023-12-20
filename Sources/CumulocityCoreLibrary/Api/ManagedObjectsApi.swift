@@ -125,7 +125,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// > **ⓘ Note** For more details about fragments with specific meanings, review the sections [Device management library](#section/Device-management-library) and [Sensor library](#section/Sensor-library).
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* ROLE_INVENTORY_CREATE 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_INVENTORY_CREATE *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* ROLE_MANAGED_OBJECT_CREATE 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -186,7 +186,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_READ *OR* owner of the source *OR* MANAGE_OBJECT_READ permission on the source 
+	///  ROLE_INVENTORY_READ *OR* ROLE_MANAGED_OBJECT_READ *OR* owner of the source *OR* MANAGE_OBJECT_READ permission on the source 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -240,7 +240,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -305,7 +305,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// > **ⓘ Note** By default, the delete operation is always propagated to the subgroups, but only if the deleted object is a group.
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -356,7 +356,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_READ 
+	///  ROLE_INVENTORY_READ *OR* ROLE_MANAGED_OBJECT_READ 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -394,7 +394,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_READ *OR* owner of the source *OR* MANAGE_OBJECT_READ permission on the source 
+	///  ROLE_INVENTORY_READ *OR* ROLE_MANAGED_OBJECT_READ *OR* owner of the source *OR* MANAGE_OBJECT_READ permission on the source 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -432,7 +432,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_READ *OR* owner of the source *OR* MANAGE_OBJECT_READ permission on the source 
+	///  ROLE_INVENTORY_READ *OR* ROLE_MANAGED_OBJECT_READ *OR* owner of the source *OR* MANAGE_OBJECT_READ permission on the source 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -470,7 +470,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_READ *OR* owner of the source *OR* MANAGE_OBJECT_READ permission on the source 
+	///  ROLE_INVENTORY_READ *OR* ROLE_MANAGED_OBJECT_READ *OR* owner of the source *OR* MANAGE_OBJECT_READ permission on the source 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -508,7 +508,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_MANAGED_OBJECT_ADMIN *OR* owner of the source *OR* MANAGE_OBJECT_ADMIN permission on the source 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:

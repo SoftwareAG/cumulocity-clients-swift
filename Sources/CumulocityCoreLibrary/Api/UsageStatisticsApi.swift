@@ -140,8 +140,7 @@ public class UsageStatisticsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_TENANT_STATISTICS_READ *OR* ROLE_INVENTORY_READ 
-	///  If the `tenant` request parameter is specified, then the current tenant must be the management tenant *OR* the parent of the requested `tenant`. 
+	///  ROLE_TENANT_STATISTICS_READ *OR* ROLE_INVENTORY_READ *OR* ROLE_MANAGED_OBJECT_READ If the `tenant` request parameter is specified, then the current tenant must be the management tenant *OR* the parent of the requested `tenant`. 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
