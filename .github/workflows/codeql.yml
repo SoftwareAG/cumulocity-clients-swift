@@ -39,10 +39,12 @@ jobs:
         languages: 'swift'
         queries: security-extended,security-and-quality
 
-    # Autobuild attempts to build any compiled languages (C/C++, C#, Go, Java, or Swift).
-    # If this step fails, then you should remove it and run the build manually
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v3
+#Building manually, since Autobuild can't figure this one out...
+    - name: Create Xcode project
+      run: swift package generate-xcodeproj
+ 
+    - name: Build Xcode project
+      run: xcodebuild -sdk iphonesimulator
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
