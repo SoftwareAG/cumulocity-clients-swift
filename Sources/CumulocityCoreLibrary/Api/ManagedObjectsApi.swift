@@ -53,7 +53,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	///   - skipChildrenNames:
 	///     When set to `true`, the returned references of child devices won't contain their names.
 	///   - text:
-	///     Search for managed objects where any property value is equal to the given one. Only string values are supported.
+	///     Search for managed objects where a property value is equal to the given one.The following properties are examined: `id, type, name, owner, externalIds`.
 	///   - type:
 	///     The type of managed object to search for.
 	///   - withChildren:
@@ -68,7 +68,11 @@ public class ManagedObjectsApi: AdaptableApi {
 	///     When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	///   - withTotalPages:
 	///     When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, fragmentType: String? = nil, ids: [String]? = nil, onlyRoots: Bool? = nil, owner: String? = nil, pageSize: Int? = nil, q: String? = nil, query: String? = nil, skipChildrenNames: Bool? = nil, text: String? = nil, type: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withGroups: Bool? = nil, withParents: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yManagedObjectCollection, Error> {
+	///   - withLatestValues:
+	///     If set to true the platform returns managed objects with the fragment `c8y_LatestMeasurements, which contains the latest measurement values reported by the device to the platform.
+	///     
+	///     **⚠️ Feature Preview:** The parameter is a part of the Latest Measurement feature which is still under public preview.
+	public func getManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, fragmentType: String? = nil, ids: [String]? = nil, onlyRoots: Bool? = nil, owner: String? = nil, pageSize: Int? = nil, q: String? = nil, query: String? = nil, skipChildrenNames: Bool? = nil, text: String? = nil, type: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withGroups: Bool? = nil, withParents: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil, withLatestValues: Bool? = nil) -> AnyPublisher<C8yManagedObjectCollection, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects")
 			.set(httpMethod: "get")
@@ -93,6 +97,7 @@ public class ManagedObjectsApi: AdaptableApi {
 			.add(queryItem: "withParents", value: withParents)
 			.add(queryItem: "withTotalElements", value: withTotalElements)
 			.add(queryItem: "withTotalPages", value: withTotalPages)
+			.add(queryItem: "withLatestValues", value: withLatestValues)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -148,6 +153,7 @@ public class ManagedObjectsApi: AdaptableApi {
 		requestBody.childAssets = nil
 		requestBody.creationTime = nil
 		requestBody.childAdditions = nil
+		requestBody.c8yLatestMeasurements = nil
 		requestBody.`self` = nil
 		requestBody.assetParents = nil
 		requestBody.deviceParents = nil
@@ -206,7 +212,11 @@ public class ManagedObjectsApi: AdaptableApi {
 	///     When set to `true`, the returned result will contain the total number of children in the respective objects (`childAdditions`, `childAssets` and `childDevices`).
 	///   - withParents:
 	///     When set to `true`, the returned references of child parents will return the device's parents (if any). Otherwise, it will be an empty array.
-	public func getManagedObject(id: String, skipChildrenNames: Bool? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withParents: Bool? = nil) -> AnyPublisher<C8yManagedObject, Error> {
+	///   - withLatestValues:
+	///     If set to true the platform returns managed objects with the fragment `c8y_LatestMeasurements, which contains the latest measurement values reported by the device to the platform.
+	///     
+	///     **⚠️ Feature Preview:** The parameter is a part of the Latest Measurement feature which is still under public preview.
+	public func getManagedObject(id: String, skipChildrenNames: Bool? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withParents: Bool? = nil, withLatestValues: Bool? = nil) -> AnyPublisher<C8yManagedObject, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)")
 			.set(httpMethod: "get")
@@ -215,6 +225,7 @@ public class ManagedObjectsApi: AdaptableApi {
 			.add(queryItem: "withChildren", value: withChildren)
 			.add(queryItem: "withChildrenCount", value: withChildrenCount)
 			.add(queryItem: "withParents", value: withParents)
+			.add(queryItem: "withLatestValues", value: withLatestValues)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -265,6 +276,7 @@ public class ManagedObjectsApi: AdaptableApi {
 		requestBody.childAssets = nil
 		requestBody.creationTime = nil
 		requestBody.childAdditions = nil
+		requestBody.c8yLatestMeasurements = nil
 		requestBody.`self` = nil
 		requestBody.assetParents = nil
 		requestBody.deviceParents = nil

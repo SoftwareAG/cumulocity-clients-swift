@@ -16,13 +16,13 @@ public struct C8yLoginForm: Codable {
 	/// Dependent on the authentication type. PASSWORD is used for OAI-Secure.
 	public var grantType: C8yGrantType?
 
-	/// Used in cases of basic or OAI-Secure authentication.
+	/// Used in case of OAI-Secure authentication.
 	public var password: String?
 
-	/// Current TFA code, sent by the user, if a TFA code is required to log in.
+	/// Current TFA code, sent by the user, if a TFA code is required to log in. Used in case of OAI-Secure authentication.
 	public var tfaCode: String?
 
-	/// Used in cases of basic or OAI-Secure authentication.
+	/// Used in case of OAI-Secure authentication.
 	public var username: String?
 
 	enum CodingKeys: String, CodingKey {

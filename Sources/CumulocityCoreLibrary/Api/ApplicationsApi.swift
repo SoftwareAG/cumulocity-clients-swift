@@ -15,7 +15,7 @@ import Combine
 /// 
 /// For each tenant, Cumulocity IoT manages the subscribed applications and provides a number of applications of various types.In case you want to subscribe a tenant to an application using an API, you must use the application name in the argument (as name).
 /// 
-/// Refer to the tables in [Administration > Managing applications](https://cumulocity.com/guides/users-guide/administration#managing-applications) in the *User guide* for the respective application name to be used.
+/// Refer to the tables in [Platform administration > Standard tenant administration > Managing the ecosystem > Managing applications](https://cumulocity.com/docs/standard-tenant/ecosystem/#managing-applications) in the Cumulocity IoT user documentation for the respective application name to be used.
 /// 
 /// > **ⓘ Note** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 public class ApplicationsApi: AdaptableApi {

@@ -194,6 +194,8 @@ public class UsersApi: AdaptableApi {
 	/// 
 	/// When the user is updated with changed permissions or groups, a corresponding audit record is created with type "User" and activity "User updated".
 	/// 
+	/// Note that you cannot update the password or email of another user, they can only be updated for the current user.
+	/// 
 	/// 
 	/// > Tip: Required roles
 	///  ROLE_USER_MANAGEMENT_ADMIN to update root users in a user hierarchy *OR* users that are not in any hierarchy
@@ -283,63 +285,6 @@ public class UsersApi: AdaptableApi {
 			.set(resourcePath: "/user/\(tenantId)/users/\(userId)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
-		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
-			guard let httpResponse = element.response as? HTTPURLResponse else {
-				throw URLError(.badServerResponse)
-			}
-			guard (200..<300) ~= httpResponse.statusCode else {
-				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
-					c8yError.httpResponse = httpResponse
-					throw c8yError
-				}
-				throw BadResponseError(with: httpResponse)
-			}
-			return element.data
-		}).eraseToAnyPublisher()
-	}
-	
-	/// Update a specific user's password of a specific tenant
-	/// 
-	/// Update a specific user's password (by a given user ID) of a specific tenant (by a given tenant ID).
-	/// 
-	/// Changing the user's password creates a corresponding audit record of type "User" and activity "User updated", and specifying that the password has been changed.
-	/// 
-	/// > **⚠️ Important:** If the tenant uses OAI-Secure authentication, the target user will be logged out.
-	/// 
-	/// > Tip: Required roles
-	///  ROLE_USER_MANAGEMENT_ADMIN to update root users in a user hierarchy *OR* users that are not in any hierarchy
-	///  ROLE_USER_MANAGEMENT_ADMIN to update non-root users in a user hierarchy *AND* whose parents have access to assigned roles, groups, device permissions and applications
-	///  ROLE_USER_MANAGEMENT_CREATE to update descendants of the current user in a user hierarchy *AND* whose parents have access to assigned roles, groups, device permissions and applications 
-	/// 
-	/// > Tip: Response Codes
-	/// The following table gives an overview of the possible response codes and their meanings:
-	/// 
-	/// * HTTP 200 A user was updated.
-	/// * HTTP 401 Authentication information is missing or invalid.
-	/// * HTTP 403 Not enough permissions/roles to perform this operation.
-	/// * HTTP 422 Unprocessable Entity – invalid payload.
-	/// 
-	/// - Parameters:
-	///   - body:
-	///     
-	///   - tenantId:
-	///     Unique identifier of a Cumulocity IoT tenant.
-	///   - userId:
-	///     Unique identifier of the a user.
-	public func updateUserPassword(body: C8yPasswordChange, tenantId: String, userId: String) -> AnyPublisher<Data, Error> {
-		let requestBody = body
-		var encodedRequestBody: Data? = nil
-		do {
-			encodedRequestBody = try JSONEncoder().encode(requestBody)
-		} catch {
-			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
-		}
-		let builder = URLRequestBuilder()
-			.set(resourcePath: "/user/\(tenantId)/users/\(userId)/password")
-			.set(httpMethod: "put")
-			.add(header: "Content-Type", value: "application/json")
-			.add(header: "Accept", value: "application/json")
-			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)

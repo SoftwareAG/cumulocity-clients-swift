@@ -162,7 +162,7 @@ public class SubscriptionsApi: AdaptableApi {
 	///   - context:
 	///     The context to which the subscription is associated.
 	///     
-	///     **ⓘ Note** If the value is `mo`, then `source` must also be provided in the query.
+	///     **ⓘ Note** If the value is `mo` (managed object), then `source` must also be provided in the query.
 	///   - source:
 	///     The managed object ID to which the subscription is associated.
 	public func deleteSubscriptions(xCumulocityProcessingMode: String? = nil, context: String? = nil, source: String? = nil) -> AnyPublisher<Data, Error> {

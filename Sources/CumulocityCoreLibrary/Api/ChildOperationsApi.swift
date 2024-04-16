@@ -221,6 +221,7 @@ public class ChildOperationsApi: AdaptableApi {
 		requestBody.childAssets = nil
 		requestBody.creationTime = nil
 		requestBody.childAdditions = nil
+		requestBody.c8yLatestMeasurements = nil
 		requestBody.`self` = nil
 		requestBody.assetParents = nil
 		requestBody.deviceParents = nil
@@ -598,6 +599,7 @@ public class ChildOperationsApi: AdaptableApi {
 		requestBody.childAssets = nil
 		requestBody.creationTime = nil
 		requestBody.childAdditions = nil
+		requestBody.c8yLatestMeasurements = nil
 		requestBody.`self` = nil
 		requestBody.assetParents = nil
 		requestBody.deviceParents = nil
@@ -975,6 +977,7 @@ public class ChildOperationsApi: AdaptableApi {
 		requestBody.childAssets = nil
 		requestBody.creationTime = nil
 		requestBody.childAdditions = nil
+		requestBody.c8yLatestMeasurements = nil
 		requestBody.`self` = nil
 		requestBody.assetParents = nil
 		requestBody.deviceParents = nil

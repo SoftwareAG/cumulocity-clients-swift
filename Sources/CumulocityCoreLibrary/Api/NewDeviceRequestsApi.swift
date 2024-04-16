@@ -83,6 +83,10 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	///     Used to explicitly control the processing mode of the request. See [Processing mode](#processing-mode) for more details.
 	public func createNewDeviceRequest(body: C8yNewDeviceRequest, xCumulocityProcessingMode: String? = nil) -> AnyPublisher<C8yNewDeviceRequest, Error> {
 		var requestBody = body
+		requestBody.owner = nil
+		requestBody.securityToken = nil
+		requestBody.creationTime = nil
+		requestBody.tenantId = nil
 		requestBody.`self` = nil
 		requestBody.status = nil
 		var encodedRequestBody: Data? = nil
@@ -173,8 +177,13 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	///     Unique identifier of the new device request.
 	public func updateNewDeviceRequest(body: C8yNewDeviceRequest, requestId: String) -> AnyPublisher<C8yNewDeviceRequest, Error> {
 		var requestBody = body
+		requestBody.owner = nil
+		requestBody.creationTime = nil
+		requestBody.groupId = nil
+		requestBody.tenantId = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
+		requestBody.type = nil
 		var encodedRequestBody: Data? = nil
 		do {
 			encodedRequestBody = try JSONEncoder().encode(requestBody)

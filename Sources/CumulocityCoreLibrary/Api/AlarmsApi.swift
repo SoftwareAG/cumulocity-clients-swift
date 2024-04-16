@@ -285,7 +285,7 @@ public class AlarmsApi: AdaptableApi {
 	/// 
 	/// Remove alarm collections specified by query parameters.
 	/// 
-	/// > **⚠️ Important:** Note that it is possible to call this endpoint without providing any parameter - it will result in deleting all alarms and it is not recommended.Also note that DELETE requests are not synchronous. The response could be returned before the delete request has been completed.
+	/// > **⚠️ Important:** DELETE requires at least one of the following parameters: `source`, `dateFrom`, `dateTo`, `createdFrom`, `createdTo`.Also note that DELETE requests are not synchronous. The response could be returned before the delete request has been completed.
 	/// 
 	/// > Tip: Required roles
 	///  ROLE_ALARM_ADMIN 
