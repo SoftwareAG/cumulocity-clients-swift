@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-/// The inventory stores devices and other assets relevant to your IoT solution. We refer to them as managed objects and such can be “smart objects”, for example, smart electricity meters, home automation gateways or GPS devices.
+/// The inventory stores devices and other assets relevant to your IoT solution. We refer to them as managed objects and such can be ���smart objects���, for example, smart electricity meters, home automation gateways or GPS devices.
 /// 
 /// > **ⓘ Note** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 public class ManagedObjectsApi: AdaptableApi {
@@ -71,7 +71,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	///   - withLatestValues:
 	///     If set to true the platform returns managed objects with the fragment `c8y_LatestMeasurements, which contains the latest measurement values reported by the device to the platform.
 	///     
-	///     **⚠️ Feature Preview:** The parameter is a part of the Latest Measurement feature which is still under public preview.
+	///     **������ Feature Preview:** The parameter is a part of the Latest Measurement feature which is still under public preview.
 	public func getManagedObjects(childAdditionId: String? = nil, childAssetId: String? = nil, childDeviceId: String? = nil, currentPage: Int? = nil, fragmentType: String? = nil, ids: [String]? = nil, onlyRoots: Bool? = nil, owner: String? = nil, pageSize: Int? = nil, q: String? = nil, query: String? = nil, skipChildrenNames: Bool? = nil, text: String? = nil, type: String? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withGroups: Bool? = nil, withParents: Bool? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil, withLatestValues: Bool? = nil) -> AnyPublisher<C8yManagedObjectCollection, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects")
@@ -137,7 +137,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// 
 	/// * HTTP 201 A managed object was created.
 	/// * HTTP 401 Authentication information is missing or invalid.
-	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -215,7 +215,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	///   - withLatestValues:
 	///     If set to true the platform returns managed objects with the fragment `c8y_LatestMeasurements, which contains the latest measurement values reported by the device to the platform.
 	///     
-	///     **⚠️ Feature Preview:** The parameter is a part of the Latest Measurement feature which is still under public preview.
+	///     **������ Feature Preview:** The parameter is a part of the Latest Measurement feature which is still under public preview.
 	public func getManagedObject(id: String, skipChildrenNames: Bool? = nil, withChildren: Bool? = nil, withChildrenCount: Bool? = nil, withParents: Bool? = nil, withLatestValues: Bool? = nil) -> AnyPublisher<C8yManagedObject, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/inventory/managedObjects/\(id)")
@@ -325,7 +325,7 @@ public class ManagedObjectsApi: AdaptableApi {
 	/// * HTTP 204 A managed object was removed.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 404 Managed object not found.
-	/// * HTTP 409 Conflict – The managed object is associated to other objects, for example child devices.
+	/// * HTTP 409 Conflict ��� The managed object is associated to other objects, for example child devices.
 	/// 
 	/// - Parameters:
 	///   - id:

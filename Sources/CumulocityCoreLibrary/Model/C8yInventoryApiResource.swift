@@ -16,7 +16,7 @@ public struct C8yInventoryApiResource: Codable {
 	/// Read-only collection of all managed objects of a particular type (placeholder {type}).
 	public var managedObjectsForType: String?
 
-	/// Read-only collection of managed objects fetched for a given list of ids, for example, “ids=41,43,68”.
+	/// Read-only collection of managed objects fetched for a given list of ids, for example, ���ids=41,43,68���.
 	public var managedObjectsForListOfIds: String?
 
 	/// Collection of all managed objects

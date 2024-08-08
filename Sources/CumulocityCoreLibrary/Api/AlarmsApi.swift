@@ -126,7 +126,7 @@ public class AlarmsApi: AdaptableApi {
 	/// * HTTP 202 An alarm collection is being updated in background.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Not authorized to perform this operation.
-	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -237,7 +237,7 @@ public class AlarmsApi: AdaptableApi {
 	/// * HTTP 201 An alarm was created.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Not authorized to perform this operation.
-	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -285,7 +285,7 @@ public class AlarmsApi: AdaptableApi {
 	/// 
 	/// Remove alarm collections specified by query parameters.
 	/// 
-	/// > **⚠️ Important:** DELETE requires at least one of the following parameters: `source`, `dateFrom`, `dateTo`, `createdFrom`, `createdTo`.Also note that DELETE requests are not synchronous. The response could be returned before the delete request has been completed.
+	/// > **������ Important:** DELETE requires at least one of the following parameters: `source`, `dateFrom`, `dateTo`, `createdFrom`, `createdTo`.Also note that DELETE requests are not synchronous. The response could be returned before the delete request has been completed.
 	/// 
 	/// > Tip: Required roles
 	///  ROLE_ALARM_ADMIN 
@@ -403,7 +403,7 @@ public class AlarmsApi: AdaptableApi {
 	/// 
 	/// Update a specific alarm by a given ID.Only text, status, severity and custom properties can be modified. A request will be rejected when non-modifiable properties are provided in the request body.
 	/// 
-	/// > **ⓘ Note** Changes to alarms will generate a new audit record. The audit record will include the username and application that triggered the update, if applicable. If the update operation doesn’t change anything (that is, the request body contains data that is identical to the already present in the database), there will be no audit record added and no notifications will be sent.
+	/// > **ⓘ Note** Changes to alarms will generate a new audit record. The audit record will include the username and application that triggered the update, if applicable. If the update operation doesn���t change anything (that is, the request body contains data that is identical to the already present in the database), there will be no audit record added and no notifications will be sent.
 	/// 
 	/// > Tip: Required roles
 	///  ROLE_ALARM_ADMIN *OR* owner of the source *OR* ALARM_ADMIN permission on the source 
@@ -415,7 +415,7 @@ public class AlarmsApi: AdaptableApi {
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Not authorized to perform this operation.
 	/// * HTTP 404 Alarm not found.
-	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:

@@ -54,7 +54,7 @@ public class ApplicationBinariesApi: AdaptableApi {
 	/// 
 	/// Upload an application attachment (by a given application ID).
 	/// 
-	/// For the applications of type “microservice” and “web application” to be available for Cumulocity IoT platform users, an attachment ZIP file must be uploaded.
+	/// For the applications of type ���microservice��� and ���web application��� to be available for Cumulocity IoT platform users, an attachment ZIP file must be uploaded.
 	/// 
 	/// For a microservice application, the ZIP file must consist of:
 	/// 

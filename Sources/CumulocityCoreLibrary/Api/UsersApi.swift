@@ -39,7 +39,7 @@ public class UsersApi: AdaptableApi {
 	///     
 	///     **ⓘ Note** If you query for multiple user groups at once, comma-separate the values.
 	///   - onlyDevices:
-	///     If set to `true`, the response will only contain users created during bootstrap process (starting with “device_”).If the flag is absent or `false` the result will not contain “device_” users.
+	///     If set to `true`, the response will only contain users created during bootstrap process (starting with ���device_���).If the flag is absent or `false` the result will not contain ���device_��� users.
 	///   - owner:
 	///     Exact username of the owner of the user
 	///   - pageSize:
@@ -47,7 +47,7 @@ public class UsersApi: AdaptableApi {
 	///   - username:
 	///     Prefix or full username
 	///   - withSubusersCount:
-	///     If set to `true`, then each of returned user will contain an additional field “subusersCount”.It is the number of direct subusers (users with corresponding “owner”).
+	///     If set to `true`, then each of returned user will contain an additional field ���subusersCount���.It is the number of direct subusers (users with corresponding ���owner���).
 	///   - withTotalElements:
 	///     When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	///   - withTotalPages:
@@ -95,8 +95,8 @@ public class UsersApi: AdaptableApi {
 	/// * HTTP 201 A user was created.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Not enough permissions/roles to perform this operation.
-	/// * HTTP 409 Duplicate – The userName or alias already exists.
-	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// * HTTP 409 Duplicate ��� The userName or alias already exists.
+	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -209,7 +209,7 @@ public class UsersApi: AdaptableApi {
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Not enough permissions/roles to perform this operation.
 	/// * HTTP 404 User not found.
-	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -449,7 +449,7 @@ public class UsersApi: AdaptableApi {
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Not enough permissions/roles to perform this operation.
 	/// * HTTP 404 Group not found.
-	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:

@@ -27,4 +27,16 @@ public class TrustedCertificatesApiTest: XCTestCase {
 		}
 	}
 
+	public func testDownloadCrl() {
+		let expectation = XCTestExpectation(description: "ok")
+		var cancellables = Set<AnyCancellable>()
+		TestableTrustedCertificatesApi().downloadCrl().sink(receiveCompletion: { completion in
+			let message = try? completion.error()
+			print(message?.httpResponse?.statusCode ?? "Successfully")
+		}, receiveValue: { data in
+			expectation.fulfill()
+			print(data)
+		}).store(in: &cancellables)
+		wait(for: [expectation], timeout: 10)
+	}
 }

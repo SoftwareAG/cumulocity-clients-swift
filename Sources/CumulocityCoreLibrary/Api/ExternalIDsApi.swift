@@ -65,7 +65,7 @@ public class ExternalIDsApi: AdaptableApi {
 	/// * HTTP 201 An external ID was created.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 404 Global ID not found.
-	/// * HTTP 409 Duplicate – Identity already bound to a different Global ID.
+	/// * HTTP 409 Duplicate ��� Identity already bound to a different Global ID.
 	/// 
 	/// - Parameters:
 	///   - body:

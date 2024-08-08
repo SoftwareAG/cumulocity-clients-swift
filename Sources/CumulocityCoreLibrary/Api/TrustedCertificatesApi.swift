@@ -81,8 +81,8 @@ public class TrustedCertificatesApi: AdaptableApi {
 	/// * HTTP 201 The certificate was added to the tenant.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 404 Tenant not found.
-	/// * HTTP 409 Duplicate – A certificate with the same fingerprint already exists.
-	/// * HTTP 422 Unprocessable Entity – Invalid certificate data.
+	/// * HTTP 409 Duplicate ��� A certificate with the same fingerprint already exists.
+	/// * HTTP 422 Unprocessable Entity ��� Invalid certificate data.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -140,8 +140,8 @@ public class TrustedCertificatesApi: AdaptableApi {
 	/// * HTTP 201 The certificates were added to the tenant.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 404 Tenant not found.
-	/// * HTTP 409 Duplicate – A certificate with the same fingerprint already exists.
-	/// * HTTP 422 Unprocessable Entity – Invalid certificates data.
+	/// * HTTP 409 Duplicate ��� A certificate with the same fingerprint already exists.
+	/// * HTTP 422 Unprocessable Entity ��� Invalid certificates data.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -239,7 +239,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 	/// * HTTP 200 The certificate was updated on the tenant.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 404 Certificate not found.
-	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -537,11 +537,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 	/// The following table gives an overview of the possible response codes and their meanings:
 	/// 
 	/// * HTTP 200 The CRL file of the current tenant.
-	/// 
-	/// - Parameters:
-	///   - tenantId:
-	///     Unique identifier of a Cumulocity IoT tenant.
-	public func downloadCrl(tenantId: String) -> AnyPublisher<Data, Error> {
+	public func downloadCrl() -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/trusted-certificates/settings/crl")
 			.set(httpMethod: "get")
@@ -596,7 +592,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 	/// > Tip: Required roles
 	///  (ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_ADMIN) *AND* is the current tenant 
 	/// 
-	/// **⚠️ Important:** According to CRL policy, added serial numbers cannot be reversed.
+	/// **������ Important:** According to CRL policy, added serial numbers cannot be reversed.
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -677,7 +673,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 	/// > Tip: Required roles
 	///  (ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_ADMIN) *AND* is the current tenant 
 	/// 
-	/// **⚠️ Important:** According to CRL policy, added serial numbers cannot be reversed.
+	/// **������ Important:** According to CRL policy, added serial numbers cannot be reversed.
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -721,12 +717,11 @@ public class TrustedCertificatesApi: AdaptableApi {
 	
 	/// Obtain device access token
 	/// 
-	/// Only those devices which are registered to use cert auth can authenticate via mTLS protocol and retrieve JWT token.To establish a Two-Way SSL (Mutual Authentication) connection, you must have the following:
+	/// Only those devices which are registered to use cert auth can authenticate via mTLS protocol and retrieve JWT token. Device access token API works only on port 8443 via mutual TLS (mTLS) connection.Immediate issuer of client certificate must present in Platform's truststore, if not then whole certificate chain needs to send in header and root or any intermediate certificate must be present in the Platform's truststore.We must have the following:
 	/// 
 	/// * private_key
 	/// * client certificate
-	/// * certificate authority root certificate
-	/// * certificate authority intermediate certificates (Optional)
+	/// * whole certificate chain (optional)
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -740,7 +735,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 	/// - Parameters:
 	///   - xSslCertChain:
 	///     Used to send a certificate chain in the header. Separate the chain with ` ` (a space character) and also each 64 bit block with ` ` (a space character).
-	public func obtainAccessToken(xSslCertChain: String) -> AnyPublisher<C8yAccessToken, Error> {
+	public func obtainAccessToken(xSslCertChain: String? = nil) -> AnyPublisher<C8yAccessToken, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/devicecontrol/deviceAccessToken")
 			.set(httpMethod: "post")
