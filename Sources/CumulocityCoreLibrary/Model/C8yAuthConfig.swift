@@ -48,7 +48,7 @@ public struct C8yAuthConfig: Codable {
 	/// The name of the authentication provider.
 	public var providerName: String?
 
-	/// SSO specific. URL used for redirecting to the Cumulocity IoT platform.
+	/// SSO specific. URL used for redirecting to the Cumulocity IoT platform. Do not set or leave it empty to allow SSO flow to be controlled by client (UI) applications.
 	public var redirectToPlatform: String?
 
 	public var refreshRequest: C8yRequestRepresentation?
@@ -56,7 +56,7 @@ public struct C8yAuthConfig: Codable {
 	/// A URL linking to this resource.
 	public var `self`: String?
 
-	/// The session configuration properties are only available for OAuth internal. See [Administration > Changing settings > OAuth internal](https://cumulocity.com/guides/10.11.0/users-guide/administration/#oauth-internal) in the *10.11.0 user guide* for more details.
+	/// The session configuration properties are only available for OAI-Secure. See [Platform administration > Authentication > Basic settings > OAI Secure session configuration ](https://cumulocity.com/docs/authentication/basic-settings/#oai-secure-session-configuration) in the Cumulocity IoT user documentation.
 	public var sessionConfiguration: C8yOAuthSessionConfiguration?
 
 	/// SSO specific and authorization server dependent. Describes the method of access token signature verification on the Cumulocity IoT platform.

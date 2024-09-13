@@ -18,13 +18,13 @@ import Combine
 /// 
 /// In general, the tenant domain should be used for communication if it is known.
 /// 
-/// > **������ Important:** For support user access, the tenant ID must be used and not the tenant domain.
+/// > **⚠️ Important:** For support user access, the tenant ID must be used and not the tenant domain.
 /// See [Tenant > Current tenant](#operation/getCurrentTenantResource) for information on how to retrieve the tenant ID and domain of the current tenant via the API.
 /// 
 /// In the UI, the tenant ID is displayed in the user dropdown menu, see [Getting started > Get familiar with the UI > User options and settings](https://cumulocity.com/docs/get-familiar-with-the-ui/user-settings/) in the Cumulocity IoT user documentation.
 /// 
 /// > Tip: Access rights and permissions
-/// There are two types of roles in Cumulocity IoT ��� global and inventory. Global roles are applied at the tenant level. In a Role Based Access Control (RBAC) approach you must use the inventory roles in order to have the correct level of separation. Apart from some global permissions (like "own user management") customer users will not be assigned any roles. Inventory roles must be created, or the default roles used, and then assigned to the user in combination with the assets the roles apply to. This needs to be done at least once for each customer.
+/// There are two types of roles in Cumulocity IoT – global and inventory. Global roles are applied at the tenant level. In a Role Based Access Control (RBAC) approach you must use the inventory roles in order to have the correct level of separation. Apart from some global permissions (like "own user management") customer users will not be assigned any roles. Inventory roles must be created, or the default roles used, and then assigned to the user in combination with the assets the roles apply to. This needs to be done at least once for each customer.
 /// 
 /// In a multi-tenancy approach, as the tenant is completely separated from all other customers you do not necessarily need to be involved in setting up the access rights of the customer. If customers are given administration rights for their tenants, they can set up permissions on their own. It is not possible for customers to have any sight or knowledge of other customers.
 /// 
@@ -105,8 +105,8 @@ public class TenantsApi: AdaptableApi {
 	/// * HTTP 201 A tenant was created.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Not authorized to perform this operation.
-	/// * HTTP 409 Conflict ��� The tenant domain/ID already exists.
-	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
+	/// * HTTP 409 Conflict – The tenant domain/ID already exists.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -241,7 +241,7 @@ public class TenantsApi: AdaptableApi {
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Not authorized to perform this operation.
 	/// * HTTP 404 Tenant not found.
-	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -290,7 +290,7 @@ public class TenantsApi: AdaptableApi {
 	/// 
 	/// Remove a specific tenant by a given ID.
 	/// 
-	/// > **������ Important:** Deleting a subtenant cannot be reverted. For security reasons, it is therefore only available in the management tenant. You cannot delete tenants from any tenant but the management tenant.
+	/// > **⚠️ Important:** Deleting a subtenant cannot be reverted. For security reasons, it is therefore only available in the management tenant. You cannot delete tenants from any tenant but the management tenant.
 	/// Administrators in Enterprise Tenants are only allowed to suspend active subtenants, but not to delete them.
 	/// 
 	/// > Tip: Required roles
@@ -363,5 +363,54 @@ public class TenantsApi: AdaptableApi {
 			}
 			return element.data
 		}).decode(type: C8yTenantTfaData.self, decoder: JSONDecoder()).eraseToAnyPublisher()
+	}
+	
+	/// Sets TFA settings for a specific tenant
+	/// 
+	/// Sets the two-factor authentication settings of a specific tenant for a specific tenant ID.
+	/// 
+	/// 
+	/// > Tip: Required roles
+	///  ((ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_MANAGEMENT_UPDATE) *AND* (the current tenant is its parent *OR* the current user belongs to the tenant))) 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 204 The tenant's TFA configuration was updated.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Tenant not found.
+	/// 
+	/// - Parameters:
+	///   - body:
+	///     
+	///   - tenantId:
+	///     Unique identifier of a Cumulocity IoT tenant.
+	public func updateTenantTfaSettings(body: C8yTenantTfaStrategy, tenantId: String) -> AnyPublisher<Data, Error> {
+		let requestBody = body
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
+		}
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/tfa")
+			.set(httpMethod: "put")
+			.add(header: "Content-Type", value: "application/json")
+			.add(header: "Accept", value: "application/json")
+			.set(httpBody: encodedRequestBody)
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					c8yError.httpResponse = httpResponse
+					throw c8yError
+				}
+				throw BadResponseError(with: httpResponse)
+			}
+			return element.data
+		}).eraseToAnyPublisher()
 	}
 }

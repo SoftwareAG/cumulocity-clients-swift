@@ -11,7 +11,7 @@ import Combine
 
 /// API methods to create, retrieve, update and delete user groups.
 /// 
-/// > **������ Important:** In the Cumulocity IoT user interface, user groups are referred to as "global roles". Global roles are not to be confused with user roles.
+/// > **⚠️ Important:** In the Cumulocity IoT user interface, user groups are referred to as "global roles". Global roles are not to be confused with user roles.
 /// > **ⓘ Note** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 public class GroupsApi: AdaptableApi {
 
@@ -79,8 +79,8 @@ public class GroupsApi: AdaptableApi {
 	/// * HTTP 201 A user group was created.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Not enough permissions/roles to perform this operation.
-	/// * HTTP 409 Duplicate ��� Group name already exists.
-	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
+	/// * HTTP 409 Duplicate – Group name already exists.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -178,7 +178,7 @@ public class GroupsApi: AdaptableApi {
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Not enough permissions/roles to perform this operation.
 	/// * HTTP 404 Group not found.
-	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:

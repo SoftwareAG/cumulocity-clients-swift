@@ -99,7 +99,7 @@ public class SubscriptionsApi: AdaptableApi {
 	/// * HTTP 403 Not enough permissions/roles to perform this operation.
 	/// * HTTP 404 Managed object not found.
 	/// * HTTP 409 Duplicated subscription.
-	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -154,7 +154,7 @@ public class SubscriptionsApi: AdaptableApi {
 	/// * HTTP 204 A collection of subscriptions was removed.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Not enough permissions/roles to perform this operation.
-	/// * HTTP 422 Unprocessable Entity ��� error in query parameters
+	/// * HTTP 422 Unprocessable Entity – error in query parameters
 	/// 
 	/// - Parameters:
 	///   - xCumulocityProcessingMode:

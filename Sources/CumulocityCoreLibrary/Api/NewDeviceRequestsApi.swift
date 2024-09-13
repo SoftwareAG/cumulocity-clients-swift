@@ -74,7 +74,7 @@ public class NewDeviceRequestsApi: AdaptableApi {
 	/// 
 	/// * HTTP 201 A new device request was created.
 	/// * HTTP 401 Authentication information is missing or invalid.
-	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
