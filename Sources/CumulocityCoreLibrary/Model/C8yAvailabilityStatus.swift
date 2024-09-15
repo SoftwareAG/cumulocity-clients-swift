@@ -8,10 +8,11 @@
 
 import Foundation
 
-/// The current status, one of `AVAILABLE`, `CONNECTED`, `MAINTENANCE`, `DISCONNECTED`.
+/// The current status, one of `AVAILABLE`, `CONNECTED`, `MAINTENANCE`, `DISCONNECTED`, `UNAVAILABLE`.
 public enum C8yAvailabilityStatus: String, Codable {
 	case available = "AVAILABLE"
 	case connected = "CONNECTED"
 	case maintenance = "MAINTENANCE"
 	case disconnected = "DISCONNECTED"
+	case unavailable = "UNAVAILABLE"
 }
