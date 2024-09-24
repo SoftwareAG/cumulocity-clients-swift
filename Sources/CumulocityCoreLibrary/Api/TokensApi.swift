@@ -36,7 +36,7 @@ public class TokensApi: AdaptableApi {
 	/// * HTTP 200 A notification token was created.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Not enough permissions/roles to perform this operation.
-	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:

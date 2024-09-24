@@ -295,7 +295,7 @@ public class UsageStatisticsApi: AdaptableApi {
 	/// 
 	/// * HTTP 201 A statistics file was generated.
 	/// * HTTP 401 Authentication information is missing or invalid.
-	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:

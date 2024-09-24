@@ -110,7 +110,7 @@ public class OperationsApi: AdaptableApi {
 	/// 
 	/// * HTTP 201 An operation was created.
 	/// * HTTP 401 Authentication information is missing or invalid.
-	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:

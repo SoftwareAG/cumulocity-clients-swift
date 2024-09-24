@@ -30,36 +30,6 @@ public struct C8yMeasurementSeries: Codable {
 
 	/// Each property contained here is a date taken from the measurement and it contains an array of objects specifying `min` and `max` pair of values. Each pair corresponds to a single series object in the `series` array. If there is no aggregation used, `min` is equal to `max` in every pair.
 	public struct C8yValues: Codable {
-		 
-		public init(from decoder: Decoder) throws {
-			if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
-				for key in additionalContainer.allKeys {
-					if let value = try? additionalContainer.decode([C8yMeasurementSeriesValue].self, forKey: key) {
-				    	self.additionalProperties[key.stringValue] = value
-				    }
-				}
-			}
-		}
-		
-		public func encode(to encoder: Encoder) throws {
-			var container = encoder.container(keyedBy: CodingKeys.self)
-			try? container.encodeIfPresent(self.additionalProperties, forKey: .additionalProperties)
-		}
-	
-		public var additionalProperties: [String: [C8yMeasurementSeriesValue]] = [:]
-		
-		public subscript(key: String) -> [C8yMeasurementSeriesValue]? {
-		        get {
-		            return additionalProperties[key]
-		        }
-		        set(newValue) {
-		            additionalProperties[key] = newValue
-		        }
-		    }
-	
-		enum CodingKeys: String, CodingKey {
-			case additionalProperties
-		}
 	
 		public init() {
 		}

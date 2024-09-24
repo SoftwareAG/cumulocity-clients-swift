@@ -42,7 +42,7 @@ public struct C8yFeatureToggle: Codable {
 
 	/// The source of the feature toggle value - either it's feature toggle definition provided default, or per tenant provided override.
 	public enum C8yStrategy: String, Codable {
-		case `default` = "DEFAULT"
+		case default = "DEFAULT"
 		case tenant = "TENANT"
 	}
 

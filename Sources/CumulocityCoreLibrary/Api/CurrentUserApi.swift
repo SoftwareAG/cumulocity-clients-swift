@@ -62,7 +62,7 @@ public class CurrentUserApi: AdaptableApi {
 	/// 
 	/// * HTTP 200 The current user was updated.
 	/// * HTTP 401 Authentication information is missing or invalid.
-	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -106,7 +106,7 @@ public class CurrentUserApi: AdaptableApi {
 	/// 
 	/// Update the current user's  password.
 	/// 
-	/// > **⚠️ Important:** If the tenant uses OAI-Secure authentication, the current user will not be logged out. Instead, a new cookie will be set with a new token, and the previous token will expire within a minute.
+	/// > **������ Important:** If the tenant uses OAI-Secure authentication, the current user will not be logged out. Instead, a new cookie will be set with a new token, and the previous token will expire within a minute.
 	/// 
 	/// > Tip: Required roles
 	///  ROLE_USER_MANAGEMENT_OWN_ADMIN 
@@ -116,7 +116,7 @@ public class CurrentUserApi: AdaptableApi {
 	/// 
 	/// * HTTP 200 The current user password was updated.
 	/// * HTTP 401 Authentication information is missing or invalid.
-	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -235,7 +235,7 @@ public class CurrentUserApi: AdaptableApi {
 	/// * HTTP 204 The two-factor authentication was activated or deactivated.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Cannot deactivate TOTP setup.
-	/// * HTTP 404 User not found.
+	/// * HTTP 409 TFA TOTP secret does not exist. First generate secret.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -284,7 +284,7 @@ public class CurrentUserApi: AdaptableApi {
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Invalid verification code.
 	/// * HTTP 404 Cannot validate TFA TOTP code - user's TFA TOTP secret does not exist.
-	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:

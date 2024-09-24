@@ -26,7 +26,7 @@ import Combine
 /// 
 /// The wildcard "*" enables you to access every API and stored object regardless of the fragments that are inside it.
 /// 
-/// > **⚠️ Important:** If there is no fragment in an object, for example, to read the object, you must use the wildcard "*" for the **fragment_name** part of the device permission (see the structure above). For example: `"10200":["MEASUREMENT:*:READ"]`.
+/// > **������ Important:** If there is no fragment in an object, for example, to read the object, you must use the wildcard "*" for the **fragment_name** part of the device permission (see the structure above). For example: `"10200":["MEASUREMENT:*:READ"]`.
 public class DevicePermissionsApi: AdaptableApi {
 
 	/// Returns all device permissions assignments

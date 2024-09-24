@@ -109,7 +109,7 @@ public struct C8yManagedObject: Codable {
 
 	/// The read only fragment which contains the latest measurements reported by the device.The returned optionally only if the query parameter `withLatestValues=true` is used.
 	/// 
-	/// > **⚠️ Feature Preview:** The feature is part of the Latest Measurement feature which is still under public feature preview.
+	/// > **������ Feature Preview:** The feature is part of the Latest Measurement feature which is still under public feature preview.
 	public var c8yLatestMeasurements: C8yLatestMeasurements?
 
 	/// A fragment which identifies this managed object as a device group.

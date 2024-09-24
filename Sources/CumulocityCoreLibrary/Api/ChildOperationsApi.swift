@@ -268,7 +268,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// * HTTP 204 Child additions were removed.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 404 Managed object not found.
-	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -646,7 +646,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// * HTTP 204 Child assets were removed.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 404 Managed object not found.
-	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -1024,7 +1024,7 @@ public class ChildOperationsApi: AdaptableApi {
 	/// * HTTP 204 Child devices were removed.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 404 Managed object not found.
-	/// * HTTP 422 Unprocessable Entity – invalid payload.
+	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
