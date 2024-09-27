@@ -54,6 +54,21 @@ public struct C8yRequestRepresentation: Codable {
 
 	/// Headers of the request.
 	public struct C8yHeaders: Codable {
+		 
+		public init(from decoder: Decoder) throws {
+			if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
+				for key in additionalContainer.allKeys {
+					if let value = try? additionalContainer.decode(String.self, forKey: key) {
+				    	self.requestHeaders[key.stringValue] = value
+				    }
+				}
+			}
+		}
+		
+		public func encode(to encoder: Encoder) throws {
+			var container = encoder.container(keyedBy: CodingKeys.self)
+			try? container.encodeIfPresent(self.requestHeaders, forKey: .requestHeaders)
+		}
 	
 		/// It is possible to add an arbitrary number of headers as a list of key-value string pairs, for example, `"header": "value"`.
 		public var requestHeaders: [String: String] = [:]
@@ -79,6 +94,21 @@ public struct C8yRequestRepresentation: Codable {
 
 	/// Parameters of the request.
 	public struct C8yRequestParams: Codable {
+		 
+		public init(from decoder: Decoder) throws {
+			if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
+				for key in additionalContainer.allKeys {
+					if let value = try? additionalContainer.decode(String.self, forKey: key) {
+				    	self.requestParameters[key.stringValue] = value
+				    }
+				}
+			}
+		}
+		
+		public func encode(to encoder: Encoder) throws {
+			var container = encoder.container(keyedBy: CodingKeys.self)
+			try? container.encodeIfPresent(self.requestParameters, forKey: .requestParameters)
+		}
 	
 		/// It is possible to add an arbitrary number of parameters as a list of key-value string pairs, for example, `"parameter": "value"`.
 		public var requestParameters: [String: String] = [:]

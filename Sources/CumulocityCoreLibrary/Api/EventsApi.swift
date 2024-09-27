@@ -172,7 +172,7 @@ public class EventsApi: AdaptableApi {
 	/// 
 	/// DELETE requests are not synchronous. The response could be returned before the delete request has been completed. This may happen especially when the deleted event has a lot of associated data. After sending the request, the platform starts deleting the associated data in an asynchronous way. Finally, the requested event is deleted after all associated data has been deleted.
 	/// 
-	/// > **⚠️ Important:** Note that it is possible to call this endpoint without providing any parameter - it will result in deleting all events and it is not recommended.
+	/// > **⚠️ Important:** DELETE requires at least one of the following parameters: `source`, `dateFrom`, `dateTo`, `createdFrom`, `createdTo`.
 	/// 
 	/// > Tip: Required roles
 	///  ROLE_EVENT_ADMIN 

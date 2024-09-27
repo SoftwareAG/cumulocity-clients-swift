@@ -36,9 +36,17 @@ public class SubscriptionsApi: AdaptableApi {
 	///     Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
 	///   - source:
 	///     The managed object ID to which the subscription is associated.
+	///   - subscription:
+	///     The subscription name by which filtering will be done.
+	///   - typeFilter:
+	///     The type used to filter subscriptions. This will check the subscription's `subscriptionFilter.typeFilter` field.
+	///     
+	///     **ⓘ Note** Filtering by `typeFilter` may affect paging. Additional post filtering may be performed if OData-like expressions are used in the subscriptions.
+	///   - withTotalElements:
+	///     When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	///   - withTotalPages:
 	///     When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getSubscriptions(context: String? = nil, currentPage: Int? = nil, pageSize: Int? = nil, source: String? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yNotificationSubscriptionCollection, Error> {
+	public func getSubscriptions(context: String? = nil, currentPage: Int? = nil, pageSize: Int? = nil, source: String? = nil, subscription: String? = nil, typeFilter: String? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yNotificationSubscriptionCollection, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/notification2/subscriptions")
 			.set(httpMethod: "get")
@@ -47,6 +55,9 @@ public class SubscriptionsApi: AdaptableApi {
 			.add(queryItem: "currentPage", value: currentPage)
 			.add(queryItem: "pageSize", value: pageSize)
 			.add(queryItem: "source", value: source)
+			.add(queryItem: "subscription", value: subscription)
+			.add(queryItem: "typeFilter", value: typeFilter)
+			.add(queryItem: "withTotalElements", value: withTotalElements)
 			.add(queryItem: "withTotalPages", value: withTotalPages)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -74,6 +85,7 @@ public class SubscriptionsApi: AdaptableApi {
 	/// * The name of the subscription.
 	/// * The applicable filter criteria.
 	/// * The option to only include specific custom fragments in the forwarded data.
+	/// * The option to use persistent or non-persistent message storage.
 	/// 
 	/// 
 	/// > Tip: Required roles
@@ -150,7 +162,7 @@ public class SubscriptionsApi: AdaptableApi {
 	///   - context:
 	///     The context to which the subscription is associated.
 	///     
-	///     **ⓘ Note** If the value is `mo`, then `source` must also be provided in the query.
+	///     **ⓘ Note** If the value is `mo` (managed object), then `source` must also be provided in the query.
 	///   - source:
 	///     The managed object ID to which the subscription is associated.
 	public func deleteSubscriptions(xCumulocityProcessingMode: String? = nil, context: String? = nil, source: String? = nil) -> AnyPublisher<Data, Error> {

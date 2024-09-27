@@ -9,7 +9,7 @@
 import Foundation
 
 public struct C8yApplication: Codable {
-	
+	 
 	public init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		self.availability = try container.decodeIfPresent(C8yAvailability.self, forKey: .availability)

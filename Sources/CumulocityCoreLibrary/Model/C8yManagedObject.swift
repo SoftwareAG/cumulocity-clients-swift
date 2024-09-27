@@ -26,6 +26,8 @@ public struct C8yManagedObject: Codable {
 		self.assetParents = try container.decodeIfPresent(C8yObjectAssetParents.self, forKey: .assetParents)
 		self.deviceParents = try container.decodeIfPresent(C8yObjectDeviceParents.self, forKey: .deviceParents)
 		self.c8yIsDevice = try container.decodeIfPresent(C8yIsDevice.self, forKey: .c8yIsDevice)
+		self.c8yLatestMeasurements = try container.decodeIfPresent(C8yLatestMeasurements.self, forKey: .c8yLatestMeasurements)
+		self.c8yIsDeviceGroup = try container.decodeIfPresent(C8yIsDeviceGroup.self, forKey: .c8yIsDeviceGroup)
 		self.c8yDeviceTypes = try container.decodeIfPresent([String].self, forKey: .c8yDeviceTypes)
 		self.c8ySupportedOperations = try container.decodeIfPresent([String].self, forKey: .c8ySupportedOperations)
 		if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
@@ -51,6 +53,8 @@ public struct C8yManagedObject: Codable {
 		try container.encodeIfPresent(self.assetParents, forKey: .assetParents)
 		try container.encodeIfPresent(self.deviceParents, forKey: .deviceParents)
 		try container.encodeIfPresent(self.c8yIsDevice, forKey: .c8yIsDevice)
+		try container.encodeIfPresent(self.c8yLatestMeasurements, forKey: .c8yLatestMeasurements)
+		try container.encodeIfPresent(self.c8yIsDeviceGroup, forKey: .c8yIsDeviceGroup)
 		try container.encodeIfPresent(self.c8yDeviceTypes, forKey: .c8yDeviceTypes)
 		try container.encodeIfPresent(self.c8ySupportedOperations, forKey: .c8ySupportedOperations)
 		var additionalContainer = encoder.container(keyedBy: JSONCodingKeys.self)
@@ -103,6 +107,14 @@ public struct C8yManagedObject: Codable {
 	/// A fragment which identifies this managed object as a device.
 	public var c8yIsDevice: C8yIsDevice?
 
+	/// The read only fragment which contains the latest measurements reported by the device.The returned optionally only if the query parameter `withLatestValues=true` is used.
+	/// 
+	/// > **������ Feature Preview:** The feature is part of the Latest Measurement feature which is still under public feature preview.
+	public var c8yLatestMeasurements: C8yLatestMeasurements?
+
+	/// A fragment which identifies this managed object as a device group.
+	public var c8yIsDeviceGroup: C8yIsDeviceGroup?
+
 	/// This fragment must be added in order to publish sample commands for a subset of devices sharing the same device type. If the fragment is present, the list of sample commands for a device type will be extended with the sample commands for the `c8y_DeviceTypes`. New sample commands created from the user interface will be created in the context of the `c8y_DeviceTypes`.
 	public var c8yDeviceTypes: [String]?
 
@@ -111,7 +123,7 @@ public struct C8yManagedObject: Codable {
 
 	/// It is possible to add an arbitrary number of additional properties as a list of key-value pairs, for example, `"property1": {}`, `"property2": "value"`. These properties are known as custom fragments and can be of any type, for example, object or string. Each custom fragment is identified by a unique name.
 	/// 
-	/// Review the [Naming conventions of fragments](https://cumulocity.com/guides/concepts/domain-model/#naming-conventions-of-fragments) as there are characters that can not be used when naming custom fragments.
+	/// Review [Getting started > Technical concepts > Cumulocity IoT's domain model > Inventory > Fragments > Naming conventions of fragments](https://cumulocity.com/docs/concepts/domain-model/#naming-conventions-of-fragments) in the Cumulocity IoT user documentation as there are characters that can not be used when naming custom fragments.
 	public var customFragments: [String: Any] = [:]
 	
 	public subscript(key: String) -> Any? {
@@ -138,6 +150,8 @@ public struct C8yManagedObject: Codable {
 		case assetParents
 		case deviceParents
 		case c8yIsDevice = "c8y_IsDevice"
+		case c8yLatestMeasurements = "c8y_LatestMeasurements"
+		case c8yIsDeviceGroup = "c8y_IsDeviceGroup"
 		case c8yDeviceTypes = "c8y_DeviceTypes"
 		case c8ySupportedOperations = "c8y_SupportedOperations"
 		case customFragments
@@ -148,6 +162,13 @@ public struct C8yManagedObject: Codable {
 
 	/// A fragment which identifies this managed object as a device.
 	public struct C8yIsDevice: Codable {
+	
+		public init() {
+		}
+	}
+
+	/// A fragment which identifies this managed object as a device group.
+	public struct C8yIsDeviceGroup: Codable {
 	
 		public init() {
 		}

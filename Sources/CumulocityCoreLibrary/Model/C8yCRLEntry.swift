@@ -1,5 +1,5 @@
 //
-// C8yConnection.swift
+// C8yCRLEntry.swift
 // CumulocityCoreLibrary
 //
 // Copyright (c) 2014-2023 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
@@ -8,16 +8,20 @@
 
 import Foundation
 
-/// The availability information computed by Cumulocity IoT is stored in fragments `c8y_Availability` and `c8y_Connection` of the device.
-public struct C8yConnection: Codable {
+public struct C8yCRLEntry: Codable {
 
-	/// The current status, one of `AVAILABLE`, `CONNECTED`, `MAINTENANCE`, `DISCONNECTED`, `UNAVAILABLE`.
-	public var status: C8yAvailabilityStatus?
+	/// Revoked certificate serial number in hexadecimal.
+	public var serialNumberInHex: String?
+
+	/// Date and time when the certificate is revoked.
+	public var revocationDate: String?
 
 	enum CodingKeys: String, CodingKey {
-		case status
+		case serialNumberInHex
+		case revocationDate
 	}
 
-	public init() {
+	public init(serialNumberInHex: String) {
+		self.serialNumberInHex = serialNumberInHex
 	}
 }

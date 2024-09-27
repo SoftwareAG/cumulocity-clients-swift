@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-/// It is possible to store, retrieve and delete binaries for events. Each event can have one binary attached.
+/// It is possible to store, retrieve and delete binaries for events. Each event can have only one binary attached.
 public class AttachmentsApi: AdaptableApi {
 
 	/// Retrieve the attached file of a specific event
@@ -76,7 +76,7 @@ public class AttachmentsApi: AdaptableApi {
 			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "text/plain")
-			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.event+json")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 			.set(httpBody: body)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -95,10 +95,10 @@ public class AttachmentsApi: AdaptableApi {
 	
 	/// Attach a file to a specific event
 	/// 
-	/// Upload a file (binary) as an attachment of a specific event by a given ID.
-	/// The size of the attachment is configurable, and the default size is 50 MiB. The default chunk size is 5MiB.
+	/// Upload a file (binary) as an attachment of a specific event by a given ID.The size of the attachment is configurable, and the default size is 50 MiB. The default chunk size is 5MiB.
 	/// 
-	/// After the file has been uploaded, the corresponding event will contain the fragment `c8y_IsBinary` similar to:
+	/// > **ⓘ Note** If there is a binary already attached to the event, the POST request results in a 409 error.
+	/// When the file has been uploaded, the corresponding event contains the fragment `c8y_IsBinary` similar to:
 	/// 
 	/// ```json
 	/// "c8y_IsBinary": {
@@ -107,7 +107,7 @@ public class AttachmentsApi: AdaptableApi {
 	///     "type": "text/plain"
 	/// }
 	/// ```
-	/// When using `multipart/form-data` each value is sent as a block of data (body part), with a user agent-defined delimiter (`boundary`) separating each part. The keys are given in the `Content-Disposition` header of each part.
+	/// There are two request body schemas you can use for your POST requests.`text/plain` is preselected (see below).If you set it to `multipart/form-data` each value is sent as a block of data (body part), with a user agent-defined delimiter (`boundary`) separating each part.The keys are given in the `Content-Disposition` header of each part.
 	/// 
 	/// ```http
 	/// POST /event/events/{id}/binaries
@@ -149,7 +149,7 @@ public class AttachmentsApi: AdaptableApi {
 			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "text/plain")
-			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.event+json")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 			.set(httpBody: body)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -168,10 +168,10 @@ public class AttachmentsApi: AdaptableApi {
 	
 	/// Attach a file to a specific event
 	/// 
-	/// Upload a file (binary) as an attachment of a specific event by a given ID.
-	/// The size of the attachment is configurable, and the default size is 50 MiB. The default chunk size is 5MiB.
+	/// Upload a file (binary) as an attachment of a specific event by a given ID.The size of the attachment is configurable, and the default size is 50 MiB. The default chunk size is 5MiB.
 	/// 
-	/// After the file has been uploaded, the corresponding event will contain the fragment `c8y_IsBinary` similar to:
+	/// > **ⓘ Note** If there is a binary already attached to the event, the POST request results in a 409 error.
+	/// When the file has been uploaded, the corresponding event contains the fragment `c8y_IsBinary` similar to:
 	/// 
 	/// ```json
 	/// "c8y_IsBinary": {
@@ -180,7 +180,7 @@ public class AttachmentsApi: AdaptableApi {
 	///     "type": "text/plain"
 	/// }
 	/// ```
-	/// When using `multipart/form-data` each value is sent as a block of data (body part), with a user agent-defined delimiter (`boundary`) separating each part. The keys are given in the `Content-Disposition` header of each part.
+	/// There are two request body schemas you can use for your POST requests.`text/plain` is preselected (see below).If you set it to `multipart/form-data` each value is sent as a block of data (body part), with a user agent-defined delimiter (`boundary`) separating each part.The keys are given in the `Content-Disposition` header of each part.
 	/// 
 	/// ```http
 	/// POST /event/events/{id}/binaries
@@ -235,7 +235,7 @@ public class AttachmentsApi: AdaptableApi {
 			.set(resourcePath: "/event/events/\(id)/binaries")
 			.set(httpMethod: "post")
 			.add(header: "Content-Type", value: "multipart/form-data")
-			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.event+json")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/json")
 			.add(header: "Content-Type", value: multipartBuilder.contentType)
 			.set(httpBody: multipartBuilder.build())
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in

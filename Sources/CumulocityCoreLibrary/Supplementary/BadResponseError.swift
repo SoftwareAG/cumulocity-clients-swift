@@ -45,7 +45,7 @@ public class BadResponseErrorAwareData : BadResponseError {
 
 public extension Subscribers.Completion {
 
-	public func error() throws -> BadResponseError? {
+    func error() throws -> BadResponseError? {
 		if case .failure(let failure) = self {
 			if let error = failure as? BadResponseError {
 				return error

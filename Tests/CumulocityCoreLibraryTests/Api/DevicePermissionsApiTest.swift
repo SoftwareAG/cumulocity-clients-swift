@@ -1,5 +1,5 @@
 //
-// LoginTokensApiTest.swift
+// DevicePermissionsApiTest.swift
 // CumulocityCoreLibrary
 //
 // Copyright (c) 2014-2023 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
@@ -11,9 +11,9 @@ import XCTest
 
 @testable import CumulocityCoreLibrary
 
-public class LoginTokensApiTest: XCTestCase {
+public class DevicePermissionsApiTest: XCTestCase {
 	
-	class TestableLoginTokensApi: LoginTokensApi {
+	class TestableDevicePermissionsApi: DevicePermissionsApi {
 
 		override func adapt(builder: URLRequestBuilder) -> URLRequestBuilder {
 			guard let testDataUrl = Bundle.module.path(forResource: "TestData", ofType: "plist") else { return builder }

@@ -1,5 +1,5 @@
 //
-// C8yAvailabilityStatus.swift
+// C8yUpdateCRLEntries.swift
 // CumulocityCoreLibrary
 //
 // Copyright (c) 2014-2023 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
@@ -8,11 +8,15 @@
 
 import Foundation
 
-/// The current status, one of `AVAILABLE`, `CONNECTED`, `MAINTENANCE`, `DISCONNECTED`, `UNAVAILABLE`.
-public enum C8yAvailabilityStatus: String, Codable {
-	case available = "AVAILABLE"
-	case connected = "CONNECTED"
-	case maintenance = "MAINTENANCE"
-	case disconnected = "DISCONNECTED"
-	case unavailable = "UNAVAILABLE"
+/// A list of serial numbers.
+public struct C8yUpdateCRLEntries: Codable {
+
+	public var crls: [C8yCRLEntry]?
+
+	enum CodingKeys: String, CodingKey {
+		case crls
+	}
+
+	public init() {
+	}
 }

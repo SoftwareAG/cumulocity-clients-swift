@@ -1,5 +1,5 @@
 //
-// C8yThreePhaseEnergyMeasurement.swift
+// C8yLatestMeasurements.swift
 // CumulocityCoreLibrary
 //
 // Copyright (c) 2014-2023 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
@@ -8,13 +8,15 @@
 
 import Foundation
 
-/// Measurement of the three phase energy meter.
-public struct C8yThreePhaseEnergyMeasurement: Codable {
+/// The read only fragment which contains the latest measurements reported by the device.The returned optionally only if the query parameter `withLatestValues=true` is used.
+/// 
+/// > **⚠️ Feature Preview:** The feature is part of the Latest Measurement feature which is still under public feature preview.
+public struct C8yLatestMeasurements: Codable {
 	 
 	public init(from decoder: Decoder) throws {
 		if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
 			for key in additionalContainer.allKeys {
-				if let value = try? additionalContainer.decode(C8yMeasurementValue.self, forKey: key) {
+				if let value = try? additionalContainer.decode(C8yLatestMeasurementFragment.self, forKey: key) {
 			    	self.additionalProperties[key.stringValue] = value
 			    }
 			}
@@ -26,9 +28,9 @@ public struct C8yThreePhaseEnergyMeasurement: Codable {
 		try? container.encodeIfPresent(self.additionalProperties, forKey: .additionalProperties)
 	}
 
-	public var additionalProperties: [String: C8yMeasurementValue] = [:]
+	public var additionalProperties: [String: C8yLatestMeasurementFragment] = [:]
 	
-	public subscript(key: String) -> C8yMeasurementValue? {
+	public subscript(key: String) -> C8yLatestMeasurementFragment? {
 	        get {
 	            return additionalProperties[key]
 	        }

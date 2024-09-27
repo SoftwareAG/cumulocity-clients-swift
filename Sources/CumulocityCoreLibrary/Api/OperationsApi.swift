@@ -97,6 +97,10 @@ public class OperationsApi: AdaptableApi {
 	/// 
 	/// It is possible to add custom fragments to operations, for example `com_cumulocity_model_WebCamDevice` is a custom object of the webcam operation.
 	/// 
+	/// There are some custom fragments which are used by web applications (like Device management) to provide additional context to operations, for example:
+	/// 
+	/// * `description` - this fragment can be used to provide a brief user-friendly description of the operation which is later displayed in the operations list views within web applications.
+	/// 
 	/// 
 	/// > Tip: Required roles
 	///  ROLE_DEVICE_CONTROL_ADMIN *OR* owner of the device *OR* ADMIN permissions on the device 
@@ -272,7 +276,6 @@ public class OperationsApi: AdaptableApi {
 		requestBody.creationTime = nil
 		requestBody.deviceExternalIDs?.`self` = nil
 		requestBody.bulkOperationId = nil
-		requestBody.failureReason = nil
 		requestBody.`self` = nil
 		requestBody.id = nil
 		requestBody.deviceId = nil

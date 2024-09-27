@@ -1,5 +1,5 @@
 //
-// LoginTokensApi.swift
+// C8yDevicePermissionOwners.swift
 // CumulocityCoreLibrary
 //
 // Copyright (c) 2014-2023 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
@@ -7,9 +7,19 @@
 //
 
 import Foundation
-import Combine
 
-/// API methods to obtain access tokens to the Cumulocity IoT platform in case of OAI-Secure or SSO authentication.
-public class LoginTokensApi: AdaptableApi {
+/// A list of device permissions.
+public struct C8yDevicePermissionOwners: Codable {
 
+	public var users: [C8yUser]?
+
+	public var groups: [C8yGroup]?
+
+	enum CodingKeys: String, CodingKey {
+		case users
+		case groups
+	}
+
+	public init() {
+	}
 }

@@ -97,7 +97,7 @@ public class MeasurementsApi: AdaptableApi {
 	/// * `value` - The value of the individual measurement. The maximum precision for floating point numbers is 64-bit IEEE 754. For integers it's a 64-bit two's complement integer. The `value` is mandatory for a fragment.
 	/// * `unit` - The unit of the measurements.
 	/// 
-	/// Review the [System of units](#section/System-of-units) section for details about the conversions of units. Also review the [Naming conventions of fragments](https://cumulocity.com/guides/concepts/domain-model/#naming-conventions-of-fragments) in the Concepts guide.
+	/// Review the [System of units](#section/System-of-units) section for details about the conversions of units. Also review [Getting started > Technical concepts > Cumulocity IoT's domain model > Inventory > Fragments > Naming conventions of fragments](https://cumulocity.com/docs/concepts/domain-model/#naming-conventions-of-fragments) in the Cumulocity IoT user documentation.
 	/// 
 	/// The example below uses `c8y_Steam` in the request body to illustrate a fragment for recording temperature measurements.
 	/// 
@@ -165,7 +165,7 @@ public class MeasurementsApi: AdaptableApi {
 	/// * `value` - The value of the individual measurement. The maximum precision for floating point numbers is 64-bit IEEE 754. For integers it's a 64-bit two's complement integer. The `value` is mandatory for a fragment.
 	/// * `unit` - The unit of the measurements.
 	/// 
-	/// Review the [System of units](#section/System-of-units) section for details about the conversions of units. Also review the [Naming conventions of fragments](https://cumulocity.com/guides/concepts/domain-model/#naming-conventions-of-fragments) in the Concepts guide.
+	/// Review the [System of units](#section/System-of-units) section for details about the conversions of units. Also review [Getting started > Technical concepts > Cumulocity IoT's domain model > Inventory > Fragments > Naming conventions of fragments](https://cumulocity.com/docs/concepts/domain-model/#naming-conventions-of-fragments) in the Cumulocity IoT user documentation.
 	/// 
 	/// The example below uses `c8y_Steam` in the request body to illustrate a fragment for recording temperature measurements.
 	/// 
@@ -231,7 +231,28 @@ public class MeasurementsApi: AdaptableApi {
 	/// 
 	/// DELETE requests are not synchronous. The response could be returned before the delete request has been completed. This may happen especially when there are a lot of measurements to be deleted.
 	/// 
-	/// > **⚠️ Important:** Note that it is possible to call this endpoint without providing any parameter - it may result in deleting all measurements and it is not recommended.
+	/// > **⚠️ Important:** DELETE requires at least one of the following parameters: `source`, `dateFrom`, `dateTo`.
+	/// In case of enhanced time series measurements, both `dateFrom` and `dateTo` parameters must be truncated to full hours (for example, 2022-08-19T14:00:00.000Z), otherwise an error will be returned.The `fragmentType` parameter allows to delete measurements only by a measurement fragment when enhanced time series measurements are used.It's not possible to delete by a custom (non-measurement) fragment.
+	/// 
+	/// Example for a valid measurement value fragment:
+	/// 
+	/// ```
+	/// "c8y_TemperatureMeasurement": {
+	///     "T": {
+	///       "value": 28,
+	///       "unit": "C"
+	///     }
+	/// }
+	/// ```
+	/// In the example above `c8y_TemperatureMeasurement` is called fragment and `T` is called series.
+	/// 
+	/// Example for a non-measurement fragment:
+	/// 
+	/// ```
+	/// "c8y_TemperatureMeasurement": 28
+	/// ```
+	/// Enhanced Time series measurements will not allow to delete by fragment specific like above.
+	/// 
 	/// 
 	/// > Tip: Required roles
 	///  ROLE_MEASUREMENT_ADMIN 
@@ -242,6 +263,7 @@ public class MeasurementsApi: AdaptableApi {
 	/// * HTTP 204 A collection of measurements was removed.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Not authorized to perform this operation.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
 	/// 
 	/// - Parameters:
 	///   - xCumulocityProcessingMode:
@@ -284,7 +306,7 @@ public class MeasurementsApi: AdaptableApi {
 	
 	/// Retrieve a specific measurement
 	/// 
-	/// Retrieve a specific measurement by a given ID.
+	/// Retrieve a specific measurement by a given ID.Note that you cannot retrieve time series measurements by ID.Instead you can search for such measurements via query parameters.No behavior changes for tenants which do not have time series enabled.
 	/// 
 	/// 
 	/// > Tip: Required roles
@@ -322,7 +344,7 @@ public class MeasurementsApi: AdaptableApi {
 	
 	/// Remove a specific measurement
 	/// 
-	/// Remove a specific measurement by a given ID.
+	/// Remove a specific measurement by a given ID.Note that you cannot delete time series measurements by ID.Instead, you can delete by query or use the retention rules to remove expired measurements data from the Operational Store.No behavior changes for tenants which do not have time series enabled.
 	/// 
 	/// 
 	/// > Tip: Required roles
@@ -392,7 +414,7 @@ public class MeasurementsApi: AdaptableApi {
 	///   - series:
 	///     The specific series to search for.
 	///     
-	///     **ⓘ Note** If you query for multiple series at once, comma-separate the values.
+	///     **ⓘ Note** If you want to query multiple series at once, you must specify the parameter multiple times.
 	///   - source:
 	///     The managed object ID to which the measurement is associated.
 	public func getMeasurementSeries(aggregationType: String? = nil, dateFrom: String, dateTo: String, revert: Bool? = nil, series: [String]? = nil, source: String) -> AnyPublisher<C8yMeasurementSeries, Error> {
@@ -404,7 +426,7 @@ public class MeasurementsApi: AdaptableApi {
 			.add(queryItem: "dateFrom", value: dateFrom)
 			.add(queryItem: "dateTo", value: dateTo)
 			.add(queryItem: "revert", value: revert)
-			.add(queryItem: "series", value: series, explode: .comma_separated)
+			.add(queryItem: "series", value: series, explode: .exploded)
 			.add(queryItem: "source", value: source)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {

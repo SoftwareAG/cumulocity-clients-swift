@@ -25,12 +25,12 @@ extension Cumulocity {
 	    public lazy var tenants: TenantsFactory = TenantsFactory(with: self)
 	    public lazy var users: UsersFactory = UsersFactory(with: self)
 	    public lazy var audits: AuditsFactory = AuditsFactory(with: self)
-	    public lazy var realtimeNotifications: RealtimenotificationsFactory = RealtimenotificationsFactory(with: self)
+	    public lazy var realtimeNotifications: RealtimeNotificationsFactory = RealtimeNotificationsFactory(with: self)
 	    public lazy var events: EventsFactory = EventsFactory(with: self)
 	    public lazy var notifications20: Notifications20Factory = Notifications20Factory(with: self)
 	    public lazy var retentions: RetentionsFactory = RetentionsFactory(with: self)
 	    public lazy var identity: IdentityFactory = IdentityFactory(with: self)
-	    public lazy var deviceControl: DevicecontrolFactory = DevicecontrolFactory(with: self)
+	    public lazy var deviceControl: DeviceControlFactory = DeviceControlFactory(with: self)
 	    public lazy var inventory: InventoryFactory = InventoryFactory(with: self)
 
 	    private init() {
@@ -84,7 +84,6 @@ extension Cumulocity {
 			public lazy var usageStatisticsApi: UsageStatisticsApi = UsageStatisticsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var optionsApi: OptionsApi = OptionsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var loginOptionsApi: LoginOptionsApi = LoginOptionsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
-			public lazy var loginTokensApi: LoginTokensApi = LoginTokensApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var systemOptionsApi: SystemOptionsApi = SystemOptionsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 
 			fileprivate init(with factory: Core) {
@@ -101,6 +100,7 @@ extension Cumulocity {
 			public lazy var groupsApi: GroupsApi = GroupsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var rolesApi: RolesApi = RolesApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 			public lazy var inventoryRolesApi: InventoryRolesApi = InventoryRolesApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
+			public lazy var devicePermissionsApi: DevicePermissionsApi = DevicePermissionsApi(requestBuilder: factory.requestBuilder, withSession: factory.session)
 
 			fileprivate init(with factory: Core) {
 				self.factory = factory
@@ -118,7 +118,7 @@ extension Cumulocity {
 			}
 		}
 
-		public class RealtimenotificationsFactory {
+		public class RealtimeNotificationsFactory {
 
 			private var factory: Core
 
@@ -176,7 +176,7 @@ extension Cumulocity {
 			}
 		}
 
-		public class DevicecontrolFactory {
+		public class DeviceControlFactory {
 
 			private var factory: Core
 

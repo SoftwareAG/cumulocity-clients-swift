@@ -22,6 +22,8 @@ public class CurrentUserApi: AdaptableApi {
 	/// > Tip: Required roles
 	///  ROLE_USER_MANAGEMENT_OWN_READ *OR* ROLE_SYSTEM 
 	/// 
+	/// Users with ROLE_SYSTEM are not allowed to query with Accept header `application/vnd.com.nsn.cumulocity.user+json`
+	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
 	/// 
@@ -31,7 +33,7 @@ public class CurrentUserApi: AdaptableApi {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/currentUser")
 			.set(httpMethod: "get")
-			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.currentuser+json")
+			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.currentuser+json, application/vnd.com.nsn.cumulocity.user+json")
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -73,7 +75,6 @@ public class CurrentUserApi: AdaptableApi {
 		requestBody.id = nil
 		requestBody.lastPasswordChange = nil
 		requestBody.twoFactorAuthenticationEnabled = nil
-		requestBody.devicePermissions = nil
 		var encodedRequestBody: Data? = nil
 		do {
 			encodedRequestBody = try JSONEncoder().encode(requestBody)
@@ -153,7 +154,7 @@ public class CurrentUserApi: AdaptableApi {
 	/// 
 	/// Generate a secret code to create a QR code to set up the two-factor authentication functionality using a TFA app/service.
 	/// 
-	/// For more information about the feature, see [User Guide > Administration > Two-factor authentication](https://cumulocity.com/guides/users-guide/administration/#tfa) in the *Cumulocity IoT documentation*.
+	/// For more information about the feature, see [Platform administration > Authentication > Two-factor authentication](https://cumulocity.com/docs/authentication/tfa/) in the Cumulocity IoT user documentation.
 	/// 
 	/// 
 	/// > Tip: Required roles
@@ -222,7 +223,7 @@ public class CurrentUserApi: AdaptableApi {
 	/// 
 	/// Activates or deactivates the two-factor authentication feature for the current user.
 	/// 
-	/// For more information about the feature, see [User Guide > Administration > Two-factor authentication](https://cumulocity.com/guides/users-guide/administration/#tfa) in the *Cumulocity IoT documentation*.
+	/// For more information about the feature, see [Platform administration > Authentication > Two-factor authentication](https://cumulocity.com/docs/authentication/tfa/) in the Cumulocity IoT user documentation.
 	/// 
 	/// 
 	/// > Tip: Required roles

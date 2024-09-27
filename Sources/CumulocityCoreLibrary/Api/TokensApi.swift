@@ -21,6 +21,10 @@ public class TokensApi: AdaptableApi {
 	/// * The subscriber name which the client wishes to be identified with.
 	/// * The subscription name. This value must be associated with a subscription that's already been created and in essence, the obtained token will give the ability to read notifications for the subscription that is specified here.
 	/// * The token expiration duration.
+	/// * The option to disable signing of the token by the Cumulocity IoT platform.
+	/// * The subscription type that the token should be associated with.
+	/// * The option to use the token to create shared consumers of the subscription.
+	/// * The option to select the non-persistent variant of the subscription, if one exists.
 	/// 
 	/// 
 	/// > Tip: Required roles

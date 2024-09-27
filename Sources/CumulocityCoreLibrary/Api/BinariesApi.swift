@@ -11,12 +11,12 @@ import Combine
 
 /// Managed objects can perform operations to store, retrieve and delete binaries. One binary can store only one file. Together with the binary, a managed object is created which acts as a metadata information for the binary.
 /// 
-/// > **ⓘ Note** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
+/// > **ⓘ Note** Supports only HTTP 1.1 clients.**ⓘ Note** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 public class BinariesApi: AdaptableApi {
 
-	/// Retrieve the stored files
+	/// Search for stored files
 	/// 
-	/// Retrieve the stored files as a collections of managed objects.
+	/// Retrieve metadata information about stored files. Search for files by query parameters. This will not download the files.
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -42,7 +42,7 @@ public class BinariesApi: AdaptableApi {
 	///   - pageSize:
 	///     Indicates how many entries of the collection shall be returned. The upper limit for one page is 2,000 objects.
 	///   - text:
-	///     Search for managed objects where any property value is equal to the given one. Only string values are supported.
+	///     Search for managed objects where a property value is equal to the given one.The following properties are examined: `id, type, name, owner, externalIds`.
 	///   - type:
 	///     The type of managed object to search for.
 	///   - withTotalPages:
@@ -88,7 +88,7 @@ public class BinariesApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* ROLE_INVENTORY_CREATE 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_INVENTORY_CREATE *OR* ROLE_BINARY_ADMIN *OR* ROLE_BINARY_CREATE 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -139,11 +139,11 @@ public class BinariesApi: AdaptableApi {
 	
 	/// Retrieve a stored file
 	/// 
-	/// Retrieve a stored file (managed object) by a given ID.
+	/// Retrieve a stored file (managed object) by a given ID.Supports chunk download and resuming an interrupted download using the [`Range` header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Range).
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_READ *OR* owner of the resource *OR* MANAGE_OBJECT_READ permission on the resource 
+	///  ROLE_INVENTORY_READ *OR* ROLE_BINARY_READ *OR* owner of the resource *OR* MANAGE_OBJECT_READ permission on the resource 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -180,7 +180,7 @@ public class BinariesApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* owner of the resource *OR* MANAGE_OBJECT_ADMIN permission on the resource 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_BINARY_ADMIN *OR* owner of the resource *OR* MANAGE_OBJECT_ADMIN permission on the resource 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -221,7 +221,7 @@ public class BinariesApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_INVENTORY_ADMIN *OR* owner of the resource *OR* MANAGE_OBJECT_ADMIN permission on the resource 
+	///  ROLE_INVENTORY_ADMIN *OR* ROLE_BINARY_ADMIN *OR* owner of the resource *OR* MANAGE_OBJECT_ADMIN permission on the resource 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:

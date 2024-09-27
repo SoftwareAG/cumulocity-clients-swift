@@ -48,7 +48,7 @@ public struct C8yAuthConfig: Codable {
 	/// The name of the authentication provider.
 	public var providerName: String?
 
-	/// SSO specific. URL used for redirecting to the Cumulocity IoT platform.
+	/// SSO specific. URL used for redirecting to the Cumulocity IoT platform. Do not set or leave it empty to allow SSO flow to be controlled by client (UI) applications.
 	public var redirectToPlatform: String?
 
 	public var refreshRequest: C8yRequestRepresentation?
@@ -56,7 +56,7 @@ public struct C8yAuthConfig: Codable {
 	/// A URL linking to this resource.
 	public var `self`: String?
 
-	/// The session configuration properties are only available for OAuth internal. See [Changing settings > OAuth internal](https://cumulocity.com/guides/users-guide/administration/#oauth-internal) for more details.
+	/// The session configuration properties are only available for OAI-Secure. See [Platform administration > Authentication > Basic settings > OAI Secure session configuration ](https://cumulocity.com/docs/authentication/basic-settings/#oai-secure-session-configuration) in the Cumulocity IoT user documentation.
 	public var sessionConfiguration: C8yOAuthSessionConfiguration?
 
 	/// SSO specific and authorization server dependent. Describes the method of access token signature verification on the Cumulocity IoT platform.
@@ -78,6 +78,9 @@ public struct C8yAuthConfig: Codable {
 
 	/// Information for the UI if the respective authentication form should be visible for the user.
 	public var visibleOnLoginPage: Bool?
+
+	/// A configuration for authentication with an access token from the authorization server.
+	public var externalTokenConfig: C8yExternalTokenConfig?
 
 	enum CodingKeys: String, CodingKey {
 		case accessTokenToUserDataMapping
@@ -104,6 +107,7 @@ public struct C8yAuthConfig: Codable {
 		case userIdConfig
 		case userManagementSource
 		case visibleOnLoginPage
+		case externalTokenConfig
 	}
 
 	public init(providerName: String, type: C8yType) {
@@ -179,9 +183,13 @@ public struct C8yAuthConfig: Codable {
 			/// Represents rules used to assign groups and applications.
 			public var mappings: [C8yMappings]?
 		
+			/// Represents rules used to assign inventory roles.
+			public var inventoryMappings: [C8yInventoryMappings]?
+		
 			enum CodingKeys: String, CodingKey {
 				case configuration
 				case mappings
+				case inventoryMappings
 			}
 		
 			public init() {
@@ -193,8 +201,12 @@ public struct C8yAuthConfig: Codable {
 				/// Indicates whether the mapping should be evaluated always or only during the first external login when the internal user is created.
 				public var mapRolesOnlyForNewUser: Bool?
 			
+				/// If set to `true`, dynamic access mapping is only managed for global roles, applications and inventory roles which are listed in the configuration. Others remain unchanged.
+				public var manageRolesOnlyFromAccessMapping: Bool?
+			
 				enum CodingKeys: String, CodingKey {
 					case mapRolesOnlyForNewUser
+					case manageRolesOnlyFromAccessMapping
 				}
 			
 				public init() {
@@ -204,7 +216,7 @@ public struct C8yAuthConfig: Codable {
 			/// Represents information of mapping access to groups and applications.
 			public struct C8yMappings: Codable {
 			
-				/// Represents a predicate for verification. It acts as a condition which is necessary to assign a user to the given groups and permit access to the specified applications.
+				/// Represents a predicate for verification. It acts as a condition which is necessary to assign a user to the given groups, permit access to the specified applications or to assign specific inventory roles to device groups.
 				public var when: C8yJSONPredicateRepresentation?
 			
 				/// List of the applications' identifiers.
@@ -220,6 +232,42 @@ public struct C8yAuthConfig: Codable {
 				}
 			
 				public init() {
+				}
+			}
+		
+			/// Represents information of mapping access to inventory roles.
+			public struct C8yInventoryMappings: Codable {
+			
+				/// Represents a predicate for verification. It acts as a condition which is necessary to assign a user to the given groups, permit access to the specified applications or to assign specific inventory roles to device groups.
+				public var when: C8yJSONPredicateRepresentation?
+			
+				/// List of the OAuth inventory assignments.
+				public var thenInventoryRoles: [C8yThenInventoryRoles]?
+			
+				enum CodingKeys: String, CodingKey {
+					case when
+					case thenInventoryRoles
+				}
+			
+				public init() {
+				}
+			
+				/// Represents inventory roles for a specific device group.
+				public struct C8yThenInventoryRoles: Codable {
+				
+					/// A unique identifier for the managed object for which the roles are assigned.
+					public var managedObject: String?
+				
+					/// List of the inventory roles' identifiers.
+					public var roleIds: [Int]?
+				
+					enum CodingKeys: String, CodingKey {
+						case managedObject
+						case roleIds
+					}
+				
+					public init() {
+					}
 				}
 			}
 		}
@@ -371,4 +419,66 @@ public struct C8yAuthConfig: Codable {
 		}
 	}
 
+
+	/// A configuration for authentication with an access token from the authorization server.
+	public struct C8yExternalTokenConfig: Codable {
+	
+		/// Indicates whether authentication is enabled or disabled.
+		public var enabled: Bool?
+	
+		/// Points to the claim of the access token from the authorization server that must be used as the username in the Cumulocity IoT platform.
+		public var userOrAppIdConfig: C8yUserOrAppIdConfig?
+	
+		/// If set to `true`, the access token is validated against the authorization server by way of introspection or user info request.
+		public var validationRequired: Bool?
+	
+		/// The method of validation of the access token.
+		public var validationMethod: C8yValidationMethod?
+	
+		public var tokenValidationRequest: C8yRequestRepresentation?
+	
+		/// The frequency (in Minutes) in which Cumulocity sends a validation request to authorization server. The recommended frequency is 1 minute.
+		public var accessTokenValidityCheckIntervalInMinutes: Int?
+	
+		enum CodingKeys: String, CodingKey {
+			case enabled
+			case userOrAppIdConfig
+			case validationRequired
+			case validationMethod
+			case tokenValidationRequest
+			case accessTokenValidityCheckIntervalInMinutes
+		}
+	
+		public init() {
+		}
+	
+		/// The method of validation of the access token.
+		public enum C8yValidationMethod: String, Codable {
+			case introspection = "INTROSPECTION"
+			case userinfo = "USERINFO"
+		}
+	
+		/// Points to the claim of the access token from the authorization server that must be used as the username in the Cumulocity IoT platform.
+		public struct C8yUserOrAppIdConfig: Codable {
+		
+			/// Used only if `useConstantValue` is set to `true`.
+			public var constantValue: String?
+		
+			/// The name of the field containing the JWT.
+			public var jwtField: String?
+		
+			/// Not recommended. If set to `true`, all users share a single account in the Cumulocity IoT platform.
+			public var useConstantValue: Bool?
+		
+			enum CodingKeys: String, CodingKey {
+				case constantValue
+				case jwtField
+				case useConstantValue
+			}
+		
+			public init() {
+			}
+		}
+	
+	}
 }

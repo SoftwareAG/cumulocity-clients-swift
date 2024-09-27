@@ -10,6 +10,28 @@ import Foundation
 
 /// Holds basic connectivity-related information, such as the equipment identifier of the modem (IMEI) in the device. This identifier is globally unique and often used to identify a mobile device.
 public struct C8yMobile: Codable {
+	 
+	public init(from decoder: Decoder) throws {
+		let container = try decoder.container(keyedBy: CodingKeys.self)
+		self.imei = try container.decodeIfPresent(String.self, forKey: .imei)
+		self.cellId = try container.decodeIfPresent(String.self, forKey: .cellId)
+		self.iccid = try container.decodeIfPresent(String.self, forKey: .iccid)
+		if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
+			for key in additionalContainer.allKeys {
+				if let value = try? additionalContainer.decode(String.self, forKey: key) {
+			    	self.customFragments[key.stringValue] = value
+			    }
+			}
+		}
+	}
+	
+	public func encode(to encoder: Encoder) throws {
+		var container = encoder.container(keyedBy: CodingKeys.self)
+		try container.encodeIfPresent(self.imei, forKey: .imei)
+		try container.encodeIfPresent(self.cellId, forKey: .cellId)
+		try container.encodeIfPresent(self.iccid, forKey: .iccid)
+		try? container.encodeIfPresent(self.customFragments, forKey: .customFragments)
+	}
 
 	/// The equipment identifier (IMEI) of the modem in the device.
 	public var imei: String?

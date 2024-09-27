@@ -9,7 +9,7 @@
 import Foundation
 
 public struct C8yCategoryOptions: Codable {
-	
+	 
 	public init(from decoder: Decoder) throws {
 		if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
 			for (typeName, decoder) in C8yCategoryOptions.decoders {

@@ -21,7 +21,7 @@ import Combine
 /// > **⚠️ Important:** For support user access, the tenant ID must be used and not the tenant domain.
 /// See [Tenant > Current tenant](#operation/getCurrentTenantResource) for information on how to retrieve the tenant ID and domain of the current tenant via the API.
 /// 
-/// In the UI, the tenant ID is displayed in the user dropdown menu, see [Getting started > User options and settings](https://cumulocity.com/guides/users-guide/getting-started/#user-settings) in the User guide.
+/// In the UI, the tenant ID is displayed in the user dropdown menu, see [Getting started > Get familiar with the UI > User options and settings](https://cumulocity.com/docs/get-familiar-with-the-ui/user-settings/) in the Cumulocity IoT user documentation.
 /// 
 /// > Tip: Access rights and permissions
 /// There are two types of roles in Cumulocity IoT – global and inventory. Global roles are applied at the tenant level. In a Role Based Access Control (RBAC) approach you must use the inventory roles in order to have the correct level of separation. Apart from some global permissions (like "own user management") customer users will not be assigned any roles. Inventory roles must be created, or the default roles used, and then assigned to the user in combination with the assets the roles apply to. This needs to be done at least once for each customer.
@@ -30,7 +30,7 @@ import Combine
 /// 
 /// In the RBAC approach, managing access is the most complicated part because a misconfiguration can potentially give customers access to data that they must not see, like other customers' data. The inventory roles allow you to granularly define access for only certain parts of data, but they don't protect you from accidental misconfigurations. A limitation here is that customers won't be able to create their own roles.
 /// 
-/// For more details, see [RBAC versus multi-tenancy approach](https://cumulocity.com/guides/concepts/tenant-hierarchy/#comparison).
+/// For more details, see [RBAC versus multi-tenancy approach](https://cumulocity.com/docs/concepts/tenant-hierarchy/#comparison-of-various-use-cases).
 /// 
 /// > **ⓘ Note** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 public class TenantsApi: AdaptableApi {
@@ -58,7 +58,13 @@ public class TenantsApi: AdaptableApi {
 	///     When set to `true`, the returned result will contain in the statistics object the total number of elements. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
 	///   - withTotalPages:
 	///     When set to `true`, the returned result will contain in the statistics object the total number of pages. Only applicable on [range queries](https://en.wikipedia.org/wiki/Range_query_(database)).
-	public func getTenants(currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil) -> AnyPublisher<C8yTenantCollection, Error> {
+	///   - company:
+	///     Company name associated with the Cumulocity IoT tenant.
+	///   - domain:
+	///     Domain name of the Cumulocity IoT tenant.
+	///   - parent:
+	///     Identifier of the Cumulocity IoT tenant's parent.
+	public func getTenants(currentPage: Int? = nil, pageSize: Int? = nil, withTotalElements: Bool? = nil, withTotalPages: Bool? = nil, company: String? = nil, domain: String? = nil, parent: String? = nil) -> AnyPublisher<C8yTenantCollection, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/tenant/tenants")
 			.set(httpMethod: "get")
@@ -67,6 +73,9 @@ public class TenantsApi: AdaptableApi {
 			.add(queryItem: "pageSize", value: pageSize)
 			.add(queryItem: "withTotalElements", value: withTotalElements)
 			.add(queryItem: "withTotalPages", value: withTotalPages)
+			.add(queryItem: "company", value: company)
+			.add(queryItem: "domain", value: domain)
+			.add(queryItem: "parent", value: parent)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -183,7 +192,7 @@ public class TenantsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  ROLE_TENANT_MANAGEMENT_READ *AND* the current tenant is its parent *OR* is the management tenant 
+	///  ROLE_TENANT_MANAGEMENT_READ *AND* (the current tenant is its parent *OR* is the management tenant) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -222,7 +231,8 @@ public class TenantsApi: AdaptableApi {
 	/// 
 	/// 
 	/// > Tip: Required roles
-	///  (ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_MANAGEMENT_UPDATE) *AND* (the current tenant is its parent *AND* the current tenant is allowed to create subtenants) *OR* is the management tenant 
+	///  (ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_MANAGEMENT_UPDATE) *AND*
+	///  ((the current tenant is its parent *AND* the current tenant is allowed to create subtenants) *OR* is the management tenant) 
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -353,5 +363,54 @@ public class TenantsApi: AdaptableApi {
 			}
 			return element.data
 		}).decode(type: C8yTenantTfaData.self, decoder: JSONDecoder()).eraseToAnyPublisher()
+	}
+	
+	/// Sets TFA settings for a specific tenant
+	/// 
+	/// Sets the two-factor authentication settings of a specific tenant for a specific tenant ID.
+	/// 
+	/// 
+	/// > Tip: Required roles
+	///  ((ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_MANAGEMENT_UPDATE) *AND* (the current tenant is its parent *OR* the current user belongs to the tenant))) 
+	/// 
+	/// > Tip: Response Codes
+	/// The following table gives an overview of the possible response codes and their meanings:
+	/// 
+	/// * HTTP 204 The tenant's TFA configuration was updated.
+	/// * HTTP 401 Authentication information is missing or invalid.
+	/// * HTTP 404 Tenant not found.
+	/// 
+	/// - Parameters:
+	///   - body:
+	///     
+	///   - tenantId:
+	///     Unique identifier of a Cumulocity IoT tenant.
+	public func updateTenantTfaSettings(body: C8yTenantTfaStrategy, tenantId: String) -> AnyPublisher<Data, Error> {
+		let requestBody = body
+		var encodedRequestBody: Data? = nil
+		do {
+			encodedRequestBody = try JSONEncoder().encode(requestBody)
+		} catch {
+			return Fail<Data, Error>(error: error).eraseToAnyPublisher()
+		}
+		let builder = URLRequestBuilder()
+			.set(resourcePath: "/tenant/tenants/\(tenantId)/tfa")
+			.set(httpMethod: "put")
+			.add(header: "Content-Type", value: "application/json")
+			.add(header: "Accept", value: "application/json")
+			.set(httpBody: encodedRequestBody)
+		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
+			guard let httpResponse = element.response as? HTTPURLResponse else {
+				throw URLError(.badServerResponse)
+			}
+			guard (200..<300) ~= httpResponse.statusCode else {
+				if let c8yError = try? JSONDecoder().decode(C8yError.self, from: element.data) {
+					c8yError.httpResponse = httpResponse
+					throw c8yError
+				}
+				throw BadResponseError(with: httpResponse)
+			}
+			return element.data
+		}).eraseToAnyPublisher()
 	}
 }

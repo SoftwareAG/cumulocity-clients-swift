@@ -34,6 +34,15 @@ public struct C8yTrustedCertificate: Codable {
 	/// The start date and time of the certificate's validity.
 	public var notBefore: String?
 
+	/// Indicates whether the proof of possession for the certificate was provided.
+	public var proofOfPossessionValid: Bool?
+
+	/// An unsigned verification code that provides proof of possession for the certificate after signing.
+	public var proofOfPossessionUnsignedVerificationCode: String?
+
+	/// Validity of the verification code.
+	public var proofOfPossessionVerificationCodeUsableUntil: String?
+
 	/// A URL linking to this resource.
 	public var `self`: String?
 
@@ -58,6 +67,9 @@ public struct C8yTrustedCertificate: Codable {
 		case name
 		case notAfter
 		case notBefore
+		case proofOfPossessionValid
+		case proofOfPossessionUnsignedVerificationCode
+		case proofOfPossessionVerificationCodeUsableUntil
 		case `self` = "self"
 		case serialNumber
 		case status

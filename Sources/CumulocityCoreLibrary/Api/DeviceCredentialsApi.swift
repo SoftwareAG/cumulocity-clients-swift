@@ -11,7 +11,7 @@ import Combine
 
 /// API methods to create device credentials in Cumulocity IoT.
 /// 
-/// Device credentials can be enquired by devices that do not have credentials for accessing a tenant yet.Since the device does not have credentials yet, a set of fixed credentials is used for this API.The credentials can be obtained by [contacting support](https://cumulocity.com/guides/about-doc/contacting-support/).
+/// Device credentials can be enquired by devices that do not have credentials for accessing a tenant yet.Since the device does not have credentials yet, a set of fixed credentials is used for this API.The credentials can be obtained by [contacting support](https://cumulocity.com/docs/additional-resources/contacting-support/).
 /// 
 /// > **⚠️ Important:** Do not use your tenant credentials with this API.
 /// > **ⓘ Note** The Accept header should be provided in all POST requests, otherwise an empty response body will be returned.
@@ -85,7 +85,7 @@ public class DeviceCredentialsApi: AdaptableApi {
 	/// A separator is automatically obtained from the CSV file. Valid separator values are: `\t` (tabulation mark), `;` (semicolon) and `,` (comma).
 	/// 
 	/// > **⚠️ Important:** The CSV file needs the "com_cumulocity_model_Agent.active" header with a value of "true" to be added to the request.
-	/// > **ⓘ Note** A bulk registration creates an elementary representation of the device. Then, the device needs to update it to a full representation with its own status. The device is ready to use only after it is updated to the full representation. Also see [credentials upload](https://cumulocity.com/guides/users-guide/device-management/#creds-upload) and [device integration](https://cumulocity.com/guides/device-sdk/rest/#device-integration).
+	/// > **ⓘ Note** A bulk registration creates an elementary representation of the device. Then, the device needs to update it to a full representation with its own status. The device is ready to use only after it is updated to the full representation. Also see [Device management > Device management application > Registering devices > Single device registration > Security token policy](https://cumulocity.com/docs/device-management-application/registering-devices/#security-token-policy) and [Device management > Device integration > Device integration using REST > Integration life cycle](https://cumulocity.com/docs/device-integration/rest/#integration-life-cycle).
 	/// A CSV file can appear in many forms (with regard to the optional tenant column and the occurrence of device information):
 	/// 
 	/// * If a user is logged in as the management tenant, then the columns ID, CREDENTIALS and TENANT are mandatory, and the device credentials will be created for the tenant mentioned in the TENANT column.
@@ -110,13 +110,13 @@ public class DeviceCredentialsApi: AdaptableApi {
 	/// 
 	/// ```csv
 	/// ID;CREDENTIALS;TYPE;NAME;ICCID;IDTYPE;PATH;SHELL
-	/// id_101;abcd1234;type_of_device;Device 101;111111111;;csv device/subgroup0;1
-	/// id_102;abcd1234;type_of_device;Device 102;222222222;;csv device/subgroup0;0
-	/// id_111;abcd1234;type_of_device;Device 111;333333333;c8y_Imei;csv device1/subgroup1;0
-	/// id_112;abcd1234;type_of_device;Device 112;444444444;;csv device1/subgroup1;1
-	/// id_121;abcd1234;type_of_device;Device 121;555555555;;csv device1/subgroup2;1
-	/// id_122;abcd1234;type_of_device;Device 122;;;csv device1/subgroup2;
-	/// id_131;abcd1234;type_of_device;Device 131;;;csv device1/subgroup3;
+	/// id_101;AbcD1234!1234AbcD;type_of_device;Device 101;111111111;;csv device/subgroup0;1
+	/// id_102;AbcD1234!1234AbcD;type_of_device;Device 102;222222222;;csv device/subgroup0;0
+	/// id_111;AbcD1234!1234AbcD;type_of_device;Device 111;333333333;c8y_Imei;csv device1/subgroup1;0
+	/// id_112;AbcD1234!1234AbcD;type_of_device;Device 112;444444444;;csv device1/subgroup1;1
+	/// id_121;AbcD1234!1234AbcD;type_of_device;Device 121;555555555;;csv device1/subgroup2;1
+	/// id_122;AbcD1234!1234AbcD;type_of_device;Device 122;;;csv device1/subgroup2;
+	/// id_131;AbcD1234!1234AbcD;type_of_device;Device 131;;;csv device1/subgroup3;
 	/// ```
 	/// There is also a simple registration method that creates all registration requests at once, then each one needs to go through regular acceptance.This simple registration only makes use of the ID and PATH fields from the list above.
 	/// 

@@ -1,5 +1,5 @@
 //
-// C8yConnection.swift
+// C8yTenantTfaStrategy.swift
 // CumulocityCoreLibrary
 //
 // Copyright (c) 2014-2023 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
@@ -8,16 +8,23 @@
 
 import Foundation
 
-/// The availability information computed by Cumulocity IoT is stored in fragments `c8y_Availability` and `c8y_Connection` of the device.
-public struct C8yConnection: Codable {
+public struct C8yTenantTfaStrategy: Codable {
 
-	/// The current status, one of `AVAILABLE`, `CONNECTED`, `MAINTENANCE`, `DISCONNECTED`, `UNAVAILABLE`.
-	public var status: C8yAvailabilityStatus?
+	/// Two-factor authentication strategy.
+	public var strategy: C8yStrategy?
 
 	enum CodingKeys: String, CodingKey {
-		case status
+		case strategy
 	}
 
-	public init() {
+	public init(strategy: C8yStrategy) {
+		self.strategy = strategy
 	}
+
+	/// Two-factor authentication strategy.
+	public enum C8yStrategy: String, Codable {
+		case sms = "SMS"
+		case totp = "TOTP"
+	}
+
 }

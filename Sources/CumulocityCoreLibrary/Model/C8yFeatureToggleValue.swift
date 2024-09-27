@@ -1,5 +1,5 @@
 //
-// C8yAvailabilityStatus.swift
+// C8yFeatureToggleValue.swift
 // CumulocityCoreLibrary
 //
 // Copyright (c) 2014-2023 Software AG, Darmstadt, Germany and/or Software AG USA Inc., Reston, VA, USA, and/or its subsidiaries and/or its affiliates and/or their licensors.
@@ -8,11 +8,15 @@
 
 import Foundation
 
-/// The current status, one of `AVAILABLE`, `CONNECTED`, `MAINTENANCE`, `DISCONNECTED`, `UNAVAILABLE`.
-public enum C8yAvailabilityStatus: String, Codable {
-	case available = "AVAILABLE"
-	case connected = "CONNECTED"
-	case maintenance = "MAINTENANCE"
-	case disconnected = "DISCONNECTED"
-	case unavailable = "UNAVAILABLE"
+public struct C8yFeatureToggleValue: Codable {
+
+	/// Current value of the feature toggle marking whether the feature is active or not.
+	public var active: Bool?
+
+	enum CodingKeys: String, CodingKey {
+		case active
+	}
+
+	public init() {
+	}
 }
