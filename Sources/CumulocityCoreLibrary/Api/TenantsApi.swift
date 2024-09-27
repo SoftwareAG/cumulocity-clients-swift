@@ -18,13 +18,13 @@ import Combine
 /// 
 /// In general, the tenant domain should be used for communication if it is known.
 /// 
-/// > **������ Important:** For support user access, the tenant ID must be used and not the tenant domain.
+/// > **⚠️ Important:** For support user access, the tenant ID must be used and not the tenant domain.
 /// See [Tenant > Current tenant](#operation/getCurrentTenantResource) for information on how to retrieve the tenant ID and domain of the current tenant via the API.
 /// 
 /// In the UI, the tenant ID is displayed in the user dropdown menu, see [Getting started > Get familiar with the UI > User options and settings](https://cumulocity.com/docs/get-familiar-with-the-ui/user-settings/) in the Cumulocity IoT user documentation.
 /// 
 /// > Tip: Access rights and permissions
-/// There are two types of roles in Cumulocity IoT ��� global and inventory. Global roles are applied at the tenant level. In a Role Based Access Control (RBAC) approach you must use the inventory roles in order to have the correct level of separation. Apart from some global permissions (like "own user management") customer users will not be assigned any roles. Inventory roles must be created, or the default roles used, and then assigned to the user in combination with the assets the roles apply to. This needs to be done at least once for each customer.
+/// There are two types of roles in Cumulocity IoT – global and inventory. Global roles are applied at the tenant level. In a Role Based Access Control (RBAC) approach you must use the inventory roles in order to have the correct level of separation. Apart from some global permissions (like "own user management") customer users will not be assigned any roles. Inventory roles must be created, or the default roles used, and then assigned to the user in combination with the assets the roles apply to. This needs to be done at least once for each customer.
 /// 
 /// In a multi-tenancy approach, as the tenant is completely separated from all other customers you do not necessarily need to be involved in setting up the access rights of the customer. If customers are given administration rights for their tenants, they can set up permissions on their own. It is not possible for customers to have any sight or knowledge of other customers.
 /// 
@@ -105,8 +105,8 @@ public class TenantsApi: AdaptableApi {
 	/// * HTTP 201 A tenant was created.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Not authorized to perform this operation.
-	/// * HTTP 409 Conflict ��� The tenant domain/ID already exists.
-	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
+	/// * HTTP 409 Conflict – The tenant domain/ID already exists.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -241,7 +241,7 @@ public class TenantsApi: AdaptableApi {
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Not authorized to perform this operation.
 	/// * HTTP 404 Tenant not found.
-	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -290,7 +290,7 @@ public class TenantsApi: AdaptableApi {
 	/// 
 	/// Remove a specific tenant by a given ID.
 	/// 
-	/// > **������ Important:** Deleting a subtenant cannot be reverted. For security reasons, it is therefore only available in the management tenant. You cannot delete tenants from any tenant but the management tenant.
+	/// > **⚠️ Important:** Deleting a subtenant cannot be reverted. For security reasons, it is therefore only available in the management tenant. You cannot delete tenants from any tenant but the management tenant.
 	/// Administrators in Enterprise Tenants are only allowed to suspend active subtenants, but not to delete them.
 	/// 
 	/// > Tip: Required roles

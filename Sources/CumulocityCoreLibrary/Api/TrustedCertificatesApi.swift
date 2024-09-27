@@ -81,8 +81,8 @@ public class TrustedCertificatesApi: AdaptableApi {
 	/// * HTTP 201 The certificate was added to the tenant.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 404 Tenant not found.
-	/// * HTTP 409 Duplicate ��� A certificate with the same fingerprint already exists.
-	/// * HTTP 422 Unprocessable Entity ��� Invalid certificate data.
+	/// * HTTP 409 Duplicate – A certificate with the same fingerprint already exists.
+	/// * HTTP 422 Unprocessable Entity – Invalid certificate data.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -140,8 +140,8 @@ public class TrustedCertificatesApi: AdaptableApi {
 	/// * HTTP 201 The certificates were added to the tenant.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 404 Tenant not found.
-	/// * HTTP 409 Duplicate ��� A certificate with the same fingerprint already exists.
-	/// * HTTP 422 Unprocessable Entity ��� Invalid certificates data.
+	/// * HTTP 409 Duplicate – A certificate with the same fingerprint already exists.
+	/// * HTTP 422 Unprocessable Entity – Invalid certificates data.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -239,7 +239,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 	/// * HTTP 200 The certificate was updated on the tenant.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 404 Certificate not found.
-	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -593,7 +593,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 	/// > Tip: Required roles
 	///  (ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_ADMIN) *AND* is the current tenant 
 	/// 
-	/// **������ Important:** According to CRL policy, added serial numbers cannot be reversed.
+	/// **⚠️ Important:** According to CRL policy, added serial numbers cannot be reversed.
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:
@@ -674,7 +674,7 @@ public class TrustedCertificatesApi: AdaptableApi {
 	/// > Tip: Required roles
 	///  (ROLE_TENANT_MANAGEMENT_ADMIN *OR* ROLE_TENANT_ADMIN) *AND* is the current tenant 
 	/// 
-	/// **������ Important:** According to CRL policy, added serial numbers cannot be reversed.
+	/// **⚠️ Important:** According to CRL policy, added serial numbers cannot be reversed.
 	/// 
 	/// > Tip: Response Codes
 	/// The following table gives an overview of the possible response codes and their meanings:

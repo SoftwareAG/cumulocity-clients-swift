@@ -10,7 +10,7 @@ import Foundation
 
 /// An object with a list of custom properties.
 public struct C8yCustomProperties: Codable {
-	
+	 
 	public init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		self.language = try container.decodeIfPresent(String.self, forKey: .language)

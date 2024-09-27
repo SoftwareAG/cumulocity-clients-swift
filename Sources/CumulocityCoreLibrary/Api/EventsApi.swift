@@ -18,7 +18,7 @@ public class EventsApi: AdaptableApi {
 	/// 
 	/// Retrieve all events on your tenant.
 	/// 
-	/// In case of executing [range queries](https://en.wikipedia.org/wiki/Range_query_(database)) between an upper and lower boundary, for example, querying using `dateFrom`���`dateTo` or `createdFrom`���`createdTo`, the newest registered events are returned first. It is possible to change the order using the query parameter `revert=true`.
+	/// In case of executing [range queries](https://en.wikipedia.org/wiki/Range_query_(database)) between an upper and lower boundary, for example, querying using `dateFrom`–`dateTo` or `createdFrom`–`createdTo`, the newest registered events are returned first. It is possible to change the order using the query parameter `revert=true`.
 	/// 
 	/// 
 	/// > Tip: Required roles
@@ -46,7 +46,7 @@ public class EventsApi: AdaptableApi {
 	///   - fragmentValue:
 	///     Allows filtering events by the fragment's value, but only when provided together with `fragmentType`.
 	///     
-	///     **������ Important:** Only fragments with a string value are supported.
+	///     **⚠️ Important:** Only fragments with a string value are supported.
 	///   - lastUpdatedFrom:
 	///     Start date or date and time of the last update made.
 	///   - lastUpdatedTo:
@@ -124,7 +124,7 @@ public class EventsApi: AdaptableApi {
 	/// * HTTP 201 An event was created.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Not authorized to perform this operation.
-	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -172,7 +172,7 @@ public class EventsApi: AdaptableApi {
 	/// 
 	/// DELETE requests are not synchronous. The response could be returned before the delete request has been completed. This may happen especially when the deleted event has a lot of associated data. After sending the request, the platform starts deleting the associated data in an asynchronous way. Finally, the requested event is deleted after all associated data has been deleted.
 	/// 
-	/// > **������ Important:** DELETE requires at least one of the following parameters: `source`, `dateFrom`, `dateTo`, `createdFrom`, `createdTo`.
+	/// > **⚠️ Important:** DELETE requires at least one of the following parameters: `source`, `dateFrom`, `dateTo`, `createdFrom`, `createdTo`.
 	/// 
 	/// > Tip: Required roles
 	///  ROLE_EVENT_ADMIN 
@@ -281,7 +281,7 @@ public class EventsApi: AdaptableApi {
 	/// * HTTP 200 An event was updated.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 404 Event not found.
-	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:

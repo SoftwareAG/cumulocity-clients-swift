@@ -9,7 +9,7 @@
 import Foundation
 
 public struct C8yAuditRecord: Codable {
-	
+	 
 	public init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		self.activity = try container.decodeIfPresent(String.self, forKey: .activity)
@@ -188,7 +188,7 @@ public struct C8yAuditRecord: Codable {
 	}
 
 	public struct C8yChanges: Codable {
-		
+		 
 		public init(from decoder: Decoder) throws {
 			let container = try decoder.container(keyedBy: CodingKeys.self)
 			self.attribute = try container.decodeIfPresent(String.self, forKey: .attribute)

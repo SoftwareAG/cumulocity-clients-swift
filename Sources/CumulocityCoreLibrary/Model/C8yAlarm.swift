@@ -9,7 +9,7 @@
 import Foundation
 
 public struct C8yAlarm: Codable {
-	
+	 
 	public init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		self.count = try container.decodeIfPresent(Int.self, forKey: .count)

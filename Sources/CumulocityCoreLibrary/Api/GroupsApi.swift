@@ -11,7 +11,7 @@ import Combine
 
 /// API methods to create, retrieve, update and delete user groups.
 /// 
-/// > **������ Important:** In the Cumulocity IoT user interface, user groups are referred to as "global roles". Global roles are not to be confused with user roles.
+/// > **⚠️ Important:** In the Cumulocity IoT user interface, user groups are referred to as "global roles". Global roles are not to be confused with user roles.
 /// > **ⓘ Note** The Accept header should be provided in all POST/PUT requests, otherwise an empty response body will be returned.
 public class GroupsApi: AdaptableApi {
 
@@ -79,8 +79,8 @@ public class GroupsApi: AdaptableApi {
 	/// * HTTP 201 A user group was created.
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Not enough permissions/roles to perform this operation.
-	/// * HTTP 409 Duplicate ��� Group name already exists.
-	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
+	/// * HTTP 409 Duplicate – Group name already exists.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -143,14 +143,11 @@ public class GroupsApi: AdaptableApi {
 	///     Unique identifier of a Cumulocity IoT tenant.
 	///   - groupId:
 	///     Unique identifier of the user group.
-	///   - forceLogout:
-	///     If set to `true`, users with this global role will be force logged out.
-	public func getUserGroup(tenantId: String, groupId: Int, forceLogout: Bool? = nil) -> AnyPublisher<C8yGroup, Error> {
+	public func getUserGroup(tenantId: String, groupId: Int) -> AnyPublisher<C8yGroup, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)")
 			.set(httpMethod: "get")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.group+json")
-			.add(queryItem: "forceLogout", value: forceLogout)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)
@@ -181,7 +178,7 @@ public class GroupsApi: AdaptableApi {
 	/// * HTTP 401 Authentication information is missing or invalid.
 	/// * HTTP 403 Not enough permissions/roles to perform this operation.
 	/// * HTTP 404 Group not found.
-	/// * HTTP 422 Unprocessable Entity ��� invalid payload.
+	/// * HTTP 422 Unprocessable Entity – invalid payload.
 	/// 
 	/// - Parameters:
 	///   - body:
@@ -190,9 +187,7 @@ public class GroupsApi: AdaptableApi {
 	///     Unique identifier of a Cumulocity IoT tenant.
 	///   - groupId:
 	///     Unique identifier of the user group.
-	///   - forceLogout:
-	///     If set to `true`, users with this global role will be force logged out.
-	public func updateUserGroup(body: C8yGroup, tenantId: String, groupId: Int, forceLogout: Bool? = nil) -> AnyPublisher<C8yGroup, Error> {
+	public func updateUserGroup(body: C8yGroup, tenantId: String, groupId: Int) -> AnyPublisher<C8yGroup, Error> {
 		var requestBody = body
 		requestBody.roles = nil
 		requestBody.`self` = nil
@@ -211,7 +206,6 @@ public class GroupsApi: AdaptableApi {
 			.set(httpMethod: "put")
 			.add(header: "Content-Type", value: "application/vnd.com.nsn.cumulocity.group+json")
 			.add(header: "Accept", value: "application/vnd.com.nsn.cumulocity.error+json, application/vnd.com.nsn.cumulocity.group+json")
-			.add(queryItem: "forceLogout", value: forceLogout)
 			.set(httpBody: encodedRequestBody)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
@@ -249,14 +243,11 @@ public class GroupsApi: AdaptableApi {
 	///     Unique identifier of a Cumulocity IoT tenant.
 	///   - groupId:
 	///     Unique identifier of the user group.
-	///   - forceLogout:
-	///     If set to `true`, users with this global role will be force logged out.
-	public func deleteUserGroup(tenantId: String, groupId: Int, forceLogout: Bool? = nil) -> AnyPublisher<Data, Error> {
+	public func deleteUserGroup(tenantId: String, groupId: Int) -> AnyPublisher<Data, Error> {
 		let builder = URLRequestBuilder()
 			.set(resourcePath: "/user/\(tenantId)/groups/\(groupId)")
 			.set(httpMethod: "delete")
 			.add(header: "Accept", value: "application/json")
-			.add(queryItem: "forceLogout", value: forceLogout)
 		return self.session.dataTaskPublisher(for: adapt(builder: builder).build()).tryMap({ element -> Data in
 			guard let httpResponse = element.response as? HTTPURLResponse else {
 				throw URLError(.badServerResponse)

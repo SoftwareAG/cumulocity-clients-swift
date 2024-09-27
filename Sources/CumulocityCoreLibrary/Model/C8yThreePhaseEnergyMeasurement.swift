@@ -10,6 +10,21 @@ import Foundation
 
 /// Measurement of the three phase energy meter.
 public struct C8yThreePhaseEnergyMeasurement: Codable {
+	 
+	public init(from decoder: Decoder) throws {
+		if let additionalContainer = try? decoder.container(keyedBy: JSONCodingKeys.self) {
+			for key in additionalContainer.allKeys {
+				if let value = try? additionalContainer.decode(C8yMeasurementValue.self, forKey: key) {
+			    	self.additionalProperties[key.stringValue] = value
+			    }
+			}
+		}
+	}
+	
+	public func encode(to encoder: Encoder) throws {
+		var container = encoder.container(keyedBy: CodingKeys.self)
+		try? container.encodeIfPresent(self.additionalProperties, forKey: .additionalProperties)
+	}
 
 	public var additionalProperties: [String: C8yMeasurementValue] = [:]
 	
